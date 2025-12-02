@@ -1,0 +1,64 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/post/card/card.dart';
+
+import '../../../../../domain/model/topic_model.dart';
+import '../../../../router/routes.dart';
+import '../../../../utils/common_utils.dart';
+import '../../../image_paths.dart';
+import '../../../theme.dart';
+import '../../my_image.dart';
+
+class CardCountView extends StatelessWidget {
+  const CardCountView({
+    super.key,
+    required this.viewCount,
+    required this.commentCount,
+    required this.likeCount,
+    required this.type,
+    this.topic,
+  });
+
+  final int viewCount;
+  final int commentCount;
+  final int likeCount;
+  final CommunityType type;
+
+  final TopicModel? topic;
+
+  Widget _item(String path, int count) => Row(
+        children: [
+          MyImage.asset(
+            path,
+            width: 20.w,
+            height: 20.w,
+          ),
+          SizedBox(width: 4.w),
+          Text(
+            '${CommonUtils.renderFixedNumber(count)}',
+            style: MyTheme.gray199_13,
+          ),
+        ],
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        _item(MyImagePaths.appViewIcon, viewCount),
+        _item(type == CommunityType.community ? MyImagePaths.appThumbsIcon : MyImagePaths.appBitCollection, likeCount),
+        _item(MyImagePaths.appCommentIcon, commentCount),
+        if (topic != null)
+          GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () => CommunityTagDetailRoute('${topic?.id}').push(context),
+            child: Text(
+              '#${topic?.name ?? ''}',
+              style: MyTheme.blue96_13_M,
+            ),
+          )
+      ],
+    );
+  }
+}

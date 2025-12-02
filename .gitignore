@@ -1,0 +1,144 @@
+##################################################
+# Flutter / Dart
+##################################################
+
+# Dart tool & pub
+.dart_tool/
+.packages
+.pub/
+.pub-cache/
+.pub-cache-lock
+build/
+
+# Flutter generated
+.flutter-plugins
+.flutter-plugins-dependencies
+.flutter_tool_state
+.generated/
+
+##################################################
+# Android
+##################################################
+
+android/.gradle/
+android/local.properties
+android/**/build/
+android/app/debug/
+android/app/profile/
+android/app/release/
+
+# APK / AAB (important!)
+*.apk
+*.aab
+android/apk/
+android/app/outputs/
+
+##################################################
+# iOS
+##################################################
+
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/ephemeral/
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+ios/Flutter/App.framework
+ios/Flutter/engine/
+ios/Flutter/.last_build_id
+ios/Runner/GeneratedPluginRegistrant.*
+
+# Xcode user files
+ios/**/*.xcuserstate
+ios/**/*.xcuserdata/
+
+# CocoaPods
+ios/Podfile.lock
+
+##################################################
+# Web
+##################################################
+
+web/.dart_tool/
+web/build/
+
+##################################################
+# macOS
+##################################################
+
+macos/Pods/
+macos/Flutter/GeneratedPluginRegistrant.swift
+macos/Flutter/ephemeral/
+macos/build/
+
+##################################################
+# Windows
+##################################################
+
+windows/build/
+windows/flutter/GeneratedPluginRegistrant.cc
+windows/flutter/GeneratedPluginRegistrant.h
+windows/flutter/ephemeral/
+
+##################################################
+# Linux
+##################################################
+
+linux/build/
+linux/flutter/GeneratedPluginRegistrant.cc
+linux/flutter/GeneratedPluginRegistrant.h
+linux/flutter/ephemeral/
+
+##################################################
+# IDE - VSCode
+##################################################
+
+.vscode/
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+##################################################
+# IDE - Android Studio / IntelliJ
+##################################################
+
+.idea/
+*.iml
+*.iws
+*.ipr
+
+##################################################
+# Logs & Temp
+##################################################
+
+*.log
+*.tmp
+*.temp
+*.swp
+*.bak
+.DS_Store
+Thumbs.db
+
+##################################################
+# Environment / Secret
+##################################################
+
+.env
+.env.*
+*.keystore
+key.properties
+*.jks
+*.pem
+*.p12
+*.crt
+
+##################################################
+# Coverage / Test
+##################################################
+
+coverage/
+test/.test_tool/
+
+# FVM Version Cache
+.fvm/
+pubspec.lock
+HLQ_Struggle/

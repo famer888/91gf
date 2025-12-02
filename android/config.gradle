@@ -1,0 +1,16 @@
+//jeknis专用
+ext {
+    versiondata = [
+            versionCode: 100,
+            versionName: "1.0.0"
+    ]
+    signdata = [
+            keyAlias     : 'upload',
+            keyPassword  : 'youyu2021',
+            storeFile    : './keystore/upload-keystore-1224.jks',
+            storePassword: 'youyu2021'
+    ]
+    packagedata = [
+            applicationId: 'com.example.jygf'
+    ]
+}

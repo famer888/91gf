@@ -1,0 +1,728 @@
+import 'package:bot_toast/bot_toast.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:jygf/domain/model/member_model.dart';
+import 'package:jygf/ui_layer/router/routes.dart';
+import 'package:jygf/ui_layer/router/paths.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/dialog/widgets/regular_dialog.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/my_app_bar.dart';
+import 'package:jygf/ui_layer/utils/common_utils.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../domain/model/ai_server_face_model.dart';
+import '../../../../domain/model/banner_model.dart';
+import '../../../../domain/model/navigator_model.dart';
+import '../../../../domain/remote_domain/domains/ai.dart';
+import '../../../notifiers/home_config_notifier.dart';
+import '../../../notifiers/user_notifier.dart';
+import '../../../utils/my_toast.dart';
+import '../../common_widgets/general_banner.dart';
+import '../../common_widgets/my_filter_tab_bar.dart';
+import '../../common_widgets/my_image.dart';
+import '../../common_widgets/my_list_view.dart';
+import '../../image_paths.dart';
+import '../../theme.dart';
+import '../../../../domain/model/media_model.dart';
+import '../../../../domain/enum.dart';
+
+class AiVideoFaceSwap extends StatefulWidget {
+  const AiVideoFaceSwap({
+    super.key,
+  });
+
+  @override
+  State<AiVideoFaceSwap> createState() => _AiVideoFaceSwapState();
+}
+
+class _AiVideoFaceSwapState extends State<AiVideoFaceSwap> {
+  late final aiDomain = context.read<AIDomain>();
+  late final _homeConfig = context.read<HomeConfigNotifier>();
+  late final userNotifier = context.read<UserNotifier>();
+  late List<FaceNavigatorModel> faceNav = [];
+  late List<VideoFaceSortModel> titles = [];
+  // late int faceCoinsValue = _homeConfig.config.faceCoins;
+  final ValueNotifier<List<BannerModel>> bannersNotifier = ValueNotifier([]);
+  late List<FaceNavigatorModel> topics = [];
+  String sortValue = 'desc';
+  int tabIndex = 0;
+  FaceNavigatorModel navs = FaceNavigatorModel(id: 0, name: '');
+  Map uploadObject = {};
+
+  @override
+  void initState() {
+    super.initState();
+
+    faceNav = _homeConfig.config.faceTopNav ?? [];
+    titles = _homeConfig.config.videoFaceSortNav ?? [];
+
+    for (VideoFaceSortModel item in titles) {
+      item.sort = null;
+    }
+
+    topics = faceNav;
+    if (faceNav.isNotEmpty) {
+      navs = faceNav[0];
+    }
+  }
+
+  @override
+  void dispose() {
+    //显式停止播放器,防止视频格式异常导致播放器一直在播放错误无法释放
+    super.dispose();
+  }
+
+  void onChangeNav(FaceNavigatorModel item) {
+    navs = item;
+    setState(() {});
+  }
+
+  void slideChageTabs(int index) {
+    // tabIndex = index;
+  }
+
+  void onChangeTabs(int index) {
+    final item = titles[index];
+    String? sort = item.sort;
+
+    if (tabIndex == index) {
+      if (item.type == 1) {
+        return;
+      }
+      if (sort == null) {
+        sortValue = 'asc';
+        item.sort = sortValue;
+      } else if (sort == 'asc') {
+        sortValue = 'desc';
+        item.sort = sortValue;
+      } else if (sort == 'desc') {
+        sortValue = 'asc';
+        item.sort = sortValue;
+      }
+
+      setState(() {});
+    }
+
+    tabIndex = index;
+  }
+
+  Future<List<VideoFaceMaterials>?> _getData(
+      {required int page, required int pageSize, required String value}) async {
+    final result = await aiDomain.videoFaceMaterialList(
+      id: navs.id,
+      page: page,
+      limit: pageSize,
+      type: value,
+      sort: sortValue,
+    );
+
+    if (result.status == 1) {
+      final data = result.data;
+      if (data != null &&
+          data.banners.isNotEmpty &&
+          bannersNotifier.value.isEmpty) {
+        bannersNotifier.value = data.banners;
+      }
+      return data?.materials;
+    } else {
+      MyToast.showText(text: result.msg ?? '');
+    }
+    return null;
+  }
+
+  Future<void> imagePickerAssets() async {
+    if (await CommonUtils.pickImage() case final xFile?) {
+      MyToast.showLoading(text: 'scz'.tr());
+      final result = await _homeConfig.uploadImage(xFile);
+      if (result != null && result['code'] == 1) {
+        final url = "${result['msg']}";
+
+        final image = await decodeImageFromList(await xFile.readAsBytes());
+
+        uploadObject = {
+          'media_url': url,
+          'url': _homeConfig.config.imgBase + url,
+          'thumb_width': image.width,
+          'thumb_height': image.height,
+        };
+
+        if (mounted) {
+          setState(() {});
+        }
+      } else {
+        MyToast.showText(text: result?['msg'] ?? 'failed');
+      }
+      MyToast.closeAllLoading();
+    }
+  }
+
+  Future<void> onOpenMaterialDetail(VideoFaceMaterials item) async {
+    const String uploadMaxSize = '2M';
+    return showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      context: context,
+      builder: (context) => StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+        return DecoratedBox(
+          decoration: BoxDecoration(
+            color: const Color(0xff0b0a21),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10.w),
+              topRight: Radius.circular(10.w),
+            ),
+          ),
+          child: SafeArea(
+            child: Padding(
+              padding: EdgeInsets.all(15.w),
+              child: ListView(
+                shrinkWrap: true,
+                // mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 5.w),
+                    width: double.infinity,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('${'mob'.tr()}-${item.title}',
+                            style: MyTheme.white13),
+                        const SizedBox.shrink(),
+                        InkWell(
+                          onTap: () => context.pop(),
+                          child: Container(
+                            alignment: Alignment.centerRight,
+                            width: 44.w,
+                            height: 44.w,
+                            child: MyImage.asset(
+                              MyImagePaths.appIssueClose,
+                              width: 11.w,
+                              height: 11.w,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 5.w),
+                  GestureDetector(
+                    onTap: () {
+                      final media = MediaModel(
+                        mediaUrl: item.m3u8,
+                        cover: item.thumb,
+                        thumbWidth: item.thumbW,
+                        thumbHeight: item.thumbH,
+                        type: MyMediaType.video,
+                      );
+                      context.push(AppRouterPaths.mediaViewer, extra: {
+                        'resources': [media],
+                        'index': 0,
+                      });
+                    },
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        SizedBox(
+                          height: 140.w,
+                          child: MyImage.network(
+                            item.thumb,
+                            fit: BoxFit.fitHeight,
+                            borderRadius: 6.w,
+                            backgroundColor: MyTheme.imageBgColor,
+                          ),
+                        ),
+                        MyImage.asset(
+                          MyImagePaths.appFaceSwapPlay,
+                          width: 40.w,
+                          height: 40.w,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 10.w),
+                  Row(
+                    children: [
+                      Text('sclbxx'.tr(context: context),
+                          style: MyTheme.white13),
+                      const SizedBox.shrink(),
+                    ],
+                  ),
+                  SizedBox(height: 10.w),
+                  GestureDetector(
+                    onTap: () {
+                      imagePickerAssets().then((e) {
+                        setState(() {});
+                      });
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      height: 140.w,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                        color: const Color(0xff1b1c2b),
+                      ),
+                      child: uploadObject.isEmpty
+                          ? Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Icon(Icons.add,
+                                    color: const Color(0xff9f9f9f), size: 26.w),
+                                Text('djscrwxx'.tr(context: context),
+                                    style: MyTheme.white13),
+                                Text(
+                                    'tpdxbcg'.tr(context: context) +
+                                        uploadMaxSize,
+                                    style: TextStyle(
+                                        fontSize: 10.sp,
+                                        color: const Color(0xff9f9f9f))),
+                              ],
+                            )
+                          : Stack(
+                              children: [
+                                MyImage.network(
+                                  uploadObject['url'],
+                                  fit: BoxFit.fitHeight,
+                                  borderRadius: 6.w,
+                                  backgroundColor: MyTheme.imageBgColor,
+                                ),
+                                Positioned(
+                                    top: 0,
+                                    right: 0,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          uploadObject = {};
+                                        });
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.all(5.w),
+                                        decoration: const BoxDecoration(
+                                            color: Color(0xFF3094FF)),
+                                        child: Center(
+                                            child: Icon(
+                                          Icons.delete_forever,
+                                          size: 20.sp,
+                                          color: Colors.white,
+                                        )),
+                                      ),
+                                    ))
+                              ],
+                            ),
+                    ),
+                  ),
+                  SizedBox(height: 10.w),
+                  TipText(content: 'zyss'.tr(context: context)),
+                  TipText(content: 'zyss1'.tr(context: context)),
+                  TipText(content: 'zyss2'.tr(context: context)),
+                  TipText(content: 'zyss3'.tr(context: context)),
+                  TipText(content: 'zyss4'.tr(context: context)),
+                  TipText(content: 'zyss5'.tr(context: context)),
+                  SizedBox(height: 10.w),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      UploadFaceTip(
+                          thumb: MyImagePaths.uploadFaceRight,
+                          title: 'zqwzl'.tr(context: context)),
+                      UploadFaceTip(
+                          thumb: MyImagePaths.uploadFaceError1,
+                          title: 'zdlb'.tr(context: context)),
+                      UploadFaceTip(
+                          thumb: MyImagePaths.uploadFaceError2,
+                          title: 'zdyj'.tr(context: context))
+                    ],
+                  ),
+                  SizedBox(height: 10.w),
+                  Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Text('${'xhjb'.tr(context: context)}：',
+                            style: MyTheme.white13),
+                        Text(item.coins.toString(),
+                            style: MyTheme.nav_active_14),
+                        SizedBox(width: 10.w),
+                        Text('${'mfcs'.tr(context: context)}：',
+                            style: MyTheme.white13),
+                        Selector<UserNotifier, int>(
+                            selector: (_, config) =>
+                                config.member.aiVideoFaceValue,
+                            builder: (context, number, child) {
+                              return Text('$number',
+                                  style: MyTheme.nav_active_14);
+                            }),
+                        const Expanded(child: SizedBox()),
+                        GestureDetector(
+                          onTap: () async {
+                            if (uploadObject.isEmpty) {
+                              CommonUtils.showDialog(
+                                  context: context,
+                                  builder: (context) => RegularDialog(
+                                        title: 'wxts'.tr(),
+                                        content: Text('qsctp'.tr(),
+                                            style: MyTheme.white255_15),
+                                        buttonText: 'qd'.tr(),
+                                        confirmOnTap: () {
+                                          context.pop();
+                                        },
+                                      ));
+                              return;
+                            }
+                            MyToast.showLoading();
+
+                            Member? user = userNotifier.member;
+                            final userCoins = user.money; //用户剩余金币
+
+                            final result = await aiDomain.changeVideoFace(
+                                materialId: item.id.toString(),
+                                thumb: uploadObject['media_url'],
+                                thumbW: uploadObject['thumb_width'].toString(),
+                                thumbH:
+                                    uploadObject['thumb_height'].toString());
+                            BotToast.closeAllLoading();
+                            if (result.status == 1) {
+                              setState(() {
+                                uploadObject = {};
+                              });
+
+                              final aiVideoFaceValue =
+                                  userNotifier.member.aiVideoFaceValue - 1;
+                              if (aiVideoFaceValue >= 0) {
+                                userNotifier.setAiVideoFaceValue(
+                                    num: aiVideoFaceValue);
+                              } else {
+                                userNotifier.setMoney(
+                                    money:
+                                        userNotifier.member.money - item.coins);
+                              }
+                              CommonUtils.showDialog(
+                                context: context,
+                                builder: (context) => RegularDialog(
+                                  buttonText: 'gb'.tr(),
+                                  title: 'wxts'.tr(),
+                                  content: Text('提交成功，稍后前往\n【AI记录】中查看',
+                                      style: MyTheme.white255_15,
+                                      textAlign: TextAlign.center),
+                                  confirmOnTap: () {
+                                    context.pop();
+                                    context.pop();
+                                  },
+                                ),
+                              );
+                            } else {
+                              if (result.msg != '余额不足') {
+                                MyToast.showText(text: result.msg ?? '提交失败');
+                                return;
+                              }
+                              //余额不足，提示金币不足
+                              CommonUtils.showDialog(
+                                context: context,
+                                builder: (context) => RegularDialog(
+                                  buttonText: 'qwcz'.tr(),
+                                  cancelText: 'qx'.tr(),
+                                  title: 'ts'.tr(),
+                                  content: RichText(
+                                      textAlign: TextAlign.center,
+                                      text: TextSpan(children: [
+                                        TextSpan(
+                                          text:
+                                              '${tr('ndyebz')}\n${tr('syjb')}',
+                                          style: MyTheme.white255_15,
+                                        ),
+                                        TextSpan(
+                                          text: '$userCoins金币',
+                                          style: MyTheme.orange247_15,
+                                        )
+                                      ])),
+                                  confirmOnTap: () {
+                                    //前往充值
+                                    context.pop();
+                                    const CoinRechargeRoute().push(context);
+                                  },
+                                  cancelOnTap: () {
+                                    //取消
+                                    context.pop();
+                                  },
+                                ),
+                              );
+                            }
+                          },
+                          child: Container(
+                            width: 115.w,
+                            padding: EdgeInsets.symmetric(vertical: 10.w),
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(3.w)),
+                                gradient: MyTheme.gradient_90_114),
+                            child: Center(
+                              child: Text('ljzz'.tr(context: context),
+                                  style: MyTheme.white15bold),
+                            ),
+                          ),
+                        )
+                      ]),
+                  SizedBox(height: 10.w)
+                ],
+              ),
+            ),
+          ),
+        );
+      }),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: MyAppBar(
+          title: 'sphl'.tr(),
+          rightWidget: TextButton(
+            onPressed: () {
+              const MineAIRecordRoute(index: 6).push(context);
+            },
+            child: Center(
+              child: Text(
+                'wdai'.tr(),
+                style: MyTheme.white255_13,
+              ),
+            ),
+          ),
+        ),
+        body: NestedScrollView(
+          headerSliverBuilder: (_, __) => [
+            SliverToBoxAdapter(
+              child: _Header(
+                bannersNotifier: bannersNotifier,
+                topics: topics,
+                onLinkNavTap: onChangeNav,
+                currentNav: navs,
+              ),
+            ),
+          ],
+          body: TabFilterBarWithView.fillColor(
+            fillCorlor: Colors.transparent,
+            isScrollable: true,
+            // key: ValueKey(navs),
+            tabBarPadding: EdgeInsets.symmetric(
+                vertical: 10.w, horizontal: MyTheme.pagePadding),
+            tabBarHeight: 32.w,
+            labelStyle: MyTheme.white12,
+            unselectedLabelStyle: MyTheme.whiteOpacity612w400,
+            onTapTab: onChangeTabs,
+            slideChageTab: slideChageTabs,
+            titles: titles,
+            views: [
+              for (final VideoFaceSortModel nav in titles)
+                MyListView.grid(
+                    key: UniqueKey(),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+                    childAspectRatio: 170 / 250,
+                    itemBuilder: (context, item, index) {
+                      return VideoMaterialCard(
+                        data: item,
+                        onTap: onOpenMaterialDetail,
+                        index: index,
+                      );
+                    },
+                    onFetchingMore: (currentPage, pageSize) => _getData(
+                          page: currentPage,
+                          pageSize: pageSize,
+                          value: nav.type,
+                        ))
+            ],
+          ),
+        ));
+  }
+}
+
+class _Header extends StatelessWidget {
+  const _Header({
+    required this.bannersNotifier,
+    required this.topics,
+    required this.onLinkNavTap,
+    required this.currentNav,
+  });
+
+  final ValueNotifier<List<BannerModel>> bannersNotifier;
+  final List<FaceNavigatorModel> topics;
+  final Function(FaceNavigatorModel) onLinkNavTap;
+  final FaceNavigatorModel currentNav;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(height: 6.w),
+        ValueListenableBuilder(
+          valueListenable: bannersNotifier,
+          builder: (context, banners, child) {
+            if (banners.isEmpty) return const SizedBox.shrink();
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+              child: GeneralBannerAppsListWidget(data: banners),
+            );
+          },
+        ),
+        SizedBox(height: 10.w),
+        Padding(
+          padding: EdgeInsets.only(bottom: 5.w),
+          child: GridView.builder(
+              shrinkWrap: true,
+              addRepaintBoundaries: false,
+              addAutomaticKeepAlives: false,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: topics.length,
+              padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4,
+                childAspectRatio: 80.w / 35.w,
+                mainAxisSpacing: 5.w,
+                crossAxisSpacing: 5.w,
+              ),
+              itemBuilder: (context, index) {
+                final topic = topics[index];
+                return GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    onLinkNavTap(topic);
+                  },
+                  child: DecoratedBox(
+                    decoration: ShapeDecoration(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(2.w),
+                      ),
+                      gradient: topic.id == currentNav.id
+                          ? MyTheme.gradient_84_55
+                          : null,
+                      color: topic.id == currentNav.id
+                          ? null
+                          : const Color(0xff262631),
+                    ),
+                    child: Center(
+                      child: Text(
+                        topic.name,
+                        style: MyTheme.white13,
+                      ),
+                    ),
+                  ),
+                );
+              }),
+        ),
+      ],
+    );
+  }
+}
+
+class VideoMaterialCard extends StatelessWidget {
+  const VideoMaterialCard(
+      {super.key,
+      required this.data,
+      required this.onTap,
+      required this.index});
+
+  final VideoFaceMaterials data;
+  final Function(VideoFaceMaterials) onTap;
+
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => onTap(data),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              SizedBox(
+                height: 250.w,
+                child: MyImage.network(
+                  data.thumb,
+                  fit: BoxFit.cover,
+                  borderRadius: 6.w,
+                  backgroundColor: MyTheme.imageBgColor,
+                ),
+              ),
+              MyImage.asset(
+                MyImagePaths.appFaceSwapPlay,
+                width: 40.w,
+                height: 40.w,
+              ),
+              Positioned(
+                  right: 7.5.w,
+                  bottom: 6.w,
+                  child: Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(horizontal: 10.w),
+                    height: 19.w,
+                    decoration: BoxDecoration(
+                      gradient: MyTheme.gradient_84_55,
+                      borderRadius: BorderRadius.all(Radius.circular(19.w)),
+                    ),
+                    child:
+                        Text('${data.coins}金币', style: MyTheme.white12medium),
+                  ))
+            ],
+          ),
+          SizedBox(height: 5.w),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(data.title, style: MyTheme.white13),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class UploadFaceTip extends StatelessWidget {
+  const UploadFaceTip({super.key, required this.thumb, required this.title});
+
+  final String thumb;
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      child: Column(
+        children: [
+          Image.asset(
+            thumb,
+            width: 60.w,
+            fit: BoxFit.fitHeight,
+          ),
+          SizedBox(height: 10.w),
+          Text(
+            title,
+            style: MyTheme.white13,
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class TipText extends StatelessWidget {
+  const TipText({super.key, required this.content});
+
+  final String content;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Text(content, style: MyTheme.white11),
+        const SizedBox.shrink(),
+      ],
+    );
+  }
+}

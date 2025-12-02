@@ -1,0 +1,659 @@
+// ignore_for_file: non_constant_identifier_names
+import 'dart:math';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flick_video_player/flick_video_player.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import 'package:video_player/video_player.dart';
+import 'package:visibility_detector/visibility_detector.dart';
+import 'package:jygf/domain/api_validator.dart';
+import 'package:jygf/domain/domain.dart';
+import 'package:jygf/domain/model/member_model.dart';
+import 'package:jygf/domain/model/vlog_model.dart';
+import 'package:jygf/domain/type_def.dart';
+import 'package:jygf/ui_layer/notifiers/user_notifier.dart';
+import 'package:jygf/ui_layer/router/routes.dart';
+import 'package:jygf/ui_layer/screens/asmr/voice_player/voice_player_manager.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/dialog/my_dialog.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/video_player/utils/nvideourl_minxin.dart';
+import 'package:jygf/ui_layer/screens/image_paths.dart';
+import 'package:jygf/ui_layer/screens/vlog/widgets/vlog_comment_sheet.dart';
+import 'package:jygf/ui_layer/screens/theme.dart';
+import 'package:jygf/ui_layer/utils/common_utils.dart';
+import 'package:jygf/ui_layer/utils/my_toast.dart';
+
+class ShortVPlayer extends StatefulWidget {
+  const ShortVPlayer({
+    super.key,
+    this.info,
+    this.keepBottomBlank = false,
+  });
+
+  final VlogModel? info;
+  final bool keepBottomBlank; // 底部要不要留白
+
+  @override
+  State<ShortVPlayer> createState() => _ShortVPlayerState();
+}
+
+class _ShortVPlayerState extends State<ShortVPlayer> with NVideoURLMinxin {
+  VideoPlayerController? cr;
+  FlickManager? flickManager;
+  bool isPreview = false;
+  bool isDone = false;
+
+  late final vlogDomain = context.read<VlogDomain>();
+  late final userDomain = context.read<UserDomain>();
+  late final communityDomain = context.read<CommunityDomain>();
+
+  @override
+  void didUpdateWidget(ShortVPlayer oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.info != oldWidget.info) {
+      initURL();
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initURL();
+  }
+
+  void initURL() async {
+    if (widget.info == null) return;
+    String source_240 = widget.info?.source_240 ?? '';
+    String preview_url = widget.info?.previewUrl ?? '';
+
+    if (source_240.isNotEmpty) {
+      isPreview = false;
+      cr = await initController(source240: source_240, isShort: 1);
+    } else {
+      isPreview = true;
+      cr = await initController(source240: preview_url, isShort: 1);
+    }
+
+    vlogDomain.reportVlogPlay(id: widget.info?.id ?? 0);
+
+    if (cr == null) return;
+    flickManager = FlickManager(
+        videoPlayerController: cr!,
+        autoPlay: !kIsWeb,
+        onVideoEnd: () {
+          isDone = true;
+          if (mounted) setState(() {});
+        });
+
+    if (mounted) setState(() {});
+
+    VoicePlayerManager.instance.audioController?.pause();
+    VoicePlayerManager.instance.isPlay.value = false;
+    VoicePlayerManager.instance.removeFloatPayer();
+    VoicePlayerManager.instance.disposes();
+  }
+
+  @override
+  void dispose() {
+    flickManager?.dispose();
+    flickManager = null;
+    cr = null;
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return flickManager == null
+        ? Container()
+        : VisibilityDetector(
+            key: ObjectKey(flickManager),
+            onVisibilityChanged: (visibility) async {
+              if (visibility.visibleFraction == 0 && mounted) {
+                if (cr?.value.isInitialized == true) {
+                  await flickManager?.flickControlManager?.autoPause();
+                }
+              } else if (visibility.visibleFraction == 1 && mounted) {
+                if (cr?.value.isInitialized == true) {
+                  flickManager?.flickControlManager?.autoResume();
+                }
+              }
+            },
+            child: FlickVideoPlayer(
+              flickManager: flickManager!,
+              flickVideoWithControls: FlickVideoWithControls(
+                videoFit: BoxFit.contain,
+                backgroundColor: MyTheme.bgColor,
+                playerErrorFallback: Container(),
+                playerLoadingFallback: Stack(
+                  children: [
+                    Positioned.fill(
+                        child: MyImage.network(widget.info?.coverVertical ?? '',
+                            fit: BoxFit.contain,
+                            backgroundColor: MyTheme.bgColor)),
+                    Center(
+                      child: SizedBox(
+                        height: 40,
+                        width: 40,
+                        child: CircularProgressIndicator(
+                          backgroundColor: Colors.grey[400],
+                          valueColor: const AlwaysStoppedAnimation(
+                            MyTheme.blueColor64,
+                          ),
+                          strokeWidth: 1.5,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                controls: SinkPortraitWidget(
+                  flickManager: flickManager!,
+                  isBack: true,
+                  isDone: isDone,
+                  info: widget.info,
+                  isPreview: isPreview,
+                  skiPreview: () {
+                    showAlertVp();
+                  },
+                  likeAct: () {
+                    likeVideoRes();
+                  },
+                  collectAct: () {
+                    collectVideoRes();
+                  },
+                  commentAct: () {
+                    showMoreVideoComment(
+                        context: context, data: widget.info?.id);
+                  },
+                  followAct: () {
+                    followUserRes();
+                  },
+                  enterUserCenterAct: () {
+                    if (widget.info?.member != null) {
+                      //跳转到个人中心
+                      UserCenterRoute('${widget.info?.member?.aff}')
+                          .push(context);
+                    }
+                  },
+                  keepBottomBlank: widget.keepBottomBlank,
+                ),
+              ),
+              flickVideoWithControlsFullscreen: FlickVideoWithControls(
+                playerErrorFallback: Container(),
+                videoFit: BoxFit.contain,
+                backgroundColor: MyTheme.bgColor,
+                controls: SinkPortraitWidget(
+                  flickManager: flickManager!,
+                  info: widget.info,
+                ),
+              ),
+            ),
+          );
+  }
+
+  showMoreVideoComment({required BuildContext context, dynamic data}) {
+    return showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(builder: (ctx, setBottomSheetState) {
+            //评论弹窗
+            return VlogCommentSheet(id: data);
+          });
+        });
+  }
+
+  void showAlertVp({bool goby = false}) {
+    final userNotifier = context.read<UserNotifier>();
+    Member user = userNotifier.member;
+    int money = user.money ?? 0;
+    int needmoney = widget.info?.coins ?? 0;
+    bool isInsufficient = money < needmoney;
+    if (goby && !isInsufficient) {
+      byVideoRes(money - needmoney); //直接购买
+      return;
+    }
+    if (widget.info?.isFree == 2) {
+      MyDialog.showAnimationDialog(
+          cancelTxt: 'qx'.tr(context: context),
+          confirmTxt: isInsufficient
+              ? 'qwcz'.tr(context: context)
+              : 'gmgk'.tr(context: context),
+          setContent: () {
+            return Column(
+              children: [
+                Text('gmspkwz'.tr(context: context),
+                    style: MyTheme.black13,
+                    maxLines: 3,
+                    textAlign: TextAlign.center),
+                SizedBox(height: 15.w),
+                Text("$needmoney${'jb'.tr(context: context)}",
+                    style: MyTheme.jellyCyan_15, textAlign: TextAlign.center),
+                SizedBox(height: 15.w),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("${'ktvpzk'.tr(context: context)}：$money",
+                        style: MyTheme.black13),
+                  ],
+                ),
+              ],
+            );
+          },
+          confirm: () {
+            if (isInsufficient) {
+              const CoinRechargeRoute().push(context);
+            } else {
+              byVideoRes(money - needmoney); //直接购买
+            }
+          });
+    } else {
+      MyDialog.showAnimationDialog(
+          cancelTxt: 'fxlvip'.tr(context: context),
+          confirmTxt: 'czvip'.tr(context: context),
+          setContent: () {
+            return Text('gmvkwz'.tr(context: context),
+                style: MyTheme.black13,
+                maxLines: 3,
+                textAlign: TextAlign.center);
+          },
+          cancel: () {
+            const MineShareToUserRoute().push(context);
+          },
+          confirm: () {
+            const VipCenterRoute().push(context);
+          });
+    }
+  }
+
+  Future<void> byVideoRes(int money) async {
+    MyToast.showLoading(text: 'gmzz'.tr(context: context));
+    final userNotifier = context.read<UserNotifier>();
+    final res = await vlogDomain.vlogBuy(id: widget.info?.id ?? 0);
+    MyToast.closeAllLoading();
+    if (res.isValid) {
+      userNotifier.setMoney(money: money);
+      widget.info?.source_240 = res.data["url"] ?? '';
+      await CommonUtils.clearPassiveCache(
+          videoUrl: widget.info?.source_240 ?? '');
+      initURL();
+    } else {
+      MyToast.showText(text: res.msg ?? '');
+    }
+  }
+
+  Future<void> collectVideoRes() async {
+    final res = await vlogDomain.vlogFavorite(id: widget.info?.id ?? 0);
+    if (res.isValid) {
+      widget.info?.isFavorite = res.data['is_favorite'];
+      int count = widget.info?.favorites ?? 0;
+      count = widget.info?.isFavorite == 1 ? count + 1 : count - 1;
+      widget.info?.favorites = max(count, 0);
+      if (mounted) setState(() {});
+    } else {
+      MyToast.showText(text: res.msg ?? '');
+    }
+  }
+
+  Future<void> likeVideoRes() async {
+    final res = await vlogDomain.vlogLike(id: widget.info?.id ?? 0);
+    if (res.isValid) {
+      widget.info?.isLike = res.data['is_like'];
+      int count = widget.info?.countLike ?? 0;
+      count = widget.info?.isLike == 1 ? count + 1 : count - 1;
+      widget.info?.countLike = max(count, 0);
+      if (mounted) setState(() {});
+    } else {
+      MyToast.showText(text: res.msg ?? '');
+    }
+  }
+
+  Future<void> followUserRes() async {
+    final res = await userDomain.communityFollowUser(
+        aff: '${widget.info?.member?.aff}');
+    if (res.isValid) {
+      widget.info?.member?.isFollow =
+          widget.info?.member?.isFollow == 1 ? 0 : 1;
+      if (mounted) setState(() {});
+    } else {
+      MyToast.showText(text: res.msg ?? '');
+    }
+  }
+}
+
+//横屏
+class SinkPortraitWidget extends StatefulWidget {
+  const SinkPortraitWidget({
+    super.key,
+    this.flickManager,
+    this.isBack = false,
+    this.isPreview = false,
+    this.isDone = false,
+    this.info,
+    this.skiPreview,
+    this.collectAct,
+    this.commentAct,
+    this.followAct,
+    this.enterUserCenterAct,
+    this.likeAct,
+    this.keepBottomBlank = false,
+  });
+
+  final FlickManager? flickManager;
+  final bool isBack;
+  final bool isPreview;
+  final bool isDone;
+  final VlogModel? info;
+  final Function? skiPreview; //跳过预览
+  final Function? collectAct; //收藏
+  final Function? commentAct; //评论
+  final Function? followAct; //关注
+  final Function? likeAct; //点赞
+  final Function? enterUserCenterAct; //
+  final bool keepBottomBlank;
+
+  @override
+  State<SinkPortraitWidget> createState() => _SinkPortraitWidgetState();
+}
+
+class _SinkPortraitWidgetState extends State<SinkPortraitWidget> {
+  FlickManager? get flickManager => widget.flickManager;
+
+  Duration _duration = const Duration();
+  Duration _currentPos = const Duration();
+
+  // 滑动后值
+  Duration _dargPos = const Duration();
+  double updatePrevDx = 0.0;
+  int updatePosX = 0;
+
+  bool _isTouch = false;
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  _onHorizontalDragStart(DragStartDetails details) {
+    _currentPos = flickManager?.flickVideoManager?.videoPlayerValue?.position ??
+        const Duration(seconds: 0);
+    _duration = flickManager?.flickVideoManager?.videoPlayerValue?.duration ??
+        const Duration(seconds: 0);
+
+    setState(() {
+      updatePrevDx = details.globalPosition.dx;
+      updatePosX = _currentPos.inMilliseconds;
+    });
+  }
+
+  _onHorizontalDragUpdate(DragUpdateDetails details) {
+    double curDragDx = details.globalPosition.dx;
+    // 确定当前是前进或者后退
+    int cdx = curDragDx.toInt();
+    int pdx = updatePrevDx.toInt();
+    bool isBefore = cdx > pdx;
+
+    // 计算手指滑动的比例
+    int newInterval = pdx - cdx;
+    double playerW = MediaQuery.of(context).size.width;
+    int curIntervalAbs = newInterval.abs();
+    double movePropCheck = (curIntervalAbs / playerW) * 100;
+
+    // 计算进度条的比例
+    double durProgCheck = _duration.inMilliseconds.toDouble() / 100;
+    int checkTransfrom = (movePropCheck * durProgCheck).toInt();
+    int dragRange =
+        isBefore ? updatePosX + checkTransfrom : updatePosX - checkTransfrom;
+
+    // 是否溢出 最大
+    int lastSecond = _duration.inMilliseconds;
+    if (dragRange >= _duration.inMilliseconds) {
+      dragRange = lastSecond;
+    }
+    // 是否溢出 最小
+    if (dragRange <= 0) {
+      dragRange = 0;
+    }
+    //
+    setState(() {
+      _isTouch = true;
+      // 更新下上一次存的滑动位置
+      updatePrevDx = curDragDx;
+      // 更新时间
+      updatePosX = dragRange.toInt();
+      _dargPos = Duration(milliseconds: updatePosX.toInt());
+    });
+  }
+
+  _onHorizontalDragEnd(DragEndDetails details) {
+    flickManager?.flickControlManager?.seekTo(_dargPos);
+    setState(() {
+      _isTouch = false;
+      _currentPos = _dargPos;
+    });
+  }
+
+  Widget _buildDargProgressTime() {
+    return _isTouch
+        ? Container(
+            height: 40,
+            alignment: Alignment.topCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 10, right: 10),
+              child: Text(
+                '${_duration2String(_dargPos)}  /  ${_duration2String(_duration)}',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+          )
+        : Container();
+  }
+
+  String _duration2String(Duration duration) {
+    if (duration.inMilliseconds < 0) return "-: negtive";
+
+    String twoDigits(int n) {
+      if (n >= 10) return "$n";
+      return "0$n";
+    }
+
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    int inHours = duration.inHours;
+    return inHours > 0
+        ? "$inHours:$twoDigitMinutes:$twoDigitSeconds"
+        : "$twoDigitMinutes:$twoDigitSeconds";
+  }
+
+  Widget _buildLinearProgress() {
+    return _isTouch
+        ? Container(
+            height: 10.0.w,
+            alignment: Alignment.bottomCenter,
+            color: Colors.black,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 0),
+              child: LinearProgressIndicator(
+                minHeight: 10.0.w,
+                backgroundColor: Colors.white24,
+                valueColor: const AlwaysStoppedAnimation(MyTheme.blueColor64),
+                value: _dargPos.inMilliseconds / _duration.inMilliseconds,
+              ),
+            ),
+          )
+        : Container();
+  }
+
+  Widget _buildGestureDetector() {
+    if (!flickManager!.flickVideoManager!.videoPlayerValue!.isInitialized) {
+      return Container();
+    }
+    return Positioned(
+      right: 0,
+      left: 0,
+      bottom: 0,
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onHorizontalDragStart: _onHorizontalDragStart,
+        onHorizontalDragUpdate: _onHorizontalDragUpdate,
+        onHorizontalDragEnd: _onHorizontalDragEnd,
+        child: SizedBox(
+          height: 60.w,
+          child: Column(
+            children: <Widget>[
+              _buildDargProgressTime(),
+              const Spacer(),
+              _buildLinearProgress(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildContentWidget() {
+    return !_isTouch
+        ? CommonUtils.contentWidget(context, widget.info!, showAlert: () {
+            widget.skiPreview?.call();
+          }, like: () {
+            widget.likeAct?.call();
+          }, collect: () {
+            widget.collectAct?.call();
+          }, comment: () {
+            widget.commentAct?.call();
+          }, follow: () {
+            widget.followAct?.call();
+          }, enterUserCenter: () {
+            widget.enterUserCenterAct?.call();
+          }, cleanView: () {
+            //清屏
+            _isTouch = !_isTouch;
+            setState(() {});
+          }, keepBottomBlank: widget.keepBottomBlank)
+        : Container();
+  }
+
+  Widget _buildProgressWidget() {
+    if (!(flickManager!.flickVideoManager?.videoPlayerValue?.isInitialized ??
+        false)) {
+      return Container();
+    }
+
+    Duration currentPos =
+        flickManager?.flickVideoManager?.videoPlayerValue?.position ??
+            const Duration(seconds: 0);
+    Duration duration =
+        flickManager?.flickVideoManager?.videoPlayerValue?.duration ??
+            const Duration(seconds: 0);
+    return Positioned(
+      right: 0,
+      left: 0,
+      bottom: 0,
+      child: kIsWeb
+          ? Container(
+              height: 2.0.w,
+              alignment: Alignment.bottomCenter,
+              color: Colors.black,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 0),
+                child: LinearProgressIndicator(
+                  minHeight: 2.0.w,
+                  backgroundColor: Colors.white24,
+                  valueColor: const AlwaysStoppedAnimation(MyTheme.blueColor64),
+                  value: currentPos.inMilliseconds / duration.inMilliseconds,
+                ),
+              ),
+            )
+          : FlickVideoProgressBar(
+              flickProgressBarSettings: FlickProgressBarSettings(
+                padding: const EdgeInsets.only(bottom: 0),
+                height: 2,
+                handleRadius: 0,
+                curveRadius: 0,
+                backgroundColor: Colors.white24,
+                bufferedColor: Colors.transparent,
+                playedColor: MyTheme.blueColor64,
+                handleColor: Colors.transparent,
+              ),
+            ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    FlickVideoManager flickVideoManager =
+        Provider.of<FlickVideoManager>(context);
+    bool flag = (flickVideoManager.videoPlayerValue!.isBuffering &&
+            flickVideoManager.videoPlayerValue!.isPlaying) ||
+        !flickVideoManager.videoPlayerValue!.isInitialized;
+
+    FlickControlManager controlManager =
+        Provider.of<FlickControlManager>(context);
+    FlickVideoManager videoManager = Provider.of<FlickVideoManager>(context);
+    return Stack(
+      children: [
+        FlickShowControlsAction(
+          child: Center(
+            child: flag
+                ? Center(
+                    child: SizedBox(
+                      height: 40,
+                      width: 40,
+                      child: CircularProgressIndicator(
+                        backgroundColor: Colors.grey[400],
+                        valueColor:
+                            const AlwaysStoppedAnimation(MyTheme.blueColor64),
+                        strokeWidth: 1.5,
+                      ),
+                    ),
+                  )
+                : FlickAutoHideChild(
+                    showIfVideoNotInitialized: false,
+                    child: FlickPlayToggle(
+                        replayChild: MyImage.asset(
+                          MyImagePaths.appVPlayN,
+                          width: 55.w,
+                          height: 55.w,
+                        ),
+                        playChild: MyImage.asset(
+                          MyImagePaths.appVPlayN,
+                          width: 55.w,
+                          height: 55.w,
+                        ),
+                        pauseChild: Container()),
+                  ),
+          ),
+        ),
+        Positioned.fill(
+          child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () {
+              try {
+                videoManager.isVideoEnded
+                    ? controlManager.replay()
+                    : controlManager.togglePlay();
+              } catch (e) {
+                CommonUtils.log(e);
+              }
+            },
+            child: Container(),
+          ),
+        ),
+        _buildProgressWidget(),
+        _buildContentWidget(),
+        _buildGestureDetector(),
+      ],
+    );
+  }
+}

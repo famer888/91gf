@@ -1,0 +1,113 @@
+name: jygf
+description: ""
+publish_to: "none"
+
+version: 1.0.0+100
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  convert: any
+  dio: ^5.4.3+1
+  go_router: 12.1.3
+  flutter_screenutil:
+    path: plugins/flutter_screenutil-5.9.3
+  utils:
+    path: plugins/utils
+  logger: ^2.0.2+1
+  easy_localization: ^3.0.7
+  bot_toast: ^4.1.3
+  provider: ^6.1.1
+  encrypt: ^5.0.3
+  crypto: ^3.0.3
+  url_launcher: ^6.2.4
+  universal_html: ^2.2.4
+  app_installer: ^1.1.0
+  permission_handler: ^11.3.0
+  path_provider: ^2.1.2
+  web_socket_channel: ^2.4.0
+  flutter_swiper_null_safety_flutter3: ^4.0.3
+  infinite_scroll_pagination: ^4.0.0
+  shimmer: ^3.0.0
+  html_unescape: ^2.0.0
+  freezed_annotation: any
+  json_annotation: ^4.9.0
+  video_player:
+    path: plugins/video_player
+  flick_video_player:
+    path: plugins/flick_video_player-0.5.0
+  image_picker:
+    path: plugins/image_picker
+  get_thumbnail_video:
+    path: plugins/video_thumbnail
+  http_parser: any
+  intl: ^0.19.0
+  android_id: ^0.3.6
+  webview_flutter: any
+  flutter_inappwebview:
+    path: plugins/flutter_inappwebview
+  cross_file: any
+  qr_flutter: ^4.1.0
+  image_gallery_saver_plus: ^3.0.5
+  device_info_plus: ^9.1.1
+  shelf: ^1.2.0
+  pedantic: ^1.0.0
+  shelf_static: ^1.1.0
+  visibility_detector: ^0.3.3
+  photo_view: ^0.15.0
+  flutter_slidable: ^3.1.0
+  dotted_decoration: ^2.0.0
+  safe_area_insets: ^0.1.3
+  quiver: ^3.2.1
+  event_bus: ^2.0.0
+  audio_video_progress_bar: 1.0.1
+  connectivity_plus: 6.1.1
+  package_info_plus: ^8.0.2
+  common_utils: ^2.1.0
+  amplitude_flutter: any
+  extended_tabs: ^4.1.0
+  infinite_carousel: ^1.1.1
+  carousel_slider: ^5.1.1
+
+dependency_overrides:
+  # win32: ">=4.0.0 <6.0.0"
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^3.0.2
+  freezed: ^2.4.7
+  json_serializable: ^6.7.1
+  build_runner: ^2.4.8
+  go_router_builder: ^2.4.0
+  analyzer: ^6.4.1
+  flutter_native_splash: ^2.4.0
+
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/translations/
+    - assets/images/
+
+
+flutter_native_splash:
+  android: true
+  ios: false
+  web: true
+  color: '#000000'
+  color_dark: '#000000'
+  icon_background_color: '#000000'
+  icon_background_color_dark: '#000000'
+  image: assets/background.png
+  image_dark: assets/background.png
+  fullscreen: true
+  android_gravity: fill
+  ios_content_mode: scaleAspectFill
+  web_image_mode: cover
