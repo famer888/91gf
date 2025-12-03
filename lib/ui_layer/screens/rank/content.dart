@@ -4,9 +4,9 @@ import 'package:jygf/domain/model/feed/feed_model.dart';
 import 'package:jygf/domain/model/navigator_model.dart';
 import 'package:jygf/domain/remote_domain/domains/rank.dart';
 import 'package:jygf/ui_layer/notifiers/home_config_notifier.dart';
-import 'package:jygf/ui_layer/screens/common_widgets/feed/feed_card.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_list_view.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_tab_bar.dart';
+import 'package:jygf/ui_layer/screens/rank/rank_card.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
@@ -47,7 +47,7 @@ class _RankContentScreenState extends State<RankContentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return TabBarWithView.fillColor(
+    return TabBarWithView.line(
         tabBarPadding: EdgeInsets.symmetric(
           vertical: 0.w,
           horizontal: MyTheme.pagePadding,
@@ -63,12 +63,10 @@ class _RankContentScreenState extends State<RankContentScreen> {
         isScrollable: true,
         titles: _titles.map((model) => model.title ?? '').toList(),
         views: _titles.map((model) {
-          return MyListView.grid(
+          return MyListView.list(
             padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding, vertical: 8.w),
-            childAspectRatio: FeedCard.aspectRatio,
-            crossAxisSpacing: 8.w,
             isNeedMore: false,
-            itemBuilder: (context, item, index) => FeedCard(feed: item),
+            itemBuilder: (context, item, index) => RankCard(index: index + 1, data: item as FeedVideoModel),
             onFetchingMore: (currentPage, pageSize) => _getData(
               cycle: model.value ?? '',
               type: widget.data.value ?? '',

@@ -61,11 +61,19 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
 
                 const RankRoute().push(context);
               },
-              child: Image.asset(
-                MyImagePaths.appRankList,
-                // MyImagePaths.appSearchLogo,
-                width: 45.w,
-                fit: BoxFit.fitHeight,
+              child: SizedBox(
+                height: 35.w,
+                width: 35.w,
+                child: OverflowBox(
+                  maxHeight: 40.w,
+                  maxWidth: 40.w,
+                  child: Image.asset(
+                    MyImagePaths.appRankList,
+                    // MyImagePaths.appSearchLogo,
+                    // height: 65.w,
+                    // fit: BoxFit.fitHeight,
+                  ),
+                ),
               ),
             ),
           ],
