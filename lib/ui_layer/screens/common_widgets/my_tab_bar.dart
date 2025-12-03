@@ -374,7 +374,7 @@ class MyTabBarTheme extends TabBarTheme {
         // indicatorSize: TabBarIndicatorSize.label,
         indicatorColor: Colors.transparent,
         indicator: BoxDecoration(
-          color: const Color.fromRGBO(35, 35, 55, 1),
+          gradient: MyTheme.gradient_90_114,
           borderRadius: BorderRadius.circular(30.w),
         ),
         tabAlignment: tabAlignment,

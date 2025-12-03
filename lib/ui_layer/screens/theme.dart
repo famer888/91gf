@@ -21,7 +21,7 @@ class MyTheme {
   static double get pxBotHegiht => ipx ? (botHegiht + bottom) : botHegiht;
 
   static const LinearGradient dhButtonGradient = LinearGradient(
-    colors: [Color.fromRGBO(87, 155, 241, 1), Color.fromRGBO(61, 84, 245, 1)],
+    colors: [Color.fromRGBO(255, 133, 164, 1),Color.fromRGBO(176, 66, 255, 1)],
     begin: Alignment.centerLeft,
     end: Alignment.centerRight,
   );
@@ -191,8 +191,8 @@ class MyTheme {
   );
 
   static const gradient_90_114_colors = [
-    Color.fromRGBO(84, 158, 241, 1),
-    Color.fromRGBO(55, 93, 245, 1)
+    Color.fromRGBO(255, 133, 164, 1),
+    Color.fromRGBO(176, 66, 255, 1)
   ];
 
   static const LinearGradient gradient_90_114 = LinearGradient(
@@ -271,7 +271,7 @@ class MyTheme {
 
   static const Color orange24718713 = Color.fromRGBO(247, 187, 13, 1);
 
-  static const bgColor = Color.fromRGBO(11, 11, 33, 1);
+  static const bgColor = Color.fromRGBO(17, 3, 27, 1);
   static const naviColor = Color.fromRGBO(11, 11, 33, 1);
 
   static const blackColor18 = Color.fromRGBO(18, 18, 18, 1);
@@ -302,7 +302,7 @@ class MyTheme {
 
   static const cyanColor00edfd = Color.fromRGBO(55, 110, 246, 1);
 
-  static const jellyCyanColor103224185 = Color.fromRGBO(55, 110, 246, 1);
+  static const jellyCyanColor103224185 = Color.fromRGBO(176, 66, 255, 1);
   static const jellyCyanColor108235220 = Color.fromRGBO(108, 235, 220, 1);
   static const gray117 = Color.fromRGBO(117, 117, 117, 1);
 

@@ -385,9 +385,9 @@ class _HeaderState extends State<_Header> {
                               return DecoratedBox(
                                 decoration: ShapeDecoration(
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(2.w),
+                                    borderRadius: BorderRadius.circular(5.w),
                                   ),
-                                  color: const Color(0xff262631),
+                                 gradient: MyTheme.gradient_90_114,
                                 ),
                                 child: Center(
                                   child: GestureDetector(

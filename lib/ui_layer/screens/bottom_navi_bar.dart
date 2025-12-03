@@ -116,12 +116,21 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
   }
 
   Future<void> _appStartCheck() async {
-    //打开的时候就清除一下缓存
+    // 本地调试 / 非 Release 环境下，直接跳过开屏弹窗广告和推荐/公告弹窗
+    // （即 Debug / Profile 模式都会跳过，只在正式 Release 包中展示）
+    if (!kReleaseMode) {
+      // 保留必要的本地调试初始化（如缓存处理），但不弹广告
+      cache.clearImageCacheIfNeed();
+      if (!kIsWeb) _initDownloadStatus();
+      return;
+    }
+
+    // 打开的时候就清除一下缓存
     cache.clearImageCacheIfNeed();
-    //处理剪贴板内容
+    // 处理剪贴板内容
     _getClipboardText();
 
-    ///弹窗优先级： 更新-》广告-》推荐APP-》公告
+    /// 弹窗优先级： 更新 -> 广告 -> 推荐APP -> 公告
     _checkUpdateAnnouncement();
 
     if (!kIsWeb) _initDownloadStatus();
@@ -342,7 +351,7 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
                   selectedFontSize: 11.sp,
                   unselectedFontSize: 11.sp,
                   unselectedItemColor: MyTheme.white05Color,
-                  selectedItemColor: MyTheme.blueColor64,
+                  selectedItemColor: MyTheme.jellyCyanColor103224185,
                   items: <BottomNavigationBarItem>[
                     BottomNavigationBarItem(
                       icon: const _Icon(MyImagePaths.appTabHomeN),
@@ -350,8 +359,8 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
                       label: 'sy'.tr(context: context),
                     ),
                     BottomNavigationBarItem(
-                      icon: const _Icon(MyImagePaths.appTabOriginal),
-                      activeIcon: const _Icon(MyImagePaths.appTabOriginalH),
+                      icon: const _Icon(MyImagePaths.appTabEcyN),
+                      activeIcon: const _Icon(MyImagePaths.appTabEcyS),
                       label: 'ych'.tr(context: context),
                     ),
                     BottomNavigationBarItem(
@@ -361,13 +370,13 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
                     ),
                     BottomNavigationBarItem(
                       icon: const _Icon(MyImagePaths.appTabLlsN),
-                      activeIcon: const _Icon(MyImagePaths.appTabLlsH),
+                      activeIcon: const _Icon(MyImagePaths.appTabLlsS),
                       label: 'lld'.tr(context: context),
                     ),
                     if (openLive)
                       BottomNavigationBarItem(
-                        icon: const _Icon(MyImagePaths.appTabDspN),
-                        activeIcon: const _Icon(MyImagePaths.appTabDspH),
+                        icon: const _Icon(MyImagePaths.appTabFxN),
+                        activeIcon: const _Icon(MyImagePaths.appTabFxS),
                         label: 'dsp'.tr(context: context),
                       ),
                     BottomNavigationBarItem(
@@ -473,6 +482,11 @@ class _TopADWidgetState extends State<TopADWidget> {
   }
 
   Widget _buildButton() {
+    // 本地调试 / 非 Release 环境下不显示首页悬浮广告
+    if (!kReleaseMode) {
+      return const SizedBox.shrink();
+    }
+
     return Offstage(
       offstage: offstage,
       child: SizedBox(
