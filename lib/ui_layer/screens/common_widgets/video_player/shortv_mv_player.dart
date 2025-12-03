@@ -612,18 +612,9 @@ class _SinkPortraitLandWidgetState extends State<SinkPortraitLandWidget> {
                         },
                         child: Container(
                           padding: EdgeInsets.symmetric(horizontal: 8.w),
-                          height: 30.w,
+                          height: 25.w,
                           decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                MyTheme.jellyCyanColor103224185
-                                    .withAlpha((0.6 * 255).toInt()),
-                                MyTheme.jellyCyanColor103224185
-                                    .withAlpha((0.6 * 255).toInt()),
-                              ],
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                            ),
+                           color: MyTheme.blackColor25505,
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(15.w),
                               bottomLeft: Radius.circular(15.w),
@@ -635,7 +626,8 @@ class _SinkPortraitLandWidgetState extends State<SinkPortraitLandWidget> {
                                   text: widget.info?.isfree == 2
                                       ? '${widget.info?.coins}${tr('kbtgyl')}'
                                       : tr('ktvptgyl'),
-                                  style: MyTheme.white255_12_B),
+                                      style:TextStyle(color: MyTheme.primaryColor_09,fontSize: 12.sp,fontWeight: FontWeight.bold,),
+                                  ),
                             ),
                           ),
                         ),
@@ -813,8 +805,8 @@ class _SinkPortraitLandWidgetState extends State<SinkPortraitLandWidget> {
                   height: 32.w,
                   width: 110.w,
                   decoration: const BoxDecoration(
-                    gradient: MyTheme.gradient_90_114,
-                    borderRadius: BorderRadius.all(Radius.circular(3)),
+                    gradient: MyTheme.gradient_90_118,
+                    borderRadius: BorderRadius.all(Radius.circular(32)),
                   ),
                   child: Center(
                     child: Text(vflag ? tr('gmgk') : tr('ljkv'),
@@ -833,7 +825,7 @@ class _SinkPortraitLandWidgetState extends State<SinkPortraitLandWidget> {
                   width: 110.w,
                   decoration: const BoxDecoration(
                     gradient: MyTheme.gradient_90_114,
-                    borderRadius: BorderRadius.all(Radius.circular(3)),
+                    borderRadius: BorderRadius.all(Radius.circular(32)),
                   ),
                   child: Center(
                     child: Text(tr('fxdv'), style: MyTheme.white13),

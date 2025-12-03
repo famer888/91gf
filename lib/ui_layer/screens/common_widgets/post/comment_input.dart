@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:provider/provider.dart';
 
 import '../../../notifiers/user_notifier.dart';
@@ -63,11 +65,7 @@ class CommentInput extends StatelessWidget {
           ),
           trailing: GestureDetector(
             onTap: onSubmitted,
-            child: const Icon(
-              Icons.send_sharp,
-              size: 30,
-              color: MyTheme.jellyCyanColor103224185,
-            ),
+            child: MyImage.asset( MyImagePaths.appCommentSend,width: 30.w,height: 30.w,),
           ),
         ),
       ),

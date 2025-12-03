@@ -103,7 +103,7 @@ class PNGDialog extends StatelessWidget {
                                               begin: Alignment.centerLeft,
                                               end: Alignment.centerRight,
                                             )
-                                          : MyTheme.gradient_90_114,
+                                          : MyTheme.gradient_90_118,
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(16.w),
                                       ),

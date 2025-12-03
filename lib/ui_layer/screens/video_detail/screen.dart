@@ -71,11 +71,11 @@ class _VideoDetailScreenState extends State<VideoDetailScreen> {
               context.pop();
             },
             child: Container(
-              margin: EdgeInsets.only(bottom: 40.w),
+              margin: EdgeInsets.only(bottom: 80.w),
               height: 40.w,
               width: 40.w,
               decoration: BoxDecoration(
-                gradient: MyTheme.gradient_90_114,
+                gradient: MyTheme.gradient_90_118,
                 borderRadius: BorderRadius.all(
                   Radius.circular(20.w),
                 ),

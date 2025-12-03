@@ -20,6 +20,15 @@ class MyTheme {
   static double get botHegiht => 55.w;
   static double get pxBotHegiht => ipx ? (botHegiht + bottom) : botHegiht;
 
+  
+    static Color primaryColor = const Color.fromRGBO(176, 66, 255, 1);
+    static Color primaryColor_09 = const Color.fromRGBO(176, 66, 255, 0.9);
+    static Color primaryColor_06 = const Color.fromRGBO(176, 66, 255, 0.6);
+    static Color primaryColor_03 = const Color.fromRGBO(176, 66, 255, 0.3);
+    static Color primaryColor_01 = const Color.fromRGBO(176, 66, 255, 0.1);
+
+
+
   static const LinearGradient dhButtonGradient = LinearGradient(
     colors: [Color.fromRGBO(255, 133, 164, 1),Color.fromRGBO(176, 66, 255, 1)],
     begin: Alignment.centerLeft,
@@ -194,12 +203,32 @@ class MyTheme {
     Color.fromRGBO(255, 133, 164, 1),
     Color.fromRGBO(176, 66, 255, 1)
   ];
-
+  
+static const gradient_90_114_colors_15 = [
+    Color.fromRGBO(255, 133, 164, 0.15),
+    Color.fromRGBO(176, 66, 255, 0.15)
+  ];
+  static const gradient_90_118_colors_blue = [
+    Color.fromRGBO(90, 135, 232, 1),
+    Color.fromRGBO(118, 90, 232, 1)
+  ];
   static const LinearGradient gradient_90_114 = LinearGradient(
     colors: gradient_90_114_colors,
     begin: Alignment.centerLeft,
     end: Alignment.centerRight,
   );
+
+  static const LinearGradient gradient_90_114_15 = LinearGradient(
+    colors: gradient_90_114_colors_15,
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+  );
+  static const LinearGradient gradient_90_118 = LinearGradient(
+    colors: gradient_90_118_colors_blue,
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+  );
+
 
   static const Color imageBgColor = Color.fromRGBO(255, 255, 255, 0.03);
 
@@ -1357,7 +1386,7 @@ class MyTheme {
 
   static final blue80_13_M = TextStyle(
       fontFamily: hanyi,
-      color: const Color.fromRGBO(55, 110, 246, 1),
+      color: primaryColor,
       fontSize: 13.sp,
       overflow: TextOverflow.ellipsis,
       fontWeight: FontWeight.w500,
@@ -1373,7 +1402,7 @@ class MyTheme {
 
   static final blue80_14_M = TextStyle(
       fontFamily: hanyi,
-      color: const Color.fromRGBO(55, 110, 246, 1),
+      color: primaryColor,
       fontSize: 14.sp,
       overflow: TextOverflow.ellipsis,
       fontWeight: FontWeight.w500,

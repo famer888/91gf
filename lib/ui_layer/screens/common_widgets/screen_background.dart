@@ -6,21 +6,22 @@ class ScreenBackground extends StatelessWidget {
   const ScreenBackground({
     super.key,
     required this.child,
+    this.needBgImg = true,
   });
   final Widget child;
-
+  final bool? needBgImg;
   @override
   Widget build(BuildContext context) {
-    return child;
-    return ColoredBox(
+    return needBgImg == false ? child :
+     ColoredBox(
       color: Theme.of(context).scaffoldBackgroundColor,
       child: Stack(
-        fit: StackFit.expand,
+        // fit: StackFit.expand,
         children: [
           const MyImage.asset(
             MyImagePaths.appBg,
             width: double.infinity,
-            fit: BoxFit.cover,
+            fit: BoxFit.fitWidth,
           ),
           Theme(
             data: Theme.of(context).copyWith(

@@ -387,7 +387,7 @@ class _HeaderState extends State<_Header> {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(5.w),
                                   ),
-                                 gradient: MyTheme.gradient_90_114,
+                                 gradient: MyTheme.gradient_90_114_15,
                                 ),
                                 child: Center(
                                   child: GestureDetector(
