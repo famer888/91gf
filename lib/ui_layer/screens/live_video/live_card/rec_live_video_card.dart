@@ -51,7 +51,7 @@ class RecLiveVideoCard extends StatelessWidget {
             crossAxisCount: 2, // 每行的网格数
             crossAxisSpacing: 8.w, // 网格之间的水平间距
             mainAxisSpacing: 8.w, // 网格之间的垂直间距
-            childAspectRatio: UILayerConst.videoRatio
+            childAspectRatio: UILayerConst.liveVideoRatio
           ),
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,

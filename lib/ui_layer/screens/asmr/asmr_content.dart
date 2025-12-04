@@ -14,6 +14,7 @@ import 'package:jygf/ui_layer/screens/common_widgets/general_banner.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_list_view.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_tab_bar.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/screen_background.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
@@ -21,7 +22,8 @@ import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
 
 class ASMRContentView extends StatefulWidget {
-  const ASMRContentView({super.key});
+  const ASMRContentView({super.key, this.topPadding = 0});
+  final double topPadding;
 
   @override
   State<ASMRContentView> createState() => _ASMRContentViewState();
@@ -85,47 +87,52 @@ class _ASMRContentViewState extends State<ASMRContentView> {
 
   @override
   Widget build(BuildContext context) {
-    return NestedScrollView(
-      headerSliverBuilder: (_, __) => [
-        SliverToBoxAdapter(
-          child: _Header(
-            bannersNotifier: _bannersNotifier,
-            topicsNotifier: topicsNotifier,
-            tips: tips,
-            navs: isInit ? _navs : [],
-            onLinkNavTap: (item) {
-              tapNav = item;
-              setState(() {});
-            },
-            currentNav: tapNav,
+    return ScreenBackground(
+        child: Padding(
+        padding: EdgeInsets.only(top: widget.topPadding),
+        child: NestedScrollView(
+        headerSliverBuilder: (_, __) => [
+          SliverToBoxAdapter(
+            child: _Header(
+              bannersNotifier: _bannersNotifier,
+              topicsNotifier: topicsNotifier,
+              tips: tips,
+              navs: isInit ? _navs : [],
+              onLinkNavTap: (item) {
+                tapNav = item;
+                setState(() {});
+              },
+              currentNav: tapNav,
+            ),
           ),
-        ),
-      ],
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-        child: TabBarWithView.fillColor(
-          tabBarRightWidget: GestureDetector(
-            onTap: () {
-              isGird = !isGird;
-              setState(() {});
-            },
-            child: Container(
-              alignment: Alignment.centerRight,
-              width: 18.w, height: 32.w,
-                child: MyImage.asset(MyImagePaths.appAsmrGird,
-                    width: 18.w, height: 18.w)),
+        ],
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+          child: TabBarWithView.fillColor(
+            tabBarRightWidget: GestureDetector(
+              onTap: () {
+                isGird = !isGird;
+                setState(() {});
+              },
+              child: Container(
+                alignment: Alignment.centerRight,
+                width: 18.w, height: 32.w,
+                  child: MyImage.asset(MyImagePaths.appAsmrGird,
+                      width: 18.w, height: 18.w)),
+            ),
+            tabBarPadding: EdgeInsets.symmetric(vertical: 6.w),
+            tabBarHeight: 32.w,
+            isScrollable: true,
+            titles: isInit ? [for (final title in _sorts) title.title] : [],
+            views: [
+              for (final NavigatorModel sort in _sorts)
+                isGird ? _GirdCardView(id: tapNav?.id ?? 0, sort: sort.type) :
+                _ListCardView(id: tapNav?.id ?? 0, sort: sort.type)
+            ],
           ),
-          tabBarPadding: EdgeInsets.symmetric(vertical: 6.w),
-          tabBarHeight: 32.w,
-          isScrollable: true,
-          titles: isInit ? [for (final title in _sorts) title.title] : [],
-          views: [
-            for (final NavigatorModel sort in _sorts)
-              isGird ? _GirdCardView(id: tapNav?.id ?? 0, sort: sort.type) :
-              _ListCardView(id: tapNav?.id ?? 0, sort: sort.type)
-          ],
         ),
       ),
+    ),
     );
   }
 }

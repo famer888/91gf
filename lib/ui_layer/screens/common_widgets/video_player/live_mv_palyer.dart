@@ -283,7 +283,7 @@ class _LiveMvPlayerState extends State<LiveMvPlayer> with NVideoURLMinxin {
   Widget _optinalContent() {
     return Container(
         height: 40.w,
-        color: const Color.fromRGBO(36, 36, 56, 0.8),
+        color: MyTheme.bgColor,
         child: _danMuWidget(context),
     );
   }
@@ -294,19 +294,20 @@ class _LiveMvPlayerState extends State<LiveMvPlayer> with NVideoURLMinxin {
     MyDialog.showDialog(
         context: context,
         child: DanSanDialog(
-          title: tr('das'),
+          title: tr('wxts'),
           content: Column(
             children: [
               Text(tr('dxds'), style: MyTheme.gray203_16), //多谢金主爸爸的打赏哦～
               SizedBox(height: 15.w),
               //输入框
               Container(
-                height: 46.w,
+                height: 30.w,
+                margin: EdgeInsets.symmetric(horizontal: 20.w),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(23.w),
                   border: Border.all(
                     color: MyTheme.grayColor180, // 设置边框颜色
-                    width: 0.5, // 设置边框宽度
+                    // width: 0.5, // 设置边框宽度
                   ),
                 ),
                 child: Row(children: [
@@ -329,7 +330,7 @@ class _LiveMvPlayerState extends State<LiveMvPlayer> with NVideoURLMinxin {
                         hintText: tr('srdsje'),
                         hintStyle: const TextStyle(
                             color: MyTheme.grayColor180,
-                            fontSize: 16,
+                            fontSize: 22,
                             overflow: TextOverflow.ellipsis,
                             decoration: TextDecoration.none),
                         contentPadding: EdgeInsets.zero,
@@ -357,17 +358,18 @@ class _LiveMvPlayerState extends State<LiveMvPlayer> with NVideoURLMinxin {
                       }
                     },
                     child: Container(
-                        width: 95.w,
+                        // width: 95.w,
                         height: 46.w,
+                        padding: EdgeInsets.symmetric(horizontal: 10.w),
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.only(
                               topRight: Radius.circular(23.w), // 右上角圆角
                               bottomRight: Radius.circular(23.w), // 右下角圆角
                             ),
-                            color: MyTheme.jellyCyanColor103224185),
+                           gradient: MyTheme.gradient_90_114,),
                         child:
-                        Text(tr('ljds'), style: MyTheme.white15semibold)),
+                        Text(tr('ljds'), style: MyTheme.white14)),
                   )
                 ]),
               ),
@@ -428,10 +430,11 @@ class _LiveMvPlayerState extends State<LiveMvPlayer> with NVideoURLMinxin {
   Widget _danMuWidget(BuildContext context) {
     return Row(children: [
             SizedBox(width: 10.w),
+            // 弹幕输入框 + 弹幕开关
             Container(
-              height: 28.w,
+              height: 25.w,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(14),
+                borderRadius: BorderRadius.circular(14.w),
                 color: MyTheme.white02Color,
               ),
               child: Row(
@@ -440,85 +443,110 @@ class _LiveMvPlayerState extends State<LiveMvPlayer> with NVideoURLMinxin {
                   SizedBox(width: 10.w),
                   Container(
                     alignment: Alignment.center,
-                    width: 75.w,
-                    height: 28.w,
+                    width: 85.w,
+                    height: 25.w,
                     child: TextField(
-                      style: const TextStyle(
+                      style: TextStyle(
                           color: MyTheme.white08Color,
-                          fontSize: 12,
+                          fontSize: 12.sp,
                           overflow: TextOverflow.ellipsis,
                           decoration: TextDecoration.none),
                       controller: _textFieldController,
                       focusNode: _focusNode,
                       decoration: InputDecoration(
                         isCollapsed: true,
-                        hintText: tr('ftdm'),
+                        hintText: tr('dwfsdm'),
                         hintStyle: MyTheme.white08_12,
                         contentPadding: EdgeInsets.zero,
-                        // 确保内容填充足够
                         border: InputBorder.none,
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 0, right: 5),
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      child: Container(
-                        alignment: Alignment.center,
-                        height: 18,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(9),
-                          gradient: MyTheme.gradient_90_114,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: Text(tr('fasong'),
-                              style: const TextStyle(
-                                  color: MyTheme.white08Color,
-                                  fontSize: 12,
-                                  overflow: TextOverflow.ellipsis,
-                                  decoration: TextDecoration.none)),
+                  // 弹幕开关按钮
+                  GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () async {
+                      if (widget.info.hls?.isEmpty ?? false) {
+                        return;
+                      }
+                      await _sinkPortraitLandWidgetGlobalKey.currentState?.optionalDanMu();
+                      await initializeData();
+                      _hideKeyboard(context);
+                    },
+                    child: Container(
+                      width: 25.w,
+                      height: 25.w,
+                      padding: EdgeInsets.all(4.w),
+                      decoration: BoxDecoration(
+                        color: MyTheme.white02Color,
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(14.w),
+                          bottomRight: Radius.circular(14.w),
                         ),
                       ),
-                      onTap: () {
-                        //发送弹幕，通知播放器组件中的发送方法去发送
-                        _sinkPortraitLandWidgetGlobalKey.currentState?.sendComment(text: _textFieldController.text);
-                        _hideKeyboard(context);
-                      },
+                      child: isbarrage
+                          ? MyImage.asset(MyImagePaths.appOndm,
+                              width: 20.w, height: 20.w, fit: BoxFit.contain)
+                          : MyImage.asset(MyImagePaths.appOffdm,
+                              width: 20.w, height: 20.w, fit: BoxFit.contain),
                     ),
                   ),
                 ],
               ),
             ),
-            SizedBox(width: 16.w),
+            SizedBox(width: 8.w),
+            // 发送按钮
             GestureDetector(
               behavior: HitTestBehavior.translucent,
-              child: isbarrage
-                  ? const MyImage.asset(MyImagePaths.appOndm,
-                  width: 25, height: 25, fit: BoxFit.contain)
-                  : const MyImage.asset(MyImagePaths.appOffdm,
-                  width: 25, height: 25, fit: BoxFit.contain),
-              onTap: () async {
-                //弹幕开关
-                if (widget.info.hls?.isEmpty ?? false) {
-                  // MyToast.showText(text: tr('yhyxx'));
-                  return;
-                }
-                await _sinkPortraitLandWidgetGlobalKey.currentState?.optionalDanMu();
-                await initializeData();
+              onTap: () {
+                _sinkPortraitLandWidgetGlobalKey.currentState?.sendComment(text: _textFieldController.text);
                 _hideKeyboard(context);
               },
+              child: Container(
+                alignment: Alignment.center,
+                height: 25.w,
+                padding: EdgeInsets.symmetric(horizontal: 12.w),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(14.w),
+                  color: const Color.fromRGBO(94, 180, 255, 0.3),
+                ),
+                child: Text(tr('fasong'),
+                    style: TextStyle(
+                        color: MyTheme.white08Color,
+                        fontSize: 12.sp,
+                        overflow: TextOverflow.ellipsis,
+                        decoration: TextDecoration.none)),
+              ),
             ),
-            SizedBox(width: 16.w),
-            GestureDetector(//全屏才会显示打赏
+            SizedBox(width: 8.w),
+            // 打赏按钮
+            GestureDetector(
               behavior: HitTestBehavior.translucent,
-              child: const MyImage.asset(MyImagePaths.appDs,
-                  width: 60, height: 25, fit: BoxFit.contain),
               onTap: () {
                 _hideKeyboard(context);
                 showDaSanDialog();
               },
+              child: Container(
+                height: 25.w,
+                padding: EdgeInsets.symmetric(horizontal: 8.w),
+                decoration: BoxDecoration(
+                  color: const Color.fromRGBO(255, 211, 123, 0.3),
+                  borderRadius: BorderRadius.circular(14.w),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(tr('das'), style: TextStyle(
+                        color: MyTheme.white08Color,
+                        fontSize: 12.sp,
+                        overflow: TextOverflow.ellipsis,
+                        decoration: TextDecoration.none)),
+                    SizedBox(width: 4.w),
+                    MyImage.asset(MyImagePaths.appDs,
+                        width: 18.w, height: 18.w, fit: BoxFit.contain),
+                  ],
+                ),
+              ),
             ),
           ]);
   }
@@ -1341,7 +1369,7 @@ class _SinkPortraitLandWidgetState extends State<_SinkPortraitLandWidget> {
                 focusNode: _focusNode,
                 decoration: InputDecoration(
                   isCollapsed: true,
-                  hintText: tr('ftdm'),
+                  hintText: tr('dwfsdm'),
                   hintStyle: const TextStyle(
                       color: MyTheme.white08Color,
                       fontSize: 12,
@@ -1639,8 +1667,8 @@ class _SinkPortraitLandWidgetState extends State<_SinkPortraitLandWidget> {
                       height: 32.w,
                       width: 110.w,
                       decoration: const BoxDecoration(
-                        gradient: MyTheme.gradient_90_114,
-                        borderRadius: BorderRadius.all(Radius.circular(3)),
+                        gradient: MyTheme.gradient_90_118,
+                        borderRadius: BorderRadius.all(Radius.circular(32)),
                       ),
                       child: Center(
                         child: Text(vflag ? tr('gmgk') : tr('ljkv'),
@@ -1660,7 +1688,7 @@ class _SinkPortraitLandWidgetState extends State<_SinkPortraitLandWidget> {
                       width: 110.w,
                       decoration: const BoxDecoration(
                         gradient: MyTheme.gradient_90_114,
-                        borderRadius: BorderRadius.all(Radius.circular(3)),
+                        borderRadius: BorderRadius.all(Radius.circular(32)),
                       ),
                       child: Center(
                         child:

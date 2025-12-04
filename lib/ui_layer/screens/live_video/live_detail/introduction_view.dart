@@ -57,8 +57,8 @@ class _LiveVideoDetailIntroductionViewState
   Widget build(BuildContext context) {
     final videoInfo = widget.data;
     return MyListView.grid(
-      childAspectRatio: UILayerConst.videoRatio,
-      crossAxisSpacing: 8.w,
+      childAspectRatio: UILayerConst.liveVideoRatio,
+      crossAxisSpacing: 5.w,
       header: _HeaderView(data: videoInfo),
       isNeedMore: false,
       padding: EdgeInsets.symmetric(

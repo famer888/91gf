@@ -21,56 +21,65 @@ class DanSanDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: Colors.transparent,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
+      // backgroundColor: Colors.transparent,
+      child: Stack(
         children: [
-          Container(
-            width: 300.w,
-            padding: EdgeInsets.only(
-                left: 15.w,
-                right: 15.w,
-                top: title == null ? 0 : 25.w,
-                bottom: 33.5.w),
-            decoration: BoxDecoration(
-              color: backgroundColor,
-              borderRadius: const BorderRadius.all(
-                Radius.circular(5),
-              ),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: Text(
-                        title ?? '',
-                        style: MyTheme.white255_18_M,
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () => context.pop(),
-                      child: MyImage.asset(
-                        MyImagePaths.appCircleClose,
-                        width: 30.w,
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-                    margin: title == null
-                        ? EdgeInsets.zero
-                        : EdgeInsets.only(top: 26.w),
-                    child: content),
-              ],
+          const Positioned.fill(
+            child: MyImage.asset(
+              MyImagePaths.appDialogBg,
+              fit: BoxFit.fill,
             ),
           ),
-        ],
-      ),
+ Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 300.w,
+              padding: EdgeInsets.only(
+                  left: 15.w,
+                  right: 15.w,
+                  top: title == null ? 0 : 25.w,
+                  bottom: 33.5.w),
+              decoration:const BoxDecoration(
+                // color: backgroundColor,
+                borderRadius:  BorderRadius.all(
+                  Radius.circular(5),
+                ),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: Text(
+                          title ?? '',
+                          style: MyTheme.white255_18_M,
+                        ),
+                      ),
+                      // GestureDetector(
+                      //   onTap: () => context.pop(),
+                      //   child: MyImage.asset(
+                      //     MyImagePaths.appCircleClose,
+                      //     width: 30.w,
+                      //   ),
+                      // ),
+                    ],
+                  ),
+                  Container(
+                      margin: title == null
+                          ? EdgeInsets.zero
+                          : EdgeInsets.only(top: 26.w),
+                      child: content),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ]),
     );
   }
 }

@@ -19,7 +19,7 @@ class LiveVideoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final height = 97.w;
+    final height = 110.w;
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -33,7 +33,7 @@ class LiveVideoCard extends StatelessWidget {
             Positioned.fill(
               child: MyImage.network(
                 imageUrl,
-                borderRadius: 5,
+                borderRadius: 10,
                 backgroundColor: MyTheme.imageBgColor,
               ),
             ),
@@ -64,33 +64,9 @@ class LiveVideoCard extends StatelessWidget {
                 left: 5.w,
                 right: 5.w,
                 child: isOnline
-                    ? Stack(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.only(right: 6.w),
-                            height: 18.w,
-                            decoration: BoxDecoration(
-                              color: MyTheme.blackColor25505,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(9.w)),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                MyImage.asset(
-                                  MyImagePaths.appLivesPlayNumber,
-                                  height: 18.w,
-                                  width: 18.w,
-                                ),
-                                SizedBox(width: 3.w),
-                                Text(
-                                    '${CommonUtils.renderEnFixedNumber(data.viewFct ?? 0)}${'gzong'.tr()}',
-                                    style: MyTheme.white09_10),
-                              ],
-                            ),
-                          ),
-                        ],
-                      )
+                    ? Text(
+                        '${CommonUtils.renderEnFixedNumber(data.viewFct ?? 0)}${'gzong'.tr()}',
+                        style: MyTheme.white09_10)
                     : const SizedBox.shrink()),
             Positioned(
               bottom: 0,
@@ -111,7 +87,7 @@ class LiveVideoCard extends StatelessWidget {
                     Expanded(
                       child: Text(
                         data.username ?? '',
-                        style: MyTheme.white13medium,
+                        style: MyTheme.white12,
                         maxLines: 1,
                       ),
                     ),

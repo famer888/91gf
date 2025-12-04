@@ -724,32 +724,36 @@ class CommonUtils {
           top: 8.w,
           right: MyTheme.pagePadding,
           bottom: 3.w),
-      child: Row(
+      child: Stack(
         children: [
-          MyImage.asset(MyImagePaths.appLivesNoticeIcon,
-              width: 18.w, height: 14.w),
-          Expanded(
-            child: Stack(
-              children: [
-                SwiperTips(tips: tips),
-                Container(
-                  width: 30.w,
-                  height: 20.w,
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Color.fromARGB(255, 0, 0, 0),
-                        Color.fromARGB(0, 0, 0, 0)
-                      ],
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
+         const Positioned.fill(child: MyImage.asset(MyImagePaths.appLivesNoticeBg)), 
+           Row(
+          children: [
+            MyImage.asset(MyImagePaths.appLivesNoticeIcon,
+                width: 18.w, height: 14.w),
+            Expanded(
+              child: Stack(
+                children: [
+                  SwiperTips(tips: tips),
+                  Container(
+                    width: 30.w,
+                    height: 20.w,
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Color.fromARGB(255, 0, 0, 0),
+                          Color.fromARGB(0, 0, 0, 0)
+                        ],
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                      ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        )],
       ),
     );
   }

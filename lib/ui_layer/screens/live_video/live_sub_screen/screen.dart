@@ -56,7 +56,7 @@ class _LiveVideoViewState extends State<LiveVideoView> {
   @override
   Widget build(BuildContext context) {
     return MyListView.grid(
-      childAspectRatio: UILayerConst.videoRatio,
+      childAspectRatio: UILayerConst.liveVideoRatio,
       header: _Header(
           bannersNotifier: _bannersNotifier, tipsNotifier: _tipsNotifier),
       contentPadding: 10.w,

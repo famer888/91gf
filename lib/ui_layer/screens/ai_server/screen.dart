@@ -11,8 +11,9 @@ import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:provider/provider.dart';
 
 class AiServerScreen extends StatefulWidget {
-  const AiServerScreen({super.key});
-
+  const AiServerScreen({super.key, this.needNavi = true, this.topPadding = 0});
+  final bool needNavi;
+  final double topPadding;
   @override
   State<AiServerScreen> createState() => _AiServerScreenState();
 }
@@ -26,13 +27,15 @@ class _AiServerScreenState extends State<AiServerScreen> {
 
     return ScreenBackground(
       child: Scaffold(
-        appBar: const MyAppBar(
+        appBar: widget.needNavi ? const MyAppBar(
           title: 'AI专区',
-        ),
+        ) : null,
         body: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+          padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding)
+              .copyWith(top: widget.topPadding),
           child: Column(
             children: [
+              SizedBox(height: 10.w),
               GeneralBannerAppsListWidget(data: banners),
               ListView.builder(
                 shrinkWrap: true,

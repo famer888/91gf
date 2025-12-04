@@ -3,11 +3,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jygf/domain/async_value.dart';
 import 'package:jygf/domain/model/navigator_model.dart';
 import 'package:jygf/ui_layer/notifiers/home_config_notifier.dart';
+import 'package:jygf/ui_layer/screens/ai_server/screen.dart';
+import 'package:jygf/ui_layer/screens/asmr/asmr_content.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/keep_alive_wrapper.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_tab_bar.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/screen_background.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/status/loading.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/status/network_error.dart';
+import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/live_video/live_nav/broadcastTopNavView.dart';
 import 'package:flutter/material.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/screen_background.dart';
@@ -76,7 +79,8 @@ class _VlogScreenState extends State<VlogScreen> with TickerProviderStateMixin {
         // appBar: SearchAppBar(),
         body: Stack(
           children: [
-            TabBarWithView.line(
+            TabBarWithView.image(
+              selectedImgs:const [MyImagePaths.appDiscoverHkj,MyImagePaths.appDiscoverZb,MyImagePaths.appDiscoverDsp,MyImagePaths.appDiscoverYs],
               labelPadding: 20.w,
               tabController: _tabController,
               tabBarPadding: EdgeInsets.only(top: MyTheme.statusHeight
@@ -90,13 +94,23 @@ class _VlogScreenState extends State<VlogScreen> with TickerProviderStateMixin {
               views: navList.map((e) {
                 if (e.value == 1) {
                   return KeepAliveWrapper(
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          top: MyTheme.statusHeight + MyTheme.navbarHegiht),
-                      child: const VlogFocusPage(),
+                    child: AiServerScreen(
+                      needNavi: false,
+                      topPadding: MyTheme.statusHeight + MyTheme.navbarHegiht,
                     ),
                   );
                 } else if (e.value == 2) {
+                   return const LiveBroadcastScreen();
+                  
+
+                  // return KeepAliveWrapper(
+                  //   child: Padding(
+                  //     padding: EdgeInsets.only(
+                  //         top: MyTheme.statusHeight + MyTheme.navbarHegiht),
+                  //     child: const BroadcastTopNavView(),
+                  //   ),
+                  // );
+                } else if (e.value == 3) {
                   return (selSortIndex == null || selSortIndex == 0)
                       ? Padding(
                           padding: const EdgeInsets.only(top: 0),
@@ -114,23 +128,11 @@ class _VlogScreenState extends State<VlogScreen> with TickerProviderStateMixin {
                             ),
                           ),
                         );
-
-                  // return KeepAliveWrapper(
-                  //   child: Padding(
-                  //     padding: EdgeInsets.only(
-                  //         top: MyTheme.statusHeight + MyTheme.navbarHegiht),
-                  //     child: const BroadcastTopNavView(),
-                  //   ),
-                  // );
-                } else if (e.value == 3) {
-                  return const KeepAliveWrapper(
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 0),
-                      child: DiscoverScreen(),
-                    ),
-                  );
+                 
                 } else if (e.value == 4) {
-                  return const LiveBroadcastScreen();
+                  return  KeepAliveWrapper(
+                    child: ASMRContentView(topPadding: MyTheme.statusHeight + MyTheme.navbarHegiht),
+                  );
                 } else {
                   return Container();
                 }
