@@ -3,13 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../theme.dart';
 import 'package:extended_tabs/extended_tabs.dart';
+import 'my_image.dart';
 
 enum TabBarType {
   /// 下滑线
   line,
 
   /// 填充色
-  fillColor
+  fillColor,
+
+  /// 选中时使用图片
+  image,
 }
 
 class TabBarWithView extends StatefulWidget {
@@ -30,6 +34,10 @@ class TabBarWithView extends StatefulWidget {
     this.isStack = false,
     this.indexChangeCall,
   })  : type = TabBarType.line,
+        selectedImgs = null,
+        unselectedImgs = null,
+        imageWidth = null,
+        imageHeight = null,
         tabBarRightWidget = null;
 
   TabBarWithView.fillColor({
@@ -49,12 +57,43 @@ class TabBarWithView extends StatefulWidget {
     this.initialIndex = 0,
     this.isStack = false,
     this.indexChangeCall,
-  }) : type = TabBarType.fillColor;
+  })  : type = TabBarType.fillColor,
+        selectedImgs = null,
+        unselectedImgs = null,
+        imageWidth = null,
+        imageHeight = null;
+
+  TabBarWithView.image({
+    super.key,
+    required this.titles,
+    required this.views,
+    required this.selectedImgs,
+    this.unselectedImgs,
+    this.imageWidth,
+    this.imageHeight,
+    this.tabBarPadding,
+    this.tabInterMargin = 10,
+    this.tabBarHeight,
+    this.isCenter = false,
+    this.isScrollable = true,
+    this.labelStyle,
+    this.unselectedLabelStyle,
+    this.tabController,
+    this.labelPadding = 8.0,
+    this.initialIndex = 0,
+    this.isStack = false,
+    this.indexChangeCall,
+  })  : type = TabBarType.image,
+        tabBarRightWidget = null;
 
   final TabBarType type;
-  int initialIndex;
+  final int initialIndex;
 
   final List<String> titles;
+  final List<String>? selectedImgs;
+  final List<String>? unselectedImgs;
+  final double? imageWidth;
+  final double? imageHeight;
   final List<Widget> views;
   final bool isCenter;
 
@@ -90,9 +129,61 @@ class _TabBarWithViewState extends State<TabBarWithView>
     _pageController = LinkPageController(initialPage: widget.initialIndex);
 
     // _tabController.animation?.addListener(_handleTabChange);
+    _tabController.addListener(_handleTabChange);
+    indexChangeNotifier = ValueNotifier(_tabController.index);
   }
 
-  List<Widget> get tabs => widget.titles
+  @override
+  void dispose() {
+    _tabController.removeListener(_handleTabChange);
+    if (widget.tabController == null) {
+      _tabController.dispose();
+    }
+    _pageController.dispose();
+    indexChangeNotifier.dispose();
+    super.dispose();
+  }
+
+  void _handleTabChange() {
+    if (indexChangeNotifier.value != _tabController.index) {
+      indexChangeNotifier.value = _tabController.index;
+    }
+  }
+
+  List<Widget> get tabs {
+    if (widget.type == TabBarType.image) {
+      return List.generate(widget.titles.length, (index) {
+        final isSelected = indexChangeNotifier.value == index;
+        if (isSelected) {
+          return Tab(
+            height: MyTheme.navbarHegiht,
+            child: MyImage.asset(
+              widget.selectedImgs?[index] ?? '',
+              width: widget.imageWidth,
+              height: widget.imageHeight,
+              fit: BoxFit.contain,
+            ),
+          );
+        }
+        final unselectedImg = widget.unselectedImgs?[index];
+        if (unselectedImg != null) {
+          return Tab(
+            height: MyTheme.navbarHegiht,
+            child: MyImage.asset(
+              unselectedImg,
+              width: widget.imageWidth,
+              height: widget.imageHeight,
+              fit: BoxFit.contain,
+            ),
+          );
+        }
+        return Tab(
+          height: MyTheme.navbarHegiht,
+          child: Text(widget.titles[index]),
+        );
+      });
+    }
+    return widget.titles
       .map((title) => switch (widget.type) {
             TabBarType.fillColor => Tab(
                 height: MyTheme.navbarHegiht,
@@ -110,6 +201,7 @@ class _TabBarWithViewState extends State<TabBarWithView>
               ),
           })
       .toList();
+  }
 
   late final TabBarTheme tabBarTheme = switch (widget.type) {
     TabBarType.line => MyTabBarTheme.line(
@@ -121,9 +213,13 @@ class _TabBarWithViewState extends State<TabBarWithView>
         labelStyle: widget.labelStyle,
         unselectedLabelStyle: widget.unselectedLabelStyle,
       ),
+    TabBarType.image => MyTabBarTheme.line(
+        labelStyle: widget.labelStyle,
+        unselectedLabelStyle: widget.unselectedLabelStyle,
+      ).copyWith(indicator: const BoxDecoration(color: Colors.transparent)),
   };
 
-  final ValueNotifier<int> indexChangeNotifier = ValueNotifier(0);
+  late final ValueNotifier<int> indexChangeNotifier;
 
   @override
   Widget build(BuildContext context) {
