@@ -128,14 +128,16 @@ class _TabBarWithViewState extends State<TabBarWithView>
 
     _pageController = LinkPageController(initialPage: widget.initialIndex);
 
-    // _tabController.animation?.addListener(_handleTabChange);
     _tabController.addListener(_handleTabChange);
+    _tabController.animation?.addListener(_handleTabAnimation);
+
     indexChangeNotifier = ValueNotifier(_tabController.index);
   }
 
   @override
   void dispose() {
     _tabController.removeListener(_handleTabChange);
+    _tabController.animation?.removeListener(_handleTabAnimation);
     if (widget.tabController == null) {
       _tabController.dispose();
     }
@@ -144,7 +146,27 @@ class _TabBarWithViewState extends State<TabBarWithView>
     super.dispose();
   }
 
+  void _handleTabAnimation() {
+    final double animationValue =
+        _tabController.animation?.value ?? _tabController.index.toDouble();
+    final double diff = (animationValue - _tabController.index).abs();
+    // During a standard drag/scroll, _tabController.index is derived from animation.value.round(),
+    // so diff will always be <= 0.5.
+    // If diff > 0.5, it indicates the index (target) is forced (jump/animation) and we should stick to it.
+    if (_tabController.indexIsChanging || diff > 0.5) {
+      if (indexChangeNotifier.value != _tabController.index) {
+        indexChangeNotifier.value = _tabController.index;
+      }
+      return;
+    }
+    final int currentIndex = animationValue.round();
+    if (indexChangeNotifier.value != currentIndex) {
+      indexChangeNotifier.value = currentIndex;
+    }
+  }
+
   void _handleTabChange() {
+    // Keep this for non-animated changes or final settlements
     if (indexChangeNotifier.value != _tabController.index) {
       indexChangeNotifier.value = _tabController.index;
     }
