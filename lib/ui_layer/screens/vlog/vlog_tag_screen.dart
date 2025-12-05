@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/screen_background.dart';
 import 'package:provider/provider.dart';
 import 'package:jygf/app_global.dart';
 import 'package:jygf/domain/api_validator.dart';
@@ -43,24 +44,27 @@ class _VlogTagScreenState extends State<VlogTagScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MyAppBar(
-        title: '#${widget.tag}',
-        // rightWidget: GestureDetector(
-        //   onTap: () => const SearchRoute().push(context),
-        //   child: MyImage.asset(MyImagePaths.appSearchWhite,
-        //       width: 25.w, height: 25.w),
-        // ),
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-            child: const Divider(
-                thickness: 0.5, height: 0.5, color: MyTheme.white02Color),
+    return ScreenBackground(
+      child: SafeArea(
+        child: Scaffold(
+          appBar: MyAppBar(
+            title: '#${widget.tag}',
+            // rightWidget: GestureDetector(
+            //   onTap: () => const SearchRoute().push(context),
+            //   child: MyImage.asset(MyImagePaths.appSearchWhite,
+            //       width: 25.w, height: 25.w),
+            // ),
           ),
-          Expanded(child: configContentView())
-        ],
+          body: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+                child: SizedBox(height: 10.w),
+              ),
+              Expanded(child: configContentView())
+            ],
+          ),
+        ),
       ),
     );
   }

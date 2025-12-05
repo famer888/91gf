@@ -156,7 +156,7 @@ class VlogPlayScreenState extends State<VlogPlayScreen> {
         : array.isEmpty
             ? const PageEmptyDataView()
             : RefreshIndicator(
-                color: MyTheme.blueColor81_151_241,
+                color: MyTheme.primaryColor,
                 backgroundColor: Colors.transparent,
                 strokeWidth: 2,
                 onRefresh: headerRefresh,

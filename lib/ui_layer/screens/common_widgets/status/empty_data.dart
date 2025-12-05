@@ -9,7 +9,7 @@ import '../my_image.dart';
 class PageEmptyDataView extends StatelessWidget {
   const PageEmptyDataView({
     super.key,
-    this.width = 218,
+    this.width = 200,
     this.text,
     this.alignment = Alignment.center,
     this.imgPath,
@@ -21,7 +21,7 @@ class PageEmptyDataView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 20.w),
+      // padding: EdgeInsets.symmetric(vertical: 20.w),
       alignment: alignment,
       child: Column(
         mainAxisSize: MainAxisSize.min,

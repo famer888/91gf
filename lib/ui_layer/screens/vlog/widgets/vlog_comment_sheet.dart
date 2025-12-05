@@ -69,16 +69,18 @@ class VlogCommentSheetState extends State<VlogCommentSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedPadding(
-        padding: MediaQuery.of(context).viewInsets,
+    return AnimatedContainer(
+        // padding: MediaQuery.of(context).viewInsets,
         duration: const Duration(milliseconds: 100),
+        width: double.infinity,
         child: Container(
-            height: ScreenUtil().screenHeight * 0.5,
+            width: double.infinity,
+            height: ScreenUtil().screenHeight * 0.6,
             decoration: BoxDecoration(
               color: MyTheme.bgColor,
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10.w),
-                topRight: Radius.circular(10.w),
+                topLeft: Radius.circular(20.w),
+                topRight: Radius.circular(20.w),
               ),
             ),
             child: GestureDetector(

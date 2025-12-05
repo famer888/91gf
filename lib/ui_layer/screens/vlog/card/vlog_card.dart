@@ -46,29 +46,21 @@ class VlogCard extends StatelessWidget {
                 // data.isFree == 0 || data.mvType == 2
                 data.isFree == 0
                     ? Container()
-                    : Positioned(
-                        top: 5.w,
-                        left: 5.w,
+                    : Align(
+                        alignment: Alignment.topLeft,
                         child: Container(
                             padding: EdgeInsets.symmetric(
-                                horizontal: 5.w, vertical: 1.w),
+                                horizontal: 10.w, vertical: 2.w),
                             decoration: BoxDecoration(
-                                color: MyTheme.blackColor18,
+                                gradient: data.isFree == 2 ? MyTheme.gradient_90_114 : MyTheme.gradient_90_118,
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(10.w))),
-                            child: Row(children: [
-                              // MyImage.asset(
-                              //     data.isFree == 2
-                              //         ? MyImagePaths.appVideoCoins
-                              //         : MyImagePaths.appVideoVip,
-                              //     width: 11.5.w,
-                              //     height: 11.5.w),
-                              SizedBox(width: 3.w),
-                              Text(
-                                data.isFree == 2 ? 'jb'.tr() : 'VIP',
-                                style: MyTheme.white09_10,
-                              ),
-                            ]))),
+                                    BorderRadius.only(
+                                        topLeft: Radius.circular(5.w),
+                                        bottomRight: Radius.circular(5.w))),
+                            child: Text(
+                              data.isFree == 2 ? 'jb'.tr() : 'VIP',
+                              style: MyTheme.white10,
+                            ))),
                 Positioned(
                     bottom: 0.w,
                     left: 0.w,
@@ -99,18 +91,18 @@ class VlogCard extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              MyImage.asset(MyImagePaths.appHots,
-                                  height: 18.w, width: 18.w),
+                              MyImage.asset(MyImagePaths.appAsmrPlay,
+                                  height: 10.w, width: 10.w,),
                               SizedBox(width: 3.w),
                               Text(
-                                '${CommonUtils.renderFixedNumber(data.playCt ?? 0)}',
-                                style: MyTheme.white08_12,
+                                '${CommonUtils.renderFixedNumber(data.playCt ?? 0)}次播放',
+                                style: MyTheme.white10,
                               ),
                             ],
                           ),
                           Text(
                             RelativeDateFormat.getHMTime(time: data.duration),
-                            style: MyTheme.white08_12,
+                            style: MyTheme.white10,
                           ),
                         ],
                       ),

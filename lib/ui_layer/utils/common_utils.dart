@@ -9,6 +9,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jygf/app_config.dart';
@@ -1018,12 +1019,15 @@ class CommonUtils {
         // 布局文本
         textPainter.layout();
         // 获取文本宽度
-        double textWidth = textPainter.size.width + 20;
+        double textWidth = textPainter.size.width;
 
         dgt = ClipRRect(
-          borderRadius: BorderRadius.circular(10.0.w),
+          borderRadius: BorderRadius.circular(5.0.w),
           child: Container(
-            color: MyTheme.blueColor64,
+            decoration: BoxDecoration(
+              gradient: MyTheme.gradient_90_118,
+              borderRadius: BorderRadius.circular(5.w),
+            ),
             child: SizedBox(
               height: 20.0.w,
               width: textWidth.w,
@@ -1060,12 +1064,15 @@ class CommonUtils {
         // 布局文本
         textPainter.layout();
         // 获取文本宽度
-        double textWidth = textPainter.size.width + 20;
+        double textWidth = textPainter.size.width;
 
         dgt = ClipRRect(
-          borderRadius: BorderRadius.circular(10.0.w),
+          borderRadius: BorderRadius.circular(5.w),
           child: Container(
-            color: MyTheme.blueColor64,
+            decoration: BoxDecoration(
+              gradient: MyTheme.gradient_90_114,
+              borderRadius: BorderRadius.circular(5.w),
+            ),
             child: SizedBox(
               height: 20.0.w,
               width: textWidth.w,
@@ -1135,16 +1142,23 @@ class CommonUtils {
                 List.from(data.tagList ?? []).isNotEmpty
                     ? Wrap(
                         runSpacing: 8.w,
-                        spacing: 15.w,
+                        spacing: 8.w,
                         children: List.from(data.tagList ?? [])
                             .map(
                               (tag) => InkWell(
                                 onTap: () {
                                   VlogTagRoute(tag: tag).push(context);
                                 },
-                                child: Text(
-                                  '#$tag',
-                                  style: MyTheme.blue80_12,
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 3.w),
+                                  decoration: BoxDecoration(
+                                    color: Color.fromRGBO(0, 0, 0, 0.3),
+                                    borderRadius: BorderRadius.circular(3.w),
+                                  ),
+                                  child: Text(
+                                    '#$tag',
+                                    style: MyTheme.white11,
+                                  ),
                                 ),
                               ),
                             )

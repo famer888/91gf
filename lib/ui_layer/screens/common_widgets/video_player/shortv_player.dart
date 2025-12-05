@@ -16,7 +16,7 @@ import 'package:jygf/domain/type_def.dart';
 import 'package:jygf/ui_layer/notifiers/user_notifier.dart';
 import 'package:jygf/ui_layer/router/routes.dart';
 import 'package:jygf/ui_layer/screens/asmr/voice_player/voice_player_manager.dart';
-import 'package:jygf/ui_layer/screens/common_widgets/dialog/my_dialog.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/dialog/widgets/regular_dialog.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/video_player/utils/nvideourl_minxin.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
@@ -139,8 +139,8 @@ class _ShortVPlayerState extends State<ShortVPlayer> with NVideoURLMinxin {
                         width: 40,
                         child: CircularProgressIndicator(
                           backgroundColor: Colors.grey[400],
-                          valueColor: const AlwaysStoppedAnimation(
-                            MyTheme.blueColor64,
+                          valueColor: AlwaysStoppedAnimation(
+                            MyTheme.primaryColor,
                           ),
                           strokeWidth: 1.5,
                         ),
@@ -197,6 +197,8 @@ class _ShortVPlayerState extends State<ShortVPlayer> with NVideoURLMinxin {
     return showModalBottomSheet(
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
+        useRootNavigator: true,
+        constraints: const BoxConstraints(minWidth: double.infinity),
         context: context,
         builder: (BuildContext context) {
           return StatefulBuilder(builder: (ctx, setBottomSheetState) {
@@ -217,56 +219,62 @@ class _ShortVPlayerState extends State<ShortVPlayer> with NVideoURLMinxin {
       return;
     }
     if (widget.info?.isFree == 2) {
-      MyDialog.showAnimationDialog(
-          cancelTxt: 'qx'.tr(context: context),
-          confirmTxt: isInsufficient
+      CommonUtils.showDialog(
+        context: context,
+        builder: (context) => RegularDialog(
+          title: 'ts'.tr(context: context),
+          cancelText: 'qx'.tr(context: context),
+          buttonText: isInsufficient
               ? 'qwcz'.tr(context: context)
               : 'gmgk'.tr(context: context),
-          setContent: () {
-            return Column(
-              children: [
-                Text('gmspkwz'.tr(context: context),
-                    style: MyTheme.black13,
-                    maxLines: 3,
-                    textAlign: TextAlign.center),
-                SizedBox(height: 15.w),
-                Text("$needmoney${'jb'.tr(context: context)}",
-                    style: MyTheme.jellyCyan_15, textAlign: TextAlign.center),
-                SizedBox(height: 15.w),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("${'ktvpzk'.tr(context: context)}：$money",
-                        style: MyTheme.black13),
-                  ],
-                ),
-              ],
-            );
-          },
-          confirm: () {
+          content: Column(
+            children: [
+              Text('gmspkwz'.tr(context: context),
+                  style: MyTheme.white255_13,
+                  maxLines: 3,
+                  textAlign: TextAlign.center),
+              SizedBox(height: 15.w),
+              Text("$needmoney${'jb'.tr(context: context)}",
+                  style: MyTheme.jellyCyan_15, textAlign: TextAlign.center),
+              SizedBox(height: 15.w),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("${'ktvpzk'.tr(context: context)}：$money",
+                      style: MyTheme.white255_13),
+                ],
+              ),
+            ],
+          ),
+          confirmOnTap: () {
             if (isInsufficient) {
               const CoinRechargeRoute().push(context);
             } else {
               byVideoRes(money - needmoney); //直接购买
             }
-          });
-    } else {
-      MyDialog.showAnimationDialog(
-          cancelTxt: 'fxlvip'.tr(context: context),
-          confirmTxt: 'czvip'.tr(context: context),
-          setContent: () {
-            return Text('gmvkwz'.tr(context: context),
-                style: MyTheme.black13,
-                maxLines: 3,
-                textAlign: TextAlign.center);
           },
-          cancel: () {
+        ),
+      );
+    } else {
+      CommonUtils.showDialog(
+        context: context,
+        builder: (context) => RegularDialog(
+          title: 'ts'.tr(context: context),
+          cancelText: 'fxlvip'.tr(context: context),
+          buttonText: 'czvip'.tr(context: context),
+          content: Text('gmvkwz'.tr(context: context),
+              style: MyTheme.white255_13,
+              maxLines: 3,
+              textAlign: TextAlign.center),
+          cancelOnTap: () {
             const MineShareToUserRoute().push(context);
           },
-          confirm: () {
+          confirmOnTap: () {
             const VipCenterRoute().push(context);
-          });
-    }
+          },
+        ),
+      );
+    } 
   }
 
   Future<void> byVideoRes(int money) async {
