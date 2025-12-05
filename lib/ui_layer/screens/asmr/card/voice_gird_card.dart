@@ -31,7 +31,7 @@ class _VoiceGirdCardState extends State<VoiceGirdCard> {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: const Color.fromRGBO(27, 28, 43, 0.8),
+          // color: const Color.fromRGBO(27, 28, 43, 0.8),
           borderRadius: BorderRadius.all(Radius.circular(5.w)),
         ),
         child: Column(
@@ -43,9 +43,7 @@ class _VoiceGirdCardState extends State<VoiceGirdCard> {
                   Container(
                     clipBehavior: Clip.hardEdge,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(5.w),
-                          topRight: Radius.circular(5.w)),
+                      borderRadius: BorderRadius.all(Radius.circular(5.w)),
                     ),
                     child: MyImage.network(
                       widget.data.smallCover ?? '',
@@ -148,30 +146,30 @@ class _VoiceGirdCardState extends State<VoiceGirdCard> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('${CommonUtils.getHMTime(widget.data.duration ?? 0)}',
-                      style: MyTheme.white10),
+                      style: MyTheme.white04_10),
                   const Spacer(),
                   Row(
                     children: [
-                      MyImage.asset(MyImagePaths.appCollectWhiteOff,
+                      MyImage.asset(MyImagePaths.appAsmrCardLike,
                           width: 15.w, height: 15.w),
                       SizedBox(width: 3.w),
                       Text(
                           CommonUtils.renderEnFixedNumber(
                               widget.data.favoriteFct ?? 0),
-                          style: MyTheme.white10,
+                          style: MyTheme.white04_10,
                           maxLines: 1),
                     ],
                   ),
                   SizedBox(width: 9.w),
                   Row(
                     children: [
-                      MyImage.asset(MyImagePaths.appAsmrPlaySmall,
+                      MyImage.asset(MyImagePaths.appAsmrCardPlay,
                           width: 13.w, height: 13.w),
                       SizedBox(width: 3.w),
                       Text(
                           CommonUtils.renderEnFixedNumber(
                               widget.data.playFct ?? 0),
-                          style: MyTheme.white10,
+                          style: MyTheme.white04_10,
                           maxLines: 1),
                     ],
                   )

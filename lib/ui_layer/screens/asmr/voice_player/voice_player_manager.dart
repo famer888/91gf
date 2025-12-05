@@ -8,9 +8,16 @@ import 'package:jygf/domain/model/member_model.dart';
 import 'package:jygf/domain/model/voice_model.dart';
 import 'package:jygf/domain/remote_domain/domains/asmr.dart';
 import 'package:jygf/ui_layer/notifiers/user_notifier.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/dialog/widgets/regular_dialog.dart';
+import 'package:jygf/ui_layer/screens/theme.dart';
+import 'package:jygf/ui_layer/screens/image_paths.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
+import 'package:jygf/ui_layer/router/routes.dart';
 import 'package:jygf/ui_layer/screens/asmr/widgets/coins_dialog.dart';
 import 'package:jygf/ui_layer/screens/asmr/widgets/custom_draggable.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/event_bus/event_bus.dart';
+import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/download_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
@@ -31,8 +38,8 @@ class VoicePlayerManager {
   // 私有构造函数，防止外部直接创建实例
   VoicePlayerManager._privateConstructor();
 
-  //是否循环
-  ValueNotifier<bool> isCircuit = ValueNotifier(true);
+  // 0:循环播放 1:随机播放 2:单曲循环
+  ValueNotifier<int> isCircuit = ValueNotifier(0);
 
   //播放器是否初始化
   ValueNotifier<bool> isInit = ValueNotifier(false);
@@ -189,6 +196,40 @@ class VoicePlayerManager {
   }
 
   //会员/金币购买弹窗
+  // void dialogPrompt(VoiceModel model) {
+  //   Member member = context!.read<UserNotifier>().member;
+  //   bool sufficient = member.money >= (data?.coins ?? 0);
+  //   //如果用户开启了后续不再提醒，直接购买且余额充足，则直接购买
+  //   if (!needCoinsTip && sufficient && data?.type == 2) {
+  //     buyVoice(model);
+  //     return;
+  //   } else if (!needCoinsTip && !sufficient && data?.type == 2) {
+  //     //如何余额不足则直接提示去充值操作
+  //     CommonUtils.showDialog(
+  //       barrierDismissible: false,
+  //       context: context!,
+  //       builder: (ctx) => const Material(
+  //         type: MaterialType.transparency,
+  //         child: PopScope(
+  //             canPop: false, //禁止弹窗通过滑动隐藏
+  //             child: CoinsNotEnoughDialog()),
+  //       ),
+  //     );
+  //     return;
+  //   }
+  //   CommonUtils.showDialog(
+  //     barrierDismissible: false,
+  //     context: context!,
+  //     builder: (ctx) => Material(
+  //       type: MaterialType.transparency,
+  //       child: PopScope(
+  //           canPop: false, //禁止弹窗通过滑动隐藏
+  //           child: CoinsDialog(data: model)),
+  //     ),
+  //   );
+  // }
+
+  //会员/金币购买弹窗
   void dialogPrompt(VoiceModel model) {
     Member member = context!.read<UserNotifier>().member;
     bool sufficient = member.money >= (data?.coins ?? 0);
@@ -198,27 +239,111 @@ class VoicePlayerManager {
       return;
     } else if (!needCoinsTip && !sufficient && data?.type == 2) {
       //如何余额不足则直接提示去充值操作
-      showDialog(
-        barrierDismissible: false,
-        context: context!,
-        builder: (ctx) => const Material(
-          type: MaterialType.transparency,
-          child: PopScope(
-              canPop: false, //禁止弹窗通过滑动隐藏
-              child: CoinsNotEnoughDialog()),
-        ),
-      );
+      _showCoinsNotEnoughDialog();
       return;
     }
-
-    showDialog(
+    CommonUtils.showDialog(
       barrierDismissible: false,
       context: context!,
-      builder: (ctx) => Material(
-        type: MaterialType.transparency,
-        child: PopScope(
-            canPop: false, //禁止弹窗通过滑动隐藏
-            child: CoinsDialog(data: model)),
+      builder: (ctx) => StatefulBuilder(
+        builder: (context, setState) {
+          List<TextSpan> textSpans = [];
+          if (data?.type == 1) {
+            textSpans = [TextSpan(text: data?.payTip ?? '', style: MyTheme.white15)];
+          } else if (data?.type == 2) {
+            textSpans = [
+              TextSpan(text: 'dqyp'.tr(context: context), style: MyTheme.white15),
+              TextSpan(
+                  text: '${data?.coins}${'jb'.tr(context: context)}',
+                  style: MyTheme.jellyCyan_15_M),
+              TextSpan(text: 'gmbf'.tr(context: context), style: MyTheme.white15),
+            ];
+          }
+          return RegularDialog(
+            title: 'wxts'.tr(context: context),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                RichText(textAlign: TextAlign.center, text: TextSpan(children: textSpans)),
+                if (data?.type == 2)
+                  InkWell(
+                    onTap: () {
+                      //后续不再提醒，直接购买
+                      VoicePlayerManager.instance.needCoinsTip = !VoicePlayerManager.instance.needCoinsTip;
+                      setState(() {});
+                    },
+                    child: Container(
+                      padding: EdgeInsets.only(top: 20.w),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            MyImage.asset(VoicePlayerManager.instance.needCoinsTip ? MyImagePaths.appAsmrOpenNor : MyImagePaths.appAsmrOpenSel,
+                                width: 10.w, height: 10.w),
+                            SizedBox(width: 5.w),
+                            Text('zjgm'.tr(context: context),
+                                style: MyTheme.jellyCyan_11_M)
+                          ]),
+                    ),
+                  )
+              ],
+            ),
+            cancelText: 'qx'.tr(context: context),
+            buttonText: 'qd'.tr(context: context),
+            cancelOnTap: () {
+              context.pop(); //隐藏弹窗
+              final canpop = GoRouter.of(context).routerDelegate.canPop();
+              if (canpop) {
+                context.pop(); //退出播放器界面
+              }
+            },
+            confirmOnTap: () {
+              if (data?.type == 1) {
+                //需要开通会员
+                const VipCenterRoute().push(context);
+              } else if (data?.type == 2) {
+                //需要金币购买
+                Member member = this.context!.read<UserNotifier>().member;
+                bool sufficient = member.money >= (data?.coins ?? 0);
+                if (sufficient) {
+                  //用户余额足够直接购买
+                  buyVoice(model);
+                  context.pop();
+                } else {
+                  //弹窗提示余额不足，去充值
+                  context.pop(); //隐藏弹窗
+                  _showCoinsNotEnoughDialog();
+                }
+              }
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  void _showCoinsNotEnoughDialog() {
+    CommonUtils.showDialog(
+      barrierDismissible: false,
+      context: context!,
+      builder: (ctx) => RegularDialog(
+        title: 'wxts'.tr(context: context),
+        content: Text(
+          'jbbzqcz'.tr(context: context),
+          style: MyTheme.white15,
+          textAlign: TextAlign.center,
+        ),
+        cancelText: 'qx'.tr(context: context),
+        buttonText: 'qd'.tr(context: context),
+        cancelOnTap: () {
+          context!.pop(); //隐藏弹窗
+          final canpop = GoRouter.of(context!).routerDelegate.canPop();
+          if (canpop) {
+            context!.pop(); //退出播放器界面
+          }
+        },
+        confirmOnTap: () {
+          const CoinRechargeRoute().push(context!);
+        },
       ),
     );
   }
@@ -308,7 +433,16 @@ class VoicePlayerManager {
       }
     }
 
-    if (isCircuit.value) {
+    if (isCircuit.value == 2 && !isClicke) {
+      //单曲循环且不是用户主动点击下一首，则重新播放当前音频
+      audioController!.seekTo(const Duration(milliseconds: 0));
+      audioController!.play();
+      reportPlayVoice();
+      isPlay.value = true;
+      return;
+    }
+
+    if (isCircuit.value == 0 || isCircuit.value == 2) {
       //循环播放
 
       int currentIndex = voices.indexWhere((model) => model.id == data?.id);
@@ -385,7 +519,7 @@ class VoicePlayerManager {
       }
     }
 
-    if (isCircuit.value) {
+    if (isCircuit.value == 0 || isCircuit.value == 2) {
       //循环播放
       int currentIndex = voices.indexWhere((model) => model.id == data?.id);
       if (currentIndex != -1) {

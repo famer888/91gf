@@ -321,8 +321,8 @@ class _Header extends StatelessWidget {
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 4,
                 childAspectRatio: 80.w / 35.w,
-                mainAxisSpacing: 5.w,
-                crossAxisSpacing: 5.w,
+                mainAxisSpacing: 8.w,
+                crossAxisSpacing: 10.w,
               ),
               itemBuilder: (context, index) {
                 final topic = navs[index];
@@ -331,18 +331,16 @@ class _Header extends StatelessWidget {
                   onTap: () {
                     onLinkNavTap(topic);
                   },
-                  child: DecoratedBox(
-                    decoration: ShapeDecoration(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(2.w),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        gradient: topic.id == currentNav?.id ? MyTheme.gradient_90_114 : MyTheme.gradient_90_114_15,
+                        borderRadius: BorderRadius.circular(4.w),
                       ),
-                      color: const Color(0xff262631),
-                    ),
                     child: Center(
                       child: Text(
                         topic.name,
                         style: topic.id == currentNav?.id
-                            ? MyTheme.nav_active_13
+                            ? MyTheme.white255_13_B
                             : MyTheme.white13,
                       ),
                     ),

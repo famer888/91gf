@@ -37,6 +37,9 @@ class _VioicPlayerContentViewState extends State<VioicPlayerContentView>
   late Animation<double> recordAnimation;
   late AnimationController recordController;
 
+  late AnimationController stylusController;
+  late Animation<double> stylusAnimation;
+
   //点赞
   ValueNotifier<bool> isLike = ValueNotifier(false);
 
@@ -65,6 +68,13 @@ class _VioicPlayerContentViewState extends State<VioicPlayerContentView>
     );
     recordAnimation = Tween<double>(begin: 0, end: 1).animate(recordController);
 
+    stylusController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+    stylusAnimation =
+        Tween<double>(begin: -0.05, end: 0.024).animate(stylusController);
+
     if (widget.data != null) {
       isFavorite.value = (widget.data?.isFavorite == 1);
 
@@ -76,6 +86,7 @@ class _VioicPlayerContentViewState extends State<VioicPlayerContentView>
         VoicePlayerManager.instance.reportPlayVoice();
         WidgetsBinding.instance.addPostFrameCallback((_) {
           recordController.repeat();
+          stylusController.forward();
           VoicePlayerManager.instance.isPlay.value = true;
 
           if (VoicePlayerManager.instance.minutes != null) {
@@ -113,11 +124,13 @@ class _VioicPlayerContentViewState extends State<VioicPlayerContentView>
     if (mounted) {
       if (VoicePlayerManager.instance.isPlay.value) {
         recordController.repeat();
+        stylusController.forward();
         if (VoicePlayerManager.instance.minutes != null) {
           VoicePlayerManager.instance.startTimer();
         }
       } else {
         recordController.stop();
+        stylusController.reverse();
       }
     }
   }
@@ -126,6 +139,7 @@ class _VioicPlayerContentViewState extends State<VioicPlayerContentView>
   void dispose() {
     _subscription.cancel(); // 取消订阅
     recordController.dispose();
+    stylusController.dispose();
     isLike.dispose();
     isFavorite.dispose();
     VoicePlayerManager.instance.isPlay.removeListener(_isPlayerListen);
@@ -187,38 +201,69 @@ class _VioicPlayerContentViewState extends State<VioicPlayerContentView>
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.only(left: 30.w, right: 30.w, bottom: 80.w),
+        padding: EdgeInsets.only(left: 30.w, right: 30.w, bottom: 70.w, top: 10.w),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Expanded(
-                child: Container(
-                    padding: EdgeInsets.only(bottom: 60.w),
+            Stack(
+              alignment: Alignment.topCenter,
+              clipBehavior: Clip.none,
+              children: [
+                Container(
+                    height: 220.w,
+                    // padding: EdgeInsets.only(bottom: 20.w),
                     alignment: Alignment.center,
                     child: RotationTransition(
                         turns: recordAnimation,
-                        child: SizedBox(
-                          width: 345.w,
-                          child: Stack(
-                            clipBehavior: Clip.none,
-                            children: [
-                              const MyImage.asset(MyImagePaths.appAsmrRecord,
-                                  width: double.infinity),
-                              Positioned.fill(
-                                  child: Center(
-                                child: SizedBox(
-                                  width: 240.w,
-                                  height: 240.w,
-                                  child: ClipRRect(
-                                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                                      borderRadius:
-                                          BorderRadius.circular(120.w),
-                                      child: MyImage.network(
-                                          widget.data?.smallCover ?? '')),
-                                ),
-                              )),
-                            ],
+                        child: Container(
+                          width: 220.w,
+                          height: 220.w,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: const Color.fromRGBO(255, 255, 255, 0.15),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(110.w)),
                           ),
-                        )))),
+                          child: SizedBox(
+                            width: 200.w,
+                            height: 200.w,
+                            child: Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                const MyImage.asset(MyImagePaths.appAsmrRecord1,
+                                    width: double.infinity),
+                                const MyImage.asset(MyImagePaths.appAsmrRecord,
+                                    width: double.infinity),
+                                Positioned.fill(
+                                    child: Center(
+                                  child: SizedBox(
+                                    width: 140.w,
+                                    height: 140.w,
+                                    child: ClipRRect(
+                                        clipBehavior:
+                                            Clip.antiAliasWithSaveLayer,
+                                        borderRadius:
+                                            BorderRadius.circular(70.w),
+                                        child: MyImage.network(
+                                            widget.data?.smallCover ?? '')),
+                                  ),
+                                )),
+                              ],
+                            ),
+                          ),
+                        ))),
+                Positioned(
+                    // right: 10.w,
+                    left: 150.w,
+                    top: -90.w,
+                    child: RotationTransition(
+                        alignment:  const Alignment(-0.78, -0.86),
+                        turns: stylusAnimation,
+                        child: MyImage.asset(MyImagePaths.appAsmrRecord2,
+                            width: 100.w))),
+              ],
+            ),
+            SizedBox(height: 20.w),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -308,17 +353,23 @@ class _VioicPlayerContentViewState extends State<VioicPlayerContentView>
               children: [
                 ValueListenableBuilder(
                     valueListenable: VoicePlayerManager.instance.isCircuit,
-                    builder: (context, bool value, child) {
+                    builder: (context, int value, child) {
                       return _btnImgItem(
-                          icon: value
+                          icon: value == 0
                               ? MyImagePaths.appAsmrXh
-                              : MyImagePaths.appAsmrSj,
+                              : value == 1
+                                  ? MyImagePaths.appAsmrSj
+                                  : MyImagePaths.appAsmrDqxh,
                           width: 28.w,
                           height: 22.w,
                           onTap: () {
-                            //循环/随机播放
-                            VoicePlayerManager.instance.isCircuit.value =
-                                !VoicePlayerManager.instance.isCircuit.value;
+                            //循环/随机播放/单曲循环
+                            if (VoicePlayerManager.instance.isCircuit.value ==
+                                2) {
+                              VoicePlayerManager.instance.isCircuit.value = 0;
+                            } else {
+                              VoicePlayerManager.instance.isCircuit.value++;
+                            }
                           });
                     }),
                 _btnImgItem(
@@ -335,9 +386,9 @@ class _VioicPlayerContentViewState extends State<VioicPlayerContentView>
                       return _btnImgItem(
                           icon: value
                               ? MyImagePaths.appAsmrPauseBig
-                              : MyImagePaths.appAsmrPlaySmall,
-                          width: 36.w,
-                          height: 36.w,
+                              : MyImagePaths.appAsmrPlayBig,
+                          width: 60.w,
+                          height: 60.w,
                           onTap: () {
                             //播放/暂停
                             _togglePlay();
@@ -429,6 +480,7 @@ class _VioicPlayerContentViewState extends State<VioicPlayerContentView>
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
         context: context,
+        constraints:const BoxConstraints(minWidth: double.infinity),
         builder: (BuildContext context) {
           return VoicePlayerSheet(complete: () {
             //播放列表切换播放成功后刷新界面
@@ -443,6 +495,7 @@ class _VioicPlayerContentViewState extends State<VioicPlayerContentView>
     return showModalBottomSheet(
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
+        constraints:const BoxConstraints(minWidth: double.infinity),
         context: context,
         builder: (BuildContext context) {
           return const VoicePlayerTimeSheet();
