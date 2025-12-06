@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../theme.dart';
 import 'package:extended_tabs/extended_tabs.dart';
+import 'package:flutter/foundation.dart';
 import 'my_image.dart';
 
 enum TabBarType {
@@ -205,24 +206,38 @@ class _TabBarWithViewState extends State<TabBarWithView>
         );
       });
     }
-    return widget.titles
-      .map((title) => switch (widget.type) {
-            TabBarType.fillColor => Tab(
+    return List.generate(widget.titles.length, (index) {
+      final title = widget.titles[index];
+      return switch (widget.type) {
+        TabBarType.fillColor => Tab(
+            height: MyTheme.navbarHegiht,
+            child: Padding(
+              padding:
+                  EdgeInsets.symmetric(horizontal: widget.tabInterMargin.w),
+              child: Text(
+                title,
+              ),
+            ),
+          ),
+        _ => (!kIsWeb && indexChangeNotifier.value == index)
+            ? Tab(
                 height: MyTheme.navbarHegiht,
-                child: Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: widget.tabInterMargin.w),
+                child: ShaderMask(
+                  shaderCallback: (bounds) =>
+                      MyTheme.gradient_90_114.createShader(bounds),
+                  blendMode: BlendMode.srcIn,
                   child: Text(
                     title,
+                    style: widget.labelStyle ?? MyTheme.jellyCyan_17,
                   ),
                 ),
-              ),
-            _ => Tab(
+              )
+            : Tab(
                 height: MyTheme.navbarHegiht,
                 text: title,
               ),
-          })
-      .toList();
+      };
+    });
   }
 
   late final TabBarTheme tabBarTheme = switch (widget.type) {
