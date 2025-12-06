@@ -1,10 +1,9 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:jygf/domain/model/member_model.dart';
 import 'package:jygf/domain/remote_domain/domains/ai.dart';
 import 'package:jygf/ui_layer/router/routes.dart';
-import 'package:jygf/ui_layer/screens/common_widgets/dialog/widgets/regular_dialog.dart';
+import 'package:jygf/ui_layer/screens/ai_server/widgets/dialog/ai_server_dialog.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_app_bar.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
@@ -63,15 +62,7 @@ class _AIOffDeRobeState extends State<AIOffDeRobe> {
 
   void onSubmitOffDerobe() async {
     if (uploadObject.isEmpty) {
-      CommonUtils.showDialog(
-        context: context,
-        builder: (context) => RegularDialog(
-          buttonText: 'qd'.tr(),
-          title: 'wxts'.tr(),
-          content: Text('qsctp'.tr(context: context),
-              style: MyTheme.white255_15, textAlign: TextAlign.center),
-        ),
-      );
+      AiServerDialog.showTip(context, 'qsctp'.tr(context: context));
       return;
     }
     MyToast.showLoading();
@@ -95,53 +86,14 @@ class _AIOffDeRobeState extends State<AIOffDeRobe> {
         //免费次数不够直接扣金币，刷新用户金币余额
         userNotifier.setMoney(money: user.money - stripCoinsValue); //更新用户的金币数量
       }
-      CommonUtils.showDialog(
-        context: context,
-        builder: (context) => RegularDialog(
-          buttonText: 'gb'.tr(),
-          title: 'wxts'.tr(),
-          content: Text('提交成功，稍后前往\n【AI记录】中查看',
-              style: MyTheme.white255_15, textAlign: TextAlign.center),
-          confirmOnTap: () async {
-            context.pop();
-          },
-        ),
-      );
+      AiServerDialog.showSubmitSuccess(context);
     } else {
       if (result.msg != '余额不足') {
         MyToast.showText(text: result.msg ?? '提交失败');
         return;
       }
       //余额不足，提示金币不足
-      CommonUtils.showDialog(
-        context: context,
-        builder: (context) => RegularDialog(
-          buttonText: 'qwcz'.tr(),
-          cancelText: 'qx'.tr(),
-          title: 'ts'.tr(),
-          content: RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(children: [
-                TextSpan(
-                  text: '${tr('ndyebz')}\n${tr('syjb')}',
-                  style: MyTheme.white255_15,
-                ),
-                TextSpan(
-                  text: '$userCoins金币',
-                  style: MyTheme.orange247_15,
-                )
-              ])),
-          confirmOnTap: () {
-            //前往充值
-            context.pop();
-            const CoinRechargeRoute().push(context);
-          },
-          cancelOnTap: () {
-            //取消
-            context.pop();
-          },
-        ),
-      );
+      AiServerDialog.showBalanceNotEnough(context, userCoins);
     }
   }
 
@@ -183,8 +135,11 @@ class _AIOffDeRobeState extends State<AIOffDeRobe> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisSize: MainAxisSize.max,
                           children: [
-                            Icon(Icons.add,
-                                color: const Color(0xff9f9f9f), size: 26.w),
+                           MyImage.asset(
+                            MyImagePaths.appAiUploadIcon,
+                            width: 50.w,
+                            height: 50.w,
+                          ),
                             Text('djscrwxx'.tr(context: context),
                                 style: MyTheme.white13),
                             Text('tpdxbcg'.tr(context: context) + uploadMaxSize,
@@ -233,8 +188,8 @@ class _AIOffDeRobeState extends State<AIOffDeRobe> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text('clyzzpdfy'.tr(context: context), style: MyTheme.white14),
-                Text('$stripCoinsValue', style: MyTheme.nav_active_14),
-                Text('jb'.tr(context: context), style: MyTheme.nav_active_14),
+                Text('$stripCoinsValue', style: MyTheme.blue80_14),
+                Text('jb'.tr(context: context), style: MyTheme.white14),
                 Text('，', style: MyTheme.white14),
                 Selector<UserNotifier, int>(
                     selector: (_, config) => config.member.stripValue,
@@ -243,7 +198,7 @@ class _AIOffDeRobeState extends State<AIOffDeRobe> {
                         children: [
                           Text('nymfcs'.tr(context: context),
                               style: MyTheme.white14),
-                          Text('$number', style: MyTheme.nav_active_14),
+                          Text('$number', style: MyTheme.blue80_14),
                           Text('ci'.tr(context: context),
                               style: MyTheme.white14)
                         ],
@@ -260,7 +215,7 @@ class _AIOffDeRobeState extends State<AIOffDeRobe> {
                   padding:
                       EdgeInsets.symmetric(vertical: 10.w, horizontal: 3.w),
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(3.w)),
+                      borderRadius: BorderRadius.all(Radius.circular(26.w)),
                       gradient: MyTheme.gradient_90_114),
                   child: Center(
                       child: Text(

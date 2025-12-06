@@ -28,7 +28,6 @@ class MyTheme {
     static Color primaryColor_01 = const Color.fromRGBO(176, 66, 255, 0.1);
 
 
-
   static const LinearGradient dhButtonGradient = LinearGradient(
     colors: [Color.fromRGBO(255, 133, 164, 1),Color.fromRGBO(176, 66, 255, 1)],
     begin: Alignment.centerLeft,
@@ -287,7 +286,9 @@ static const gradient_90_114_colors_15 = [
 
   static const Color yellow255Color = Color.fromRGBO(255, 197, 48, 1);
 
+  static const Color white01Color = Color.fromRGBO(255, 255, 255, 0.1);
   static const Color white02Color = Color.fromRGBO(255, 255, 255, 0.2);
+  static const Color white03Color = Color.fromRGBO(255, 255, 255, 0.3);
   static const Color white05Color = Color.fromRGBO(255, 255, 255, 0.5);
   static const Color white06Color = Color.fromRGBO(255, 255, 255, 0.6);
   static const Color white07Color = Color.fromRGBO(255, 255, 255, 0.7);
@@ -1399,6 +1400,14 @@ static const gradient_90_114_colors_15 = [
       overflow: TextOverflow.ellipsis,
       fontWeight: FontWeight.w500,
       decoration: TextDecoration.none);
+
+       static final blue80_14 = TextStyle(
+      fontFamily: hanyi,
+      color: primaryColor,
+      fontSize: 14.sp,
+      overflow: TextOverflow.ellipsis,
+      decoration: TextDecoration.none);
+
 
   static final blue80_14_M = TextStyle(
       fontFamily: hanyi,

@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jygf/domain/model/member_model.dart';
 import 'package:jygf/ui_layer/router/routes.dart';
-import 'package:jygf/ui_layer/screens/common_widgets/dialog/widgets/regular_dialog.dart';
+import 'package:jygf/ui_layer/screens/ai_server/widgets/dialog/ai_server_dialog.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_app_bar.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:provider/provider.dart';
@@ -166,15 +166,19 @@ class _AIFaceSwapState extends State<AIFaceSwap> {
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
       context: context,
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.9,
+      ),
       builder: (context) => StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
         return DecoratedBox(
           decoration: BoxDecoration(
-            color: const Color(0xff0b0a21),
+            color: const Color.fromRGBO(29, 2, 24, 1),
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(10.w),
-              topRight: Radius.circular(10.w),
+              topLeft: Radius.circular(30.w),
+              topRight: Radius.circular(30.w),
             ),
+          border:const Border(top: BorderSide(color: Color.fromRGBO(154, 48, 133, 1), width: 1)),
           ),
           child: SafeArea(
             child: Padding(
@@ -247,8 +251,10 @@ class _AIFaceSwapState extends State<AIFaceSwap> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisSize: MainAxisSize.max,
                               children: [
-                                Icon(Icons.add,
-                                    color: const Color(0xff9f9f9f), size: 26.w),
+                                MyImage.asset(MyImagePaths.appAiUpload,
+                                width: 45.w,
+                                height: 45.w,
+                                ),
                                 Text('djscrwxx'.tr(context: context),
                                     style: MyTheme.white13),
                                 Text(
@@ -337,17 +343,7 @@ class _AIFaceSwapState extends State<AIFaceSwap> {
                         GestureDetector(
                           onTap: () async {
                             if (uploadObject.isEmpty) {
-                              CommonUtils.showDialog(
-                                  context: context,
-                                  builder: (context) => RegularDialog(
-                                        title: 'wxts'.tr(),
-                                        content: Text('qsctp'.tr(),
-                                            style: MyTheme.white255_15),
-                                        buttonText: 'qd'.tr(),
-                                        confirmOnTap: () {
-                                          context.pop();
-                                        },
-                                      ));
+                              AiServerDialog.showTip(context, 'qsctp'.tr());    
                               return;
                             }
                             MyToast.showLoading();
@@ -365,8 +361,6 @@ class _AIFaceSwapState extends State<AIFaceSwap> {
                               setState(() {
                                 uploadObject = {};
                               });
-                              MyToast.showText(text: result.msg ?? '提交成功');
-
                               final imgFaceValue =
                                   userNotifier.member.imgFaceValue - 1;
                               if (imgFaceValue >= 0) {
@@ -378,43 +372,15 @@ class _AIFaceSwapState extends State<AIFaceSwap> {
                                     money: userNotifier.member.money -
                                         faceCoinsValue); //更新用户的金币数量
                               }
-                              context.pop();
+                              AiServerDialog.showSubmitSuccess(context);
                             } else {
                               if (result.msg != '余额不足') {
                                 MyToast.showText(text: result.msg ?? '提交失败');
                                 return;
                               }
                               //余额不足，提示金币不足
-                              CommonUtils.showDialog(
-                                context: context,
-                                builder: (context) => RegularDialog(
-                                  buttonText: 'qwcz'.tr(),
-                                  cancelText: 'qx'.tr(),
-                                  title: 'ts'.tr(),
-                                  content: RichText(
-                                      textAlign: TextAlign.center,
-                                      text: TextSpan(children: [
-                                        TextSpan(
-                                          text:
-                                              '${tr('ndyebz')}\n${tr('syjb')}',
-                                          style: MyTheme.white255_15,
-                                        ),
-                                        TextSpan(
-                                          text: '$userCoins金币',
-                                          style: MyTheme.orange247_15,
-                                        )
-                                      ])),
-                                  confirmOnTap: () {
-                                    //前往充值
-                                    context.pop();
-                                    const CoinRechargeRoute().push(context);
-                                  },
-                                  cancelOnTap: () {
-                                    //取消
-                                    context.pop();
-                                  },
-                                ),
-                              );
+                              AiServerDialog.showBalanceNotEnough(context, userCoins);
+                              return;
                             }
                           },
                           child: Container(
@@ -572,19 +538,18 @@ class _Header extends StatelessWidget {
                   child: DecoratedBox(
                     decoration: ShapeDecoration(
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(2.w),
+                        borderRadius: BorderRadius.circular(6.w),
                       ),
                       gradient: topic.id == currentNav.id
-                          ? MyTheme.gradient_84_55
-                          : null,
-                      color: topic.id == currentNav.id
-                          ? null
-                          : const Color(0xff262631),
+                          ? MyTheme.gradient_90_114
+                          : MyTheme.gradient_90_114_15,
                     ),
                     child: Center(
                       child: Text(
                         topic.name,
-                        style: MyTheme.white13,
+                        style: topic.id == currentNav.id
+                            ? MyTheme.white255_13_B
+                            : MyTheme.white13,
                       ),
                     ),
                   ),
@@ -615,53 +580,58 @@ class MaterrialCard extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Stack(
-            children: [
-              SizedBox(
-                height: 250.w, // * (data.thumbH / data.thumbW),
-                child: MyImage.network(
+          Expanded(
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                MyImage.network(
                   data.thumb,
                   fit: BoxFit.cover,
                   borderRadius: 6.w,
                   backgroundColor: MyTheme.imageBgColor,
                 ),
-              ),
-              data.isHot == 1
-                  ? Positioned(
-                      left: 7.5.w,
-                      top: 5.w,
-                      child: Container(
-                        alignment: Alignment.center,
-                        padding: EdgeInsets.symmetric(horizontal: 10.w),
-                        height: 19.w,
-                        decoration: BoxDecoration(
-                          color: const Color.fromRGBO(255, 56, 106, 0.8),
-                          borderRadius: BorderRadius.all(Radius.circular(4.w)),
-                        ),
-                        child: Text('rm'.tr(context: context),
-                            style: MyTheme.white12),
-                      ))
-                  : Container(),
-              Positioned(
-                  right: 7.5.w,
-                  bottom: 6.w,
-                  child: Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.symmetric(horizontal: 10.w),
-                    height: 19.w,
-                    decoration: BoxDecoration(
-                      gradient: MyTheme.gradient_84_55,
-                      borderRadius: BorderRadius.all(Radius.circular(19.w)),
-                    ),
-                    child: Text('${'sycs'.tr(context: context)}${data.usedFct}',
-                        style: MyTheme.white12medium),
-                  ))
-            ],
+                data.isHot == 1
+                    ? Positioned(
+                        left: 7.5.w,
+                        top: 5.w,
+                        child: Container(
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.symmetric(horizontal: 10.w),
+                          height: 19.w,
+                          decoration: BoxDecoration(
+                            color: const Color.fromRGBO(255, 56, 106, 0.8),
+                            borderRadius: BorderRadius.all(Radius.circular(4.w)),
+                          ),
+                          child: Text('rm'.tr(context: context),
+                              style: MyTheme.white12),
+                        ))
+                    : Container(),
+                Positioned(
+                    right: 7.5.w,
+                    bottom: 6.w,
+                    child: Container(
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
+                      height: 19.w,
+                      decoration: BoxDecoration(
+                        gradient: MyTheme.gradient_90_114,
+                        borderRadius: BorderRadius.all(Radius.circular(19.w)),
+                      ),
+                      child: Text('${'sycs'.tr(context: context)}${data.usedFct}',
+                          style: MyTheme.white12medium),
+                    ))
+              ],
+            ),
           ),
           SizedBox(height: 5.w),
           Align(
             alignment: Alignment.centerLeft,
-            child: Text(data.title, style: MyTheme.white13),
+            child: Text(
+              data.title,
+              style: MyTheme.white13,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
           )
         ],
       ),

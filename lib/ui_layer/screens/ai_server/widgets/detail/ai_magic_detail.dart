@@ -9,6 +9,7 @@ import 'package:jygf/domain/model/video_detail_model.dart';
 import 'package:jygf/domain/remote_domain/domains/aimagic.dart';
 import 'package:jygf/ui_layer/notifiers/home_config_notifier.dart';
 import 'package:jygf/ui_layer/notifiers/user_notifier.dart';
+import 'package:jygf/ui_layer/screens/ai_server/widgets/dialog/ai_server_dialog.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/dialog/widgets/regular_dialog.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_app_bar.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
@@ -119,19 +120,8 @@ class _BodyState extends State<_Body> with WidgetsBindingObserver {
 
     MyToast.closeAllLoading();
     if (result.status == 1) {
-      CommonUtils.showDialog(
-        context: context,
-        builder: (context) => RegularDialog(
-          buttonText: 'gb'.tr(),
-          title: 'wxts'.tr(),
-          content: Text('提交成功，稍后前往\n【AI记录】中查看',
-              style: MyTheme.white255_15, textAlign: TextAlign.center),
-          confirmOnTap: () async {
-            clearUploadList();
-            context.pop();
-          },
-        ),
-      );
+      AiServerDialog.showSubmitSuccess(context);
+      clearUploadList();
       final magicValue = freeNumber - 1;
       if (magicValue >= 0) {
         userNotifier.setMagicValue(num: magicValue);
@@ -196,25 +186,25 @@ class _BodyState extends State<_Body> with WidgetsBindingObserver {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             UploadMagicTip(
-                              thumb: MyImagePaths.appAiMagicPic1,
-                              title: "近身照",
-                              icon: MyImagePaths.appAiMagicRight,
-                            ),
+                                thumb: MyImagePaths.appAiMagicPic1,
+                                title: "近身照",
+                                icon: MyImagePaths.appAiMagicRight,
+                              ),
                             UploadMagicTip(
-                              thumb: MyImagePaths.appAiMagicPic2,
-                              title: "上身有遮挡",
-                              icon: MyImagePaths.appAiMagicError,
-                            ),
+                                thumb: MyImagePaths.appAiMagicPic2,
+                                title: "上身有遮挡",
+                                icon: MyImagePaths.appAiMagicError,
+                              ),
                             UploadMagicTip(
-                              thumb: MyImagePaths.appAiMagicPic3,
-                              title: "不是正面",
-                              icon: MyImagePaths.appAiMagicError,
-                            ),
+                                thumb: MyImagePaths.appAiMagicPic3,
+                                title: "不是正面",
+                                icon: MyImagePaths.appAiMagicError,
+                              ),
                             UploadMagicTip(
-                              thumb: MyImagePaths.appAiMagicPic4,
-                              title: "过于模糊",
-                              icon: MyImagePaths.appAiMagicError,
-                            ),
+                                thumb: MyImagePaths.appAiMagicPic4,
+                                title: "过于模糊",
+                                icon: MyImagePaths.appAiMagicError,
+                              ),
                           ],
                         )),
                   ],
@@ -224,39 +214,11 @@ class _BodyState extends State<_Body> with WidgetsBindingObserver {
             SubmitButton(
               onTap: () async {
                 if (upList.isEmpty) {
-                  CommonUtils.showDialog(
-                    context: context,
-                    builder: (context) => RegularDialog(
-                      buttonText: 'qd'.tr(),
-                      title: 'wxts'.tr(),
-                      content: Text('qsctp'.tr(context: context),
-                          style: MyTheme.white255_15,
-                          textAlign: TextAlign.center),
-                    ),
-                  );
+                  AiServerDialog.showTip(context, 'qsctp'.tr(context: context));
                   return;
                 }
                 if (freeNumber <= 0) {
-                  CommonUtils.showDialog(
-                    context: context,
-                    builder: (context) => RegularDialog(
-                      buttonText: 'qd'.tr(),
-                      cancelText: 'qx'.tr(),
-                      title: 'ts'.tr(),
-                      content: RichText(
-                          textAlign: TextAlign.center,
-                          text: TextSpan(children: [
-                            TextSpan(
-                              text: '使用$aiMagicCost金币进行生成？',
-                              style: MyTheme.white255_15,
-                            ),
-                          ])),
-                      confirmOnTap: () {
-                        onSubmit();
-                        context.pop();
-                      },
-                    ),
-                  );
+                  AiServerDialog.showConfirmDialog(context, aiMagicCost, onSubmit);
                 } else {
                   onSubmit();
                 }
@@ -293,7 +255,7 @@ class UploadMagicTip extends StatelessWidget {
       children: [
         Image.asset(
           thumb,
-          width: 85.w,
+          width: 80.w,
           fit: BoxFit.fitHeight,
         ),
         SizedBox(height: 5.w),
@@ -335,7 +297,7 @@ class _SubmitButtonState extends State<SubmitButton> {
     if (freeNumber > 0) {
       widget.onTap?.call();
     } else if (coins < aiMagicCost) {
-      MyToast.showText(text: '余额不足，无法生成');
+      AiServerDialog.showBalanceNotEnough(context, coins);
     } else {
       widget.onTap?.call();
     }
@@ -362,14 +324,7 @@ class _SubmitButtonState extends State<SubmitButton> {
         alignment: Alignment.center,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(35.r),
-            gradient: const LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: [
-                Color(0xff579bf1),
-                Color(0xff3d54f5),
-              ],
-            )),
+            gradient: MyTheme.gradient_90_114),
         child: Text(buttonText, style: MyTheme.white16medium),
       ),
     );
@@ -462,28 +417,31 @@ class _AIImagePickerGridState extends State<AIImagePickerGrid> {
               children: [
                 GestureDetector(
                   onTap: imagePickerAssets,
-                  child: Container(
-                    width: double.infinity,
-                    height: double.infinity,
-                    decoration: BoxDecoration(
-                      color: const Color(0xff1b1c2b),
-                      borderRadius: BorderRadius.circular(5.r),
-                    ),
-                    alignment: Alignment.center,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        MyImage.asset(
-                          MyImagePaths.appAiUploadIcon,
-                          width: 50.w,
-                          height: 50.w,
-                        ),
-                        SizedBox(height: 5.w),
-                        Text(
-                          '点击上传',
-                          style: MyTheme.white14,
-                        ),
-                      ],
+                  child: CommonUtils.dashedBorder(
+                    borderRadius: BorderRadius.circular(5.r),
+                    child: Container(
+                      width: double.infinity,
+                      height: double.infinity,
+                      decoration: BoxDecoration(
+                        color: const Color(0xff1b1c2b),
+                        borderRadius: BorderRadius.circular(5.r),
+                      ),
+                      alignment: Alignment.center,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          MyImage.asset(
+                            MyImagePaths.appAiUploadIcon,
+                            width: 50.w,
+                            height: 50.w,
+                          ),
+                          // SizedBox(height: 5.w),
+                          Text(
+                            '点击上传',
+                            style: MyTheme.white14,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 )

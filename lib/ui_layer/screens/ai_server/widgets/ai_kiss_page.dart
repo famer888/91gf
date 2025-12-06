@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:jygf/domain/model/member_model.dart';
 import 'package:jygf/domain/remote_domain/domains/aikiss.dart';
 import 'package:jygf/ui_layer/router/routes.dart';
+import 'package:jygf/ui_layer/screens/ai_server/widgets/dialog/ai_server_dialog.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/dialog/widgets/regular_dialog.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_app_bar.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
@@ -83,30 +84,7 @@ class _AIKissPageState extends State<AIKissPage> {
     final int coins = user.money;
 
     if (user.aiKissValue <= 0 && kissCoinsValue > coins) {
-      CommonUtils.showDialog(
-        context: context,
-        builder: (context) => RegularDialog(
-          buttonText: 'qwcz'.tr(),
-          cancelText: 'qx'.tr(),
-          title: 'wxts'.tr(),
-          content: RichText(
-            text: TextSpan(
-              children: [
-                TextSpan(
-                    text: 'ndyebz'.tr() + '\n' + 'syjb'.tr(),
-                    style: MyTheme.white255_15),
-                TextSpan(text: '$coins金币', style: MyTheme.orange247_15),
-              ],
-            ),
-            textAlign: TextAlign.center,
-          ),
-          confirmOnTap: () {
-            Navigator.pop(context);
-            const CoinRechargeRoute().push(context);
-          },
-          cancelOnTap: () => Navigator.pop(context),
-        ),
-      );
+      AiServerDialog.showBalanceNotEnough(context, coins);
       return;
     }
     MyToast.showLoading();
@@ -132,18 +110,7 @@ class _AIKissPageState extends State<AIKissPage> {
       } else {
         userNotifier.setMoney(money: user.money - kissCoinsValue);
       }
-      CommonUtils.showDialog(
-        context: context,
-        builder: (context) => RegularDialog(
-          buttonText: 'gb'.tr(),
-          title: 'wxts'.tr(),
-          content: Text('提交成功，稍后前往\n【AI记录】中查看',
-              style: MyTheme.white255_15, textAlign: TextAlign.center),
-          confirmOnTap: () async {
-            context.pop();
-          },
-        ),
-      );
+      AiServerDialog.showSubmitSuccess(context);
     } else {
       MyToast.showText(text: result.msg ?? '失败');
     }
@@ -186,8 +153,8 @@ class _AIKissPageState extends State<AIKissPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text('clyzzpdfy'.tr(context: context), style: MyTheme.white14),
-                Text('$kissCoinsValue', style: MyTheme.nav_active_14),
-                Text('jb'.tr(context: context), style: MyTheme.nav_active_14),
+                Text('$kissCoinsValue', style: MyTheme.blue80_14),
+                Text('jb'.tr(context: context), style: MyTheme.white14),
                 Text('，', style: MyTheme.white14),
                 Selector<UserNotifier, int>(
                     selector: (_, config) => config.member.aiKissValue,
@@ -196,7 +163,7 @@ class _AIKissPageState extends State<AIKissPage> {
                         children: [
                           Text('nymfcs'.tr(context: context),
                               style: MyTheme.white14),
-                          Text('$number', style: MyTheme.nav_active_14),
+                          Text('$number', style: MyTheme.blue80_14),
                           Text('ci'.tr(context: context),
                               style: MyTheme.white14)
                         ],
@@ -213,7 +180,7 @@ class _AIKissPageState extends State<AIKissPage> {
                   padding:
                       EdgeInsets.symmetric(vertical: 10.w, horizontal: 3.w),
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(3.w)),
+                      borderRadius: BorderRadius.all(Radius.circular(26.w)),
                       gradient: MyTheme.gradient_90_114),
                   child: Center(
                       child: Text(

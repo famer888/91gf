@@ -7,8 +7,10 @@ import 'package:jygf/domain/remote_domain/domains/ainovel.dart';
 import 'package:jygf/ui_layer/notifiers/home_config_notifier.dart';
 import 'package:jygf/ui_layer/notifiers/user_notifier.dart';
 import 'package:jygf/ui_layer/router/routes.dart';
+import 'package:jygf/ui_layer/screens/ai_server/widgets/dialog/ai_server_dialog.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_app_bar.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/dialog/widgets/regular_dialog.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/screen_background.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
@@ -68,227 +70,241 @@ class _AiNovelPageState extends State<AiNovelPage> {
     final int needCoins = homeConfig.payAiNovel;
     final int coins = user.member.money;
 
-    return Scaffold(
-      appBar: MyAppBar(
-        title: 'xscz'.tr(),
-        rightWidget: TextButton(
-          onPressed: () {
-            const MineAIRecordRoute(index: 4).push(context);
-          },
-          child: Center(
-            child: Text('wdai'.tr(), style: MyTheme.white255_13),
+    return ScreenBackground(
+      child: Scaffold(
+        appBar: MyAppBar(
+          title: 'xscz'.tr(),
+          rightWidget: TextButton(
+            onPressed: () {
+              const MineAIRecordRoute(index: 4).push(context);
+            },
+            child: Center(
+              child: Text('wdai'.tr(), style: MyTheme.white255_13),
+            ),
           ),
         ),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 10.w),
-                  Text('gsqjbt'.tr(), style: MyTheme.white16medium),
-                  SizedBox(height: 10.w),
-                  Container(
-                    height: 80.w,
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: const Color(0xff1b1c2b),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 10.w),
+                    Text('gsqjbt'.tr(), style: MyTheme.white16medium),
+                    SizedBox(height: 10.w),
+                    CommonUtils.dashedBorder(
+                      color: MyTheme.white03Color,
                       borderRadius: BorderRadius.all(Radius.circular(5.w)),
-                    ),
-                    child: TextField(
-                      controller: _descController,
-                      style: MyTheme.white14,
-                      cursorColor: Colors.white,
-                      maxLines: 4,
-                      decoration: InputDecoration(
-                        hintText: 'gsqjbtds'.tr(),
-                        hintStyle:
-                            MyTheme.white14.copyWith(color: Colors.white70),
-                        contentPadding: EdgeInsets.zero,
-                        isDense: true,
-                        border: InputBorder.none,
+                      child: Container(
+                      height: 80.w,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: MyTheme.white01Color,
+                        borderRadius: BorderRadius.all(Radius.circular(5.w)),
                       ),
-                      textInputAction: TextInputAction.next,
-                      keyboardType: TextInputType.text,
-                      onChanged: (value) {
-                        desc = value;
-                      },
-                    ),
-                  ),
-                  SizedBox(height: 20.w),
-                  Text('rwsd'.tr(), style: MyTheme.white16medium),
-                  SizedBox(height: 10.w),
-                  Container(
-                    height: 40.w,
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: const Color(0xff1b1c2b),
+                      child: TextField(
+                        controller: _descController,
+                        style: MyTheme.white14,
+                        cursorColor: Colors.white,
+                        maxLines: 4,
+                        decoration: InputDecoration(
+                          hintText: 'gsqjbtds'.tr(),
+                          hintStyle:
+                              MyTheme.white14.copyWith(color: Colors.white70),
+                          contentPadding: EdgeInsets.zero,
+                          isDense: true,
+                          border: InputBorder.none,
+                        ),
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.text,
+                        onChanged: (value) {
+                          desc = value;
+                        },
+                      ),
+                    )),
+                    SizedBox(height: 20.w),
+                    Text('rwsd'.tr(), style: MyTheme.white16medium),
+                    SizedBox(height: 10.w),
+                    CommonUtils.dashedBorder(
+                      color: MyTheme.white03Color,
                       borderRadius: BorderRadius.all(Radius.circular(5.w)),
-                    ),
-                    child: TextField(
-                      controller: _peopleController,
-                      style: MyTheme.white14,
-                      cursorColor: Colors.white,
-                      decoration: InputDecoration(
-                        hintText: 'rwsdds'.tr(),
-                        hintStyle:
-                            MyTheme.white14.copyWith(color: Colors.white70),
-                        contentPadding: EdgeInsets.zero,
-                        isDense: true,
-                        border: InputBorder.none,
+                      child: Container(
+                        height: 40.w,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: MyTheme.white01Color,
+                          borderRadius: BorderRadius.all(Radius.circular(5.w)),
+                        ),
+                        child: TextField(
+                          controller: _peopleController,
+                          style: MyTheme.white14,
+                          cursorColor: Colors.white,
+                          decoration: InputDecoration(
+                            hintText: 'rwsdds'.tr(),
+                            hintStyle:
+                                MyTheme.white14.copyWith(color: Colors.white70),
+                            contentPadding: EdgeInsets.zero,
+                            isDense: true,
+                            border: InputBorder.none,
+                          ),
+                          textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.text,
+                          onChanged: (value) {
+                            people = value;
+                          },
+                        ),
                       ),
-                      textInputAction: TextInputAction.next,
-                      keyboardType: TextInputType.text,
-                      onChanged: (value) {
-                        people = value;
-                      },
                     ),
-                  ),
-                  SizedBox(height: 20.w),
-                  Text('ddcj'.tr(), style: MyTheme.white16medium),
-                  SizedBox(height: 10.w),
-                  Container(
-                    height: 40.w,
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: const Color(0xff1b1c2b),
+                    SizedBox(height: 20.w),
+                    Text('ddcj'.tr(), style: MyTheme.white16medium),
+                    SizedBox(height: 10.w),
+                    CommonUtils.dashedBorder(
+                      color: MyTheme.white03Color,
                       borderRadius: BorderRadius.all(Radius.circular(5.w)),
-                    ),
-                    child: TextField(
-                      controller: _addresController,
-                      style: MyTheme.white14,
-                      cursorColor: Colors.white,
-                      decoration: InputDecoration(
-                        hintText: 'ddcjds'.tr(),
-                        hintStyle:
-                            MyTheme.white14.copyWith(color: Colors.white70),
-                        contentPadding: EdgeInsets.zero,
-                        isDense: true,
-                        border: InputBorder.none,
+                      child: Container(
+                      height: 40.w,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: MyTheme.white01Color,
+                        borderRadius: BorderRadius.all(Radius.circular(5.w)),
                       ),
-                      textInputAction: TextInputAction.next,
-                      keyboardType: TextInputType.text,
-                      onChanged: (value) {
-                        addres = value;
-                      },
-                    ),
-                  ),
-                  SizedBox(height: 20.w),
-                  Text('xjsm'.tr(), style: MyTheme.white16medium),
-                  SizedBox(height: 10.w),
-                  Container(
-                    height: 80.w,
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: const Color(0xff1b1c2b),
+                      child: TextField(
+                        controller: _addresController,
+                        style: MyTheme.white14,
+                        cursorColor: Colors.white,
+                        decoration: InputDecoration(
+                          hintText: 'ddcjds'.tr(),
+                          hintStyle:
+                              MyTheme.white14.copyWith(color: Colors.white70),
+                          contentPadding: EdgeInsets.zero,
+                          isDense: true,
+                          border: InputBorder.none,
+                        ),
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.text,
+                        onChanged: (value) {
+                          addres = value;
+                        },
+                      ),
+                    )),
+                    SizedBox(height: 20.w),
+                    Text('xjsm'.tr(), style: MyTheme.white16medium),
+                    SizedBox(height: 10.w),
+                    CommonUtils.dashedBorder(
+                      color: MyTheme.white03Color,
                       borderRadius: BorderRadius.all(Radius.circular(5.w)),
-                    ),
-                    child: TextField(
-                      controller: _detailController,
-                      style: MyTheme.white14,
-                      cursorColor: Colors.white,
-                      maxLines: 4,
-                      decoration: InputDecoration(
-                        hintText: 'xjsmds'.tr(),
-                        hintStyle:
-                            MyTheme.white14.copyWith(color: Colors.white70),
-                        contentPadding: EdgeInsets.zero,
-                        isDense: true,
-                        border: InputBorder.none,
+                      child: Container(
+                      height: 80.w,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: MyTheme.white01Color,
+                        borderRadius: BorderRadius.all(Radius.circular(5.w)),
                       ),
-                      textInputAction: TextInputAction.next,
-                      keyboardType: TextInputType.text,
-                      onChanged: (value) {
-                        detail = value;
-                      },
-                    ),
-                  ),
-                  SizedBox(height: 20.w),
-                  Text('xszs'.tr(), style: MyTheme.white16medium),
-                  SizedBox(height: 10.w),
-                  Container(
-                    height: 40.w,
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: const Color(0xff1b1c2b),
+                      child: TextField(
+                        controller: _detailController,
+                        style: MyTheme.white14,
+                        cursorColor: Colors.white,
+                        maxLines: 4,
+                        decoration: InputDecoration(
+                          hintText: 'xjsmds'.tr(),
+                          hintStyle:
+                              MyTheme.white14.copyWith(color: Colors.white70),
+                          contentPadding: EdgeInsets.zero,
+                          isDense: true,
+                          border: InputBorder.none,
+                        ),
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.text,
+                        onChanged: (value) {
+                          detail = value;
+                        },
+                      ),
+                    )),
+                    SizedBox(height: 20.w),
+                    Text('xszs'.tr(), style: MyTheme.white16medium),
+                    SizedBox(height: 10.w),
+                    CommonUtils.dashedBorder(
+                      color: MyTheme.white03Color,
                       borderRadius: BorderRadius.all(Radius.circular(5.w)),
-                    ),
-                    child: TextField(
-                      controller: _txtnumController,
-                      style: MyTheme.white14,
-                      cursorColor: Colors.white,
-                      decoration: InputDecoration(
-                        hintText: 'xszsds'.tr(),
-                        hintStyle:
-                            MyTheme.white14.copyWith(color: Colors.white70),
-                        contentPadding: EdgeInsets.zero,
-                        isDense: true,
-                        border: InputBorder.none,
+                      child: Container(
+                      height: 40.w,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                      color: MyTheme.white01Color,
+                        borderRadius: BorderRadius.all(Radius.circular(5.w)),
                       ),
-                      textInputAction: TextInputAction.done,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        LengthLimitingTextInputFormatter(4),
-                      ],
-                      onChanged: (value) {
-                        if (value.isEmpty) {
-                          txtnum = "1000";
-                        } else {
-                          txtnum = value;
-                        }
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          SizedBox(height: 20.w),
-          GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: () {
-              _submit(context,
-                  coins: coins,
-                  needCoins: needCoins,
-                  aiNovelValue: userNotifier.member.aiNovelValue);
-            },
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-              height: 40.w,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(3.w)),
-                gradient: const LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  colors: [Color(0xff579bf1), Color(0xff3d54f5)],
+                      child: TextField(
+                        controller: _txtnumController,
+                        style: MyTheme.white14,
+                        cursorColor: Colors.white,
+                        decoration: InputDecoration(
+                          hintText: 'xszsds'.tr(),
+                          hintStyle:
+                              MyTheme.white14.copyWith(color: Colors.white70),
+                          contentPadding: EdgeInsets.zero,
+                          isDense: true,
+                          border: InputBorder.none,
+                        ),
+                        textInputAction: TextInputAction.done,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(4),
+                        ],
+                        onChanged: (value) {
+                          if (value.isEmpty) {
+                            txtnum = "1000";
+                          } else {
+                            txtnum = value;
+                          }
+                        },
+                      ),
+                    )),
+                  ],
                 ),
               ),
-              child: Text(
-                freeNumber > 0
-                    ? '免费生成（剩余 $freeNumber 次）'
-                    : '需消耗 $needCoins 金币【余额 $coins】生成',
-                style: MyTheme.white16medium,
+            ),
+            SizedBox(height: 20.w),
+            GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: () {
+                _submit(context,
+                    coins: coins,
+                    needCoins: needCoins,
+                    aiNovelValue: userNotifier.member.aiNovelValue);
+              },
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+                height: 40.w,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(20.w)),
+                  gradient: MyTheme.gradient_90_114,
+                ),
+                child: Text(
+                  freeNumber > 0
+                      ? '免费生成（剩余 $freeNumber 次）'
+                      : '需消耗 $needCoins 金币【余额 $coins】生成',
+                  style: MyTheme.white16medium,
+                ),
               ),
             ),
-          ),
-          SizedBox(height: 20.w),
-        ],
+            SizedBox(height: 20.w),
+          ],
+        ),
       ),
     );
   }
@@ -298,14 +314,7 @@ class _AiNovelPageState extends State<AiNovelPage> {
       required int needCoins,
       required int aiNovelValue}) async {
     if (desc.isEmpty) {
-      CommonUtils.showDialog(
-          context: context,
-          builder: (context) => RegularDialog(
-                buttonText: 'qd'.tr(),
-                title: 'wxts'.tr(),
-                content: Text('qtxgsqj'.tr(),
-                    style: MyTheme.white255_15, textAlign: TextAlign.center),
-              ));
+      AiServerDialog.showTip(context, 'qtxgsqj'.tr());
       return;
     }
     final intNum = int.tryParse(txtnum) ?? 0;
@@ -315,30 +324,7 @@ class _AiNovelPageState extends State<AiNovelPage> {
     }
 
     if (aiNovelValue <= 0 && needCoins > coins) {
-      CommonUtils.showDialog(
-        context: context,
-        builder: (context) => RegularDialog(
-          buttonText: 'qwcz'.tr(),
-          cancelText: 'qx'.tr(),
-          title: 'wxts'.tr(),
-          content: RichText(
-            text: TextSpan(
-              children: [
-                TextSpan(
-                    text: 'ndyebz'.tr() + '\n' + 'syjb'.tr(),
-                    style: MyTheme.white255_15),
-                TextSpan(text: '$coins金币', style: MyTheme.orange247_15),
-              ],
-            ),
-            textAlign: TextAlign.center,
-          ),
-          confirmOnTap: () {
-            context.pop();
-            const CoinRechargeRoute().push(context);
-          },
-          cancelOnTap: () => context.pop(),
-        ),
-      );
+      AiServerDialog.showBalanceNotEnough(context, coins);
       return;
     }
     MyToast.showLoading();
@@ -358,18 +344,7 @@ class _AiNovelPageState extends State<AiNovelPage> {
       } else {
         userNotifier.setMoney(money: coins - needCoins);
       }
-      CommonUtils.showDialog(
-        context: context,
-        builder: (context) => RegularDialog(
-          buttonText: 'gb'.tr(),
-          title: 'wxts'.tr(),
-          content: Text('提交成功，稍后前往\n【AI记录】中查看',
-              style: MyTheme.white255_15, textAlign: TextAlign.center),
-          confirmOnTap: () async {
-            context.pop();
-          },
-        ),
-      );
+      AiServerDialog.showSubmitSuccess(context);
     } else {
       MyToast.showText(text: result.msg ?? '提交失败');
     }

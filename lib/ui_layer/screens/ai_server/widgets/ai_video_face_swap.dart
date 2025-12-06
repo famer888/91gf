@@ -653,9 +653,9 @@ class VideoMaterialCard extends StatelessWidget {
                 ),
               ),
               MyImage.asset(
-                MyImagePaths.appFaceSwapPlay,
-                width: 40.w,
-                height: 40.w,
+                MyImagePaths.appAiPlay,
+                width: 60.w,
+                height: 60.w,
               ),
               Positioned(
                   right: 7.5.w,

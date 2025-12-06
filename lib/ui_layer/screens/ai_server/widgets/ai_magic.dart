@@ -6,6 +6,7 @@ import 'package:jygf/domain/remote_domain/domains/aimagic.dart';
 import 'package:jygf/ui_layer/router/routes.dart';
 import 'package:jygf/ui_layer/screens/ai_server/widgets/card/magic_card.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_app_bar.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/screen_background.dart';
 import 'package:provider/provider.dart';
 import '../../../../domain/model/banner_model.dart';
 import '../../../utils/my_toast.dart';
@@ -55,31 +56,35 @@ class _AIMagicState extends State<AIMagic> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MyAppBar(
-        title: 'AI魔法',
-        rightWidget: TextButton(
-          onPressed: () {
-            const MineAIRecordRoute(index: 0).push(context);
-          },
-          child: Center(
-            child: Text(
-              'wdai'.tr(),
-              style: MyTheme.white255_13,
+    return ScreenBackground(
+      child: SafeArea(
+        child: Scaffold(
+          appBar: MyAppBar(
+            title: 'AI魔法',
+            rightWidget: TextButton(
+              onPressed: () {
+                const MineAIRecordRoute(index: 0).push(context);
+              },
+              child: Center(
+                child: Text(
+                  'wdai'.tr(),
+                  style: MyTheme.white255_13,
+                ),
+              ),
             ),
           ),
+          body: MyListView.grid(
+            header: _Header(bannersNotifier: _bannersNotifier),
+            padding: EdgeInsets.symmetric(
+                horizontal: MyTheme.pagePadding, vertical: 8.w),
+            childAspectRatio: MagicCard.aspectRatio,
+            crossAxisSpacing: 10.w,
+            mainAxisSpacing: 10.w,
+            itemBuilder: (context, item, index) => MagicCard(data: item),
+            onFetchingMore: (currentPage, pageSize) =>
+                _getData(page: currentPage, pageSize: pageSize),
+          ),
         ),
-      ),
-      body: MyListView.grid(
-        header: _Header(bannersNotifier: _bannersNotifier),
-        padding: EdgeInsets.symmetric(
-            horizontal: MyTheme.pagePadding, vertical: 8.w),
-        childAspectRatio: MagicCard.aspectRatio,
-        crossAxisSpacing: 10.w,
-        mainAxisSpacing: 10.w,
-        itemBuilder: (context, item, index) => MagicCard(data: item),
-        onFetchingMore: (currentPage, pageSize) =>
-            _getData(page: currentPage, pageSize: pageSize),
       ),
     );
   }
