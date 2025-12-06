@@ -1506,6 +1506,88 @@ class CommonUtils {
     });
   }
 
+  /// 绘制虚线边框
+  static Widget dashedBorder({
+    required Widget child,
+    Color? color,
+    double strokeWidth = 1.0,
+    BorderRadius? borderRadius,
+    List<int> dash = const <int>[6, 4],
+  }) {
+    return CustomPaint(
+      painter: _DashedBorderPainter(
+        color: color ?? Colors.grey,
+        strokeWidth: strokeWidth,
+        borderRadius: borderRadius ?? BorderRadius.zero,
+        dash: dash,
+      ),
+      child: child,
+    );
+  }
+}
+
+class _DashedBorderPainter extends CustomPainter {
+  final Color color;
+  final double strokeWidth;
+  final BorderRadius borderRadius;
+  final List<int> dash;
+
+  _DashedBorderPainter({
+    required this.color,
+    required this.strokeWidth,
+    required this.borderRadius,
+    required this.dash,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final Paint paint = Paint()
+      ..color = color
+      ..strokeWidth = strokeWidth
+      ..style = PaintingStyle.stroke;
+
+    final Path path = Path()
+      ..addRRect(RRect.fromRectAndCorners(
+        Rect.fromLTWH(0, 0, size.width, size.height),
+        topLeft: borderRadius.topLeft,
+        topRight: borderRadius.topRight,
+        bottomLeft: borderRadius.bottomLeft,
+        bottomRight: borderRadius.bottomRight,
+      ));
+
+    final Path dashedPath = _dashPath(path, width: strokeWidth, dash: dash);
+    canvas.drawPath(dashedPath, paint);
+  }
+
+  Path _dashPath(Path source, {required double width, required List<int> dash}) {
+    final Path dest = Path();
+    final List<double> dashArray = dash.map((e) => e.toDouble()).toList();
+
+    for (final ui.PathMetric metric in source.computeMetrics()) {
+      double distance = 0.0;
+      int index = 0;
+      bool draw = true;
+      while (distance < metric.length) {
+        final double len = dashArray[index % dashArray.length];
+        if (draw) {
+          dest.addPath(
+              metric.extractPath(distance, distance + len), Offset.zero);
+        }
+        distance += len;
+        index++;
+        draw = !draw;
+      }
+    }
+    return dest;
+  }
+
+  @override
+  bool shouldRepaint(_DashedBorderPainter oldDelegate) {
+    return oldDelegate.color != color ||
+        oldDelegate.strokeWidth != strokeWidth ||
+        oldDelegate.borderRadius != borderRadius ||
+        oldDelegate.dash != dash;
+  }
 }
 
 class RelativeDateFormat {
