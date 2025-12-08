@@ -8,10 +8,13 @@ import 'package:jygf/domain/remote_domain/domains/aidraw.dart';
 import 'package:jygf/ui_layer/notifiers/home_config_notifier.dart';
 import 'package:jygf/ui_layer/notifiers/user_notifier.dart';
 import 'package:jygf/ui_layer/router/routes.dart';
+import 'package:jygf/ui_layer/screens/ai_server/widgets/dialog/ai_server_dialog.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/dialog/widgets/regular_dialog.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/keep_alive_wrapper.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_app_bar.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/my_tab_bar.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/screen_background.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
@@ -57,51 +60,50 @@ class _AIArtScreenState extends State<AIArtScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MyAppBar(
-        title: 'AI绘画',
-        rightWidget: TextButton(
-          onPressed: () {
-            const MineAIRecordRoute(index: 7).push(context);
-          },
-          child: Center(
-            child: Text(
-              'wdai'.tr(),
-              style: MyTheme.white255_13,
+    return ScreenBackground(
+      child: Scaffold(
+        appBar: MyAppBar(
+          title: 'AI绘画',
+          rightWidget: TextButton(
+            onPressed: () {
+              const MineAIRecordRoute(index: 7).push(context);
+            },
+            child: Center(
+              child: Text(
+                'wdai'.tr(),
+                style: MyTheme.white255_13,
+              ),
             ),
           ),
         ),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TabBar(
-            controller: tabController,
-            tabs: _tabs.map((tab) => Tab(text: tab['title'])).toList(),
-            labelStyle: MyTheme.blue80_16,
-            unselectedLabelStyle: MyTheme.white16medium,
-            indicator: const BoxDecoration(),
-            overlayColor: WidgetStateProperty.resolveWith<Color>(
-              (_) => Colors.transparent,
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: TabBarWithView.line(
+                isCenter: true,
+                tabController: tabController,
+                titles: _tabs.map((tab) => tab['title'] as String).toList(),
+                views: [
+                  KeepAliveWrapper(
+                    child: SelectOptionsList(
+                      current: 'label_mode_form',
+                      data: _tabs[0]['data'] as List<AIDrawModeModel>,
+                    ),
+                  ),
+                  KeepAliveWrapper(
+                    child: SelectOptionsList(
+                      current: 'expert_mode_form',
+                      data: _tabs[1]['data'] as List<AIDrawModeModel>,
+                    ),
+                  ),
+                ],
+                labelStyle: MyTheme.blue80_16,
+                unselectedLabelStyle: MyTheme.white16medium,
+              ),
             ),
-          ),
-          Expanded(
-            child: TabBarView(controller: tabController, children: [
-              KeepAliveWrapper(
-                child: SelectOptionsList(
-                  current: 'label_mode_form',
-                  data: _tabs[0]['data'] as List<AIDrawModeModel>,
-                ),
-              ),
-              KeepAliveWrapper(
-                child: SelectOptionsList(
-                  current: 'expert_mode_form',
-                  data: _tabs[1]['data'] as List<AIDrawModeModel>,
-                ),
-              ),
-            ]),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -165,56 +167,9 @@ class _SelectOptionsListState extends State<SelectOptionsList> {
       MyToast.showText(text: '已使用免费次数，剩余 ${freeNumber - 1} 次');
       onSubmit();
     } else if (coins < payAiDraws) {
-      CommonUtils.showDialog(
-        context: context,
-        builder: (context) => RegularDialog(
-          buttonText: 'qwcz'.tr(),
-          cancelText: 'qx'.tr(),
-          title: 'ts'.tr(),
-          content: RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(children: [
-                TextSpan(
-                  text: '${tr('ndyebz')}\n${tr('syjb')}',
-                  style: MyTheme.white255_15,
-                ),
-                TextSpan(
-                  text: '$coins金币',
-                  style: MyTheme.orange247_15,
-                )
-              ])),
-          confirmOnTap: () {
-            //前往充值
-            context.pop();
-            const CoinRechargeRoute().push(context);
-          },
-          cancelOnTap: () {
-            //取消
-            context.pop();
-          },
-        ),
-      );
+      AiServerDialog.showBalanceNotEnough(context, coins);
     } else {
-      CommonUtils.showDialog(
-        context: context,
-        builder: (context) => RegularDialog(
-          buttonText: 'qd'.tr(),
-          cancelText: 'qx'.tr(),
-          title: 'ts'.tr(),
-          content: RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(children: [
-                TextSpan(
-                  text: '使用$payAiDraws金币进行生成？',
-                  style: MyTheme.white255_15,
-                ),
-              ])),
-          confirmOnTap: () {
-            onSubmit();
-            context.pop();
-          },
-        ),
-      );
+      AiServerDialog.showConfirmDialog(context, payAiDraws, onSubmit);
     }
   }
 
@@ -244,14 +199,13 @@ class _SelectOptionsListState extends State<SelectOptionsList> {
     MyToast.closeAllLoading();
 
     if (result.status == 1) {
-      MyToast.showText(text: '提交成功');
-      final magicValue = freeNumber - 1;
-      if (magicValue >= 0) {
-        userNotifier.setDrawValue(num: magicValue);
+      AiServerDialog.showSubmitSuccess(context);
+      final drawValue = freeNumber - 1;
+      if (drawValue >= 0) {
+        userNotifier.setDrawValue(num: drawValue);
       } else {
         userNotifier.setMoney(money: coins - payAiDraws);
       }
-      setState(() {});
     } else {
       MyToast.showText(text: result.msg ?? '提交失败');
     }
@@ -297,14 +251,7 @@ class _SelectOptionsListState extends State<SelectOptionsList> {
             alignment: Alignment.center,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(35.r),
-                gradient: const LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  colors: [
-                    Color(0xff579bf1),
-                    Color(0xff3d54f5),
-                  ],
-                )),
+                gradient: MyTheme.gradient_90_114),
             child: Text(buttonText, style: MyTheme.white16medium),
           ),
         ),
@@ -450,32 +397,36 @@ class _TextaresPromptState extends State<TextaresPrompt> {
             children: [
               Text(option.name, style: MyTheme.white14),
               SizedBox(height: 6.w),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 10.w, horizontal: 5.w),
-                decoration: BoxDecoration(
-                  color: const Color(0xff1b1c2b),
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-                child: TextField(
-                  controller: controller,
-                  maxLines: 5,
-                  style: MyTheme.white14,
-                  onChanged: (val) {
-                    final trimmed = val.trim();
-                    if (trimmed.isEmpty) {
-                      widget.onChanged(null);
-                    } else {
-                      widget.onChanged({
-                        'title': widget.model.title,
-                        'key': option.key,
-                        'value': trimmed,
-                      });
-                    }
-                  },
-                  decoration: InputDecoration(
-                    hintText: '请输入${option.name}',
-                    hintStyle: MyTheme.white14.copyWith(color: Colors.white70),
-                    border: InputBorder.none,
+              CommonUtils.dashedBorder(
+                color: MyTheme.white03Color,
+                borderRadius: BorderRadius.all(Radius.circular(8.r)),
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 10.w, horizontal: 5.w),
+                  decoration: BoxDecoration(
+                    color: MyTheme.white01Color,
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  child: TextField(
+                    controller: controller,
+                    maxLines: 5,
+                    style: MyTheme.white14,
+                    onChanged: (val) {
+                      final trimmed = val.trim();
+                      if (trimmed.isEmpty) {
+                        widget.onChanged(null);
+                      } else {
+                        widget.onChanged({
+                          'title': widget.model.title,
+                          'key': option.key,
+                          'value': trimmed,
+                        });
+                      }
+                    },
+                    decoration: InputDecoration(
+                      hintText: '请输入${option.name}',
+                      hintStyle: MyTheme.white14.copyWith(color: Colors.white70),
+                      border: InputBorder.none,
+                    ),
                   ),
                 ),
               ),
@@ -517,11 +468,8 @@ class SelectRadios extends StatelessWidget {
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 8.w),
             decoration: BoxDecoration(
-              color: const Color(0xff1b1c2b),
-              border: Border.all(
-                color: isSelected ? Colors.blue : const Color(0xff1b1c2b),
-                width: 1.w,
-              ),
+              gradient: isSelected ? MyTheme.gradient_90_114 : null,
+              color: isSelected ? null : MyTheme.white01Color,
               borderRadius: BorderRadius.circular(5.r),
             ),
             child: Text(
@@ -579,8 +527,8 @@ class SelectThumbs extends StatelessWidget {
                       color: const Color(0xff1b1c2b),
                       border: Border.all(
                         color:
-                            isSelected ? Colors.blue : const Color(0xff1b1c2b),
-                        width: 2.w,
+                            isSelected ? MyTheme.primaryColor : const Color(0xff1b1c2b),
+                        width: 1.w,
                       ),
                       borderRadius: BorderRadius.circular(3.r),
                     ),
@@ -595,7 +543,7 @@ class SelectThumbs extends StatelessWidget {
                   Text(
                     option.name,
                     style: TextStyle(
-                      color: isSelected ? Colors.blue : Colors.white,
+                      color: isSelected ? MyTheme.primaryColor : Colors.white,
                       fontSize: 12.sp,
                     ),
                   )

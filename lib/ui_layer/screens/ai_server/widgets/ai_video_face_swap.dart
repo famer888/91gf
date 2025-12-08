@@ -160,18 +160,22 @@ class _AiVideoFaceSwapState extends State<AiVideoFaceSwap> {
   Future<void> onOpenMaterialDetail(VideoFaceMaterials item) async {
     const String uploadMaxSize = '2M';
     return showModalBottomSheet(
-      backgroundColor: Colors.transparent,
+      backgroundColor:  const Color.fromRGBO(29, 2, 24, 1),
       isScrollControlled: true,
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.9,
+      ),
       context: context,
       builder: (context) => StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
         return DecoratedBox(
           decoration: BoxDecoration(
-            color: const Color(0xff0b0a21),
+            // color: const Color(0xff0b0a21),
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(10.w),
-              topRight: Radius.circular(10.w),
+              topLeft: Radius.circular(30.w),
+              topRight: Radius.circular(30.w),
             ),
+            border:const Border(top: BorderSide(color: Color.fromRGBO(154, 48, 133, 1), width: 1)),
           ),
           child: SafeArea(
             child: Padding(
@@ -230,11 +234,11 @@ class _AiVideoFaceSwapState extends State<AiVideoFaceSwap> {
                             item.thumb,
                             fit: BoxFit.fitHeight,
                             borderRadius: 6.w,
-                            backgroundColor: MyTheme.imageBgColor,
+                            backgroundColor: MyTheme.white01Color,
                           ),
                         ),
                         MyImage.asset(
-                          MyImagePaths.appFaceSwapPlay,
+                          MyImagePaths.appAiPlay,
                           width: 40.w,
                           height: 40.w,
                         ),
@@ -256,62 +260,68 @@ class _AiVideoFaceSwapState extends State<AiVideoFaceSwap> {
                         setState(() {});
                       });
                     },
-                    child: Container(
-                      width: double.infinity,
-                      height: 140.w,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(6.w)),
-                        color: const Color(0xff1b1c2b),
+                    child: CommonUtils.dashedBorder(
+                      color: MyTheme.white03Color,
+                      borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                      child: Container(
+                        width: double.infinity,
+                        height: 140.w,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                          color: MyTheme.white01Color,
+                        ),
+                        child: uploadObject.isEmpty
+                            ? Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  MyImage.asset(MyImagePaths.appAiUpload,
+                                  width: 45.w,
+                                  height: 45.w,
+                                  ),
+                                  Text('djscrwxx'.tr(context: context),
+                                      style: MyTheme.white13),
+                                  Text(
+                                      'tpdxbcg'.tr(context: context) +
+                                          uploadMaxSize,
+                                      style: TextStyle(
+                                          fontSize: 10.sp,
+                                          color: const Color(0xff9f9f9f))),
+                                ],
+                              )
+                            : Stack(
+                                children: [
+                                  MyImage.network(
+                                    uploadObject['url'],
+                                    fit: BoxFit.fitHeight,
+                                    borderRadius: 6.w,
+                                    backgroundColor: MyTheme.imageBgColor,
+                                  ),
+                                  Positioned(
+                                      top: 0,
+                                      right: 0,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            uploadObject = {};
+                                          });
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.all(5.w),
+                                          decoration: const BoxDecoration(
+                                              color: Color(0xFF3094FF)),
+                                          child: Center(
+                                              child: Icon(
+                                            Icons.delete_forever,
+                                            size: 20.sp,
+                                            color: Colors.white,
+                                          )),
+                                        ),
+                                      ))
+                                ],
+                              ),
                       ),
-                      child: uploadObject.isEmpty
-                          ? Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Icon(Icons.add,
-                                    color: const Color(0xff9f9f9f), size: 26.w),
-                                Text('djscrwxx'.tr(context: context),
-                                    style: MyTheme.white13),
-                                Text(
-                                    'tpdxbcg'.tr(context: context) +
-                                        uploadMaxSize,
-                                    style: TextStyle(
-                                        fontSize: 10.sp,
-                                        color: const Color(0xff9f9f9f))),
-                              ],
-                            )
-                          : Stack(
-                              children: [
-                                MyImage.network(
-                                  uploadObject['url'],
-                                  fit: BoxFit.fitHeight,
-                                  borderRadius: 6.w,
-                                  backgroundColor: MyTheme.imageBgColor,
-                                ),
-                                Positioned(
-                                    top: 0,
-                                    right: 0,
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          uploadObject = {};
-                                        });
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.all(5.w),
-                                        decoration: const BoxDecoration(
-                                            color: Color(0xFF3094FF)),
-                                        child: Center(
-                                            child: Icon(
-                                          Icons.delete_forever,
-                                          size: 20.sp,
-                                          color: Colors.white,
-                                        )),
-                                      ),
-                                    ))
-                              ],
-                            ),
                     ),
                   ),
                   SizedBox(height: 10.w),
@@ -455,10 +465,11 @@ class _AiVideoFaceSwapState extends State<AiVideoFaceSwap> {
                           },
                           child: Container(
                             width: 115.w,
+                            height: 40.w,
                             padding: EdgeInsets.symmetric(vertical: 10.w),
                             decoration: BoxDecoration(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(3.w)),
+                                    BorderRadius.all(Radius.circular(20.w)),
                                 gradient: MyTheme.gradient_90_114),
                             child: Center(
                               child: Text('ljzz'.tr(context: context),
@@ -597,19 +608,18 @@ class _Header extends StatelessWidget {
                   child: DecoratedBox(
                     decoration: ShapeDecoration(
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(2.w),
+                        borderRadius: BorderRadius.circular(6.w),
                       ),
                       gradient: topic.id == currentNav.id
-                          ? MyTheme.gradient_84_55
-                          : null,
-                      color: topic.id == currentNav.id
-                          ? null
-                          : const Color(0xff262631),
+                          ? MyTheme.gradient_90_114
+                          : MyTheme.gradient_90_114_15,
                     ),
                     child: Center(
                       child: Text(
                         topic.name,
-                        style: MyTheme.white13,
+                        style: topic.id == currentNav.id
+                            ? MyTheme.white255_13_B
+                            : MyTheme.white13,
                       ),
                     ),
                   ),
@@ -640,38 +650,39 @@ class VideoMaterialCard extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              SizedBox(
-                height: 250.w,
-                child: MyImage.network(
+          Expanded(
+            child: Stack(
+             fit: StackFit.expand,
+              children: [
+                MyImage.network(
                   data.thumb,
                   fit: BoxFit.cover,
                   borderRadius: 6.w,
                   backgroundColor: MyTheme.imageBgColor,
                 ),
-              ),
-              MyImage.asset(
-                MyImagePaths.appAiPlay,
-                width: 60.w,
-                height: 60.w,
-              ),
-              Positioned(
-                  right: 7.5.w,
-                  bottom: 6.w,
-                  child: Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.symmetric(horizontal: 10.w),
-                    height: 19.w,
-                    decoration: BoxDecoration(
-                      gradient: MyTheme.gradient_84_55,
-                      borderRadius: BorderRadius.all(Radius.circular(19.w)),
-                    ),
-                    child:
-                        Text('${data.coins}金币', style: MyTheme.white12medium),
-                  ))
-            ],
+                Center(
+                  child: MyImage.asset(
+                    MyImagePaths.appAiPlay,
+                    width: 50.w,
+                    height: 50.w,
+                  ),
+                ),
+                Positioned(
+                    right: 7.5.w,
+                    bottom: 6.w,
+                    child: Container(
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
+                      height: 19.w,
+                      decoration: BoxDecoration(
+                        gradient: MyTheme.gradient_90_114,
+                        borderRadius: BorderRadius.all(Radius.circular(19.w)),
+                      ),
+                      child:
+                          Text('${data.coins}金币', style: MyTheme.white12medium),
+                    ))
+              ],
+            ),
           ),
           SizedBox(height: 5.w),
           Align(

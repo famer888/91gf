@@ -7,7 +7,7 @@ import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 
 class AiServerDialog {
-  /// 确认对话框(目前好像只有魔法中使用了)
+  /// 确认对话框
   static Future<void> showConfirmDialog(BuildContext context, int coins, VoidCallback onConfirm) async {
     return CommonUtils.showDialog(
                     context: context,

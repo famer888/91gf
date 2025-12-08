@@ -81,6 +81,7 @@ class _VlogScreenState extends State<VlogScreen> with TickerProviderStateMixin {
           children: [
             TabBarWithView.image(
               selectedImgs:const [MyImagePaths.appDiscoverHkj,MyImagePaths.appDiscoverZb,MyImagePaths.appDiscoverDsp,MyImagePaths.appDiscoverYs],
+              imageHeight: 20.w,
               labelPadding: 20.w,
               tabController: _tabController,
               tabBarPadding: EdgeInsets.only(top: MyTheme.statusHeight

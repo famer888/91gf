@@ -7,6 +7,7 @@ import 'package:jygf/domain/model/member_model.dart';
 import 'package:jygf/ui_layer/router/routes.dart';
 import 'package:jygf/ui_layer/screens/ai_server/widgets/dialog/ai_server_dialog.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_app_bar.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/screen_background.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:provider/provider.dart';
 
@@ -220,7 +221,7 @@ class _AIFaceSwapState extends State<AIFaceSwap> {
                       item.thumb,
                       fit: BoxFit.fitHeight,
                       borderRadius: 6.w,
-                      backgroundColor: MyTheme.imageBgColor,
+                      backgroundColor: MyTheme.white01Color,
                     ),
                   ),
                   SizedBox(height: 10.w),
@@ -238,64 +239,68 @@ class _AIFaceSwapState extends State<AIFaceSwap> {
                         setState(() {});
                       });
                     },
-                    child: Container(
-                      width: double.infinity,
-                      height: 140.w,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(6.w)),
-                        color: const Color(0xff1b1c2b),
+                    child: CommonUtils.dashedBorder(
+                      color: MyTheme.white03Color,
+                      borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                      child: Container(
+                        width: double.infinity,
+                        height: 140.w,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                          color: MyTheme.white01Color,
+                        ),
+                        child: uploadObject.isEmpty
+                            ? Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  MyImage.asset(MyImagePaths.appAiUpload,
+                                  width: 45.w,
+                                  height: 45.w,
+                                  ),
+                                  Text('djscrwxx'.tr(context: context),
+                                      style: MyTheme.white13),
+                                  Text(
+                                      'tpdxbcg'.tr(context: context) +
+                                          uploadMaxSize,
+                                      style: TextStyle(
+                                          fontSize: 10.sp,
+                                          color: const Color(0xff9f9f9f))),
+                                ],
+                              )
+                            : Stack(
+                                children: [
+                                  MyImage.network(
+                                    uploadObject['url'],
+                                    fit: BoxFit.fitHeight,
+                                    borderRadius: 6.w,
+                                    backgroundColor: MyTheme.imageBgColor,
+                                  ),
+                                  Positioned(
+                                      top: 0,
+                                      right: 0,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            uploadObject = {};
+                                          });
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.all(5.w),
+                                          decoration: const BoxDecoration(
+                                              color: Color(0xFF3094FF)),
+                                          child: Center(
+                                              child: Icon(
+                                            Icons.delete_forever,
+                                            size: 20.sp,
+                                            color: Colors.white,
+                                          )),
+                                        ),
+                                      ))
+                                ],
+                              ),
                       ),
-                      child: uploadObject.isEmpty
-                          ? Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                MyImage.asset(MyImagePaths.appAiUpload,
-                                width: 45.w,
-                                height: 45.w,
-                                ),
-                                Text('djscrwxx'.tr(context: context),
-                                    style: MyTheme.white13),
-                                Text(
-                                    'tpdxbcg'.tr(context: context) +
-                                        uploadMaxSize,
-                                    style: TextStyle(
-                                        fontSize: 10.sp,
-                                        color: const Color(0xff9f9f9f))),
-                              ],
-                            )
-                          : Stack(
-                              children: [
-                                MyImage.network(
-                                  uploadObject['url'],
-                                  fit: BoxFit.fitHeight,
-                                  borderRadius: 6.w,
-                                  backgroundColor: MyTheme.imageBgColor,
-                                ),
-                                Positioned(
-                                    top: 0,
-                                    right: 0,
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          uploadObject = {};
-                                        });
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.all(5.w),
-                                        decoration: const BoxDecoration(
-                                            color: Color(0xFF3094FF)),
-                                        child: Center(
-                                            child: Icon(
-                                          Icons.delete_forever,
-                                          size: 20.sp,
-                                          color: Colors.white,
-                                        )),
-                                      ),
-                                    ))
-                              ],
-                            ),
                     ),
                   ),
                   SizedBox(height: 10.w),
@@ -385,10 +390,11 @@ class _AIFaceSwapState extends State<AIFaceSwap> {
                           },
                           child: Container(
                             width: 115.w,
+                            height: 40.w,
                             padding: EdgeInsets.symmetric(vertical: 10.w),
                             decoration: BoxDecoration(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(3.w)),
+                                    BorderRadius.all(Radius.circular(20.w)),
                                 gradient: MyTheme.gradient_90_114),
                             child: Center(
                               child: Text('ljzz'.tr(context: context),
@@ -409,77 +415,79 @@ class _AIFaceSwapState extends State<AIFaceSwap> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: MyAppBar(
-          title: 'AI换脸',
-          rightWidget: TextButton(
-            onPressed: () {
-              const MineAIRecordRoute(index: 3).push(context);
-            },
-            child: Center(
-              child: Text(
-                'wdai'.tr(),
-                style: MyTheme.white255_13,
+    return ScreenBackground(
+      child: Scaffold(
+          appBar: MyAppBar(
+            title: 'AI换脸',
+            rightWidget: TextButton(
+              onPressed: () {
+                const MineAIRecordRoute(index: 3).push(context);
+              },
+              child: Center(
+                child: Text(
+                  'wdai'.tr(),
+                  style: MyTheme.white255_13,
+                ),
               ),
             ),
           ),
-        ),
-        body: NestedScrollView(
-          headerSliverBuilder: (_, __) => [
-            SliverToBoxAdapter(
-              child: _Header(
-                bannersNotifier: bannersNotifier,
-                topics: topics,
-                onLinkNavTap: onChangeNav,
-                currentNav: navs,
+          body: NestedScrollView(
+            headerSliverBuilder: (_, __) => [
+              SliverToBoxAdapter(
+                child: _Header(
+                  bannersNotifier: bannersNotifier,
+                  topics: topics,
+                  onLinkNavTap: onChangeNav,
+                  currentNav: navs,
+                ),
               ),
-            ),
-          ],
-          body: TabFilterBarWithView.fillColor(
-            fillCorlor: Colors.transparent,
-            isScrollable: true,
-            // key: ValueKey(navs),
-            tabBarPadding: EdgeInsets.symmetric(
-                vertical: 10.w, horizontal: MyTheme.pagePadding),
-            tabBarHeight: 32.w,
-            labelStyle: MyTheme.white12,
-            unselectedLabelStyle: MyTheme.whiteOpacity612w400,
-            onTapTab: onChangeTabs,
-            slideChageTab: slideChageTabs,
-            titles: isInit ? titles : [],
-            views: [
-              for (final FaceSortModel nav in titles)
-                MyListView.grid(
-                    key: UniqueKey(),
-                    padding:
-                        EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-                    childAspectRatio: 170 / 250,
-                    itemBuilder: (context, item, index) => MaterrialCard(
-                          data: item,
-                          onTap: onOpenMaterialDetail,
-                          index: index,
-                        ),
-                    onFetchingMore: (currentPage, pageSize) => _getData(
-                          page: currentPage,
-                          pageSize: pageSize,
-                          value: nav.value,
-                        ))
-              // MyListView.masonryGrid(
-              //     key: UniqueKey(),
-              //     padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-              //     itemBuilder: (context, item, index) => MaterrialCard(
-              //           data: item,
-              //           onTap: onOpenMaterialDetail,
-              //           index: index,
-              //         ),
-              //     onFetchingMore: (currentPage, pageSize) => _getData(
-              //           page: currentPage,
-              //           pageSize: pageSize,
-              //           value: nav.value,
-              //         ))
             ],
-          ),
-        ));
+            body: TabFilterBarWithView.fillColor(
+              fillCorlor: Colors.transparent,
+              isScrollable: true,
+              // key: ValueKey(navs),
+              tabBarPadding: EdgeInsets.symmetric(
+                  vertical: 10.w, horizontal: MyTheme.pagePadding),
+              tabBarHeight: 32.w,
+              labelStyle: MyTheme.white12,
+              unselectedLabelStyle: MyTheme.whiteOpacity612w400,
+              onTapTab: onChangeTabs,
+              slideChageTab: slideChageTabs,
+              titles: isInit ? titles : [],
+              views: [
+                for (final FaceSortModel nav in titles)
+                  MyListView.grid(
+                      key: UniqueKey(),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+                      childAspectRatio: 170 / 250,
+                      itemBuilder: (context, item, index) => MaterrialCard(
+                            data: item,
+                            onTap: onOpenMaterialDetail,
+                            index: index,
+                          ),
+                      onFetchingMore: (currentPage, pageSize) => _getData(
+                            page: currentPage,
+                            pageSize: pageSize,
+                            value: nav.value,
+                          ))
+                // MyListView.masonryGrid(
+                //     key: UniqueKey(),
+                //     padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+                //     itemBuilder: (context, item, index) => MaterrialCard(
+                //           data: item,
+                //           onTap: onOpenMaterialDetail,
+                //           index: index,
+                //         ),
+                //     onFetchingMore: (currentPage, pageSize) => _getData(
+                //           page: currentPage,
+                //           pageSize: pageSize,
+                //           value: nav.value,
+                //         ))
+              ],
+            ),
+          )),
+    );
   }
 }
 

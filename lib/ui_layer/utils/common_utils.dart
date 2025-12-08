@@ -1548,7 +1548,12 @@ class _DashedBorderPainter extends CustomPainter {
 
     final Path path = Path()
       ..addRRect(RRect.fromRectAndCorners(
-        Rect.fromLTWH(0, 0, size.width, size.height),
+        Rect.fromLTWH(
+          strokeWidth / 2,
+          strokeWidth / 2,
+          size.width - strokeWidth,
+          size.height - strokeWidth,
+        ),
         topLeft: borderRadius.topLeft,
         topRight: borderRadius.topRight,
         bottomLeft: borderRadius.bottomLeft,

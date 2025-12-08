@@ -6,6 +6,7 @@ import 'package:jygf/ui_layer/router/routes.dart';
 import 'package:jygf/ui_layer/screens/ai_server/widgets/dialog/ai_server_dialog.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_app_bar.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/screen_background.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
@@ -99,173 +100,175 @@ class _AIOffDeRobeState extends State<AIOffDeRobe> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: MyAppBar(
-          title: 'AI去衣',
-          rightWidget: TextButton(
-            onPressed: () {
-              const MineAIRecordRoute(index: 1).push(context);
-            },
-            child: Center(
-              child: Text(
-                'wdai'.tr(),
-                style: MyTheme.white255_13,
+    return ScreenBackground(
+      child: Scaffold(
+          appBar: MyAppBar(
+            title: 'AI去衣',
+            rightWidget: TextButton(
+              onPressed: () {
+                const MineAIRecordRoute(index: 1).push(context);
+              },
+              child: Center(
+                child: Text(
+                  'wdai'.tr(),
+                  style: MyTheme.white255_13,
+                ),
               ),
             ),
           ),
-        ),
-        body: CustomScrollView(slivers: [
-          MyIndicator(onRefresh: _initData),
-          SliverList.list(children: [
-            SizedBox(height: 10.w),
-            Padding(
-              padding: piaddings,
-              child: GestureDetector(
-                onTap: imagePickerAssets,
-                child: Container(
-                  width: double.infinity,
-                  height: 140.w,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(6.w)),
-                    color: const Color(0xff1b1c2b),
-                  ),
-                  child: uploadObject.isEmpty
-                      ? Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                           MyImage.asset(
-                            MyImagePaths.appAiUploadIcon,
-                            width: 50.w,
-                            height: 50.w,
-                          ),
-                            Text('djscrwxx'.tr(context: context),
-                                style: MyTheme.white13),
-                            Text('tpdxbcg'.tr(context: context) + uploadMaxSize,
-                                style: TextStyle(
-                                    fontSize: 10.sp,
-                                    color: const Color(0xff9f9f9f))),
-                          ],
-                        )
-                      : Stack(
-                          children: [
-                            MyImage.network(
-                              uploadObject['url'],
-                              fit: BoxFit.fitHeight,
-                              borderRadius: 6.w,
-                              backgroundColor: MyTheme.imageBgColor,
+          body: CustomScrollView(slivers: [
+            MyIndicator(onRefresh: _initData),
+            SliverList.list(children: [
+              SizedBox(height: 10.w),
+              Padding(
+                padding: piaddings,
+                child: GestureDetector(
+                  onTap: imagePickerAssets,
+                  child: Container(
+                    width: double.infinity,
+                    height: 140.w,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                      color: const Color(0xff1b1c2b),
+                    ),
+                    child: uploadObject.isEmpty
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                             MyImage.asset(
+                              MyImagePaths.appAiUploadIcon,
+                              width: 50.w,
+                              height: 50.w,
                             ),
-                            Positioned(
-                                top: 0,
-                                right: 0,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      uploadObject = {};
-                                    });
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.all(5.w),
-                                    decoration: const BoxDecoration(
-                                        color: Color(0xFF3094FF)),
-                                    child: Center(
-                                        child: Icon(
-                                      Icons.delete_forever,
-                                      size: 20.sp,
-                                      color: Colors.white,
-                                    )),
-                                  ),
-                                ))
+                              Text('djscrwxx'.tr(context: context),
+                                  style: MyTheme.white13),
+                              Text('tpdxbcg'.tr(context: context) + uploadMaxSize,
+                                  style: TextStyle(
+                                      fontSize: 10.sp,
+                                      color: const Color(0xff9f9f9f))),
+                            ],
+                          )
+                        : Stack(
+                            children: [
+                              MyImage.network(
+                                uploadObject['url'],
+                                fit: BoxFit.fitHeight,
+                                borderRadius: 6.w,
+                                backgroundColor: MyTheme.imageBgColor,
+                              ),
+                              Positioned(
+                                  top: 0,
+                                  right: 0,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        uploadObject = {};
+                                      });
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.all(5.w),
+                                      decoration: const BoxDecoration(
+                                          color: Color(0xFF3094FF)),
+                                      child: Center(
+                                          child: Icon(
+                                        Icons.delete_forever,
+                                        size: 20.sp,
+                                        color: Colors.white,
+                                      )),
+                                    ),
+                                  ))
+                            ],
+                          ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10.w),
+              Center(
+                  child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('clyzzpdfy'.tr(context: context), style: MyTheme.white14),
+                  Text('$stripCoinsValue', style: MyTheme.blue80_14),
+                  Text('jb'.tr(context: context), style: MyTheme.white14),
+                  Text('，', style: MyTheme.white14),
+                  Selector<UserNotifier, int>(
+                      selector: (_, config) => config.member.stripValue,
+                      builder: (context, number, child) {
+                        return Row(
+                          children: [
+                            Text('nymfcs'.tr(context: context),
+                                style: MyTheme.white14),
+                            Text('$number', style: MyTheme.blue80_14),
+                            Text('ci'.tr(context: context),
+                                style: MyTheme.white14)
                           ],
-                        ),
+                        );
+                      })
+                ],
+              )),
+              SizedBox(height: 10.w),
+              Center(
+                child: GestureDetector(
+                  onTap: onSubmitOffDerobe,
+                  child: Container(
+                    width: 150.w,
+                    padding:
+                        EdgeInsets.symmetric(vertical: 10.w, horizontal: 3.w),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(26.w)),
+                        gradient: MyTheme.gradient_90_114),
+                    child: Center(
+                        child: Text(
+                      'shengc'.tr(context: context),
+                      style: MyTheme.white15bold,
+                    )),
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 10.w),
-            Center(
-                child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('clyzzpdfy'.tr(context: context), style: MyTheme.white14),
-                Text('$stripCoinsValue', style: MyTheme.blue80_14),
-                Text('jb'.tr(context: context), style: MyTheme.white14),
-                Text('，', style: MyTheme.white14),
-                Selector<UserNotifier, int>(
-                    selector: (_, config) => config.member.stripValue,
-                    builder: (context, number, child) {
-                      return Row(
-                        children: [
-                          Text('nymfcs'.tr(context: context),
-                              style: MyTheme.white14),
-                          Text('$number', style: MyTheme.blue80_14),
-                          Text('ci'.tr(context: context),
-                              style: MyTheme.white14)
-                        ],
-                      );
-                    })
-              ],
-            )),
-            SizedBox(height: 10.w),
-            Center(
-              child: GestureDetector(
-                onTap: onSubmitOffDerobe,
-                child: Container(
-                  width: 150.w,
-                  padding:
-                      EdgeInsets.symmetric(vertical: 10.w, horizontal: 3.w),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(26.w)),
-                      gradient: MyTheme.gradient_90_114),
-                  child: Center(
-                      child: Text(
-                    'shengc'.tr(context: context),
-                    style: MyTheme.white15bold,
-                  )),
+              SizedBox(height: 20.w),
+              Padding(
+                padding: piaddings,
+                child: Column(
+                  children: [
+                    SizedBox(height: 10.w),
+                    TipText(content: 'zyss'.tr(context: context)),
+                    TipText(content: 'zyss1'.tr(context: context)),
+                    TipText(content: 'zyss2'.tr(context: context)),
+                    TipText(content: 'zyss3'.tr(context: context)),
+                    TipText(content: 'zyss4'.tr(context: context)),
+                    TipText(content: 'zyss5'.tr(context: context)),
+                  ],
                 ),
               ),
-            ),
-            SizedBox(height: 20.w),
-            Padding(
-              padding: piaddings,
-              child: Column(
-                children: [
-                  SizedBox(height: 10.w),
-                  TipText(content: 'zyss'.tr(context: context)),
-                  TipText(content: 'zyss1'.tr(context: context)),
-                  TipText(content: 'zyss2'.tr(context: context)),
-                  TipText(content: 'zyss3'.tr(context: context)),
-                  TipText(content: 'zyss4'.tr(context: context)),
-                  TipText(content: 'zyss5'.tr(context: context)),
-                ],
-              ),
-            ),
-            SizedBox(height: 10.w),
-            Padding(
-              padding: piaddings,
-              child: Row(
-                children: [
-                  Text('sl'.tr(context: context), style: MyTheme.white15),
-                  const SizedBox.shrink(),
-                ],
-              ),
-            ),
-            SizedBox(height: 10.w),
-            Padding(
+              SizedBox(height: 10.w),
+              Padding(
                 padding: piaddings,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    PictureCard(
-                        thumb: MyImagePaths.appStritpBefore,
-                        text: 'quyq'.tr(context: context)),
-                    PictureCard(
-                        thumb: MyImagePaths.appStritpAfter,
-                        text: 'quyh'.tr(context: context))
+                    Text('sl'.tr(context: context), style: MyTheme.white15),
+                    const SizedBox.shrink(),
                   ],
-                ))
-          ])
-        ]));
+                ),
+              ),
+              SizedBox(height: 10.w),
+              Padding(
+                  padding: piaddings,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      PictureCard(
+                          thumb: MyImagePaths.appStritpBefore,
+                          text: 'quyq'.tr(context: context)),
+                      PictureCard(
+                          thumb: MyImagePaths.appStritpAfter,
+                          text: 'quyh'.tr(context: context))
+                    ],
+                  ))
+            ])
+          ])),
+    );
   }
 }
 

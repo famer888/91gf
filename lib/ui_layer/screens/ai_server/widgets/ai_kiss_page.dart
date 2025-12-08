@@ -7,6 +7,7 @@ import 'package:jygf/ui_layer/screens/ai_server/widgets/dialog/ai_server_dialog.
 import 'package:jygf/ui_layer/screens/common_widgets/dialog/widgets/regular_dialog.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_app_bar.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/screen_background.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
@@ -118,110 +119,112 @@ class _AIKissPageState extends State<AIKissPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: MyAppBar(
-          title: 'AI接吻',
-          rightWidget: TextButton(
-            onPressed: () {
-              const MineAIRecordRoute(index: 2).push(context);
-            },
-            child: Center(
-              child: Text(
-                'wdai'.tr(),
-                style: MyTheme.white255_13,
-              ),
-            ),
-          ),
-        ),
-        body: CustomScrollView(slivers: [
-          MyIndicator(onRefresh: _initData),
-          SliverList.list(children: [
-            SizedBox(height: 10.w),
-            Padding(
-              padding: paddings,
-              child: Row(
-                children: [
-                  Expanded(child: _buildUploadTile(isLeft: true)),
-                  SizedBox(width: 10.w),
-                  Expanded(child: _buildUploadTile(isLeft: false)),
-                ],
-              ),
-            ),
-            SizedBox(height: 10.w),
-            Center(
-                child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('clyzzpdfy'.tr(context: context), style: MyTheme.white14),
-                Text('$kissCoinsValue', style: MyTheme.blue80_14),
-                Text('jb'.tr(context: context), style: MyTheme.white14),
-                Text('，', style: MyTheme.white14),
-                Selector<UserNotifier, int>(
-                    selector: (_, config) => config.member.aiKissValue,
-                    builder: (context, number, child) {
-                      return Row(
-                        children: [
-                          Text('nymfcs'.tr(context: context),
-                              style: MyTheme.white14),
-                          Text('$number', style: MyTheme.blue80_14),
-                          Text('ci'.tr(context: context),
-                              style: MyTheme.white14)
-                        ],
-                      );
-                    })
-              ],
-            )),
-            SizedBox(height: 10.w),
-            Center(
-              child: GestureDetector(
-                onTap: _onSubmitKiss,
-                child: Container(
-                  width: 150.w,
-                  padding:
-                      EdgeInsets.symmetric(vertical: 10.w, horizontal: 3.w),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(26.w)),
-                      gradient: MyTheme.gradient_90_114),
-                  child: Center(
-                      child: Text(
-                    'shengc'.tr(context: context),
-                    style: MyTheme.white15bold,
-                  )),
+    return ScreenBackground(
+      child: Scaffold(
+          appBar: MyAppBar(
+            title: 'AI接吻',
+            rightWidget: TextButton(
+              onPressed: () {
+                const MineAIRecordRoute(index: 2).push(context);
+              },
+              child: Center(
+                child: Text(
+                  'wdai'.tr(),
+                  style: MyTheme.white255_13,
                 ),
               ),
             ),
-            SizedBox(height: 20.w),
-            Padding(
-              padding: paddings,
-              child: Column(
-                children: [
-                  SizedBox(height: 10.w),
-                  TipText(content: 'zyss'.tr(context: context)),
-                  TipText(content: 'zyss1'.tr(context: context)),
-                  TipText(content: 'zyss2'.tr(context: context)),
-                  TipText(content: 'zyss3'.tr(context: context)),
-                  TipText(content: 'zyss4'.tr(context: context)),
-                  TipText(content: 'zyss5'.tr(context: context)),
-                ],
-              ),
-            ),
-            SizedBox(height: 10.w),
-            Padding(
-              padding: paddings,
-              child: Row(
-                children: [
-                  Text('sl'.tr(context: context), style: MyTheme.white15),
-                  const SizedBox.shrink(),
-                ],
-              ),
-            ),
-            SizedBox(height: 10.w),
-            Padding(
+          ),
+          body: CustomScrollView(slivers: [
+            MyIndicator(onRefresh: _initData),
+            SliverList.list(children: [
+              SizedBox(height: 10.w),
+              Padding(
                 padding: paddings,
-                child: const PictureCard(
-                    thumb: MyImagePaths.appKissAfter, text: '生成后'))
-          ])
-        ]));
+                child: Row(
+                  children: [
+                    Expanded(child: _buildUploadTile(isLeft: true)),
+                    SizedBox(width: 10.w),
+                    Expanded(child: _buildUploadTile(isLeft: false)),
+                  ],
+                ),
+              ),
+              SizedBox(height: 10.w),
+              Center(
+                  child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('clyzzpdfy'.tr(context: context), style: MyTheme.white14),
+                  Text('$kissCoinsValue', style: MyTheme.blue80_14),
+                  Text('jb'.tr(context: context), style: MyTheme.white14),
+                  Text('，', style: MyTheme.white14),
+                  Selector<UserNotifier, int>(
+                      selector: (_, config) => config.member.aiKissValue,
+                      builder: (context, number, child) {
+                        return Row(
+                          children: [
+                            Text('nymfcs'.tr(context: context),
+                                style: MyTheme.white14),
+                            Text('$number', style: MyTheme.blue80_14),
+                            Text('ci'.tr(context: context),
+                                style: MyTheme.white14)
+                          ],
+                        );
+                      })
+                ],
+              )),
+              SizedBox(height: 10.w),
+              Center(
+                child: GestureDetector(
+                  onTap: _onSubmitKiss,
+                  child: Container(
+                    width: 150.w,
+                    padding:
+                        EdgeInsets.symmetric(vertical: 10.w, horizontal: 3.w),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(26.w)),
+                        gradient: MyTheme.gradient_90_114),
+                    child: Center(
+                        child: Text(
+                      'shengc'.tr(context: context),
+                      style: MyTheme.white15bold,
+                    )),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20.w),
+              Padding(
+                padding: paddings,
+                child: Column(
+                  children: [
+                    SizedBox(height: 10.w),
+                    TipText(content: 'zyss'.tr(context: context)),
+                    TipText(content: 'zyss1'.tr(context: context)),
+                    TipText(content: 'zyss2'.tr(context: context)),
+                    TipText(content: 'zyss3'.tr(context: context)),
+                    TipText(content: 'zyss4'.tr(context: context)),
+                    TipText(content: 'zyss5'.tr(context: context)),
+                  ],
+                ),
+              ),
+              SizedBox(height: 10.w),
+              Padding(
+                padding: paddings,
+                child: Row(
+                  children: [
+                    Text('sl'.tr(context: context), style: MyTheme.white15),
+                    const SizedBox.shrink(),
+                  ],
+                ),
+              ),
+              SizedBox(height: 10.w),
+              Padding(
+                  padding: paddings,
+                  child: const PictureCard(
+                      thumb: MyImagePaths.appKissAfter, text: '生成后'))
+            ])
+          ])),
+    );
   }
 
   Widget _buildUploadTile({required bool isLeft}) {
