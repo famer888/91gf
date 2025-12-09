@@ -85,7 +85,7 @@ class _CommentViewState extends State<CommentView> {
           Expanded(
             child: MyListView.list(
               padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-              itemBuilder: (context, item, index) => _CommentTile(data: item),
+              itemBuilder: (context, item, index) => CommentTile(data: item),
               onFetchingMore: (currentPage, pageSize) =>
                   _getData(currentPage: currentPage, limit: pageSize),
             ),
@@ -105,8 +105,8 @@ class _CommentViewState extends State<CommentView> {
   }
 }
 
-class _CommentTile extends StatelessWidget {
-  const _CommentTile({required this.data});
+class CommentTile extends StatelessWidget {
+  const CommentTile({required this.data});
   final VideoCommentListModel data;
 
   @override

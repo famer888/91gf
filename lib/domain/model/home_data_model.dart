@@ -169,6 +169,11 @@ class Config {
     this.gameTopNav,
     this.gameSortNav,
     this.gameTagSortNav,
+    this.acgNav,
+    this.comicTypeNav,
+    this.novelNav,
+    this.novelSort,
+    this.novelTypeNav,
     this.postDetailAds,
     this.buoy,
     this.forumTips,
@@ -274,6 +279,11 @@ class Config {
   final List<BitNavModel>? gameTopNav; //黄游分类
   final List<BitNavModel>? gameSortNav; //黄游排序
   final List<BitNavModel>? gameTagSortNav; //黄游tag排序
+  final List<BitNavModel>? acgNav; //ACG - nav
+  final List<ComicTypeNav>? comicTypeNav; //漫画分类  
+  final List<BitNavModel>? novelNav; //小说分类
+  final List<BitNavModel>? novelSort; //小说排序
+  final List<ComicTypeNav>? novelTypeNav; //小说分类排序条件
   final List<FaceNavigatorModel> seedTopNav;
   final List<RankNavigatorModel>? rankTopNav;
   final List<RankNavigatorModel>? rankCycleNav;
@@ -491,6 +501,16 @@ class Config {
             json['video_face_sort_nav']
                     ?.map((x) => VideoFaceSortModel.fromJson(x)) ??
                 []),
+        acgNav: List<BitNavModel>.from(
+            json['acg_nav']?.map((x) => BitNavModel.fromJson(x)) ?? []),
+       comicTypeNav: List<ComicTypeNav>.from(
+            json['comic_type_nav']?.map((x) => ComicTypeNav.fromJson(x)) ?? []),
+        novelNav: List<BitNavModel>.from(
+            json['novel_nav']?.map((x) => BitNavModel.fromJson(x)) ?? []),
+        novelSort: List<BitNavModel>.from(
+            json['novel_sort']?.map((x) => BitNavModel.fromJson(x)) ?? []),
+        novelTypeNav: List<ComicTypeNav>.from(
+            json['novel_type_nav']?.map((x) => ComicTypeNav.fromJson(x)) ?? []),
       );
 
   Map<String, dynamic> toJson() => {
@@ -547,6 +567,7 @@ class Config {
         'game_top_nav': gameTopNav?.map((e) => e).toList() ?? [],
         'game_sort_nav': gameSortNav?.map((e) => e).toList() ?? [],
         'game_tag_sort_nav': gameTagSortNav?.map((e) => e).toList() ?? [],
+        'comic_type_nav': comicTypeNav?.map((e) => e).toList() ?? [],
         'live_top_nav': liveTopNav.map((e) => e).toList(),
         'community_nav': communityNav.map((e) => e).toList(),
         'face_top_nav': faceTopNav?.map((e) => e).toList() ?? [],
@@ -587,6 +608,10 @@ class Config {
         'ai_audio_font_ct': aiAudioFontCt,
         'video_face_top_nav': videoFaceTopNav?.map((e) => e).toList() ?? [],
         'video_face_sort_nav': videoFaceSortNav?.map((e) => e).toList() ?? [],
+        'acg_nav': acgNav?.map((e) => e).toList() ?? [],
+        'novel_nav': novelNav?.map((e) => e).toList() ?? [],
+        'novel_sort': novelSort?.map((e) => e).toList() ?? [],
+        'novel_type_nav': novelTypeNav?.map((e) => e).toList() ?? [],
       };
 }
 
@@ -786,4 +811,24 @@ class NavPrependModel {
         'sort': sort,
         'value': value,
       };
+}
+
+
+//漫画排序条件
+class ComicTypeNav {
+  ComicTypeNav({
+    required this.items,
+    required this.value,
+    required this.title,
+  });
+
+  final List<BitNavModel> items;
+  final String value;
+  final String title;
+
+  factory ComicTypeNav.fromJson(Map<String, dynamic> json) => ComicTypeNav(
+        items: List.from(json['items'].map((x) => BitNavModel.fromJson(x))),
+        value: json['value'],
+        title: json['title'],
+      );
 }

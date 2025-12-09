@@ -18,8 +18,10 @@ import 'package:jygf/data_layer/data_source/remote/aiaudio_service.dart';
 import 'package:jygf/data_layer/data_source/remote/asmr_service.dart';
 import 'package:jygf/data_layer/data_source/remote/aikiss_service.dart';
 import 'package:jygf/data_layer/data_source/remote/cartoon_service.dart';
+import 'package:jygf/data_layer/data_source/remote/comic_service.dart';
 import 'package:jygf/data_layer/data_source/remote/game_service.dart';
 import 'package:jygf/data_layer/data_source/remote/live_service.dart';
+import 'package:jygf/data_layer/data_source/remote/novel_service.dart';
 import 'package:jygf/data_layer/data_source/remote/rank_service.dart';
 import 'package:jygf/data_layer/repo/r2_uploader.dart';
 import 'package:jygf/domain/model/ai/ai_draw_model.dart';
@@ -27,8 +29,10 @@ import 'package:jygf/domain/model/ai/ai_draw_record_model.dart';
 import 'package:jygf/domain/model/ai/ai_magic_model.dart';
 import 'package:jygf/domain/model/ai/ai_magic_record_model.dart';
 import 'package:jygf/domain/model/ai_model.dart';
+import 'package:jygf/domain/model/comic_model.dart';
 import 'package:jygf/domain/model/live_model.dart';
 import 'package:jygf/domain/model/live_video_detail_model.dart';
+import 'package:jygf/domain/model/novel_model.dart';
 import 'package:jygf/domain/model/vlog_model.dart';
 import 'package:jygf/domain/model/voice_model.dart';
 import 'package:jygf/domain/remote_domain/domains/aidraw.dart';
@@ -37,9 +41,11 @@ import 'package:jygf/domain/remote_domain/domains/ainovel.dart';
 import 'package:jygf/domain/remote_domain/domains/asmr.dart';
 import 'package:jygf/domain/remote_domain/domains/aiaudio.dart';
 import 'package:jygf/domain/remote_domain/domains/cartoon.dart';
+import 'package:jygf/domain/remote_domain/domains/comic.dart';
 import 'package:jygf/domain/remote_domain/domains/game.dart';
 
 import 'package:jygf/domain/remote_domain/domains/live.dart';
+import 'package:jygf/domain/remote_domain/domains/novel.dart';
 import 'package:jygf/domain/remote_domain/domains/rank.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -152,6 +158,8 @@ part 'mixin/aidraw_mixin.dart';
 part 'mixin/ainovel_mixin.dart';
 part 'mixin/aiaudio_mixin.dart';
 part 'mixin/aikiss_mixin.dart';
+part 'mixin/comic_mixin.dart';
+part 'mixin/novel_mixin.dart';
 
 class AppRepo extends _BaseAppRepo
     with
@@ -182,7 +190,9 @@ class AppRepo extends _BaseAppRepo
         _AIDraw,
         _AIKiss,
         _Asmr,
-        _Rank {}
+        _Rank,
+        _Comic,
+        _Novel {}
 
 abstract class _BaseAppRepo implements AppDomain {
   late final _homeService = HomeService(_apiDio);
@@ -213,6 +223,8 @@ abstract class _BaseAppRepo implements AppDomain {
   late final _rankService = RankService(_apiDio);
   late final _aidrawService = AIDrawService(_apiDio);
   late final _aikissService = AIKissService(_apiDio);
+  late final _comicService = ComicService(_apiDio);
+  late final _novelService = NovelService(_apiDio);
 
   final _cacheManager = _CacheManager();
 

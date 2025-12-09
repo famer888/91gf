@@ -1,8 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jygf/domain/model/ai/ai_magic_model.dart';
+import 'package:jygf/domain/model/comic_model.dart';
+import 'package:jygf/domain/model/novel_model.dart';
 import 'package:jygf/domain/model/soul_group_model.dart';
 import 'package:jygf/domain/model/voice_model.dart';
+import 'package:jygf/ui_layer/screens/acg/comic/comic_chapters/comic_chapters_content.dart';
+import 'package:jygf/ui_layer/screens/acg/comic/comic_detail/screen.dart';
+import 'package:jygf/ui_layer/screens/acg/comic/comic_part_content/comic_end_content.dart';
+import 'package:jygf/ui_layer/screens/acg/comic/comic_part_content/comic_more_content.dart';
+import 'package:jygf/ui_layer/screens/acg/comic/comic_part_content/comic_new_content.dart';
+import 'package:jygf/ui_layer/screens/acg/comic/comic_part_content/comic_rank_content.dart';
+import 'package:jygf/ui_layer/screens/acg/comic/comic_part_content/comic_sort_content.dart';
+import 'package:jygf/ui_layer/screens/acg/comic/comic_part_content/comic_updating_content.dart';
+import 'package:jygf/ui_layer/screens/acg/comic/comic_reader/comic_reader_content.dart';
+import 'package:jygf/ui_layer/screens/acg/novel/novel%20_reader/novel_reader_content.dart';
+import 'package:jygf/ui_layer/screens/acg/novel/novel_chapters/novel_chapters_content.dart';
+import 'package:jygf/ui_layer/screens/acg/novel/novel_detail/screen.dart';
+import 'package:jygf/ui_layer/screens/acg/novel/novel_part_content/novel_end_content.dart';
+import 'package:jygf/ui_layer/screens/acg/novel/novel_part_content/novel_more_content.dart';
+import 'package:jygf/ui_layer/screens/acg/novel/novel_part_content/novel_new_content.dart';
+import 'package:jygf/ui_layer/screens/acg/novel/novel_part_content/novel_sort_content.dart';
+import 'package:jygf/ui_layer/screens/acg/novel/novel_part_content/novel_updating_content.dart';
+import 'package:jygf/ui_layer/screens/acg/novel/novel_voice_player/novel_voice_player_content.dart';
 import 'package:jygf/ui_layer/screens/ai_server/screen.dart';
 import 'package:jygf/ui_layer/screens/ai_server/widgets/detail/ai_magic_detail.dart';
 import 'package:jygf/ui_layer/screens/ai_server/widgets/ai_magic.dart';
@@ -1411,5 +1431,293 @@ class AIMagicDetailRoute extends GoRouteData {
   Page<void> buildPage(BuildContext context, GoRouterState state) {
     return CommonUtils.buildSlideTransitionPage(
         state: state, child: AIMagicDetail(data: $extra));
+  }  
+}
+
+
+@TypedGoRoute<MoreComicRoute>(path: AppRouterPaths.moreComic)
+class MoreComicRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const MoreComicRoute(this.$extra);
+
+  final RecComicModel $extra;
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CommonUtils.buildSlideTransitionPage(
+        state: state, child: ComicMoreContent(data: $extra));
+  }
+}
+
+@TypedGoRoute<ComicSortRoute>(path: AppRouterPaths.sortComic)
+class ComicSortRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const ComicSortRoute();
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CommonUtils.buildSlideTransitionPage(
+        state: state, child: const ComicSortContent());
+  }
+}
+
+@TypedGoRoute<ComicNewRoute>(path: AppRouterPaths.newComic)
+class ComicNewRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const ComicNewRoute();
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CommonUtils.buildSlideTransitionPage(
+        state: state, child: const ComicNewContent());
+  }
+}
+
+@TypedGoRoute<ComicEndRoute>(path: AppRouterPaths.endComic)
+class ComicEndRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const ComicEndRoute();
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CommonUtils.buildSlideTransitionPage(
+        state: state, child: const ComicEndContent());
+  }
+}
+
+@TypedGoRoute<ComicUpdatingRoute>(path: AppRouterPaths.updatingComic)
+class ComicUpdatingRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const ComicUpdatingRoute();
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CommonUtils.buildSlideTransitionPage(
+        state: state, child: const ComicUpdatingContent());
+  }
+}
+
+@TypedGoRoute<ComicRankRoute>(path: AppRouterPaths.rankComic)
+class ComicRankRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const ComicRankRoute();
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CommonUtils.buildSlideTransitionPage(
+        state: state, child: const ComicRankContent());
+  }
+}
+
+@TypedGoRoute<ComicDetailRoute>(path: AppRouterPaths.comicDetail)
+class ComicDetailRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const ComicDetailRoute(this.$extra);
+
+  final String $extra;
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.removeDuplicatePush(location, extra: $extra);
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CommonUtils.buildSlideTransitionPage(
+        state: state, child: ComicDetalScreen(id: $extra));
+  }
+}
+
+@TypedGoRoute<ComicReaderRoute>(path: AppRouterPaths.comicReader)
+class ComicReaderRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const ComicReaderRoute({
+    required this.$extra,
+    required this.chapterIndex,
+  });
+
+  final ComicDetailModel $extra;
+  final int chapterIndex;
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CommonUtils.buildSlideTransitionPage(
+        state: state,
+        child: ComicReaderContent(data: $extra, chapterIndex: chapterIndex));
+  }
+}
+
+@TypedGoRoute<ComicChaptersRoute>(path: AppRouterPaths.comicChapters)
+class ComicChaptersRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const ComicChaptersRoute(this.$extra);
+
+  final ComicDetailModel $extra;
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CommonUtils.buildSlideTransitionPage(
+        state: state, child: ComicChaptersContent(data: $extra));
+  }
+}
+
+@TypedGoRoute<NovelDetailRoute>(path: AppRouterPaths.novelDetail)
+class NovelDetailRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const NovelDetailRoute(this.$extra);
+
+  final String $extra;
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.removeDuplicatePush(location, extra: $extra);
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CommonUtils.buildSlideTransitionPage(
+        state: state, child: NovelDetalScreen(id: $extra));
+  }
+}
+
+@TypedGoRoute<NovelChaptersRoute>(path: AppRouterPaths.novelChapters)
+class NovelChaptersRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const NovelChaptersRoute(this.$extra);
+
+  final NovelDetailModel $extra;
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CommonUtils.buildSlideTransitionPage(
+        state: state, child: NovelChaptersContent(data: $extra));
+  }
+}
+
+@TypedGoRoute<NovelReaderRoute>(path: AppRouterPaths.novelReader)
+class NovelReaderRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const NovelReaderRoute({
+    required this.$extra,
+    required this.chapterIndex,
+  });
+
+  final NovelDetailModel $extra;
+  final int chapterIndex;
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CommonUtils.buildSlideTransitionPage(
+        state: state,
+        child: NovelReaderContent(data: $extra, chapterIndex: chapterIndex));
+  }
+}
+
+@TypedGoRoute<NovelSortRoute>(path: AppRouterPaths.novelSort)
+class NovelSortRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const NovelSortRoute();
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CommonUtils.buildSlideTransitionPage(
+        state: state, child: const NovelSortContent());
+  }
+}
+
+@TypedGoRoute<NovelNewRoute>(path: AppRouterPaths.novelNew)
+class NovelNewRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const NovelNewRoute();
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CommonUtils.buildSlideTransitionPage(
+        state: state, child: const NovelNewContent());
+  }
+}
+
+@TypedGoRoute<NovelEndRoute>(path: AppRouterPaths.novelEnd)
+class NovelEndRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const NovelEndRoute();
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CommonUtils.buildSlideTransitionPage(
+        state: state, child: const NovelEndContent());
+  }
+}
+
+@TypedGoRoute<NovelUpdatingRoute>(path: AppRouterPaths.noveUpdating)
+class NovelUpdatingRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const NovelUpdatingRoute();
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CommonUtils.buildSlideTransitionPage(
+        state: state, child: const NovelUpdatingContent());
+  }
+}
+
+@TypedGoRoute<MoreNovelRoute>(path: AppRouterPaths.moreNovel)
+class MoreNovelRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const MoreNovelRoute(this.$extra);
+
+  final RecNovelModel $extra;
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CommonUtils.buildSlideTransitionPage(
+        state: state, child: NovelMoreContent(data: $extra));
+  }
+}
+
+@TypedGoRoute<NovelVoicePalyerContentRoute>(
+    path: AppRouterPaths.novelVoicePlayer)
+class NovelVoicePalyerContentRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const NovelVoicePalyerContentRoute();
+
+  // final VoiceModel $extra;
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CommonUtils.buildSlideTransitionPage(
+        state: state, child: NovelVoicePlayerContent());
   }
 }

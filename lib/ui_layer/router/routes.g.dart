@@ -83,6 +83,24 @@ List<RouteBase> get $appRoutes => [
       $localVideoRoute,
       $localVoiceRoute,
       $aIMagicDetailRoute,
+      $moreComicRoute,
+      $comicSortRoute,
+      $comicNewRoute,
+      $comicEndRoute,
+      $comicUpdatingRoute,
+      $comicRankRoute,
+      $comicDetailRoute,
+      $comicReaderRoute,
+      $comicChaptersRoute,
+      $novelDetailRoute,
+      $novelChaptersRoute,
+      $novelReaderRoute,
+      $novelSortRoute,
+      $novelNewRoute,
+      $novelEndRoute,
+      $novelUpdatingRoute,
+      $moreNovelRoute,
+      $novelVoicePalyerContentRoute,
     ];
 
 RouteBase get $welcomeRoute => GoRouteData.$route(
@@ -2169,4 +2187,467 @@ extension $AIMagicDetailRouteExtension on AIMagicDetailRoute {
 
   void replace(BuildContext context) =>
       context.replace(location, extra: $extra);
+}
+
+RouteBase get $moreComicRoute => GoRouteData.$route(
+      path: '/moreComic',
+      parentNavigatorKey: MoreComicRoute.$parentNavigatorKey,
+      factory: $MoreComicRouteExtension._fromState,
+    );
+
+extension $MoreComicRouteExtension on MoreComicRoute {
+  static MoreComicRoute _fromState(GoRouterState state) => MoreComicRoute(
+        state.extra as RecComicModel,
+      );
+
+  String get location => GoRouteData.$location(
+        '/moreComic',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
+
+RouteBase get $comicSortRoute => GoRouteData.$route(
+      path: '/sortComic',
+      parentNavigatorKey: ComicSortRoute.$parentNavigatorKey,
+      factory: $ComicSortRouteExtension._fromState,
+    );
+
+extension $ComicSortRouteExtension on ComicSortRoute {
+  static ComicSortRoute _fromState(GoRouterState state) =>
+      const ComicSortRoute();
+
+  String get location => GoRouteData.$location(
+        '/sortComic',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $comicNewRoute => GoRouteData.$route(
+      path: '/newComic',
+      parentNavigatorKey: ComicNewRoute.$parentNavigatorKey,
+      factory: $ComicNewRouteExtension._fromState,
+    );
+
+extension $ComicNewRouteExtension on ComicNewRoute {
+  static ComicNewRoute _fromState(GoRouterState state) => const ComicNewRoute();
+
+  String get location => GoRouteData.$location(
+        '/newComic',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $comicEndRoute => GoRouteData.$route(
+      path: '/endComic',
+      parentNavigatorKey: ComicEndRoute.$parentNavigatorKey,
+      factory: $ComicEndRouteExtension._fromState,
+    );
+
+extension $ComicEndRouteExtension on ComicEndRoute {
+  static ComicEndRoute _fromState(GoRouterState state) => const ComicEndRoute();
+
+  String get location => GoRouteData.$location(
+        '/endComic',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $comicUpdatingRoute => GoRouteData.$route(
+      path: '/updatingComic',
+      parentNavigatorKey: ComicUpdatingRoute.$parentNavigatorKey,
+      factory: $ComicUpdatingRouteExtension._fromState,
+    );
+
+extension $ComicUpdatingRouteExtension on ComicUpdatingRoute {
+  static ComicUpdatingRoute _fromState(GoRouterState state) =>
+      const ComicUpdatingRoute();
+
+  String get location => GoRouteData.$location(
+        '/updatingComic',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $comicRankRoute => GoRouteData.$route(
+      path: '/rankComic',
+      parentNavigatorKey: ComicRankRoute.$parentNavigatorKey,
+      factory: $ComicRankRouteExtension._fromState,
+    );
+
+extension $ComicRankRouteExtension on ComicRankRoute {
+  static ComicRankRoute _fromState(GoRouterState state) =>
+      const ComicRankRoute();
+
+  String get location => GoRouteData.$location(
+        '/rankComic',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $comicDetailRoute => GoRouteData.$route(
+      path: '/comicDetail',
+      parentNavigatorKey: ComicDetailRoute.$parentNavigatorKey,
+      factory: $ComicDetailRouteExtension._fromState,
+    );
+
+extension $ComicDetailRouteExtension on ComicDetailRoute {
+  static ComicDetailRoute _fromState(GoRouterState state) => ComicDetailRoute(
+        state.extra as String,
+      );
+
+  String get location => GoRouteData.$location(
+        '/comicDetail',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
+
+RouteBase get $comicReaderRoute => GoRouteData.$route(
+      path: '/comicReader',
+      parentNavigatorKey: ComicReaderRoute.$parentNavigatorKey,
+      factory: $ComicReaderRouteExtension._fromState,
+    );
+
+extension $ComicReaderRouteExtension on ComicReaderRoute {
+  static ComicReaderRoute _fromState(GoRouterState state) => ComicReaderRoute(
+        $extra: state.extra as ComicDetailModel,
+        chapterIndex: int.parse(state.uri.queryParameters['chapter-index']!),
+      );
+
+  String get location => GoRouteData.$location(
+        '/comicReader',
+        queryParams: {
+          'chapter-index': chapterIndex.toString(),
+        },
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
+
+RouteBase get $comicChaptersRoute => GoRouteData.$route(
+      path: '/comicChapters',
+      parentNavigatorKey: ComicChaptersRoute.$parentNavigatorKey,
+      factory: $ComicChaptersRouteExtension._fromState,
+    );
+
+extension $ComicChaptersRouteExtension on ComicChaptersRoute {
+  static ComicChaptersRoute _fromState(GoRouterState state) =>
+      ComicChaptersRoute(
+        state.extra as ComicDetailModel,
+      );
+
+  String get location => GoRouteData.$location(
+        '/comicChapters',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
+
+RouteBase get $novelDetailRoute => GoRouteData.$route(
+      path: '/novelDetail',
+      parentNavigatorKey: NovelDetailRoute.$parentNavigatorKey,
+      factory: $NovelDetailRouteExtension._fromState,
+    );
+
+extension $NovelDetailRouteExtension on NovelDetailRoute {
+  static NovelDetailRoute _fromState(GoRouterState state) => NovelDetailRoute(
+        state.extra as String,
+      );
+
+  String get location => GoRouteData.$location(
+        '/novelDetail',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
+
+RouteBase get $novelChaptersRoute => GoRouteData.$route(
+      path: '/novelChapters',
+      parentNavigatorKey: NovelChaptersRoute.$parentNavigatorKey,
+      factory: $NovelChaptersRouteExtension._fromState,
+    );
+
+extension $NovelChaptersRouteExtension on NovelChaptersRoute {
+  static NovelChaptersRoute _fromState(GoRouterState state) =>
+      NovelChaptersRoute(
+        state.extra as NovelDetailModel,
+      );
+
+  String get location => GoRouteData.$location(
+        '/novelChapters',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
+
+RouteBase get $novelReaderRoute => GoRouteData.$route(
+      path: '/novelReader',
+      parentNavigatorKey: NovelReaderRoute.$parentNavigatorKey,
+      factory: $NovelReaderRouteExtension._fromState,
+    );
+
+extension $NovelReaderRouteExtension on NovelReaderRoute {
+  static NovelReaderRoute _fromState(GoRouterState state) => NovelReaderRoute(
+        $extra: state.extra as NovelDetailModel,
+        chapterIndex: int.parse(state.uri.queryParameters['chapter-index']!),
+      );
+
+  String get location => GoRouteData.$location(
+        '/novelReader',
+        queryParams: {
+          'chapter-index': chapterIndex.toString(),
+        },
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
+
+RouteBase get $novelSortRoute => GoRouteData.$route(
+      path: '/novelSort',
+      parentNavigatorKey: NovelSortRoute.$parentNavigatorKey,
+      factory: $NovelSortRouteExtension._fromState,
+    );
+
+extension $NovelSortRouteExtension on NovelSortRoute {
+  static NovelSortRoute _fromState(GoRouterState state) =>
+      const NovelSortRoute();
+
+  String get location => GoRouteData.$location(
+        '/novelSort',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $novelNewRoute => GoRouteData.$route(
+      path: '/novelNew',
+      parentNavigatorKey: NovelNewRoute.$parentNavigatorKey,
+      factory: $NovelNewRouteExtension._fromState,
+    );
+
+extension $NovelNewRouteExtension on NovelNewRoute {
+  static NovelNewRoute _fromState(GoRouterState state) => const NovelNewRoute();
+
+  String get location => GoRouteData.$location(
+        '/novelNew',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $novelEndRoute => GoRouteData.$route(
+      path: '/novelEnd',
+      parentNavigatorKey: NovelEndRoute.$parentNavigatorKey,
+      factory: $NovelEndRouteExtension._fromState,
+    );
+
+extension $NovelEndRouteExtension on NovelEndRoute {
+  static NovelEndRoute _fromState(GoRouterState state) => const NovelEndRoute();
+
+  String get location => GoRouteData.$location(
+        '/novelEnd',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $novelUpdatingRoute => GoRouteData.$route(
+      path: '/noveUpdating',
+      parentNavigatorKey: NovelUpdatingRoute.$parentNavigatorKey,
+      factory: $NovelUpdatingRouteExtension._fromState,
+    );
+
+extension $NovelUpdatingRouteExtension on NovelUpdatingRoute {
+  static NovelUpdatingRoute _fromState(GoRouterState state) =>
+      const NovelUpdatingRoute();
+
+  String get location => GoRouteData.$location(
+        '/noveUpdating',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $moreNovelRoute => GoRouteData.$route(
+      path: '/moreNovel',
+      parentNavigatorKey: MoreNovelRoute.$parentNavigatorKey,
+      factory: $MoreNovelRouteExtension._fromState,
+    );
+
+extension $MoreNovelRouteExtension on MoreNovelRoute {
+  static MoreNovelRoute _fromState(GoRouterState state) => MoreNovelRoute(
+        state.extra as RecNovelModel,
+      );
+
+  String get location => GoRouteData.$location(
+        '/moreNovel',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
+
+RouteBase get $novelVoicePalyerContentRoute => GoRouteData.$route(
+      path: '/novelVoicePlayer',
+      parentNavigatorKey: NovelVoicePalyerContentRoute.$parentNavigatorKey,
+      factory: $NovelVoicePalyerContentRouteExtension._fromState,
+    );
+
+extension $NovelVoicePalyerContentRouteExtension
+    on NovelVoicePalyerContentRoute {
+  static NovelVoicePalyerContentRoute _fromState(GoRouterState state) =>
+      const NovelVoicePalyerContentRoute();
+
+  String get location => GoRouteData.$location(
+        '/novelVoicePlayer',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
 }

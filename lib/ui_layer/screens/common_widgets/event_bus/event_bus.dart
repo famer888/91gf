@@ -4,6 +4,6 @@ final EventBus eventBus = EventBus();
 
 class MyEvent {
   final String message;
-
-  MyEvent(this.message);
+  final Map? param;
+  MyEvent(this.message, {this.param});
 }

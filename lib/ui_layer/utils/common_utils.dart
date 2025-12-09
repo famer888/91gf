@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:common_utils/common_utils.dart';
+import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -22,6 +24,7 @@ import 'package:jygf/logger.dart';
 import 'package:jygf/ui_layer/notifiers/home_config_notifier.dart';
 import 'package:jygf/ui_layer/notifiers/user_notifier.dart';
 import 'package:jygf/ui_layer/router/routes.dart';
+import 'package:jygf/ui_layer/screens/acg/novel/novel_voice_player/novel_voice_player_manager.dart';
 import 'package:jygf/ui_layer/screens/asmr/voice_player/voice_player_manager.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/event_bus/event_bus.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
@@ -208,6 +211,19 @@ class CommonUtils {
     VoicePlayerManager.instance.disposes();
     VoicePlayerManager.instance.removeFloatPayer();
   }
+
+   static Future<void> removeFloatPayer() async {
+    VoicePlayerManager.instance.audioController?.pause();
+    VoicePlayerManager.instance.isPlay.value = false;
+    VoicePlayerManager.instance.removeFloatPayer();
+    VoicePlayerManager.instance.disposes();
+
+    NovelVoicePlayerManager.instance.audioController?.pause();
+    NovelVoicePlayerManager.instance.isPlay.value = false;
+    NovelVoicePlayerManager.instance.removeFloatPayer();
+    NovelVoicePlayerManager.instance.disposes();
+  }
+
 
   static String getThumb(Map data) {
     final keys = [
@@ -1523,6 +1539,32 @@ class CommonUtils {
       ),
       child: child,
     );
+  }
+
+ static final Dio _novelDio = Dio(BaseOptions(
+    connectTimeout: const Duration(seconds: 60),
+    receiveTimeout: const Duration(seconds: 30),
+    responseType: ResponseType.bytes,
+    validateStatus: (status) {
+      return (status ?? 0) < 500;
+    },
+  ));
+    // 小说获取
+  static Future getNovel(url) async {
+    return kIsWeb
+        ? html.HttpRequest.request(url, responseType: 'arraybuffer')
+            .then((xhr) {
+            if (xhr.response != null) {
+              ByteBuffer bb = xhr.response;
+              return utf8.decode(bb.asUint8List());
+            }
+            return '';
+          }).onError((error, stackTrace) => '')
+        : _novelDio.get(url).then((res) {
+            return utf8.decode(res.data);
+          }).onError((error, stackTrace) {
+            return '';
+          });
   }
 }
 

@@ -149,6 +149,55 @@ class _CacheManager implements CacheDomain {
   Future<void> clearSearchHistory() => appBox.delete(_searchHistoryKey);
 
   @override
+  Future<void> upsertComicReaderChapterIndex({required String comicIdkey, required int chapterIndex}) =>
+      appBox.upsert(comicIdkey, chapterIndex);
+
+  @override
+  Future<int> readComicReaderChapterIndex({required String comicIdkey}) async {
+    if (await appBox.read(comicIdkey) case final data?) {
+      return data;
+    }
+    return -1;
+  }
+
+  @override
+  Future<void> upsertNovelReaderChapterIndex({required String novelIdkey, required int chapterIndex}) =>
+      appBox.upsert(novelIdkey, chapterIndex);
+
+  @override
+  Future<int> readNovelReaderChapterIndex({required String novelIdkey}) async {
+    if (await appBox.read(novelIdkey) case final data?) {
+      return data;
+    }
+    return -1;
+  }
+
+  @override
+  Future<void> upsertNovelFontSize({required double fontSize}) =>
+      appBox.upsert('NovelFontSize', fontSize);
+
+  @override
+  Future<double> readNovelReaderFontSize() async {
+    if (await appBox.read('NovelFontSize') case final fontSize?) {
+      return fontSize;
+    }
+    return 15;
+  }
+
+  @override
+  Future<void> upsertNovelBgColorIndex({required int index}) =>
+      appBox.upsert('NovelBgColor', index);
+
+  @override
+  Future<int> readNovelReaderBgColorIndex() async {
+    if (await appBox.read('NovelBgColor') case final index?) {
+      return index;
+    }
+    return 1;
+  }
+
+
+  @override
   Future<List> readDownloadVideoTasks() async {
     if (await videoBox.read(_downloadVideoTasksKey) case final data?) {
       return List.from(data);

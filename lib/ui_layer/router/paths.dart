@@ -254,4 +254,59 @@ class AppRouterPaths {
   static const localVoice = '/localVoice';
 
   static const webView = '/${BuildConfig.webViewPathName}/:url';
+
+    /// 更多漫画列表
+  static const moreComic = '/moreComic';
+
+  /// 分类漫画列表
+  static const sortComic = '/sortComic';
+
+  /// 最新漫画列表
+  static const newComic = '/newComic';
+
+  /// 完结漫画列表
+  static const endComic = '/endComic';
+
+  /// 连载漫画列表
+  static const updatingComic = '/updatingComic';
+
+  /// 排行榜漫画列表
+  static const rankComic = '/rankComic';
+
+  /// 漫画详情
+  static const comicDetail = '/comicDetail';
+
+  /// 漫画全部章节
+  static const comicChapters = '/comicChapters';
+
+  /// 漫画阅读界面
+  static const comicReader = '/comicReader';
+
+   /// 小说详情
+  static const novelDetail = '/novelDetail';
+
+  /// 小说全部章节
+  static const novelChapters = '/novelChapters';
+
+  /// 小说阅读界面
+  static const novelReader = '/novelReader';
+
+  /// 更多小说列表
+  static const moreNovel = '/moreNovel';
+
+  ///小说音频播放器界面
+  static const novelVoicePlayer = '/novelVoicePlayer';
+
+  /// 小说分类列表
+  static const novelSort = '/novelSort';
+
+  /// 小说最新列表
+  static const novelNew = '/novelNew';
+
+  /// 小说连载列表
+  static const noveUpdating = '/noveUpdating';
+
+  /// 小说完结列表
+  static const novelEnd = '/novelEnd';
+
 }

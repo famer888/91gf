@@ -96,6 +96,12 @@ class MyTheme {
       fontSize: 12.sp,
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
+      
+    static final TextStyle white08_15 = TextStyle(
+      color: white08Color,
+      fontSize: 15.sp,
+      overflow: TextOverflow.ellipsis,
+      decoration: TextDecoration.none);
 
   static final TextStyle gray203_16 = TextStyle(
       color: const Color.fromRGBO(190, 189, 194, 1),
@@ -334,6 +340,8 @@ static const gradient_90_114_colors_15 = [
 
   static const jellyCyanColor103224185 = Color.fromRGBO(176, 66, 255, 1);
   static const jellyCyanColor108235220 = Color.fromRGBO(108, 235, 220, 1);
+  static const jellyCyanColor = Color.fromRGBO(0, 157, 255, 1);
+
   static const gray117 = Color.fromRGBO(117, 117, 117, 1);
 
   static const redColorVIP = Color.fromRGBO(232, 62, 86, 1);
@@ -2941,6 +2949,13 @@ static const gradient_90_114_colors_15 = [
       color: const Color.fromRGBO(255, 255, 255, 1),
       fontSize: 15.sp,
       fontWeight: FontWeight.w600,
+      overflow: TextOverflow.ellipsis,
+      decoration: TextDecoration.none);
+
+   static final white16 = TextStyle(
+      fontFamily: hanyi,
+      color: Colors.white,
+      fontSize: 16.sp,
       overflow: TextOverflow.ellipsis,
       decoration: TextDecoration.none);
 
