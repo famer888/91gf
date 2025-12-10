@@ -33,6 +33,7 @@ import 'package:jygf/domain/model/comic_model.dart';
 import 'package:jygf/domain/model/live_model.dart';
 import 'package:jygf/domain/model/live_video_detail_model.dart';
 import 'package:jygf/domain/model/novel_model.dart';
+import 'package:jygf/domain/model/post/circle/circle_post_nav_model.dart';
 import 'package:jygf/domain/model/vlog_model.dart';
 import 'package:jygf/domain/model/voice_model.dart';
 import 'package:jygf/domain/remote_domain/domains/aidraw.dart';

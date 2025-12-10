@@ -106,6 +106,7 @@ class Member {
     required this.aiVideoFaceValue,
     required this.vipImg,
     required this.vipIcon,
+    required this.circlePrivilege,
   });
 
   final int? isFollow;
@@ -206,6 +207,8 @@ class Member {
   final int aiVideoFaceValue;
   final String vipImg;
   final String vipIcon;
+  final int circlePrivilege;
+
 
   factory Member.fromJson(Map<String, dynamic> json) => Member(
         postCount: json['post_count'] ?? 0,
@@ -311,6 +314,7 @@ class Member {
         aiVideoFaceValue: json['ai_video_face_value'] ?? 0,
         vipImg: json['vip_img'] ?? '',
         vipIcon: json['vip_icon'] ?? '',
+        circlePrivilege: json['circle_privilege'] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -411,6 +415,7 @@ class Member {
         'ai_video_face_value': aiVideoFaceValue,
         'vip_image': vipImg,
         'vip_icon': vipIcon,
+        'circle_privilege': circlePrivilege,
       };
 
   Member copyWith({
@@ -511,6 +516,7 @@ class Member {
     int? aiVideoFaceValue,
     String? vipImage,
     String? vipIcon,
+    int? circlePrivilege,
   }) =>
       Member(
         isFollow: isFollow ?? this.isFollow,
@@ -610,6 +616,7 @@ class Member {
         aiVideoFaceValue: aiVideoFaceValue ?? this.aiVideoFaceValue,
         vipImg: vipImg ?? this.vipImg,
         vipIcon: vipIcon ?? this.vipIcon,
+        circlePrivilege: circlePrivilege ?? this.circlePrivilege,
       );
 }
 

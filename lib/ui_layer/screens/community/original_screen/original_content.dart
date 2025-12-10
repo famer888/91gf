@@ -94,7 +94,10 @@ class _FollowViewState extends State<_FollowView> {
       final List<PostModel>? posts = result.data['posts']?.map<PostModel>((x) => PostModel.fromJson(x)).toList();
 
       _userNotifier.patchUserFollowStatus(
-        posts?.where((post) => post.user?.isFollow == 1).map((post) => '${post.user?.aff}') ?? [],
+        posts
+                ?.where((post) => post.user?.isFollow == 1)
+                .map((post) => '${post.user?.aff}') ??
+            [],[]
       );
       return posts;
     } else {
@@ -253,7 +256,10 @@ class _BloggerViewState extends State<_BloggerView> {
       }
       final List<BloggerModel>? rank = result.data['rank']?.map<BloggerModel>((x) => BloggerModel.fromJson(x)).toList();
 
-      _userNotifier.patchUserFollowStatus(rank?.where((user) => user.isFollow == 1).map((user) => '${user.aff}') ?? []);
+      _userNotifier.patchUserFollowStatus(rank
+              ?.where((user) => user.isFollow == 1)
+              .map((user) => '${user.aff}') ??
+          [],[]);
 
       return rank;
     } else {
@@ -357,7 +363,10 @@ class _NormalViewState extends State<_NormalView> {
       final List<PostModel>? posts = result.data['posts']?.map<PostModel>((x) => PostModel.fromJson(x)).toList();
 
       _userNotifier.patchUserFollowStatus(
-        posts?.where((post) => post.user?.isFollow == 1).map((post) => '${post.user?.aff}') ?? [],
+        posts
+                ?.where((post) => post.user?.isFollow == 1)
+                .map((post) => '${post.user?.aff}') ??
+            [],[]
       );
       return posts;
     } else {

@@ -39,6 +39,7 @@ import 'package:jygf/ui_layer/screens/anime/more/screen.dart';
 import 'package:jygf/ui_layer/screens/anime/screen.dart';
 import 'package:jygf/ui_layer/screens/asmr/voice_player/local_voice_player.dart';
 import 'package:jygf/ui_layer/screens/asmr/voice_player/voice_player_content.dart';
+import 'package:jygf/ui_layer/screens/chat/detail/screen.dart';
 import 'package:jygf/ui_layer/screens/community/ori_create_group_chat/group_chat/group_chat_detail_content.dart';
 import 'package:jygf/ui_layer/screens/community/ori_create_group_chat/group_chat/group_chat_list_content.dart';
 import 'package:jygf/ui_layer/screens/community/ori_create_group_chat/group_chat/group_chat_top_msg_content.dart';
@@ -1719,5 +1720,20 @@ class NovelVoicePalyerContentRoute extends GoRouteData {
   Page<void> buildPage(BuildContext context, GoRouterState state) {
     return CommonUtils.buildSlideTransitionPage(
         state: state, child: NovelVoicePlayerContent());
+  }
+}
+
+// 裸聊详情
+@TypedGoRoute<ChatDetailRoute>(path: AppRouterPaths.chatDetail)
+class ChatDetailRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const ChatDetailRoute(this.id);
+  final int id;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ChatDetailScreen(id: id);
   }
 }

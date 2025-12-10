@@ -38,8 +38,10 @@ class UserNotifier extends ChangeNotifier {
   final Set<String> _userFollowingStatus = {};
   final Set<String> _isLoadingFollowUser = {};
 
-  void patchUserFollowStatus(Iterable<String> ids) {
-    _userFollowingStatus.addAll(ids);
+  void patchUserFollowStatus(
+      Iterable<String> followedList, Iterable<String> unfollowedList) {
+    _userFollowingStatus.addAll(followedList);
+    _userFollowingStatus.removeAll(unfollowedList);
     notifyListeners();
   }
 

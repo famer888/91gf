@@ -101,6 +101,7 @@ List<RouteBase> get $appRoutes => [
       $novelUpdatingRoute,
       $moreNovelRoute,
       $novelVoicePalyerContentRoute,
+      $chatDetailRoute,
     ];
 
 RouteBase get $welcomeRoute => GoRouteData.$route(
@@ -2369,8 +2370,8 @@ RouteBase get $comicReaderRoute => GoRouteData.$route(
 
 extension $ComicReaderRouteExtension on ComicReaderRoute {
   static ComicReaderRoute _fromState(GoRouterState state) => ComicReaderRoute(
-        $extra: state.extra as ComicDetailModel,
         chapterIndex: int.parse(state.uri.queryParameters['chapter-index']!),
+        $extra: state.extra as ComicDetailModel,
       );
 
   String get location => GoRouteData.$location(
@@ -2483,8 +2484,8 @@ RouteBase get $novelReaderRoute => GoRouteData.$route(
 
 extension $NovelReaderRouteExtension on NovelReaderRoute {
   static NovelReaderRoute _fromState(GoRouterState state) => NovelReaderRoute(
-        $extra: state.extra as NovelDetailModel,
         chapterIndex: int.parse(state.uri.queryParameters['chapter-index']!),
+        $extra: state.extra as NovelDetailModel,
       );
 
   String get location => GoRouteData.$location(
@@ -2640,6 +2641,34 @@ extension $NovelVoicePalyerContentRouteExtension
 
   String get location => GoRouteData.$location(
         '/novelVoicePlayer',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $chatDetailRoute => GoRouteData.$route(
+      path: '/chatDetail',
+      parentNavigatorKey: ChatDetailRoute.$parentNavigatorKey,
+      factory: $ChatDetailRouteExtension._fromState,
+    );
+
+extension $ChatDetailRouteExtension on ChatDetailRoute {
+  static ChatDetailRoute _fromState(GoRouterState state) => ChatDetailRoute(
+        int.parse(state.uri.queryParameters['id']!),
+      );
+
+  String get location => GoRouteData.$location(
+        '/chatDetail',
+        queryParams: {
+          'id': id.toString(),
+        },
       );
 
   void go(BuildContext context) => context.go(location);

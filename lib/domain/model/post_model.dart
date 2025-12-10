@@ -22,6 +22,8 @@ class PostModel {
   final List<MediaModel>? medias;
   final UserModel? user;
   final String? createdAt;
+  final int? status;
+  final String? refuseReason;
   int? index; //自定义字段，榜单第几个数据
 
   PostModel(
@@ -43,7 +45,9 @@ class PostModel {
       this.medias,
       this.isBest,
       this.user,
-      this.createdAt});
+      this.createdAt,
+      this.status,
+      this.refuseReason});
 
   factory PostModel.fromJson(Map<String, dynamic> json) => PostModel(
       id: json['id'],
@@ -68,5 +72,7 @@ class PostModel {
       user: json['user'] != null
           ? UserModel.fromJson(json['user'] as Map<String, dynamic>)
           : null,
-      createdAt: json['created_at']);
+      createdAt: json['created_at'],
+      status: json['status'],
+      refuseReason: json['refuse_reason']);
 }

@@ -205,4 +205,22 @@ class CommunityService extends BaseService {
         'word': word,
         'type': type,
       });
+
+  /// 圈子排序列表
+  AsyncJson circleSortList({
+    required int id,
+    required String sort,
+    required int page,
+    required int limit,
+  }) =>
+      post('/circle_post', data: {
+        'id': id,
+        'sort': sort,
+        'page': page,
+        'limit': limit,
+      });    
+
+  /// 获取圈子导航
+  AsyncJson reqGetCircleNav({String type = ''}) =>
+      post('/circle_nav', data: {'type': type});
 }

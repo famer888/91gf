@@ -1566,6 +1566,38 @@ class CommonUtils {
             return '';
           });
   }
+
+  //自定义输入框
+  static InputDecoration customInputStyle({
+    String? hit,
+    TextStyle? style,
+    TextStyle? counterStyle,
+    double horizontal = 8,
+    double vertical = 0,
+  }) {
+    //边框
+    OutlineInputBorder outline() {
+      return OutlineInputBorder(
+          borderRadius: BorderRadius.circular(0.0),
+          borderSide: const BorderSide(color: Colors.transparent, width: 0));
+    }
+
+    return InputDecoration(
+      counterStyle: counterStyle,
+      hoverColor: Colors.white,
+      hintText: hit ?? 'qtxxbt'.tr(),
+      hintStyle: style ?? TextStyle(
+        color: const Color.fromRGBO(0, 0, 0, 0.35),
+        fontSize: 14.sp,
+      ),
+      contentPadding:
+          EdgeInsets.symmetric(horizontal: horizontal.w, vertical: vertical.w),
+      disabledBorder: outline(),
+      focusedBorder: outline(),
+      border: outline(),
+      enabledBorder: outline(),
+    );
+  }
 }
 
 class _DashedBorderPainter extends CustomPainter {

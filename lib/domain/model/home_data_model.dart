@@ -1,6 +1,8 @@
 import 'package:jygf/domain/model/ai_nav_model.dart';
 import 'package:jygf/domain/model/banner_model.dart';
 import 'package:jygf/domain/model/bit_nav_model.dart';
+import 'package:jygf/domain/model/chat_nav_model.dart';
+import 'package:jygf/domain/model/chat_select_nav_model.dart';
 import 'package:jygf/domain/model/live_model.dart';
 
 import 'community_nav_model.dart';
@@ -174,6 +176,10 @@ class Config {
     this.novelNav,
     this.novelSort,
     this.novelTypeNav,
+    required this.chatNav,
+    required this.chatSelectNav,
+    required this.circleNav,
+    required this.vipNameCircleStrImg,
     this.postDetailAds,
     this.buoy,
     this.forumTips,
@@ -284,6 +290,10 @@ class Config {
   final List<BitNavModel>? novelNav; //小说分类
   final List<BitNavModel>? novelSort; //小说排序
   final List<ComicTypeNav>? novelTypeNav; //小说分类排序条件
+  final List<ChatNavModel> chatNav;//裸聊分类
+  final List<ChatSelectNavModel> chatSelectNav;
+  final List<NavigatorModel> circleNav;//圈子
+  final String vipNameCircleStrImg;
   final List<FaceNavigatorModel> seedTopNav;
   final List<RankNavigatorModel>? rankTopNav;
   final List<RankNavigatorModel>? rankCycleNav;
@@ -511,6 +521,13 @@ class Config {
             json['novel_sort']?.map((x) => BitNavModel.fromJson(x)) ?? []),
         novelTypeNav: List<ComicTypeNav>.from(
             json['novel_type_nav']?.map((x) => ComicTypeNav.fromJson(x)) ?? []),
+        chatNav: List<ChatNavModel>.from(
+            json['chat_nav']?.map((x) => ChatNavModel.fromJson(x)) ?? []),
+        chatSelectNav: List<ChatSelectNavModel>.from(
+            json['chat_select_nav']?.map((x) => ChatSelectNavModel.fromJson(x)) ?? []),
+        circleNav: List<NavigatorModel>.from(
+            json['circle_nav']?.map((x) => NavigatorModel.fromJson(x)) ?? []),
+        vipNameCircleStrImg: json['vip_name_circle_str_img'] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -612,6 +629,10 @@ class Config {
         'novel_nav': novelNav?.map((e) => e).toList() ?? [],
         'novel_sort': novelSort?.map((e) => e).toList() ?? [],
         'novel_type_nav': novelTypeNav?.map((e) => e).toList() ?? [],
+        'chat_nav': chatNav.map((e) => e).toList(),
+        'chat_select_nav': chatSelectNav.map((e) => e).toList(),
+        'circle_nav': circleNav.map((e) => e).toList(),
+        'vip_name_circle_str_img': vipNameCircleStrImg,
       };
 }
 

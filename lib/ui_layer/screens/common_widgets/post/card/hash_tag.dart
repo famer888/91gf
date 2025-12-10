@@ -7,13 +7,15 @@ import '../../../theme.dart';
 import '../../my_image.dart';
 
 class CardHashTag extends StatelessWidget {
-  const CardHashTag({super.key, required this.id, required this.name});
+  const CardHashTag(
+      {super.key, required this.id, required this.name, this.tapAct});
   final String id;
   final String name;
+  final VoidCallback? tapAct;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => CommunityTagDetailRoute(id).push(context),
+      onTap: tapAct ?? () => CommunityTagDetailRoute(id).push(context),
       child: Container(
         height: 24.w,
         decoration: ShapeDecoration(

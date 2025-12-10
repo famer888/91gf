@@ -1,3 +1,6 @@
+import 'package:jygf/domain/model/post/circle/circle_post_nav_model.dart';
+import 'package:jygf/domain/model/posts_with_banners_model.dart';
+
 import '../../enum.dart';
 import '../../model/community_nav_model.dart';
 import '../../model/community_with_banner_model.dart';
@@ -131,4 +134,15 @@ abstract class CommunityDomain {
     required String word,
     String type = '',
   });
+
+   /// 圈子排序列表
+  AsyncResult<PostsWithBannersModel> circleSortList({
+    required int id,
+    required String sort,
+    required int page,
+    required int limit,
+  });
+
+   /// 获取圈子导航
+  AsyncResult<List<CirclePostNavModel>> reqGetCircleNav({String type = ''});
 }

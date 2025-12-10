@@ -309,4 +309,7 @@ class AppRouterPaths {
   /// 小说完结列表
   static const novelEnd = '/novelEnd';
 
+   /// 裸聊 详情
+  static const chatDetail = '/chatDetail';
+
 }

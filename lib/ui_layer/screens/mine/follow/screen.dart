@@ -93,7 +93,7 @@ class _FollowingUserViewState extends State<FollowingUserView> {
     if (res.isValid) {
       lastIx = res.data?.lastIx ?? '';
       userNotifier.patchUserFollowStatus(
-          res.data?.followFansModelList?.map((e) => '${e.aff}') ?? []);
+          res.data?.followFansModelList?.map((e) => '${e.aff}') ?? [],[]);
     } else if (res.msg case final msg? when msg.isNotEmpty) {
       MyToast.showText(text: msg);
     }

@@ -193,4 +193,24 @@ mixin _Community on _BaseAppRepo implements CommunityDomain {
           .searchCommunity(page: page, limit: limit, word: word, type: type)
           .deserializeJsonListBy((e) => e.map(PostModel.fromJson).toList())
           .guard;
+
+ @override
+  AsyncResult<PostsWithBannersModel> circleSortList({
+    required int id,
+    required String sort,
+    required int page,
+    required int limit,
+  }) =>
+      _communityService
+          .circleSortList(id: id, sort: sort, page: page, limit: limit)
+          .deserializeJsonBy(PostsWithBannersModel.fromJson)
+          .guard;   
+
+          @override
+  AsyncResult<List<CirclePostNavModel>> reqGetCircleNav({String type = ''}) =>
+      _communityService
+          .reqGetCircleNav(type: type)
+          .deserializeJsonListBy(
+              (e) => e.map(CirclePostNavModel.fromJson).toList())
+          .guard;      
 }
