@@ -26,7 +26,9 @@ import 'package:provider/provider.dart';
 
 class CommunityContentView extends StatefulWidget {
   const CommunityContentView({super.key, required this.id});
+
   final int id;
+
   @override
   State<CommunityContentView> createState() => _CommunityContentViewState();
 }
@@ -52,11 +54,11 @@ class _CommunityContentViewState extends State<CommunityContentView> {
     required String sort,
   }) async {
     final result = await _domain.communitySortList(
-            id: widget.id,
-            sort: sort,
-            page: page,
-            limit: pageSize,
-          );
+      id: widget.id,
+      sort: sort,
+      page: page,
+      limit: pageSize,
+    );
 
     if (!isInit) {
       setState(() {
@@ -76,9 +78,7 @@ class _CommunityContentViewState extends State<CommunityContentView> {
 
       if (result.data?.posts case final posts?) {
         _userNotifier.patchUserFollowStatus(
-          posts
-              .where((post) => post.user?.isFollow == 1)
-              .map((post) => '${post.user?.aff}'),
+          posts.where((post) => post.user?.isFollow == 1).map((post) => '${post.user?.aff}'),
         );
         return posts;
       }
@@ -105,27 +105,20 @@ class _CommunityContentViewState extends State<CommunityContentView> {
           body: Padding(
             padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
             child: TabBarWithView.fillColor(
-                    tabBarPadding: EdgeInsets.symmetric(vertical: 6.w),
-                    tabBarHeight: 32.w,
-                    isScrollable: true,
-                    titles:
-                        isInit ? [for (final title in _titles) title.title] : [],
-                    views: [
-                      for (final NavigatorModel nav in _titles)
-                        MyListView.list(
-                          contentPadding: 15.w,
-                          padding:
-                              EdgeInsets.only(top: 5.w, bottom: MyTheme.pagePadding),
-                          itemBuilder: (context, item, index) => PostCard.community(
-                            data: item,
-                          ),
-                          onFetchingMore: (currentPage, pageSize) => _getData(
-                              page: currentPage,
-                              pageSize: pageSize,
-                              sort: nav.type),
-                        )
-                    ],
-                  ),
+              tabBarPadding: EdgeInsets.symmetric(vertical: 6.w),
+              tabBarHeight: 32.w,
+              isScrollable: true,
+              titles: isInit ? [for (final title in _titles) title.title] : [],
+              views: [
+                for (final NavigatorModel nav in _titles)
+                  MyListView.list(
+                    contentPadding: 15.w,
+                    padding: EdgeInsets.only(top: 5.w, bottom: MyTheme.pagePadding),
+                    itemBuilder: (context, item, index) => PostCard.community(data: item),
+                    onFetchingMore: (currentPage, pageSize) => _getData(page: currentPage, pageSize: pageSize, sort: nav.type),
+                  )
+              ],
+            ),
           ),
         ),
         Positioned(
@@ -134,11 +127,7 @@ class _CommunityContentViewState extends State<CommunityContentView> {
             child: GestureDetector(
               onTap: _showIssueAlert,
               behavior: HitTestBehavior.translucent,
-              child: MyImage.asset(
-                MyImagePaths.appIssueIcon,
-                width: 50.w,
-                height: 50.w,
-              ),
+              child: MyImage.asset(MyImagePaths.appIssueIcon, width: 50.w, height: 50.w),
             ))
       ],
     );
@@ -147,97 +136,83 @@ class _CommunityContentViewState extends State<CommunityContentView> {
   Future<void> _showIssueAlert() {
     final issues = [
       (
-      title: 'tp'.tr(context: context),
-      iconName: MyImagePaths.appFabuPicture,
-      type: CommunityIssueType.image,
+        title: 'tp'.tr(context: context),
+        iconName: MyImagePaths.appFabuPicture,
+        type: CommunityIssueType.image,
       ),
       (
-      title: 'sping'.tr(context: context),
-      iconName: MyImagePaths.appFabuVideo,
-      type: CommunityIssueType.video,
+        title: 'sping'.tr(context: context),
+        iconName: MyImagePaths.appFabuVideo,
+        type: CommunityIssueType.video,
       ),
       (
-      title: 'twen'.tr(context: context),
-      iconName: MyImagePaths.appFabuText,
-      type: CommunityIssueType.imageAndText,
+        title: 'twen'.tr(context: context),
+        iconName: MyImagePaths.appFabuText,
+        type: CommunityIssueType.imageAndText,
       ),
     ];
     return showModalBottomSheet(
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
       context: AppRouter.rootNavigatorKey.currentContext ?? context,
-      builder: (context) => DecoratedBox(
-        decoration: BoxDecoration(
-          color: const Color(0xFF23262f),
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(10.w),
-            topRight: Radius.circular(10.w),
-          ),
-        ),
-        child: SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 13.w),
-                width: double.infinity,
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const SizedBox.shrink(),
-                    Text(
-                      'xzfblx'.tr(),
-                      style: MyTheme.white16bold,
-                    ),
-                    InkWell(
-                      onTap: () => context.pop(),
-                      child: MyImage.asset(
-                        MyImagePaths.appIssueClose,
-                        width: 15.w,
-                        height: 15.w,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 30.w),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      builder: (context) => Stack(
+        children: [
+          DecoratedBox(
+            decoration: BoxDecoration(
+              image: const DecorationImage(image: AssetImage(MyImagePaths.appIssueBg), fit: BoxFit.cover),
+              border: Border.all(color: const Color.fromRGBO(154, 48, 133, 1), width: 0.5),
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(16.w), topRight: Radius.circular(16.w)),
+            ),
+            child: SafeArea(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  for (final issue in issues)
-                    GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () {
-                        context.pop();
-                        CommunityIssueRoute(type: issue.type, org: false)
-                            .push(context);
-                      },
-                      child: Column(
-                        children: [
-                          MyImage.asset(
-                            issue.iconName,
-                            width: 50.w,
-                            height: 52.7.w,
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 13.w),
+                    width: double.infinity,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const SizedBox.shrink(),
+                        Text('xzfblx'.tr(), style: MyTheme.white16bold),
+                        InkWell(
+                          onTap: () => context.pop(),
+                          child: MyImage.asset(MyImagePaths.appIssueClose, width: 14.w, height: 14.w),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 30.w),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      for (final issue in issues)
+                        GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onTap: () {
+                            context.pop();
+                            CommunityIssueRoute(type: issue.type, org: false).push(context);
+                          },
+                          child: Column(
+                            children: [
+                              MyImage.asset(issue.iconName, width: 50.w, height: 52.7.w),
+                              SizedBox(height: 4.w),
+                              Text(issue.title, style: MyTheme.white255_14)
+                            ],
                           ),
-                          SizedBox(height: 4.w),
-                          Text(
-                            issue.title,
-                            style: MyTheme.gray163_15,
-                          )
-                        ],
-                      ),
-                    )
+                        )
+                    ],
+                  ),
+                  SizedBox(height: 42.5.w)
                 ],
               ),
-              SizedBox(height: 42.5.w)
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
-
 }
 
 class _Header extends StatelessWidget {
@@ -246,6 +221,7 @@ class _Header extends StatelessWidget {
     required this.topicsNotifier,
     required this.tips,
   });
+
   final ValueNotifier<List<BannerModel>> bannersNotifier;
   final ValueNotifier<List<TopicModel>> topicsNotifier;
   final List<TipModel> tips;
@@ -266,10 +242,7 @@ class _Header extends StatelessWidget {
             );
           },
         ),
-        Padding(
-          padding: EdgeInsets.only(top: 5.w, bottom: 10.w),
-          child: CommonUtils.buildNotifyWidget(tips),
-        ),
+        Padding(padding: EdgeInsets.only(top: 5.w, bottom: 10.w), child: CommonUtils.buildNotifyWidget(tips)),
         ValueListenableBuilder(
           valueListenable: topicsNotifier,
           builder: (context, topics, child) {
@@ -291,51 +264,49 @@ class _Header extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final topic = topics[index];
                   return DecoratedBox(
-                      decoration: ShapeDecoration(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6.w),
+                    decoration: ShapeDecoration(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.w)),
+                      color: Colors.white.withOpacity(0.1),
+                    ),
+                    child: Stack(
+                      fit: StackFit.expand,
+                      alignment: AlignmentDirectional.center,
+                      children: [
+                        MyImage.network(topic.bgThumb, borderRadius: 6.w),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6.w),
+                            gradient: const LinearGradient(colors: [
+                              Color.fromRGBO(176, 66, 255, 0.45),
+                              Color.fromRGBO(255, 133, 164, 0.45),
+                            ]),
+                          ),
                         ),
-                        color: Colors.white.withOpacity(0.1),
-                      ),
-                      child: Stack(
-                        fit: StackFit.expand,
-                        alignment: AlignmentDirectional.center,
-                        children: [
-                          MyImage.network(
-                            topic.bgThumb,
-                            borderRadius: 6.w,
-                          ),
-                          GestureDetector(
-                            behavior: HitTestBehavior.translucent,
-                            onTap: () {
-                              CommunityTagDetailRoute('${topic.id}')
-                                  .push(context);
-                            },
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  topics[index].name,
-                                  style: TextStyle(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                SizedBox(height: 2.w),
-                                Center(
-                                    child: Text(
+                        GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onTap: () {
+                            CommunityTagDetailRoute('${topic.id}').push(context);
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                topics[index].name,
+                                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, color: Colors.white),
+                              ),
+                              SizedBox(height: 2.w),
+                              Center(
+                                child: Text(
                                   "${topic.postNum}${'tiez'.tr(context: context)}",
-                                  style: TextStyle(
-                                    fontSize: 12.sp,
-                                    color: Colors.white,
-                                  ),
-                                ))
-                              ],
-                            ),
+                                  style: TextStyle(fontSize: 12.sp, color: Colors.white),
+                                ),
+                              )
+                            ],
                           ),
-                        ],
-                      ));
+                        ),
+                      ],
+                    ),
+                  );
                 },
                 itemCount: topics.length,
               ),

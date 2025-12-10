@@ -139,16 +139,16 @@ RouteBase get $statefulShellRoute => StatefulShellRouteData.$route(
         StatefulShellBranchData.$branch(
           routes: [
             GoRouteData.$route(
-              path: '/ych',
-              factory: $YchRouteExtension._fromState,
+              path: '/community',
+              factory: $CommunityRouteExtension._fromState,
             ),
           ],
         ),
         StatefulShellBranchData.$branch(
           routes: [
             GoRouteData.$route(
-              path: '/community',
-              factory: $CommunityRouteExtension._fromState,
+              path: '/ych',
+              factory: $YchRouteExtension._fromState,
             ),
           ],
         ),
@@ -201,11 +201,12 @@ extension $HomeRouteExtension on HomeRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $YchRouteExtension on YchRoute {
-  static YchRoute _fromState(GoRouterState state) => const YchRoute();
+extension $CommunityRouteExtension on CommunityRoute {
+  static CommunityRoute _fromState(GoRouterState state) =>
+      const CommunityRoute();
 
   String get location => GoRouteData.$location(
-        '/ych',
+        '/community',
       );
 
   void go(BuildContext context) => context.go(location);
@@ -218,12 +219,11 @@ extension $YchRouteExtension on YchRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $CommunityRouteExtension on CommunityRoute {
-  static CommunityRoute _fromState(GoRouterState state) =>
-      const CommunityRoute();
+extension $YchRouteExtension on YchRoute {
+  static YchRoute _fromState(GoRouterState state) => const YchRoute();
 
   String get location => GoRouteData.$location(
-        '/community',
+        '/ych',
       );
 
   void go(BuildContext context) => context.go(location);

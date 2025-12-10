@@ -1403,7 +1403,7 @@ static const gradient_90_114_colors_15 = [
 
   static final blue96_13_M = TextStyle(
       fontFamily: hanyi,
-      color: const Color.fromRGBO(55, 110, 246, 1),
+      color: const Color.fromRGBO(255, 133, 164, 1),
       fontSize: 13.sp,
       overflow: TextOverflow.ellipsis,
       fontWeight: FontWeight.w500,
@@ -3182,6 +3182,7 @@ extension MySizeEx on TextStyle {
   TextStyle get s10 => copyWith(fontSize: 10.sp);
   TextStyle get s12 => copyWith(fontSize: 12.sp);
   TextStyle get s14 => copyWith(fontSize: 14.sp);
+  TextStyle get s15 => copyWith(fontSize: 15.sp);
   TextStyle get s16 => copyWith(fontSize: 16.sp);
   TextStyle get s17 => copyWith(fontSize: 17.sp);
   TextStyle get s18 => copyWith(fontSize: 18.sp);

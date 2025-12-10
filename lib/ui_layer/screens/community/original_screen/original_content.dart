@@ -12,7 +12,6 @@ import 'package:jygf/domain/model/follow_user_model.dart';
 import 'package:jygf/domain/model/live_model.dart';
 import 'package:jygf/domain/model/navigator_model.dart';
 import 'package:jygf/domain/model/post_model.dart';
-import 'package:jygf/domain/model/user_model.dart';
 import 'package:jygf/domain/remote_domain/domains/dynamic.dart';
 import 'package:jygf/domain/type_def.dart';
 import 'package:jygf/ui_layer/notifiers/home_config_notifier.dart';
@@ -36,7 +35,9 @@ import 'package:provider/provider.dart';
 
 class OriginalCommunityContentView extends StatelessWidget {
   const OriginalCommunityContentView({super.key, required this.data});
+
   final OriginalCommunityNavModel data;
+
   @override
   Widget build(BuildContext context) {
     return switch (data.type) {
@@ -49,6 +50,7 @@ class OriginalCommunityContentView extends StatelessWidget {
 
 class _FollowView extends StatefulWidget {
   const _FollowView({required this.url});
+
   final String url;
 
   @override
@@ -58,8 +60,7 @@ class _FollowView extends StatefulWidget {
 class _FollowViewState extends State<_FollowView> {
   late final _domain = context.read<DynamicDomain>();
   late final _userNotifier = context.read<UserNotifier>();
-  final ValueNotifier<List<FollowingUserData>> _followingUsersNotifier =
-      ValueNotifier([]);
+  final ValueNotifier<List<FollowingUserData>> _followingUsersNotifier = ValueNotifier([]);
 
   bool isInit = false;
 
@@ -86,20 +87,14 @@ class _FollowViewState extends State<_FollowView> {
 
     if (result.isValid) {
       if (result.data['follow'] case final List data when page == 1) {
-        final followingUsers =
-            data.map((x) => FollowingUserData.fromJson(x)).toList();
+        final followingUsers = data.map((x) => FollowingUserData.fromJson(x)).toList();
         _followingUsersNotifier.value = followingUsers;
       }
 
-      final List<PostModel>? posts = result.data['posts']
-          ?.map<PostModel>((x) => PostModel.fromJson(x))
-          .toList();
+      final List<PostModel>? posts = result.data['posts']?.map<PostModel>((x) => PostModel.fromJson(x)).toList();
 
       _userNotifier.patchUserFollowStatus(
-        posts
-                ?.where((post) => post.user?.isFollow == 1)
-                .map((post) => '${post.user?.aff}') ??
-            [],
+        posts?.where((post) => post.user?.isFollow == 1).map((post) => '${post.user?.aff}') ?? [],
       );
       return posts;
     } else {
@@ -203,15 +198,16 @@ class _FollowViewState extends State<_FollowView> {
           data: item,
         ),
       ),
-      onFetchingMore: (currentPage, pageSize) =>
-          _getData(page: currentPage, pageSize: pageSize),
+      onFetchingMore: (currentPage, pageSize) => _getData(page: currentPage, pageSize: pageSize),
     );
   }
 }
 
 class _BloggerView extends StatefulWidget {
   const _BloggerView({required this.url});
+
   final String url;
+
   @override
   State<_BloggerView> createState() => _BloggerViewState();
 }
@@ -220,8 +216,7 @@ class _BloggerViewState extends State<_BloggerView> {
   late final _domain = context.read<DynamicDomain>();
   late final _userNotifier = context.read<UserNotifier>();
   late final _homeConfig = context.read<HomeConfigNotifier>();
-  late final List<NavigatorModel> _titles =
-      _homeConfig.config.originalBloggerNav ?? [];
+  late final List<NavigatorModel> _titles = _homeConfig.config.originalBloggerNav ?? [];
   List<TipModel> tips = [];
 
   final ValueNotifier<List<BannerModel>> _bannersNotifier = ValueNotifier([]);
@@ -251,20 +246,14 @@ class _BloggerViewState extends State<_BloggerView> {
     }
 
     if (result.isValid) {
-      if (result.data['banners'] case final List data
-          when data.isNotEmpty && _bannersNotifier.value.isEmpty) {
+      if (result.data['banners'] case final List data when data.isNotEmpty && _bannersNotifier.value.isEmpty) {
         final banner = data.map((x) => BannerModel.fromJson(x)).toList();
         _bannersNotifier.value = banner;
         tips = _homeConfig.config.forumTips ?? [];
       }
-      final List<BloggerModel>? rank = result.data['rank']
-          ?.map<BloggerModel>((x) => BloggerModel.fromJson(x))
-          .toList();
+      final List<BloggerModel>? rank = result.data['rank']?.map<BloggerModel>((x) => BloggerModel.fromJson(x)).toList();
 
-      _userNotifier.patchUserFollowStatus(rank
-              ?.where((user) => user.isFollow == 1)
-              .map((user) => '${user.aff}') ??
-          []);
+      _userNotifier.patchUserFollowStatus(rank?.where((user) => user.isFollow == 1).map((user) => '${user.aff}') ?? []);
 
       return rank;
     } else {
@@ -299,8 +288,7 @@ class _BloggerViewState extends State<_BloggerView> {
                   user: item,
                   type: nav.type,
                 ),
-                onFetchingMore: (currentPage, pageSize) => _getData(
-                    page: currentPage, pageSize: pageSize, type: nav.type),
+                onFetchingMore: (currentPage, pageSize) => _getData(page: currentPage, pageSize: pageSize, type: nav.type),
               )
           ],
         ),
@@ -311,6 +299,7 @@ class _BloggerViewState extends State<_BloggerView> {
 
 class _NormalView extends StatefulWidget {
   const _NormalView({required this.id, required this.url});
+
   final int id;
   final String url;
 
@@ -355,27 +344,20 @@ class _NormalViewState extends State<_NormalView> {
     }
 
     if (result.isValid) {
-      if (result.data['banners'] case final List data
-          when data.isNotEmpty && _bannersNotifier.value.isEmpty) {
+      if (result.data['banners'] case final List data when data.isNotEmpty && _bannersNotifier.value.isEmpty) {
         final banner = data.map((x) => BannerModel.fromJson(x)).toList();
         _bannersNotifier.value = banner;
         tips = _homeConfig.config.forumTips ?? [];
       }
 
-      if (result.data['rank'] case final List data
-          when data.isNotEmpty && _rankNotifier.value.isEmpty) {
+      if (result.data['rank'] case final List data when data.isNotEmpty && _rankNotifier.value.isEmpty) {
         final rank = data.map((x) => BloggerModel.fromJson(x)).toList();
         _rankNotifier.value = rank;
       }
-      final List<PostModel>? posts = result.data['posts']
-          ?.map<PostModel>((x) => PostModel.fromJson(x))
-          .toList();
+      final List<PostModel>? posts = result.data['posts']?.map<PostModel>((x) => PostModel.fromJson(x)).toList();
 
       _userNotifier.patchUserFollowStatus(
-        posts
-                ?.where((post) => post.user?.isFollow == 1)
-                .map((post) => '${post.user?.aff}') ??
-            [],
+        posts?.where((post) => post.user?.isFollow == 1).map((post) => '${post.user?.aff}') ?? [],
       );
       return posts;
     } else {
@@ -436,7 +418,6 @@ class _NormalViewState extends State<_NormalView> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -447,10 +428,7 @@ class _NormalViewState extends State<_NormalView> {
         NestedScrollView(
           headerSliverBuilder: (_, __) => [
             SliverToBoxAdapter(
-              child: _Header(
-                bannersNotifier: _bannersNotifier,
-                tips: tips,
-              ),
+              child: _Header(bannersNotifier: _bannersNotifier, tips: tips),
             ),
           ],
           body: Padding(
@@ -465,8 +443,7 @@ class _NormalViewState extends State<_NormalView> {
                 for (final NavigatorModel nav in _titles)
                   MyListView.list(
                     contentPadding: 15.w,
-                    padding:
-                        EdgeInsets.only(top: 5.w, bottom: MyTheme.pagePadding),
+                    padding: EdgeInsets.only(top: 5.w, bottom: MyTheme.pagePadding),
                     header: rankWidet(),
                     itemBuilder: (context, item, index) {
                       if (nav.type == 'rank') {
@@ -478,8 +455,7 @@ class _NormalViewState extends State<_NormalView> {
                       }
                       return PostCard.community(data: item);
                     },
-                    onFetchingMore: (currentPage, pageSize) => _getData(
-                        page: currentPage, pageSize: pageSize, sort: nav.type),
+                    onFetchingMore: (currentPage, pageSize) => _getData(page: currentPage, pageSize: pageSize, sort: nav.type),
                   )
               ],
             ),
@@ -543,10 +519,7 @@ class _NormalViewState extends State<_NormalView> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const SizedBox.shrink(),
-                    Text(
-                      'xzfblx'.tr(),
-                      style: MyTheme.white16bold,
-                    ),
+                    Text('xzfblx'.tr(), style: MyTheme.white16bold),
                     InkWell(
                       onTap: () => context.pop(),
                       child: MyImage.asset(
@@ -567,8 +540,7 @@ class _NormalViewState extends State<_NormalView> {
                       behavior: HitTestBehavior.translucent,
                       onTap: () {
                         context.pop();
-                        CommunityIssueRoute(type: issue.type, org: true)
-                            .push(context);
+                        CommunityIssueRoute(type: issue.type, org: true).push(context);
                       },
                       child: Column(
                         children: [
@@ -601,8 +573,10 @@ class _Header extends StatelessWidget {
     required this.bannersNotifier,
     required this.tips,
   });
+
   final ValueNotifier<List<BannerModel>> bannersNotifier;
   final List<TipModel> tips;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -633,6 +607,7 @@ class _BloggerCard extends StatelessWidget {
 
   final BloggerModel user;
   final String type;
+
   @override
   Widget build(BuildContext context) {
     final thumb = user.thumb ?? '';
@@ -656,10 +631,7 @@ class _BloggerCard extends StatelessWidget {
           },
           child: Row(
             children: [
-              MyAvatar(
-                thumb: thumb,
-                size: 50.w,
-              ),
+              MyAvatar(thumb: thumb, size: 50.w),
               SizedBox(width: 10.w),
               Expanded(
                 child: Column(
@@ -668,10 +640,7 @@ class _BloggerCard extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Text(
-                          nickname,
-                          style: MyTheme.white255_15_M,
-                        ),
+                        Text(nickname, style: MyTheme.white255_15_M),
                         SizedBox(width: 2.w),
                         if (userAgent == 1)
                           Icon(
@@ -684,32 +653,24 @@ class _BloggerCard extends StatelessWidget {
                     SizedBox(height: 2.w),
                     Text(
                       tip,
-                      style: TextStyle(
-                        color: const Color(0xFFc6c7d9),
-                        fontSize: 12.sp,
-                      ),
+                      style: TextStyle(color: const Color(0xFFc6c7d9), fontSize: 12.sp),
                     )
                   ],
                 ),
               ),
               SizedBox(width: 5.w),
               Selector<UserNotifier, bool>(
-                selector: (_, notifier) =>
-                    notifier.userFollowingStatus.contains(aff),
+                selector: (_, notifier) => notifier.userFollowingStatus.contains(aff),
                 builder: (_, isFollowed, __) => FollowButton(
                   isFollowed: isFollowed,
-                  onTap: () =>
-                      context.read<UserNotifier>().changeUserFollow(aff),
+                  onTap: () => context.read<UserNotifier>().changeUserFollow(aff),
                 ),
               ),
             ],
           ),
         ),
         SizedBox(height: 10.w),
-        Container(
-          color: const Color.fromARGB(25, 255, 255, 255),
-          height: 0.5,
-        )
+        Container(color: const Color.fromARGB(25, 255, 255, 255), height: 0.5)
       ],
     );
   }
@@ -720,6 +681,7 @@ class _BloggerAvatarCard extends StatelessWidget {
 
   final BloggerModel user;
   final String type;
+
   @override
   Widget build(BuildContext context) {
     final thumb = user.thumb ?? '';
@@ -742,15 +704,9 @@ class _BloggerAvatarCard extends StatelessWidget {
             UserCenterRoute(aff).push(context);
           },
           child: Column(children: [
-            MyAvatar(
-              thumb: thumb,
-              size: 45.w,
-            ),
+            MyAvatar(thumb: thumb, size: 45.w),
             SizedBox(height: 5.w),
-            Text(
-              nickname,
-              style: MyTheme.white244_12,
-            ),
+            Text(nickname, style: MyTheme.white244_12),
           ])),
     );
   }

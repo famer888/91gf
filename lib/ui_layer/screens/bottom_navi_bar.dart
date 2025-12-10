@@ -359,14 +359,14 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
                       label: 'sy'.tr(context: context),
                     ),
                     BottomNavigationBarItem(
-                      icon: const _Icon(MyImagePaths.appTabEcyN),
-                      activeIcon: const _Icon(MyImagePaths.appTabEcyS),
-                      label: 'ych'.tr(context: context),
-                    ),
-                    BottomNavigationBarItem(
                       icon: const _Icon(MyImagePaths.appTabShequN),
                       activeIcon: const _Icon(MyImagePaths.appTabShequS),
                       label: 'ym'.tr(context: context),
+                    ),
+                    BottomNavigationBarItem(
+                      icon: const _Icon(MyImagePaths.appTabEcyN),
+                      activeIcon: const _Icon(MyImagePaths.appTabEcyS),
+                      label: 'ych'.tr(context: context),
                     ),
                     BottomNavigationBarItem(
                       icon: const _Icon(MyImagePaths.appTabLlsN),

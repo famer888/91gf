@@ -137,16 +137,16 @@ class WelcomeRoute extends GoRouteData {
     ),
     TypedStatefulShellBranch(
       routes: [
-        // TypedGoRoute<OriginAndGroupChatRoute>(
-        TypedGoRoute<YchRoute>(
-          path: AppRouterPaths.ych,
+        TypedGoRoute<CommunityRoute>(
+          path: AppRouterPaths.community,
         ),
       ],
     ),
     TypedStatefulShellBranch(
       routes: [
-        TypedGoRoute<CommunityRoute>(
-          path: AppRouterPaths.community,
+        // TypedGoRoute<OriginAndGroupChatRoute>(
+        TypedGoRoute<YchRoute>(
+          path: AppRouterPaths.ych,
         ),
       ],
     ),

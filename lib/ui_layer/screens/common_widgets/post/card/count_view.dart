@@ -53,10 +53,7 @@ class CardCountView extends StatelessWidget {
           GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () => CommunityTagDetailRoute('${topic?.id}').push(context),
-            child: Text(
-              '#${topic?.name ?? ''}',
-              style: MyTheme.blue96_13_M,
-            ),
+            child: Text('#${topic?.name ?? ''}', style: MyTheme.blue96_13_M),
           )
       ],
     );

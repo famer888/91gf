@@ -21,6 +21,7 @@ class PostCard extends StatelessWidget {
     super.key,
     required this.data,
   }) : _type = CommunityType.bit;
+
   const PostCard.community({
     super.key,
     required this.data,
@@ -39,8 +40,7 @@ class PostCard extends StatelessWidget {
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () => switch (_type) {
-          CommunityType.community =>
-            CommunityPostDetailRoute('${data.id}').push(context),
+          CommunityType.community => CommunityPostDetailRoute('${data.id}').push(context),
           CommunityType.bit => BitPostDetailRoute('${data.id}').push(context),
         },
         child: Stack(
@@ -58,14 +58,8 @@ class PostCard extends StatelessWidget {
                         createdAt: data.createdAt ?? '',
                       ),
                     ),
-                  CardContentView(
-                    isBest: data.isBest == 1,
-                    title: data.title,
-                  ),
-                  if (data.medias case final medias? when medias.isNotEmpty)
-                    CardMediaView(
-                      medias: medias,
-                    ),
+                  CardContentView(isBest: data.isBest == 1, title: data.title),
+                  if (data.medias case final medias? when medias.isNotEmpty) CardMediaView(medias: medias),
                   Divider(color: Colors.white.withOpacity(0.04), height: 18.w),
                   CardCountView(
                     viewCount: _type == CommunityType.community ? data.viewNum : data.viewCt ?? 0,
@@ -77,10 +71,7 @@ class PostCard extends StatelessWidget {
                 ],
               ),
             ),
-            Positioned(
-                top: 0,
-                left: 0,
-                child: getTopContent(data.index)),
+            Positioned(top: 0, left: 0, child: getTopContent(data.index)),
           ],
         ),
       ),
@@ -90,11 +81,11 @@ class PostCard extends StatelessWidget {
   Widget getTopContent(int? index) {
     switch (index) {
       case 0:
-        return MyImage.asset(MyImagePaths.appTopOne, width: 55.w, height:  20.w);
+        return MyImage.asset(MyImagePaths.appTopOne, width: 55.w, height: 20.w);
       case 1:
-        return MyImage.asset(MyImagePaths.appTopTwo, width: 55.w, height:  20.w);
+        return MyImage.asset(MyImagePaths.appTopTwo, width: 55.w, height: 20.w);
       case 2:
-        return MyImage.asset(MyImagePaths.appTopThree, width: 55.w, height:  20.w);
+        return MyImage.asset(MyImagePaths.appTopThree, width: 55.w, height: 20.w);
     }
     return const SizedBox.shrink();
   }

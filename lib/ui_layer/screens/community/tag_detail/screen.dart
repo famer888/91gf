@@ -26,10 +26,11 @@ import '../../theme.dart';
 
 class CommunityTagDetailScreen extends StatefulWidget {
   const CommunityTagDetailScreen({super.key, required this.id});
+
   final String id;
+
   @override
-  State<CommunityTagDetailScreen> createState() =>
-      _CommunityTagDetailScreenState();
+  State<CommunityTagDetailScreen> createState() => _CommunityTagDetailScreenState();
 }
 
 class _CommunityTagDetailScreenState extends State<CommunityTagDetailScreen> {
@@ -52,8 +53,7 @@ class _CommunityTagDetailScreenState extends State<CommunityTagDetailScreen> {
       _asyncValue = const AsyncLoading();
     });
 
-    final res =
-        await _communityDomain.communityTopicsDetail(topicId: widget.id);
+    final res = await _communityDomain.communityTopicsDetail(topicId: widget.id);
     if (res.data case final data?) {
       _asyncValue = AsyncData(data);
     } else {
@@ -99,14 +99,10 @@ class _CommunityTagDetailScreenState extends State<CommunityTagDetailScreen> {
           body: NetworkErrorView(onTap: _init),
         ),
         data: (data) => Scaffold(
-          appBar: MyAppBar(
-            title: data.name,
-          ),
+          appBar: MyAppBar(title: data.name),
           body: NestedScrollView(
             headerSliverBuilder: (_, __) => [
-              SliverToBoxAdapter(
-                child: _Header(data: data),
-              ),
+              SliverToBoxAdapter(child: _Header(data: data)),
             ],
             body: Padding(
               padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
@@ -118,16 +114,9 @@ class _CommunityTagDetailScreenState extends State<CommunityTagDetailScreen> {
                   for (final NavigatorModel nav in _titles)
                     MyListView.list(
                       contentPadding: 15.w,
-                      padding:
-                      EdgeInsets.only(top: 5.w, bottom: MyTheme.pagePadding),
-                      itemBuilder: (context, item, index) => PostCard.community(
-                        data: item,
-                      ),
-                      onFetchingMore: (currentPage, pageSize) => _getData(
-                        page: currentPage,
-                        pageSize: pageSize,
-                        cate: nav.type,
-                      ),
+                      padding: EdgeInsets.only(top: 5.w, bottom: MyTheme.pagePadding),
+                      itemBuilder: (context, item, index) => PostCard.community(data: item),
+                      onFetchingMore: (currentPage, pageSize) => _getData(page: currentPage, pageSize: pageSize, cate: nav.type),
                     )
                 ],
               ),
@@ -141,7 +130,9 @@ class _CommunityTagDetailScreenState extends State<CommunityTagDetailScreen> {
 
 class _Header extends StatelessWidget {
   const _Header({required this.data});
+
   final TopicModel data;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -191,8 +182,7 @@ class _Header extends StatelessWidget {
                     isLoading = true;
 
                     final communityDomain = context.read<CommunityDomain>();
-                    final res = await communityDomain.communityFollowTopic(
-                        topicId: '${data.id}');
+                    final res = await communityDomain.communityFollowTopic(topicId: '${data.id}');
                     if (res.isValid) {
                       setState(() {
                         data.isFollow = isFollowed ? 0 : 1;

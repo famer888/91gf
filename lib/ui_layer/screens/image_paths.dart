@@ -86,6 +86,7 @@ class MyImagePaths {  static const appZfConN = './assets/images/app_zf_con_n.png
   static const appMineFansFollow = './assets/images/app_mine_fans_follow.png';
   static const appComicView = './assets/images/app_comic_view.png';
   static const appMineRightArrow = './assets/images/app_mine_right_arrow.png';
+  static const appIssueBg = './assets/images/app_issue_bg.png';
   static const appShortLikeH = './assets/images/app_short_like_h.png';
   static const appDiscoverHkj = './assets/images/app_discover_hkj.png';
   static const appOriginalArrowRight = './assets/images/app_original_arrow_right.png';

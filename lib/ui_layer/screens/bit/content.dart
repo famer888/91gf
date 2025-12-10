@@ -17,7 +17,9 @@ import '../theme.dart';
 
 class BitContentView extends StatefulWidget {
   const BitContentView({super.key, required this.nav});
+
   final BitNavModel nav;
+
   @override
   State<BitContentView> createState() => _BitContentViewState();
 }
@@ -26,13 +28,11 @@ class _BitContentViewState extends State<BitContentView> {
   late final _domain = context.read<SeedDomain>();
   late final _homeConfig = context.read<HomeConfigNotifier>();
   final ValueNotifier<List<BannerModel>> _bannersNotifier = ValueNotifier([]);
-  late final List<NavigatorModel> _titles =
-      _homeConfig.config.seedSortNav ?? [];
+  late final List<NavigatorModel> _titles = _homeConfig.config.seedSortNav ?? [];
 
   bool isInit = false;
 
-  Future<List<PostModel>?> _getData(
-      {required int page, required int pageSize, required String sort}) async {
+  Future<List<PostModel>?> _getData({required int page, required int pageSize, required String sort}) async {
     final result = await _domain.bitSortList(
       id: widget.nav.id,
       sort: sort,
@@ -46,8 +46,7 @@ class _BitContentViewState extends State<BitContentView> {
     }
 
     if (result.status == 1) {
-      if (result.data?.banners case final data?
-          when data.isNotEmpty && _bannersNotifier.value.isEmpty) {
+      if (result.data?.banners case final data? when data.isNotEmpty && _bannersNotifier.value.isEmpty) {
         _bannersNotifier.value = data;
       }
       return result.data?.posts;
@@ -79,11 +78,8 @@ class _BitContentViewState extends State<BitContentView> {
               MyListView.list(
                 contentPadding: 15.w,
                 padding: EdgeInsets.symmetric(vertical: MyTheme.pagePadding),
-                itemBuilder: (context, item, index) => PostCard.bit(
-                  data: item,
-                ),
-                onFetchingMore: (currentPage, pageSize) => _getData(
-                    page: currentPage, pageSize: pageSize, sort: nav.type),
+                itemBuilder: (context, item, index) => PostCard.bit(data: item),
+                onFetchingMore: (currentPage, pageSize) => _getData(page: currentPage, pageSize: pageSize, sort: nav.type),
               )
           ],
         ),
@@ -94,6 +90,7 @@ class _BitContentViewState extends State<BitContentView> {
 
 class _Header extends StatelessWidget {
   const _Header({required this.bannersNotifier});
+
   final ValueNotifier<List<BannerModel>> bannersNotifier;
 
   @override
