@@ -1,29 +1,96 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jygf/domain/api_validator.dart';
+import 'package:jygf/domain/model/member_model.dart';
+import 'package:jygf/domain/remote_domain/domains/community.dart';
+import 'package:jygf/domain/type_def.dart';
+import 'package:jygf/ui_layer/notifiers/user_notifier.dart';
+import 'package:jygf/ui_layer/router/routes.dart';
+import 'package:jygf/ui_layer/screens/community/coins_dialog.dart';
+import 'package:jygf/ui_layer/utils/my_toast.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../domain/enum.dart';
 import '../../../../../domain/model/media_model.dart';
-import '../../../../router/routes.dart';
 import '../../../../utils/common_utils.dart';
 import '../../../image_paths.dart';
 import '../../../theme.dart';
 import '../../my_image.dart';
 
-class PostMediaView extends StatelessWidget {
-  const PostMediaView(
-      {super.key, required this.medias, required this.unlockCoins});
+class PostMediaView extends StatefulWidget {
   final List<MediaModel> medias;
   final int unlockCoins;
+
+  const PostMediaView({super.key, required this.medias, required this.unlockCoins});
+
+  @override
+  State<PostMediaView> createState() => _PostMediaViewState();
+}
+
+class _PostMediaViewState extends State<PostMediaView> {
+  late final _domain = context.read<CommunityDomain>();
+
+  //会员/金币购买弹窗
+  void dialogPrompt(BuildContext context, int index) {
+    if (widget.medias.isEmpty) return;
+
+    final videoMedias = widget.medias.where((m) => m.type == MyMediaType.video).toList();
+    if (videoMedias.isNotEmpty) {
+      Member member = context.read<UserNotifier>().member;
+      showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (ctx) => Material(
+          type: MaterialType.transparency,
+          child: PopScope(
+            canPop: false,
+            child: CoinsDialog(
+              unlockCoins: widget.unlockCoins,
+              money: member.money,
+              actionCallback: () {
+                // 取第一个元素解锁
+                final data = videoMedias.first;
+                _pay(data, index);
+              },
+            ),
+          ),
+        ),
+      );
+    } else {
+      // 直接跳转
+      MediaViewerRoute({'resources': widget.medias, 'index': index}).push(context);
+    }
+  }
+
+  Future<void> _pay(MediaModel data, int index) async {
+    CommonUtils.log('当前的媒体数据:${widget.medias}');
+    MyToast.showLoading();
+    final result = await _domain.reqGetPostURL(id: data.pid ?? 0);
+    MyToast.closeAllLoading();
+    if (result.isValid) {
+      if (mounted) {
+        setState(() {
+          data.mediaUrl = result.data['url'] ?? '';
+        });
+        MediaViewerRoute({'resources': widget.medias, 'index': index}).push(context);
+      }
+    } else {
+      MyToast.showText(text: result.msg ?? '');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     /// 前往图片/影片浏览页
     void goPictureView(int index) {
-      if (medias.isNotEmpty) {
-        MediaViewerRoute({'resources': medias, 'index': index}).push(context);
+      if (widget.unlockCoins > 0) {
+        dialogPrompt(context, index);
+      } else {
+        MediaViewerRoute({'resources': widget.medias, 'index': index}).push(context);
       }
     }
 
@@ -31,11 +98,11 @@ class PostMediaView extends StatelessWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       padding: EdgeInsets.only(bottom: 10.w),
-      itemCount: medias.length,
+      itemCount: widget.medias.length,
       itemBuilder: (context, index) {
-        final media = medias[index];
+        final media = widget.medias[index];
         if (media.type == MyMediaType.video) {
-          media.unlockCoins = unlockCoins;
+          media.unlockCoins = widget.unlockCoins;
         }
         double width = 1.sw - MyTheme.pagePadding * 2;
         final thumbWidth = media.thumbWidth.toDouble();
@@ -44,7 +111,7 @@ class PostMediaView extends StatelessWidget {
         final h = thumbHeight == 0.0 ? (width / 2) : thumbHeight;
         width = min(w, width);
 
-        return medias[index].type == MyMediaType.image
+        return widget.medias[index].type == MyMediaType.image
             ? Align(
                 alignment: Alignment.center,
                 child: SizedBox(
@@ -53,10 +120,7 @@ class PostMediaView extends StatelessWidget {
                   child: GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () => goPictureView(index),
-                    child: MyImage.network(
-                      CommonUtils.getThumb(medias[index].toJson()),
-                      fit: BoxFit.contain,
-                    ),
+                    child: MyImage.network(CommonUtils.getThumb(widget.medias[index].toJson()), borderRadius: 5.w, fit: BoxFit.contain),
                   ),
                 ),
               )
@@ -64,21 +128,10 @@ class PostMediaView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 10.w),
-                  unlockCoins > 0 && medias[index].mediaUrl.isEmpty
-                      ? Text(
-                          "$unlockCoins${'jbjsgk'.tr(context: context)}:",
-                          style: TextStyle(
-                            color: MyTheme.cyanColor00edfd,
-                            fontSize: 14.sp,
-                          ),
-                        )
-                      : Text(
-                          "${'shp'.tr(context: context)}:",
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 14.sp,
-                          ),
-                        ),
+                  widget.unlockCoins > 0 && widget.medias[index].mediaUrl.isEmpty
+                      ? Text("${widget.unlockCoins}${'jbjsgk'.tr(context: context)}:",
+                          style: TextStyle(color: MyTheme.cyanColor00edfd, fontSize: 14.sp))
+                      : Text("${'shp'.tr(context: context)}:", style: TextStyle(color: Colors.white70, fontSize: 14.sp)),
                   SizedBox(height: 5.w),
                   SizedBox(
                     width: 1.sw - MyTheme.pagePadding * 2,
@@ -86,25 +139,26 @@ class PostMediaView extends StatelessWidget {
                     child: GestureDetector(
                       behavior: HitTestBehavior.translucent,
                       onTap: () => goPictureView(index),
-                      child: Stack(
-                        children: [
-                          Positioned.fill(
-                            child: MyImage.network(
-                              media.cover,
-                              fit: BoxFit.cover,
-                            ),
+                      child: Positioned.fill(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(5.w)),
+                          child: Stack(
+                            children: [
+                              // 图片在最底层
+                              Positioned.fill(child: MyImage.network(media.cover, borderRadius: 5.w, fit: BoxFit.cover)),
+                              Positioned.fill(
+                                child: BackdropFilter(
+                                  filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+                                  child: Container(color: const Color.fromRGBO(176, 66, 255, 0.15)),
+                                ),
+                              ),
+                              const Center(child: MyImage.asset(MyImagePaths.appVPlayN, width: 40, height: 40))
+                            ],
                           ),
-                          const Center(
-                            child: MyImage.asset(
-                              MyImagePaths.appVPlayN,
-                              width: 40,
-                              height: 40,
-                            ),
-                          )
-                        ],
+                        ),
                       ),
                     ),
-                  )
+                  ),
                 ],
               );
       },

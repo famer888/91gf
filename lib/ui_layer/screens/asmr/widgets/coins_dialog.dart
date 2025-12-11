@@ -1,5 +1,3 @@
-
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,17 +15,15 @@ import 'package:provider/provider.dart';
 class CoinsDialog extends StatefulWidget {
   const CoinsDialog({super.key, required this.data});
 
-  final VoiceModel data;//需要购买的数据
+  final VoiceModel data; //需要购买的数据
 
   @override
   State<CoinsDialog> createState() => _CoinsDialogState();
 }
 
 class _CoinsDialogState extends State<CoinsDialog> {
-
   @override
   Widget build(BuildContext context) {
-
     final data = VoicePlayerManager.instance.data;
     List<TextSpan> textSpans = [];
     if (data?.type == 1) {
@@ -35,9 +31,7 @@ class _CoinsDialogState extends State<CoinsDialog> {
     } else if (data?.type == 2) {
       textSpans = [
         TextSpan(text: 'dqyp'.tr(context: context), style: MyTheme.white15),
-        TextSpan(
-            text: '${data?.coins}${'jb'.tr(context: context)}',
-            style: MyTheme.jellyCyan_15_M),
+        TextSpan(text: '${data?.coins}${'jb'.tr(context: context)}', style: MyTheme.jellyCyan_15_M),
         TextSpan(text: 'gmbf'.tr(context: context), style: MyTheme.white15),
       ];
     }
@@ -69,11 +63,8 @@ class _CoinsDialogState extends State<CoinsDialog> {
                     width: 120.w,
                     height: 36.w,
                     alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        color: MyTheme.gray117,
-                        borderRadius: BorderRadius.all(Radius.circular(18.w))),
-                    child: Text('qx'.tr(context: context),
-                        style: MyTheme.white15_M)),
+                    decoration: BoxDecoration(color: MyTheme.gray117, borderRadius: BorderRadius.all(Radius.circular(18.w))),
+                    child: Text('qx'.tr(context: context), style: MyTheme.white15_M)),
               ),
               SizedBox(width: 20.w),
               InkWell(
@@ -91,33 +82,27 @@ class _CoinsDialogState extends State<CoinsDialog> {
                     width: 120.w,
                     height: 36.w,
                     alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        color: MyTheme.jellyCyanColor103224185,
-                        borderRadius: BorderRadius.all(Radius.circular(18.w))),
-                    child: Text('qd'.tr(context: context),
-                        style: MyTheme.white15_M)),
+                    decoration: BoxDecoration(color: MyTheme.jellyCyanColor103224185, borderRadius: BorderRadius.all(Radius.circular(18.w))),
+                    child: Text('qd'.tr(context: context), style: MyTheme.white15_M)),
               ),
             ]),
             data?.type == 2
                 ? InkWell(
-              onTap: () {
-                //后续不再提醒，直接购买
-                VoicePlayerManager.instance.needCoinsTip = !VoicePlayerManager.instance.needCoinsTip;
-                setState(() {});
-              },
-              child: Container(
-                padding: EdgeInsets.only(top: 20.w),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      MyImage.asset(VoicePlayerManager.instance.needCoinsTip ? MyImagePaths.appAsmrOpenNor : MyImagePaths.appAsmrOpenSel,
-                          width: 10.w, height: 10.w),
-                      SizedBox(width: 5.w),
-                      Text('zjgm'.tr(context: context),
-                          style: MyTheme.jellyCyan_11_M)
-                    ]),
-              ),
-            )
+                    onTap: () {
+                      //后续不再提醒，直接购买
+                      VoicePlayerManager.instance.needCoinsTip = !VoicePlayerManager.instance.needCoinsTip;
+                      setState(() {});
+                    },
+                    child: Container(
+                      padding: EdgeInsets.only(top: 20.w),
+                      child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                        MyImage.asset(VoicePlayerManager.instance.needCoinsTip ? MyImagePaths.appAsmrOpenNor : MyImagePaths.appAsmrOpenSel,
+                            width: 10.w, height: 10.w),
+                        SizedBox(width: 5.w),
+                        Text('zjgm'.tr(context: context), style: MyTheme.jellyCyan_11_M)
+                      ]),
+                    ),
+                  )
                 : Container(),
           ]),
     );
@@ -129,13 +114,15 @@ class _CoinsDialogState extends State<CoinsDialog> {
     return Center(child: current);
   }
 
-  void sureAction(){
+  void sureAction() {
     Member member = context.read<UserNotifier>().member;
-    bool sufficient= member.money >= (widget.data.coins ?? 0);
-    if (sufficient) {//用户余额足够直接购买
+    bool sufficient = member.money >= (widget.data.coins ?? 0);
+    if (sufficient) {
+      //用户余额足够直接购买
       VoicePlayerManager.instance.buyVoice(widget.data);
       return;
-    } else {//弹窗提示余额不足，去充值
+    } else {
+      //弹窗提示余额不足，去充值
       context.pop(); //隐藏弹窗
       showDialog(
         barrierDismissible: false,
@@ -149,9 +136,7 @@ class _CoinsDialogState extends State<CoinsDialog> {
       );
     }
   }
-
 }
-
 
 class CoinsNotEnoughDialog extends StatefulWidget {
   const CoinsNotEnoughDialog({super.key});
@@ -161,10 +146,8 @@ class CoinsNotEnoughDialog extends StatefulWidget {
 }
 
 class _CoinsNotEnoughDialogState extends State<CoinsNotEnoughDialog> {
-
   @override
   Widget build(BuildContext context) {
-
     Widget current = Container(
       padding: EdgeInsets.all(20.w),
       color: const Color.fromRGBO(35, 38, 46, 1),
@@ -192,11 +175,8 @@ class _CoinsNotEnoughDialogState extends State<CoinsNotEnoughDialog> {
                     width: 120.w,
                     height: 36.w,
                     alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        color: MyTheme.gray117,
-                        borderRadius: BorderRadius.all(Radius.circular(18.w))),
-                    child: Text('qx'.tr(context: context),
-                        style: MyTheme.white15_M)),
+                    decoration: BoxDecoration(color: MyTheme.gray117, borderRadius: BorderRadius.all(Radius.circular(18.w))),
+                    child: Text('qx'.tr(context: context), style: MyTheme.white15_M)),
               ),
               SizedBox(width: 20.w),
               InkWell(
@@ -208,11 +188,8 @@ class _CoinsNotEnoughDialogState extends State<CoinsNotEnoughDialog> {
                     width: 120.w,
                     height: 36.w,
                     alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        color: MyTheme.jellyCyanColor103224185,
-                        borderRadius: BorderRadius.all(Radius.circular(18.w))),
-                    child: Text('qd'.tr(context: context),
-                        style: MyTheme.white15_M)),
+                    decoration: BoxDecoration(color: MyTheme.jellyCyanColor103224185, borderRadius: BorderRadius.all(Radius.circular(18.w))),
+                    child: Text('qd'.tr(context: context), style: MyTheme.white15_M)),
               ),
             ]),
           ]),
@@ -224,5 +201,4 @@ class _CoinsNotEnoughDialogState extends State<CoinsNotEnoughDialog> {
 
     return Center(child: current);
   }
-
 }

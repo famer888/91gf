@@ -157,8 +157,7 @@ class _MyAppState extends State<MyApp> {
       locale: context.locale,
       onGenerateTitle: (context) => 'yybt'.tr(context: context),
       theme: ThemeData(
-        progressIndicatorTheme: const ProgressIndicatorThemeData(
-            color: MyTheme.jellyCyanColor103224185),
+        progressIndicatorTheme: const ProgressIndicatorThemeData(color: MyTheme.jellyCyanColor103224185),
         splashColor: Colors.transparent,
         scaffoldBackgroundColor: MyTheme.bgColor,
         canvasColor: MyTheme.bgColor, // Canvas 背景色
@@ -200,8 +199,7 @@ class _MyAppState extends State<MyApp> {
         widget = botToastBuilder(context, widget!);
         widget = MediaQuery(
           //设置文字大小不随系统设置改变
-          data: MediaQuery.of(context)
-              .copyWith(textScaler: const TextScaler.linear(1.0)),
+          data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),
           child: widget,
         );
         return widget;

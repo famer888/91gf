@@ -336,7 +336,7 @@ static const gradient_90_114_colors_15 = [
   static const blueColor63 = Color.fromRGBO(63, 91, 245, 1);
   static const blueColor64 = Color.fromRGBO(64, 165, 254, 1);
 
-  static const cyanColor00edfd = Color.fromRGBO(55, 110, 246, 1);
+  static const cyanColor00edfd = Color.fromRGBO(176, 66, 255, 1);
 
   static const jellyCyanColor103224185 = Color.fromRGBO(176, 66, 255, 1);
   static const jellyCyanColor108235220 = Color.fromRGBO(108, 235, 220, 1);
@@ -3181,6 +3181,7 @@ extension MyHeightEx on TextStyle {
 extension MySizeEx on TextStyle {
   TextStyle get s10 => copyWith(fontSize: 10.sp);
   TextStyle get s12 => copyWith(fontSize: 12.sp);
+  TextStyle get s13 => copyWith(fontSize: 13.sp);
   TextStyle get s14 => copyWith(fontSize: 14.sp);
   TextStyle get s15 => copyWith(fontSize: 15.sp);
   TextStyle get s16 => copyWith(fontSize: 16.sp);
@@ -3191,6 +3192,7 @@ extension MySizeEx on TextStyle {
 }
 
 extension MyWeightEx on TextStyle {
+  TextStyle get w400 => copyWith(fontWeight: FontWeight.w400);
   TextStyle get w500 => copyWith(fontWeight: FontWeight.w500);
   TextStyle get w600 => copyWith(fontWeight: FontWeight.w600);
   TextStyle get w700 => copyWith(fontWeight: FontWeight.w700);
@@ -3211,6 +3213,7 @@ extension MyTextColorEx on TextStyle {
   TextStyle get white25508 => copyWith(color: MyTheme.white25508Color);
   TextStyle get white25509 => copyWith(color: MyTheme.white25509Color);
   TextStyle get white => copyWith(color: MyTheme.white255Color);
+  TextStyle get cyanColor00edfd => copyWith(color: MyTheme.cyanColor00edfd);
 
   TextStyle get yellow255 => copyWith(color: MyTheme.yellow255Color);
 }

@@ -22,7 +22,9 @@ import '../theme.dart';
 
 class MediaViewerScreen extends StatefulWidget {
   const MediaViewerScreen({super.key, required this.pramas});
+
   final Map pramas;
+
   @override
   State<MediaViewerScreen> createState() => _MediaViewerScreenState();
 }
@@ -39,8 +41,7 @@ class _MediaViewerScreenState extends State<MediaViewerScreen> {
   void setupData() {
     widget.pramas['resources'].forEach((item) {
       GlobalKey key = GlobalKey();
-      TransformationController transformationController =
-          TransformationController();
+      TransformationController transformationController = TransformationController();
       transformationControllerList.add(transformationController);
       keyList.add(key);
     });
@@ -98,10 +99,7 @@ class _MediaViewerScreenState extends State<MediaViewerScreen> {
                       maxScale: 10.0,
                       child: e.type == MyMediaType.video
                           ? ShortVPlayer(data: e)
-                          : MyImage.network(
-                              CommonUtils.getThumb(e.toJson()),
-                              fit: BoxFit.contain,
-                            ),
+                          : MyImage.network(CommonUtils.getThumb(e.toJson()), fit: BoxFit.contain),
                     );
                   },
                 ),
@@ -115,10 +113,7 @@ class _MediaViewerScreenState extends State<MediaViewerScreen> {
                     height: 80.w,
                     decoration: const BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [
-                          Color.fromRGBO(0, 0, 0, 0.6),
-                          Color.fromRGBO(0, 0, 0, 0.0)
-                        ],
+                        colors: [Color.fromRGBO(0, 0, 0, 0.6), Color.fromRGBO(0, 0, 0, 0.0)],
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                       ),
@@ -129,12 +124,9 @@ class _MediaViewerScreenState extends State<MediaViewerScreen> {
               Positioned.fill(
                   child: Column(
                 children: [
+                  Container(height: kIsWeb ? 10.w : MediaQuery.of(context).padding.top),
                   Container(
-                      height:
-                          kIsWeb ? 10.w : MediaQuery.of(context).padding.top),
-                  Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+                    padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
                     height: MyTheme.navbarHegiht,
                     child: Stack(
                       children: [
@@ -145,8 +137,7 @@ class _MediaViewerScreenState extends State<MediaViewerScreen> {
                               behavior: HitTestBehavior.translucent,
                               child: SizedBox(
                                 height: double.infinity,
-                                child: Icon(Icons.close,
-                                    size: 24.w, color: Colors.white),
+                                child: Icon(Icons.close, size: 24.w, color: Colors.white),
                               ),
                               onTap: () {
                                 context.pop();
@@ -154,8 +145,7 @@ class _MediaViewerScreenState extends State<MediaViewerScreen> {
                             ),
                             Text(
                               '${_selectedIndex + 1} / ${widget.pramas['resources'].length}',
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 16.sp),
+                              style: TextStyle(color: Colors.white, fontSize: 16.sp),
                             )
                           ],
                         ),
@@ -177,6 +167,7 @@ class ShortVPlayer extends StatefulWidget {
     super.key,
     required this.data,
   });
+
   final MediaModel data;
 
   @override
@@ -209,10 +200,7 @@ class _ShortVPlayerState extends State<ShortVPlayer> {
         ? Stack(
             children: [
               Center(
-                child: MyImage.network(
-                  data.cover,
-                  fit: BoxFit.contain,
-                ),
+                child: MyImage.network(data.cover, fit: BoxFit.contain),
               ),
               Container(color: Colors.black87),
               Center(
@@ -222,17 +210,13 @@ class _ShortVPlayerState extends State<ShortVPlayer> {
                   child: Container(
                     height: 34.w,
                     width: 130.w,
-                    decoration: BoxDecoration(
-                        color: const Color.fromRGBO(255, 252, 136, 0.7),
-                        borderRadius: BorderRadius.all(Radius.circular(17.w))),
+                    decoration: BoxDecoration(color: const Color.fromRGBO(255, 252, 136, 0.7), borderRadius: BorderRadius.all(Radius.circular(17.w))),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        MyImage.asset(MyImagePaths.appVideoCoinN,
-                            width: 18.w, height: 17.w),
+                        MyImage.asset(MyImagePaths.appVideoCoinN, width: 18.w, height: 17.w),
                         SizedBox(width: 2.w),
-                        Text("${data.unlockCoins}${tr('jbjsgk')}",
-                            style: MyTheme.black12)
+                        Text("${data.unlockCoins}${tr('jbjsgk')}", style: MyTheme.black12)
                       ],
                     ),
                   ),
@@ -254,7 +238,7 @@ class _ShortVPlayerState extends State<ShortVPlayer> {
               info: videoInfo,
               needCheckAspectRatio: true,
               noBack: true,
-              needSlide: false,//防止滑动冲突，导致无法滑动到照片页
+              needSlide: false, //防止滑动冲突，导致无法滑动到照片页
             );
           });
   }

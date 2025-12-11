@@ -35,13 +35,12 @@ class CommunityPostDetailScreen extends StatefulWidget {
   const CommunityPostDetailScreen({super.key, required this.id});
 
   final String id;
+
   @override
-  State<CommunityPostDetailScreen> createState() =>
-      _CommunityPostDetailScreenState();
+  State<CommunityPostDetailScreen> createState() => _CommunityPostDetailScreenState();
 }
 
-class _CommunityPostDetailScreenState extends State<CommunityPostDetailScreen>
-    with WidgetsBindingObserver {
+class _CommunityPostDetailScreenState extends State<CommunityPostDetailScreen> with WidgetsBindingObserver {
   late final _domain = context.read<CommunityDomain>();
 
   AsyncValue<TopicDetail> _asyncValue = const AsyncInit();
@@ -79,6 +78,8 @@ class _CommunityPostDetailScreenState extends State<CommunityPostDetailScreen>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    textEditingController.dispose();
+    inputFocusNode.dispose();
     super.dispose();
   }
 
@@ -112,10 +113,8 @@ class _CommunityPostDetailScreenState extends State<CommunityPostDetailScreen>
   }
 
   /// 取得评论
-  Future<List<ReviewData>?> getReviewData(
-      {required int currentPage, required int pageSize}) async {
-    final result = await _domain.communityPostComments(
-        id: widget.id, page: currentPage, limit: pageSize);
+  Future<List<ReviewData>?> getReviewData({required int currentPage, required int pageSize}) async {
+    final result = await _domain.communityPostComments(id: widget.id, page: currentPage, limit: pageSize);
 
     if (result.data case final data?) {
       return data;
@@ -156,8 +155,7 @@ class _CommunityPostDetailScreenState extends State<CommunityPostDetailScreen>
   }
 
   Future<bool> _changeCommentLike(String id) async {
-    final res =
-        await _domain.communityTopicLike(type: MyLikeType.comment, id: id);
+    final res = await _domain.communityTopicLike(type: MyLikeType.comment, id: id);
     return res.isValid;
   }
 
@@ -176,8 +174,7 @@ class _CommunityPostDetailScreenState extends State<CommunityPostDetailScreen>
       builder: (_) => RepliesSheetView(
         comment: comment,
         onLikeChange: (id) => _changeCommentLike(id),
-        commentsAsyncGetter: (int currentPage, int limit) =>
-            _domain.communityPostCommentsSecond(
+        commentsAsyncGetter: (int currentPage, int limit) => _domain.communityPostCommentsSecond(
           commentId: '${comment.id}',
           page: currentPage,
           limit: limit,
@@ -196,17 +193,25 @@ class _CommunityPostDetailScreenState extends State<CommunityPostDetailScreen>
           return ScreenBackground(
               child: Scaffold(
             appBar: MyAppBar(
-              leftWidget: _AvatarWithNickName(user: data.user),
-              rightWidget: Selector<UserNotifier, bool>(
-                selector: (_, notifier) =>
-                    notifier.userFollowingStatus.contains('${data.user?.aff}'),
-                builder: (_, isFollowed, __) => FollowButton(
-                  isFollowed: isFollowed,
-                  onTap: () => context
-                      .read<UserNotifier>()
-                      .changeUserFollow('${data.user?.aff}'),
+              leftWidget: GestureDetector(
+                onTap: () {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  context.pop();
+                },
+                child: SizedBox(
+                  height: double.infinity,
+                  child: MyImage.asset(MyImagePaths.appBackIcon, width: 20.w, height: 20.w, fit: BoxFit.contain),
                 ),
               ),
+              // _AvatarWithNickName(user: data.user),
+              title: 'tiezixq'.tr(),
+              // rightWidget: Selector<UserNotifier, bool>(
+              //   selector: (_, notifier) => notifier.userFollowingStatus.contains('${data.user?.aff}'),
+              //   builder: (_, isFollowed, __) => FollowButton(
+              //     isFollowed: isFollowed,
+              //     onTap: () => context.read<UserNotifier>().changeUserFollow('${data.user?.aff}'),
+              //   ),
+              // ),
             ),
             body: GestureDetector(
               onTap: () {
@@ -227,18 +232,14 @@ class _CommunityPostDetailScreenState extends State<CommunityPostDetailScreen>
                           commentData: item,
                           onReply: () {
                             currentReply = item;
-                            hintNotifier.value =
-                                '${'hf'.tr()}@${item.user?.nickname ?? ""}';
+                            hintNotifier.value = '${'hf'.tr()}@${item.user?.nickname ?? ""}';
                             inputFocusNode.requestFocus();
                           },
                           onMoreCommentTap: () => _showMoreReview(item),
                           changeLike: () => _changeCommentLike('${item.id}'),
                         );
                       },
-                      onFetchingMore: (currentPage, pageSize) => getReviewData(
-                        currentPage: currentPage,
-                        pageSize: pageSize,
-                      ),
+                      onFetchingMore: (currentPage, pageSize) => getReviewData(currentPage: currentPage, pageSize: pageSize),
                     ),
                   ),
                   CommentInput(
@@ -246,9 +247,7 @@ class _CommunityPostDetailScreenState extends State<CommunityPostDetailScreen>
                     focusNode: inputFocusNode,
                     hintNotifier: hintNotifier,
                     onSubmitted: () async {
-                      await _sendComment(
-                          target: currentReply,
-                          text: textEditingController.text);
+                      await _sendComment(target: currentReply, text: textEditingController.text);
                     },
                   ),
                 ],
@@ -271,7 +270,9 @@ class _CommunityPostDetailScreenState extends State<CommunityPostDetailScreen>
 
 class _AvatarWithNickName extends StatelessWidget {
   const _AvatarWithNickName({this.user});
+
   final UserModel? user;
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -283,12 +284,7 @@ class _AvatarWithNickName extends StatelessWidget {
           },
           child: SizedBox(
             height: double.infinity,
-            child: MyImage.asset(
-              MyImagePaths.appBackIcon,
-              width: 20.w,
-              height: 20.w,
-              fit: BoxFit.contain,
-            ),
+            child: MyImage.asset(MyImagePaths.appBackIcon, width: 20.w, height: 20.w, fit: BoxFit.contain),
           ),
         ),
         SizedBox(width: 10.w),
@@ -303,21 +299,12 @@ class _AvatarWithNickName extends StatelessWidget {
               SizedBox(
                 height: 30.w,
                 width: 30.w,
-                child: MyImage.network(
-                  user?.thumb ?? '',
-                  borderRadius: 15.w,
-                  fit: BoxFit.cover,
-                ),
+                child: MyImage.network(user?.thumb ?? '', borderRadius: 15.w, fit: BoxFit.cover),
               ),
               SizedBox(width: 10.w),
-              Text(
-                user?.nickname ?? '',
-                style: MyTheme.white255_15_M,
-              ),
+              Text(user?.nickname ?? '', style: MyTheme.white255_15_M),
               SizedBox(width: 2.w),
-              if (user?.agent == 1)
-                Icon(Icons.verified_sharp,
-                    size: 14.w, color: const Color.fromRGBO(247, 208, 93, 1))
+              if (user?.agent == 1) Icon(Icons.verified_sharp, size: 14.w, color: const Color.fromRGBO(247, 208, 93, 1))
             ],
           ),
         ),
