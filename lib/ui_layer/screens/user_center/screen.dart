@@ -6,6 +6,8 @@ import 'package:jygf/domain/model/collection_model.dart';
 import 'package:jygf/domain/type_def.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/feed/feed_card.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/follow_button.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/gradient_border.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_list_view.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/mine/common_widgets/video_tile.dart';
@@ -119,9 +121,8 @@ class _UserCenterScreenState extends State<UserCenterScreen> {
     return Stack(children: [
       SizedBox(
         width: double.infinity,
-        height: 300.w,
-        // child:
-        //     const MyImage.asset(MyImagePaths.appUserCenterBg, fit: BoxFit.fill),
+        height: 240.w,
+        child: const MyImage.asset(MyImagePaths.appUserCenterBg, fit: BoxFit.fill),
       ),
       Column(
         children: [
@@ -130,9 +131,7 @@ class _UserCenterScreenState extends State<UserCenterScreen> {
             child: NestedScrollView(
               controller: controller,
               headerSliverBuilder: (_, __) => [
-                SliverToBoxAdapter(
-                  child: configUserInfoView(data),
-                ),
+                SliverToBoxAdapter(child: configUserInfoView(data)),
               ],
               body: configSubListView(data),
             ),
@@ -153,8 +152,7 @@ class _UserCenterScreenState extends State<UserCenterScreen> {
     MyToast.closeAllLoading();
 
     if (result.status == 1) {
-      userNotifier.setMoney(
-          money: userNotifier.member.money - (data.coins ?? 0));
+      userNotifier.setMoney(money: userNotifier.member.money - (data.coins ?? 0));
       data.contact = result['data']['contact'];
       _asyncValue = AsyncData(data);
       setState(() {});
@@ -168,10 +166,7 @@ class _UserCenterScreenState extends State<UserCenterScreen> {
 
     final city = (data.city?.isNotEmpty ?? false) ? data.city : '火星';
     final sex = data.sex == 0 ? '保密' : (data.sex == 1 ? '男' : '女');
-    List<String> tags = (data.fetish ?? '')
-        .split(',')
-        .where((element) => element.isNotEmpty)
-        .toList();
+    List<String> tags = (data.fetish ?? '').split(',').where((element) => element.isNotEmpty).toList();
     String tagsStr = ' ';
     for (String e in tags) {
       final String str = '#$e ';
@@ -181,136 +176,124 @@ class _UserCenterScreenState extends State<UserCenterScreen> {
     return Selector<UserNotifier, Member>(
       builder: (_, member, __) {
         return Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: MyTheme.pagePadding, vertical: 10.w),
+          padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding, vertical: 10.w),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              MyAvatar(
-                thumb: data.thumb,
-                size: 63.w,
-                gradient: MyTheme.gradient_90_114,
-                margin: 2,
-              ),
-              SizedBox(height: 10.w),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
+              Row(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        data.nickname ?? 'kkyh'.tr(context: context),
-                        style: MyTheme.white16bold,
-                      ),
-                      SizedBox(width: 5.w),
-                      MemberVipWidget(vipImage: data.vipImg),
-                    ],
+                  MyAvatar(
+                    margin: 2,
+                    size: 62.w,
+                    thumb: data.thumb,
+                    gradient: const LinearGradient(colors: [Color.fromRGBO(255, 255, 255, 1), Color.fromRGBO(255, 255, 255, 1)]),
                   ),
-                  SizedBox(height: 5.w),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      RichText(
-                          text: TextSpan(children: [
-                        TextSpan(
-                          text: CommonUtils.renderFixedNumber(
-                              data.followCount ?? 0),
-                          style: MyTheme.gray102_15,
-                        ),
-                        TextSpan(
-                          text: '${'fans'.tr(context: context)}  ',
-                          style: MyTheme.gray102_15,
-                        )
-                      ])),
-                      data.agent == 1
-                          ? Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'kkyhrz'.tr(context: context),
-                                  style: MyTheme.gray102_15,
-                                ),
-                                SizedBox(width: 2.w),
-                                Icon(
-                                  Icons.verified_sharp,
-                                  size: 14.w,
-                                  color: const Color.fromRGBO(247, 208, 93, 1),
-                                ),
-                              ],
-                            )
-                          : const SizedBox.shrink(),
-                    ],
-                  ),
-                  SizedBox(height: 5.w),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      member.uuid == data.uuid
-                          ? const SizedBox.shrink()
-                          : Center(
-                              child: GestureDetector(
-                                behavior: HitTestBehavior.translucent,
-                                onTap: () {
-                                  if ((member.username ?? '').isEmpty) {
-                                    MyToast.showText(
-                                        text: 'zcyhcz'.tr(context: context));
-                                    return;
-                                  }
-                                  final uuid = data.uuid!;
-                                  final nick = data.nickname!;
-                                  final url = data.thumb?.isNotEmpty == true
-                                      ? data.thumb!
-                                      : ' ';
-                                  ChatMessageRoute(
-                                    nickName: Uri.encodeComponent(nick),
-                                    thumb: Uri.encodeComponent(url),
-                                    toUuid: uuid,
-                                  ).push(context);
-                                },
-                                child: Container(
-                                  height: 24.w,
-                                  width: 80.w,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: MyTheme.cyanColor00edfd,
-                                      width: 0.5.w,
-                                    ),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(2.w),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    'sxta'.tr(context: context),
-                                    style: MyTheme.blue96_13_M,
-                                  ),
-                                ),
-                              ),
+                  SizedBox(width: 8.w),
+                  Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(data.nickname ?? 'kkyh'.tr(context: context), style: MyTheme.white16bold),
+                        SizedBox(width: 5.w),
+                        MemberVipWidget(vipImage: data.vipImg),
+                      ],
+                    ),
+                    SizedBox(height: 6.w),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        MyImage.asset(MyImagePaths.appVIcon, width: 14.5.w, height: 14.5.w),
+                        SizedBox(width: 2.w),
+                        Text('kkyhrz'.tr(context: context), style: MyTheme.white255_12),
+                      ],
+                    )
+                  ]),
+                  const Spacer(),
+                  member.uuid == data.uuid
+                      ? const SizedBox.shrink()
+                      : GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onTap: () {
+                            if ((member.username ?? '').isEmpty) {
+                              MyToast.showText(text: 'zcyhcz'.tr(context: context));
+                              return;
+                            }
+                            final uuid = data.uuid!;
+                            final nick = data.nickname!;
+                            final url = data.thumb?.isNotEmpty == true ? data.thumb! : ' ';
+                            ChatMessageRoute(nickName: Uri.encodeComponent(nick), thumb: Uri.encodeComponent(url), toUuid: uuid).push(context);
+                          },
+                          child: Container(
+                            height: 25.w,
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.symmetric(horizontal: 6.w),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: const Color.fromRGBO(255, 255, 255, 0.5), width: 1.w),
+                              borderRadius: BorderRadius.all(Radius.circular(5.w)),
                             ),
-                      member.uuid == data.uuid
-                          ? const SizedBox.shrink()
-                          : Selector<UserNotifier, bool>(
-                              selector: (_, notifier) => notifier
-                                  .userFollowingStatus
-                                  .contains('${data.aff}'),
-                              builder: (_, isFollowed, __) {
-                                return Container(
-                                  margin: EdgeInsets.only(left: 10.w),
-                                  child: FollowButton(
-                                      isFollowed: isFollowed,
-                                      onTap: () async {
-                                        await userNotifier
-                                            .changeUserFollow('${data.aff}');
-                                      }),
-                                );
-                              })
-                    ],
-                  )
+                            child: Text('sxta'.tr(context: context), style: MyTheme.white12.w500),
+                          ),
+                        ),
+                  member.uuid == data.uuid
+                      ? const SizedBox.shrink()
+                      : Selector<UserNotifier, bool>(
+                          selector: (_, notifier) => notifier.userFollowingStatus.contains('${data.aff}'),
+                          builder: (_, isFollowed, __) {
+                            return Container(
+                              margin: EdgeInsets.only(left: 6.w),
+                              child: FollowButton(
+                                  isFollowed: isFollowed,
+                                  horizontal: 6.w,
+                                  onTap: () async {
+                                    await userNotifier.changeUserFollow('${data.aff}');
+                                  }),
+                            );
+                          }),
                 ],
-              )
+              ),
+              SizedBox(height: 15.w),
+              Row(
+                children: [
+                  RichText(
+                    text: TextSpan(children: [
+                      TextSpan(text: CommonUtils.renderFixedNumber(data.followCount ?? 0), style: MyTheme.white255_13_M.s14),
+                      WidgetSpan(child: SizedBox(width: 8.w)),
+                      WidgetSpan(
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: 3.w),
+                          child: Container(
+                            height: 10.w,
+                            width: 1.w,
+                            color: const Color.fromRGBO(255, 255, 255, 0.7),
+                          ),
+                        ),
+                      ),
+                      WidgetSpan(child: SizedBox(width: 8.w)),
+                      TextSpan(text: '${'fans'.tr(context: context)}  ', style: MyTheme.white255_13_M.w400.white25507),
+                    ]),
+                  ),
+                  SizedBox(width: 30.w),
+                  RichText(
+                    text: TextSpan(children: [
+                      TextSpan(text: CommonUtils.renderFixedNumber(data.likesCount ?? 0), style: MyTheme.white255_13_M.s14),
+                      WidgetSpan(child: SizedBox(width: 8.w)),
+                      WidgetSpan(
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: 3.w),
+                          child: Container(
+                            height: 10.w,
+                            width: 1.w,
+                            color: const Color.fromRGBO(255, 255, 255, 0.7),
+                          ),
+                        ),
+                      ),
+                      WidgetSpan(child: SizedBox(width: 8.w)),
+                      TextSpan(text: '${'hz'.tr(context: context)}  ', style: MyTheme.white255_13_M.w400.white25507),
+                    ]),
+                  ),
+                ],
+              ),
             ],
           ),
         );
@@ -333,8 +316,7 @@ class _UserCenterScreenState extends State<UserCenterScreen> {
                 },
                 child: Padding(
                   padding: EdgeInsets.only(bottom: 10.w),
-                  child: Text(data.contact ?? '',
-                      style: MyTheme.white07_12, maxLines: 10),
+                  child: Text(data.contact ?? '', style: MyTheme.white07_12, maxLines: 10),
                 ),
               )
             : GestureDetector(
@@ -344,20 +326,12 @@ class _UserCenterScreenState extends State<UserCenterScreen> {
                 child: Container(
                   alignment: Alignment.center,
                   decoration: DottedDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(4.w)),
-                      shape: Shape.box,
-                      color: MyTheme.blueColor63,
-                      strokeWidth: 1.w),
+                      borderRadius: BorderRadius.all(Radius.circular(4.w)), shape: Shape.box, color: MyTheme.blueColor63, strokeWidth: 1.w),
                   margin: EdgeInsets.only(bottom: 10.w),
                   padding: EdgeInsets.symmetric(horizontal: 10.w),
                   height: 40.w,
-                  child: Text(
-                      (data.contact?.isNotEmpty ?? false)
-                          ? data.contact ?? ''
-                          : data.payTip ?? 'jslxfs'.tr(context: context),
-                      style: MyTheme.blue80_13_M,
-                      textAlign: TextAlign.center,
-                      maxLines: 2),
+                  child: Text((data.contact?.isNotEmpty ?? false) ? data.contact ?? '' : data.payTip ?? 'jslxfs'.tr(context: context),
+                      style: MyTheme.blue80_13_M, textAlign: TextAlign.center, maxLines: 2),
                 ),
               )
         : Container();
@@ -365,28 +339,49 @@ class _UserCenterScreenState extends State<UserCenterScreen> {
 
   Widget configSubListView(CreatorInfo data) {
     return Container(
-      child: TabBarWithView.line(
-        isCenter: true,
-        initialIndex: widget.index ?? 0,
-        tabBarPadding: EdgeInsets.symmetric(horizontal: 10.w),
-        titles: [
-          'csp'.tr(context: context),
-          'dsp'.tr(context: context),
-          'tiezt'.tr(context: context),
-        ],
-        views: [
-          KeepAliveWrapper(
-            child: _VideoView(aff: widget.aff),
+        padding: EdgeInsets.only(top: 10.w),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(16.w),
+            topRight: Radius.circular(16.w),
           ),
-          KeepAliveWrapper(
-            child: _VlogVideoView(aff: widget.aff),
-          ),
-          KeepAliveWrapper(
-            child: PostCenter(aff: widget.aff),
-          ),
-        ],
-      ),
-    );
+        ),
+        child: Stack(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16.w),
+                topRight: Radius.circular(16.w),
+              ),
+              child: Transform.translate(
+                offset: const Offset(0, -5), // 向上移动 5 像素
+                child: Image.asset(
+                  MyImagePaths.appIssueBg,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: double.infinity,
+                ),
+              ),
+            ),
+            TabBarWithView.fillColor(
+              tabBarPadding: EdgeInsets.symmetric(vertical: 16.w, horizontal: 16.w),
+              tabBarHeight: 32.w,
+              borderRadius: 5.w,
+              isScrollable: true,
+              initialIndex: widget.index ?? 0,
+              titles: [
+                'csp'.tr(context: context),
+                'dsp'.tr(context: context),
+                'tiezt'.tr(context: context),
+              ],
+              views: [
+                KeepAliveWrapper(child: _VideoView(aff: widget.aff)),
+                KeepAliveWrapper(child: _VlogVideoView(aff: widget.aff)),
+                KeepAliveWrapper(child: PostCenter(aff: widget.aff)),
+              ],
+            ),
+          ],
+        ));
   }
 }
 
@@ -413,8 +408,7 @@ class _VlogVideoViewState extends State<_VlogVideoView> {
     _page = page;
     _limit = pageSize;
 
-    final result = await _domain.otherUserVlogList(
-        aff: int.parse(widget.aff ?? '0'), page: page, limit: pageSize);
+    final result = await _domain.otherUserVlogList(aff: int.parse(widget.aff ?? '0'), page: page, limit: pageSize);
     if (result.isValid) {
       List<VlogModel> tp = List.from(result.data ?? []);
       if (page == 1) {
@@ -431,8 +425,7 @@ class _VlogVideoViewState extends State<_VlogVideoView> {
   @override
   Widget build(BuildContext context) {
     return MyListView.grid(
-      padding:
-          EdgeInsets.symmetric(horizontal: MyTheme.pagePadding, vertical: 8.w),
+      padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding, vertical: 8.w),
       childAspectRatio: UILayerConst.vlogVideoRatio,
       crossAxisSpacing: 10.w,
       itemBuilder: (_, item, index) => VlogCard(
@@ -491,9 +484,7 @@ class _VideoViewState extends State<_VideoView> {
     );
 
     if (result.status == 1) {
-      return result.data
-          ?.map<MineVideoCardData>((x) => MineVideoCardData.fromJson(x))
-          .toList();
+      return result.data?.map<MineVideoCardData>((x) => MineVideoCardData.fromJson(x)).toList();
     } else {
       MyToast.showText(text: result.msg ?? '');
     }
@@ -545,11 +536,7 @@ class _UserTopicBarWidgetState extends State<UserTopicBarWidget> {
             alignment: Alignment.center,
             width: 40.w,
             height: 40.w,
-            child: Image.asset(
-              MyImagePaths.appBackIcon,
-              width: 20.w,
-              height: 20.w,
-            ),
+            child: Image.asset(MyImagePaths.appBackIcon, width: 20.w, height: 20.w),
           ),
           onTap: () {
             context.pop();
@@ -560,10 +547,7 @@ class _UserTopicBarWidgetState extends State<UserTopicBarWidget> {
             padding: EdgeInsets.only(right: 30.w),
             child: Text(
               widget.title,
-              style: TextStyle(
-                  color: Color.fromRGBO(255, 255, 255, opacity),
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.bold),
+              style: TextStyle(color: Color.fromRGBO(255, 255, 255, opacity), fontSize: 16.sp, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
           ),

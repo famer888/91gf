@@ -109,6 +109,7 @@ class _CommunityTagDetailScreenState extends State<CommunityTagDetailScreen> {
               child: TabBarWithView.fillColor(
                 tabBarPadding: EdgeInsets.symmetric(vertical: 6.w),
                 tabBarHeight: 32.w,
+                borderRadius: 5.w,
                 titles: [for (final title in _titles) title.title],
                 views: [
                   for (final NavigatorModel nav in _titles)

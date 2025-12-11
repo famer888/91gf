@@ -11,8 +11,7 @@ class PostCommentCountView extends StatelessWidget {
     return Row(
       children: [
         Text('pl'.tr(context: context), style: MyTheme.white255_18_M),
-        Text("（$commentCount${'taoi'.tr(context: context)}）",
-            style: MyTheme.white255_13),
+        Text("（$commentCount${'taoi'.tr(context: context)}）", style: MyTheme.white255_13),
       ],
     );
   }

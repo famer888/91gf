@@ -32,6 +32,7 @@ class TabBarWithView extends StatefulWidget {
     this.tabController,
     this.labelPadding = 8.0,
     this.initialIndex = 0,
+    this.borderRadius,
     this.isStack = false,
     this.indexChangeCall,
   })  : type = TabBarType.line,
@@ -54,6 +55,7 @@ class TabBarWithView extends StatefulWidget {
     this.labelStyle,
     this.unselectedLabelStyle,
     this.tabController,
+    this.borderRadius,
     this.labelPadding = 8.0,
     this.initialIndex = 0,
     this.isStack = false,
@@ -80,6 +82,7 @@ class TabBarWithView extends StatefulWidget {
     this.labelStyle,
     this.unselectedLabelStyle,
     this.tabController,
+    this.borderRadius,
     this.labelPadding = 8.0,
     this.initialIndex = 0,
     this.isStack = false,
@@ -105,6 +108,7 @@ class TabBarWithView extends StatefulWidget {
   final double? tabBarHeight;
   final Widget? tabBarRightWidget;
   final TextStyle? labelStyle;
+  final double? borderRadius;
   final TextStyle? unselectedLabelStyle;
   final TabController? tabController;
 
@@ -116,10 +120,9 @@ class TabBarWithView extends StatefulWidget {
   State<TabBarWithView> createState() => _TabBarWithViewState();
 }
 
-class _TabBarWithViewState extends State<TabBarWithView>
-    with SingleTickerProviderStateMixin {
-  late final TabController _tabController = widget.tabController ??
-      TabController(length: widget.views.length, vsync: this, initialIndex: widget.initialIndex);
+class _TabBarWithViewState extends State<TabBarWithView> with SingleTickerProviderStateMixin {
+  late final TabController _tabController =
+      widget.tabController ?? TabController(length: widget.views.length, vsync: this, initialIndex: widget.initialIndex);
 
   late LinkPageController _pageController;
 
@@ -148,8 +151,7 @@ class _TabBarWithViewState extends State<TabBarWithView>
   }
 
   void _handleTabAnimation() {
-    final double animationValue =
-        _tabController.animation?.value ?? _tabController.index.toDouble();
+    final double animationValue = _tabController.animation?.value ?? _tabController.index.toDouble();
     final double diff = (animationValue - _tabController.index).abs();
     // During a standard drag/scroll, _tabController.index is derived from animation.value.round(),
     // so diff will always be <= 0.5.
@@ -223,8 +225,7 @@ class _TabBarWithViewState extends State<TabBarWithView>
             ? Tab(
                 height: MyTheme.navbarHegiht,
                 child: ShaderMask(
-                  shaderCallback: (bounds) =>
-                      MyTheme.gradient_90_114.createShader(bounds),
+                  shaderCallback: (bounds) => MyTheme.gradient_90_114.createShader(bounds),
                   blendMode: BlendMode.srcIn,
                   child: Text(
                     title,
@@ -248,6 +249,7 @@ class _TabBarWithViewState extends State<TabBarWithView>
     TabBarType.fillColor => MyTabBarTheme.fillColor(
         tabAlignment: widget.isScrollable ? TabAlignment.start : null,
         labelStyle: widget.labelStyle,
+        borderRadius: widget.borderRadius,
         unselectedLabelStyle: widget.unselectedLabelStyle,
       ),
     TabBarType.image => MyTabBarTheme.line(
@@ -352,8 +354,7 @@ class _TabBarWithViewState extends State<TabBarWithView>
                                 tabs: tabs,
                                 indicatorColor: Colors.transparent,
                                 dividerColor: Colors.transparent,
-                                overlayColor:
-                                    WidgetStateProperty.all(Colors.transparent),
+                                overlayColor: WidgetStateProperty.all(Colors.transparent),
                                 tabAlignment: widget.isScrollable
                                     ? (widget.isCenter ? TabAlignment.center : TabAlignment.start)
                                     : (widget.isCenter ? TabAlignment.center : TabAlignment.fill),
@@ -380,62 +381,61 @@ class _TabBarWithViewState extends State<TabBarWithView>
     }
   }
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: [
-  //       if (widget.titles.isNotEmpty)
-  //         Padding(
-  //           padding: widget.tabBarPadding ?? EdgeInsets.zero,
-  //           child: SizedBox(
-  //             height: widget.tabBarHeight ?? MyTheme.navbarHegiht,
-  //             child: Row(
-  //               children: [
-  //                 Expanded(
-  //                   child: Theme(
-  //                     data:
-  //                         Theme.of(context).copyWith(tabBarTheme: tabBarTheme),
-  //                     child: RepaintBoundary(
-  //                       child: ScrollConfiguration(
-  //                         behavior: ScrollConfiguration.of(context).copyWith(
-  //                           scrollbars: false,
-  //                         ),
-  //                         child: TabBar(
-  //                           physics: const BouncingScrollPhysics(),
-  //                           isScrollable: widget.isScrollable,
-  //                           padding: EdgeInsets.symmetric(vertical: 2.w),
-  //                           controller: _tabController,
-  //                           tabs: tabs,
-  //                           tabAlignment: widget.isScrollable
-  //                               ? TabAlignment.start
-  //                               : TabAlignment.fill,
-  //                         ),
-  //                       ),
-  //                     ),
-  //                   ),
-  //                 ),
-  //                 if (widget.tabBarRightWidget case final view?) view,
-  //               ],
-  //             ),
-  //           ),
-  //         ),
-  //       Expanded(
-  //         child: TabBarView(
-  //           controller: _tabController,
-  //           children: widget.views,
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
+// @override
+// Widget build(BuildContext context) {
+//   return Column(
+//     crossAxisAlignment: CrossAxisAlignment.start,
+//     children: [
+//       if (widget.titles.isNotEmpty)
+//         Padding(
+//           padding: widget.tabBarPadding ?? EdgeInsets.zero,
+//           child: SizedBox(
+//             height: widget.tabBarHeight ?? MyTheme.navbarHegiht,
+//             child: Row(
+//               children: [
+//                 Expanded(
+//                   child: Theme(
+//                     data:
+//                         Theme.of(context).copyWith(tabBarTheme: tabBarTheme),
+//                     child: RepaintBoundary(
+//                       child: ScrollConfiguration(
+//                         behavior: ScrollConfiguration.of(context).copyWith(
+//                           scrollbars: false,
+//                         ),
+//                         child: TabBar(
+//                           physics: const BouncingScrollPhysics(),
+//                           isScrollable: widget.isScrollable,
+//                           padding: EdgeInsets.symmetric(vertical: 2.w),
+//                           controller: _tabController,
+//                           tabs: tabs,
+//                           tabAlignment: widget.isScrollable
+//                               ? TabAlignment.start
+//                               : TabAlignment.fill,
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 if (widget.tabBarRightWidget case final view?) view,
+//               ],
+//             ),
+//           ),
+//         ),
+//       Expanded(
+//         child: TabBarView(
+//           controller: _tabController,
+//           children: widget.views,
+//         ),
+//       ),
+//     ],
+//   );
+// }
 }
 
 //隐藏页面底部的半透明横条
 class NoScrollbarAndGlowBehavior extends MaterialScrollBehavior {
   @override
-  Widget buildScrollbar(
-      BuildContext context, Widget child, ScrollableDetails details) {
+  Widget buildScrollbar(BuildContext context, Widget child, ScrollableDetails details) {
     return child; //不包任何 Scrollbar
   }
 
@@ -466,6 +466,7 @@ class MyTabBarTheme extends TabBarTheme {
     super.mouseCursor,
     super.tabAlignment,
   });
+
   factory MyTabBarTheme.line({
     TextStyle? labelStyle,
     TextStyle? unselectedLabelStyle,
@@ -493,22 +494,21 @@ class MyTabBarTheme extends TabBarTheme {
   factory MyTabBarTheme.fillColor({
     TabAlignment? tabAlignment,
     TextStyle? labelStyle,
+    double? borderRadius,
     TextStyle? unselectedLabelStyle,
   }) =>
       MyTabBarTheme(
         labelStyle: labelStyle ?? MyTheme.green85_15,
-        labelPadding: tabAlignment == null
-            ? EdgeInsets.zero
-            : EdgeInsets.only(right: 16.w, top: 2.w),
+        labelPadding: tabAlignment == null ? EdgeInsets.zero : EdgeInsets.only(right: 16.w, top: 2.w),
         unselectedLabelStyle: unselectedLabelStyle ?? MyTheme.gray232_15,
         overlayColor: WidgetStateProperty.resolveWith<Color>(
           (_) => Colors.transparent,
         ),
-        // indicatorSize: TabBarIndicatorSize.label,
+        indicatorSize: TabBarIndicatorSize.label,
         indicatorColor: Colors.transparent,
         indicator: BoxDecoration(
           gradient: MyTheme.gradient_90_114,
-          borderRadius: BorderRadius.circular(30.w),
+          borderRadius: BorderRadius.circular(borderRadius ?? 30.w),
         ),
         tabAlignment: tabAlignment,
         dividerColor: Colors.transparent,

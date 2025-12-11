@@ -109,6 +109,7 @@ class _CommunityContentViewState extends State<CommunityContentView> {
             child: TabBarWithView.fillColor(
               tabBarPadding: EdgeInsets.symmetric(vertical: 6.w),
               tabBarHeight: 32.w,
+              borderRadius: 5.w,
               isScrollable: true,
               titles: isInit ? [for (final title in _titles) title.title] : [],
               views: [

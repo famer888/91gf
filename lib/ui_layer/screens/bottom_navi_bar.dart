@@ -389,8 +389,7 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
                   onTap: _goBranch,
                 ),
               ),
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerFloat,
+              floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
               floatingActionButton:
                   kIsWeb && !CommonUtils.isPWA() && !CommonUtils.isIosWkWebView()
                       ? Padding(

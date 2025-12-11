@@ -5,9 +5,10 @@ import 'package:jygf/ui_layer/screens/common_widgets/gradient_border.dart';
 import '../theme.dart';
 
 class FollowButton extends StatelessWidget {
-  const FollowButton({super.key, required this.isFollowed, required this.onTap});
+  const FollowButton({super.key, required this.isFollowed, this.horizontal, required this.onTap});
 
   final bool isFollowed;
+  final double? horizontal;
   final VoidCallback onTap;
 
   @override
@@ -31,7 +32,7 @@ class FollowButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(5.w),
         child: Container(
           height: 25.w,
-          padding: EdgeInsets.symmetric(horizontal: 10.w),
+          padding: EdgeInsets.symmetric(horizontal: horizontal ?? 10.w),
           alignment: Alignment.center,
           decoration: BoxDecoration(
             gradient: LinearGradient(colors: [
@@ -40,10 +41,7 @@ class FollowButton extends StatelessWidget {
             ]),
             borderRadius: BorderRadius.circular(5.w),
           ),
-          child: Text(
-            isFollowed ? 'ygz'.tr(context: context) : '+${'gz'.tr(context: context)}',
-            style: MyTheme.white12.w500,
-          ),
+          child: Text(isFollowed ? 'ygz'.tr(context: context) : '+${'gz'.tr(context: context)}', style: MyTheme.white12.w500),
         ),
       ),
     );
