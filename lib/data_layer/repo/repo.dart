@@ -386,11 +386,11 @@ abstract class _BaseAppRepo implements AppDomain {
     Function? failed,
     Function(List<String>)? lines,
   }) async {
-    List<String> unChecklines =
-        (await _cacheManager.readLinesUrl()) ?? BuildConfig.apiLines;
+    // List<String> unChecklines =
+    //     (await _cacheManager.readLinesUrl()) ?? BuildConfig.apiLines;
 
     // 测试服
-    // unChecklines = ['https://tthj2.dyclub.co/api.php'];
+    List<String> unChecklines = ['https://91gfapi.dyclub.co/api.php'];
     List<String> linesTemp = [...unChecklines];
 
     if (!kIsWeb) {
