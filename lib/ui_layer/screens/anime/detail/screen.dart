@@ -81,8 +81,7 @@ class _CartoonDetailScreenState extends State<CartoonDetailScreen> {
               height: 40.w,
               width: 40.w,
               decoration: BoxDecoration(
-                color: MyTheme.blueColor64,
-                // gradient: MyTheme.jellyCyan_gradient_colors,
+                gradient: MyTheme.gradient_90_118,
                 borderRadius: BorderRadius.all(
                   Radius.circular(20.w),
                 ),

@@ -366,7 +366,7 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
                     BottomNavigationBarItem(
                       icon: const _Icon(MyImagePaths.appTabEcyN),
                       activeIcon: const _Icon(MyImagePaths.appTabEcyS),
-                      label: 'ych'.tr(context: context),
+                      label: 'acg'.tr(context: context),
                     ),
                     BottomNavigationBarItem(
                       icon: const _Icon(MyImagePaths.appTabLlsN),

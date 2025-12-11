@@ -40,7 +40,7 @@ class _ComicScreenState extends State<ComicScreen> {
         tabBarPadding: EdgeInsets.symmetric(vertical: 5.w),
         titles: titles.map((e) => e.name ?? '').toList(),
         views: titles.map((e) {
-          if (e.type == '2') {
+          if (e.type == 2) {
             //推荐
             return KeepAliveWrapper(
               child: ComicRecContent(id: e.id ?? 0),

@@ -14,6 +14,15 @@ class ComicChapterCard extends StatelessWidget {
   final Function? tapCall;
   String get imgUrl => data.cover ?? '';
 
+  String get title {
+    String text = data.title ?? '';
+    int index = text.indexOf('话');
+    if (index != -1) {
+      return '${text.substring(0, index + 1)} │ ${text.substring(index + 1)}';
+    }
+    return text;
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -22,20 +31,21 @@ class ComicChapterCard extends StatelessWidget {
         tapCall?.call();
       },
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: 5.w),
+        margin: EdgeInsets.symmetric(vertical: 8.w,),
         child: Row(
+          
           children: [
-            MyImage.network(
-              imgUrl,
-              borderRadius: 5.w,
-              fit: BoxFit.cover,
-              width: 172.w,
-              height: 82.w,
-            ),
-            SizedBox(width: 10.w),
+            // MyImage.network(
+            //   imgUrl,
+            //   borderRadius: 5.w,
+            //   fit: BoxFit.cover,
+            //   width: 172.w,
+            //   height: 82.w,
+            // ),
+            // SizedBox(width: 10.w),
             Expanded(
               child: Text(
-                data.title ?? '',
+                title,
                 style: MyTheme.white14,
                 maxLines: 1,
               ),
@@ -49,35 +59,31 @@ class ComicChapterCard extends StatelessWidget {
   }
 
   Widget isFreeBadge(ChaptersModel item) {
-    Color bgColor;
-    Color bordColor;
+    Color? bgColor;
+    Color? bordColor;
     Widget ww;
-    EdgeInsets padding;
+    EdgeInsets padding = EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.w);;
+    Gradient? gradient;
 
     if (item.type == 0 || item.isPay == 1) {
-      padding = EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.w);
-      bgColor = const Color.fromRGBO(0, 140, 255, 0.2);
-      bordColor = const Color.fromRGBO(0, 140, 255, 1);
+      bgColor = const Color.fromRGBO(255, 255, 255, 0);
+      bordColor = const Color.fromRGBO(255, 255, 255, 0.7);
+      // gradient = null;
       ww = Text(
         'gk'.tr(),
-        style: TextStyle(
-            color: bordColor,
-            fontSize: 12.sp),
+        style: MyTheme.white12,
         textAlign: TextAlign.center,
       );
     } else if (item.type == 1) {
-      padding = EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.w);
-      bgColor = const Color.fromRGBO(255, 162, 0, 0.2);
-      bordColor = const Color.fromRGBO(255, 162, 0, 1);
+      // bgColor = const Color.fromRGBO(255, 162, 0, 0.2);
+      // bordColor = const Color.fromRGBO(255, 162, 0, 1);
+      gradient = MyTheme.gradient_90_114;
       ww = Text(
         'VIP',
-        style: TextStyle(
-            color: bordColor,
-            fontSize: 12.sp),
+          style: MyTheme.white12,
         textAlign: TextAlign.center,
       );
     } else if (item.type == 2) {
-      padding = EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.w);
       bgColor = MyTheme.jellyCyanColor.withOpacity(0.2);
       bordColor = MyTheme.jellyCyanColor;
       ww = Row(
@@ -100,11 +106,12 @@ class ComicChapterCard extends StatelessWidget {
       padding: padding,
       decoration: BoxDecoration(
           color: bgColor,
+          gradient: gradient,
           border: Border.all(
-            color: bordColor, // 设置边框颜色
-            width: 0.5, // 设置边框宽度
+            color: bordColor ?? Colors.transparent, // 设置边框颜色
+            width: 1, // 设置边框宽度
           ),
-          borderRadius: BorderRadius.all(Radius.circular(10.w))),
+          borderRadius: BorderRadius.all(Radius.circular(3.w))),
       child: ww,
     );
   }

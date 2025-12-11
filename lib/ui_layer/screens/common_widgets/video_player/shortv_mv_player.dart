@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jygf/domain/remote_domain/domains/cartoon.dart';
 import 'package:jygf/ui_layer/screens/asmr/voice_player/voice_player_manager.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/gradient_text.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -621,14 +622,17 @@ class _SinkPortraitLandWidgetState extends State<SinkPortraitLandWidget> {
                             ),
                           ),
                           child: Center(
-                            child: Text.rich(
+                            child: !kIsWeb ? GradientText(widget.info?.isfree == 2
+                                      ? '${widget.info?.coins}${tr('kbtgyl')}'
+                                      : tr('ktvptgyl'), gradient: MyTheme.gradient_90_114,style: TextStyle(fontSize: 12.sp,fontWeight: FontWeight.bold,),) : Text.rich(
                               TextSpan(
                                   text: widget.info?.isfree == 2
                                       ? '${widget.info?.coins}${tr('kbtgyl')}'
                                       : tr('ktvptgyl'),
                                       style:TextStyle(color: MyTheme.primaryColor_09,fontSize: 12.sp,fontWeight: FontWeight.bold,),
                                   ),
-                            ),
+                            ) ,
+                            
                           ),
                         ),
                       ),

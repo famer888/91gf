@@ -20,7 +20,7 @@ class _AnimationVideoState extends State<AnimationVideo>
     with TickerProviderStateMixin {
   late final _homeConfig = context.read<HomeConfigNotifier>();
   late final List<BitNavModel> titles = _homeConfig.config.cartoonTopNav ?? [];
-  late final _domain = context.read<VlogDomain>();
+  // late final _domain = context.read<VlogDomain>();
   bool isInit = false;
   List<VlogModel> array = [];
 

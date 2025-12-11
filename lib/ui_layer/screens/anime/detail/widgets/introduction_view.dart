@@ -453,36 +453,36 @@ class CartoonSingleColumCard extends StatelessWidget {
                         borderRadius: 5.w,
                         fit: BoxFit.cover,
                       ),
-                      data.type == 0
-                          ? Container()
-                          : Positioned(
-                              top: 5.w,
-                              left: 5.w,
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 5.w, vertical: 1.w),
-                                decoration: BoxDecoration(
-                                    color: MyTheme.blackColor25505,
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(10.w))),
-                                child: Row(
-                                  children: [
-                                    // MyImage.asset(
-                                    //     data.type == 2
-                                    //         ? MyImagePaths.appVideoCoins
-                                    //         : MyImagePaths.appVideoVip,
-                                    //     width: 11.5.w,
-                                    //     height: 11.5.w),
-                                    SizedBox(width: 3.w),
-                                    Text(
-                                      data.type == 2
-                                          ? 'jb'.tr(context: context)
-                                          : 'VIP',
-                                      style: MyTheme.white10,
-                                    ),
-                                  ],
-                                ),
-                              )),
+                      // data.type == 0
+                      //     ? Container()
+                      //     : Positioned(
+                      //         top: 5.w,
+                      //         left: 5.w,
+                      //         child: Container(
+                      //           padding: EdgeInsets.symmetric(
+                      //               horizontal: 5.w, vertical: 1.w),
+                      //           decoration: BoxDecoration(
+                      //               color: MyTheme.blackColor25505,
+                      //               borderRadius: BorderRadius.all(
+                      //                   Radius.circular(10.w))),
+                      //           child: Row(
+                      //             children: [
+                      //               // MyImage.asset(
+                      //               //     data.type == 2
+                      //               //         ? MyImagePaths.appVideoCoins
+                      //               //         : MyImagePaths.appVideoVip,
+                      //               //     width: 11.5.w,
+                      //               //     height: 11.5.w),
+                      //               SizedBox(width: 3.w),
+                      //               Text(
+                      //                 data.type == 2
+                      //                     ? 'jb'.tr(context: context)
+                      //                     : 'VIP',
+                      //                 style: MyTheme.white10,
+                      //               ),
+                      //             ],
+                      //           ),
+                      //         )),
                       Align(
                         alignment: Alignment.bottomRight,
                         child: Padding(

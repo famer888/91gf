@@ -64,6 +64,9 @@ class AppRouterPaths {
   /// 咸鱼
   static const ych = '/ych';
 
+  /// 动漫
+  static const acg = '/acg';
+
   /// 社区
   static const community = '/community';
 

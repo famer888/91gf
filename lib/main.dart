@@ -9,6 +9,7 @@ import 'package:jygf/domain/remote_domain/domains/aimagic.dart';
 import 'package:jygf/domain/remote_domain/domains/ainovel.dart';
 import 'package:jygf/domain/remote_domain/domains/asmr.dart';
 import 'package:jygf/domain/remote_domain/domains/cartoon.dart';
+import 'package:jygf/domain/remote_domain/domains/comic.dart';
 import 'package:jygf/domain/remote_domain/domains/game.dart';
 import 'package:jygf/domain/remote_domain/domains/live.dart';
 import 'package:jygf/domain/remote_domain/domains/rank.dart';
@@ -90,6 +91,7 @@ void main() async {
         Provider<AIAudioDomain>(lazy: false, create: (_) => appRepo),
         Provider<ASMRDomain>(lazy: false, create: (_) => appRepo),
         Provider<RankDomain>(lazy: false, create: (_) => appRepo),
+        Provider<ComicDomain>(lazy: false, create: (_) => appRepo),
         Provider<DownloadUtil>(
             lazy: false, create: (_) => DownloadUtil(cache: appRepo.cache)),
         ChangeNotifierProvider(create: (_) => HomeConfigNotifier(appRepo)),

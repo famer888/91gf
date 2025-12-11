@@ -23,6 +23,7 @@ import 'package:jygf/ui_layer/screens/acg/novel/novel_part_content/novel_new_con
 import 'package:jygf/ui_layer/screens/acg/novel/novel_part_content/novel_sort_content.dart';
 import 'package:jygf/ui_layer/screens/acg/novel/novel_part_content/novel_updating_content.dart';
 import 'package:jygf/ui_layer/screens/acg/novel/novel_voice_player/novel_voice_player_content.dart';
+import 'package:jygf/ui_layer/screens/acg/screen.dart';
 import 'package:jygf/ui_layer/screens/ai_server/screen.dart';
 import 'package:jygf/ui_layer/screens/ai_server/widgets/detail/ai_magic_detail.dart';
 import 'package:jygf/ui_layer/screens/ai_server/widgets/ai_magic.dart';
@@ -146,8 +147,8 @@ class WelcomeRoute extends GoRouteData {
     TypedStatefulShellBranch(
       routes: [
         // TypedGoRoute<OriginAndGroupChatRoute>(
-        TypedGoRoute<YchRoute>(
-          path: AppRouterPaths.ych,
+        TypedGoRoute<ACGRoute>(
+          path: AppRouterPaths.acg,
         ),
       ],
     ),
@@ -491,6 +492,12 @@ class YchRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const OriginalCommunityScreen();
+}
+class ACGRoute extends GoRouteData {
+  const ACGRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => const ACGScreen();
 }
 
 class CommunityRoute extends GoRouteData {
@@ -1723,7 +1730,6 @@ class NovelVoicePalyerContentRoute extends GoRouteData {
   }
 }
 
-// 裸聊详情
 @TypedGoRoute<ChatDetailRoute>(path: AppRouterPaths.chatDetail)
 class ChatDetailRoute extends GoRouteData {
   static final GlobalKey<NavigatorState> $parentNavigatorKey =

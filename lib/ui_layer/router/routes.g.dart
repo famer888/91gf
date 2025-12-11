@@ -148,8 +148,8 @@ RouteBase get $statefulShellRoute => StatefulShellRouteData.$route(
         StatefulShellBranchData.$branch(
           routes: [
             GoRouteData.$route(
-              path: '/ych',
-              factory: $YchRouteExtension._fromState,
+              path: '/acg',
+              factory: $ACGRouteExtension._fromState,
             ),
           ],
         ),
@@ -220,11 +220,11 @@ extension $CommunityRouteExtension on CommunityRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $YchRouteExtension on YchRoute {
-  static YchRoute _fromState(GoRouterState state) => const YchRoute();
+extension $ACGRouteExtension on ACGRoute {
+  static ACGRoute _fromState(GoRouterState state) => const ACGRoute();
 
   String get location => GoRouteData.$location(
-        '/ych',
+        '/acg',
       );
 
   void go(BuildContext context) => context.go(location);

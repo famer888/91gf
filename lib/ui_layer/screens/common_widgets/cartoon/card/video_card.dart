@@ -42,8 +42,8 @@ class CartoonVideoCard extends StatelessWidget {
                     data.type == 0
                         ? Container()
                         : Positioned(
-                            top: 5.w,
-                            right: 5.w,
+                            top: 0,
+                            left: 0,
                             child: Container(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 5.w, vertical: 1.w),
@@ -52,7 +52,7 @@ class CartoonVideoCard extends StatelessWidget {
                                         ? MyTheme.shareButtonGradient
                                         : MyTheme.orangeGradient,
                                     borderRadius:
-                                        BorderRadius.all(Radius.circular(2.w))),
+                                        BorderRadius.only(topLeft: Radius.circular(5.w),bottomRight: Radius.circular(5.w))),
                                 child: Text(
                                   data.type == 2
                                       ? '${data.coins}${tr('jb')}'
@@ -68,11 +68,11 @@ class CartoonVideoCard extends StatelessWidget {
                           children: [
                             Text(
                               '${CommonUtils.renderFixedNumber(data.viewFakeCount ?? 0)}${'bf'.tr()}',
-                              style: MyTheme.white08_12,
+                              style: MyTheme.white12,
                             ),
                             Text(
                               RelativeDateFormat.getHMTime(time: data.duration),
-                              style: MyTheme.white08_12,
+                              style: MyTheme.white12,
                             ),
                           ],
                         ),
@@ -84,26 +84,26 @@ class CartoonVideoCard extends StatelessWidget {
               SizedBox(height: 5.w),
               Text(
                 (data.title?.replaceAll('\n', '')) ?? '',
-                style: MyTheme.white244_12.h1,
-                maxLines: 1,
+                style: MyTheme.white12.h1,
+                maxLines: 2,
               ),
             ],
           ),
-          SizedBox(height: 1.w),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                RelativeDateFormat.format(
-                    date: DateTime.parse(data.createdAt ?? '0')),
-                style: MyTheme.graya3a2a2_11,
-              ),
-              Text(
-                '${'pl'.tr()} ${data.commentCount}',
-                style: MyTheme.graya3a2a2_11,
-              ),
-            ],
-          ),
+          // SizedBox(height: 1.w),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     Text(
+          //       RelativeDateFormat.format(
+          //           date: DateTime.parse(data.createdAt ?? '0')),
+          //       style: MyTheme.graya3a2a2_11,
+          //     ),
+          //     Text(
+          //       '${'pl'.tr()} ${data.commentCount}',
+          //       style: MyTheme.graya3a2a2_11,
+          //     ),
+          //   ],
+          // ),
         ],
       ),
     );

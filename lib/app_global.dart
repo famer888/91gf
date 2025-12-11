@@ -15,6 +15,12 @@ class AppGlobal {
     const Color.fromRGBO(62, 116, 232, 1),
     const Color.fromRGBO(195, 62, 232, 1),
   ];
+  // 标签颜色
+  static List<Color> tagColors = [
+              const Color.fromRGBO(74, 41, 9, 1), 
+              const Color.fromRGBO(39, 19, 114, 1), 
+              const Color.fromRGBO(8, 61, 56, 1), 
+            ];
   // 短视频带入的信息 list index api 等
   static Map shortVideosInfo = {'list': [], 'page': 0, 'index': 0, 'api': ''};
 }

@@ -114,7 +114,7 @@ class _ComicChapertRecViewState
                                 widget.data.detail?.isEnd == 1
                                     ? '${'qb'.tr(context: context)}${widget.data.detail?.chapterCt ?? 0}${'zang'.tr(context: context)}'
                                     : '${'zjgx'.tr(context: context)}${widget.data.detail?.chapterCt ?? 0}${'zang'.tr(context: context)}',
-                                style: MyTheme.white07_10),
+                                style: MyTheme.white10),
                           ),
                           const Spacer(),
                           chapters.length > 3 ? GestureDetector(
@@ -130,58 +130,86 @@ class _ComicChapertRecViewState
                         ],
                       ),
                       SizedBox(height: MyTheme.pagePadding),
-                      Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: (chapters.length > 3
-                                  ? chapters.sublist(0, 3)
-                                  : chapters)
-                              .asMap()
-                              .keys
-                              .map((index) {
-                            ChaptersModel chapter = chapters[index];
-                            return ComicChapterCard(data: chapter,
-                             tapCall: () {//章节点击进入阅读界面
-                              lastReadChapter = index;
-                               jumperComicReaderView();
-                             },
-                            );
-                          }).toList()),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      Stack(
                         children: [
-                          chapters.length > 4
-                              ? SizedBox(
-                            height: 60.w,
-                            child: Center(
-                              child: GestureDetector(
-                                onTap: () {
-                                  //查看全部章节
-                                  ComicChaptersRoute(widget.data.detail!).push(context);
-                                },
-                                child: Container(
-                                  height: 30.w,
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 70.w),
-                                  decoration: BoxDecoration(
-                                      color: MyTheme.white008Color,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(20.w))),
-                                  alignment: Alignment.center,
-                                  child: Center(
-                                      child: RichText(
-                                          text: TextSpan(children: [
-                                            TextSpan(
-                                              text:
-                                              'ckqbzj'.tr(context: context),
-                                              style: MyTheme.white12,
-                                            )
-                                          ]))),
-                                ),
-                              ),
+                        const Positioned.fill(
+                            child: MyImage.asset(
+                              MyImagePaths.appDialogBg,
+                              fit: BoxFit.fill,
                             ),
-                          ) : Container(),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 8.w),
+                            child: Column(
+                              children: [
+                                Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: (chapters.length > 3
+                                            ? chapters.sublist(0, 3)
+                                            : chapters)
+                                        .asMap()
+                                        .keys
+                                        .map((index) {
+                                      ChaptersModel chapter = chapters[index];
+                                      return ComicChapterCard(
+                                        data: chapter,
+                                        tapCall: () {
+                                          //章节点击进入阅读界面
+                                          lastReadChapter = index;
+                                          jumperComicReaderView();
+                                        },
+                                      );
+                                    }).toList()),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    chapters.length > 4
+                                        ? SizedBox(
+                                            height: 60.w,
+                                            child: Center(
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  //查看全部章节
+                                                  ComicChaptersRoute(
+                                                          widget.data.detail!)
+                                                      .push(context);
+                                                },
+                                                child: Container(
+                                                  height: 30.w,
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 70.w),
+                                                  decoration: BoxDecoration(
+                                                      gradient: MyTheme.gradient_90_114,
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  20.w))),
+                                                  alignment: Alignment.center,
+                                                  child: Center(
+                                                      child: RichText(
+                                                          text: TextSpan(
+                                                              children: [
+                                                        TextSpan(
+                                                          text: 'ckqbzj'
+                                                              .tr(context:
+                                                                  context),
+                                                          style:
+                                                              MyTheme.white12,
+                                                        )
+                                                      ]))),
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                        : Container(),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
                         ],
-                      )
+                      ),
+                  
                     ],
                   ),
                 ),
@@ -263,7 +291,7 @@ class _ComicChapertRecViewState
             child: Container(
               width: 1.sw / 2,
               height: 60.w,
-              decoration: const BoxDecoration(color: MyTheme.jellyCyanColor),
+              decoration: const BoxDecoration(gradient: MyTheme.gradient_90_114),
               alignment: Alignment.center,
               child: Center(
                   child: RichText(
