@@ -5,6 +5,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/rainbow_loader.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/screen_background.dart';
 import 'package:provider/provider.dart';
 import 'package:jygf/domain/api_validator.dart';
 import 'package:jygf/domain/domain.dart';
@@ -38,6 +40,7 @@ class ComicReaderContent extends StatefulWidget {
 
 class _ComicReaderContentState extends State<ComicReaderContent> with RouteAware{
   late final _domain = context.read<ComicDomain>();
+  bool _isLoading = false;
 
   List<ChaptersModel> chapters = []; //全部章节
   List<ChaptersModel> chapterPics = []; //章节详情图片数据
@@ -45,8 +48,18 @@ class _ComicReaderContentState extends State<ComicReaderContent> with RouteAware
   int chapterIndex = -1; //当前章节位置
   late final cacheDomain = context.read<CacheDomain>();
 
+  bool _isShowSetting = false;
+  bool _isAutoScroll = false;
+  int _autoScrollSpeed = 5;
+  int speedMin = 3;
+  int speedMax = 10; 
+  final ScrollController _scrollController = ScrollController();
+  Timer? _autoScrollTimer;
+
   @override
   void dispose() {
+    _autoScrollTimer?.cancel();
+    _scrollController.dispose();
     PaintingBinding.instance.imageCache.clear();
     super.dispose();
   }
@@ -92,16 +105,21 @@ class _ComicReaderContentState extends State<ComicReaderContent> with RouteAware
 
   //获取当前章节详情数据
   Future<void> getCurrentChapterData() async {
-    MyToast.showLoading();
+    setState(() {
+      _isLoading = true;
+    });
     final result =
         await _domain.comicChapterDetail(id: currentChapter?.id ?? 0);
-    MyToast.closeAllLoading();
-    if (result.status == 1) {
-      chapterPics = result.data?.pics ?? [];
-    } else {
-      MyToast.showText(text: result.msg ?? '');
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+        if (result.status == 1) {
+          chapterPics = result.data?.pics ?? [];
+        } else {
+          MyToast.showText(text: result.msg ?? '');
+        }
+      });
     }
-    if (mounted) setState(() {});
   }
 
   //记录阅读章节
@@ -112,43 +130,81 @@ class _ComicReaderContentState extends State<ComicReaderContent> with RouteAware
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: MyAppBar(title: chapters[chapterIndex].title),
-        body: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  itemCount: chapterPics.length,
-                  itemBuilder: (context, index) {
-                    ChaptersModel e = chapterPics[index];
-                    double w = ScreenUtil().screenWidth;
-                    double h = w;
-                    num heightInt = w.toInt();
-                    try {
-                      h = w * (e.thumbH ?? 0) / (e.thumbW ?? 0);
-                      heightInt = numberWith(
-                          number: h,
-                          intNumber: screenNeededMultipleNumber);
-                      CommonUtils.log('h = $h \nheightInt = $heightInt');
-                    } catch (e) {
-                      CommonUtils.log(e);
+    return ScreenBackground(
+      child: Scaffold(
+          appBar: MyAppBar(title: chapters[chapterIndex].title),
+          body: Stack(
+            alignment: Alignment.center,
+            children: [
+              Column(
+                children: [
+              Expanded(
+                child: Listener(
+                  onPointerDown: (_) {
+                    if (_isShowSetting) {
+                      setState(() {
+                        _isShowSetting = false;
+                      });
+                      return;
                     }
-                    return SizedBox(
-                      width: w,
-                      height: heightInt.toDouble(),
-                      child: Builder(builder: (context) {
-                        Widget ww = GestureDetector(
-                          child: MyImage.network(e.thumb ?? ''),
-                        );
-                        return ww;
-                      }),
-                    );
-                  }),
-            ),
-            bottomView(),
-          ],
-        ));
+                    if (_isAutoScroll) {
+                      setState(() {
+                        _isAutoScroll = false;
+                      });
+                      stopAutoScroll();
+                    }
+                  },
+                  child: ListView.builder(
+                      controller: _scrollController,
+                      padding: EdgeInsets.zero,
+                      itemCount: chapterPics.length,
+                    itemBuilder: (context, index) {
+                      ChaptersModel e = chapterPics[index];
+                      double w = ScreenUtil().screenWidth;
+                      double h = w;
+                      num heightInt = w.toInt();
+                      try {
+                        h = w * (e.thumbH ?? 0) / (e.thumbW ?? 0);
+                        heightInt = numberWith(
+                            number: h,
+                            intNumber: screenNeededMultipleNumber);
+                        CommonUtils.log('h = $h \nheightInt = $heightInt');
+                      } catch (e) {
+                        CommonUtils.log(e);
+                      }
+                      return SizedBox(
+                        width: w,
+                        height: heightInt.toDouble(),
+                        child: Builder(builder: (context) {
+                          Widget ww = GestureDetector(
+                            child: MyImage.network(e.thumb ?? ''),
+                          );
+                          return ww;
+                        }),
+                      );
+                    }),
+                ),
+              ),
+            ],
+          ),
+          if (!_isLoading)
+            Align(alignment: Alignment.bottomCenter, child: bottomView()),
+          if (_isShowSetting && !_isLoading)
+            Positioned(
+                bottom: 60.w, left: 0, right: 0, child: settingView()),
+          if (_isLoading) Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('稍等片刻，正在努力加载漫画中',style: MyTheme.white14,),
+              SizedBox(height: 10.w),
+              AdvancedRainbowLoader(width: 1.sw-MyTheme.pagePadding*2, height: 6.w),
+              SizedBox(height: 10.w),
+              Text('正在读取中...',style: MyTheme.white06_12,),
+            ],
+          ),
+        ],
+      )),
+    );
   }
 
   dynamic numberWith({double number = 1, int intNumber = 1}) {
@@ -178,7 +234,9 @@ class _ComicReaderContentState extends State<ComicReaderContent> with RouteAware
 
   Widget bottomView() {
     return Container(
-      color: MyTheme.white008Color,
+      width: 1.sw,
+      height: 60.w,
+      color: const Color.fromRGBO(0, 0, 0, 0.9),
       padding: EdgeInsets.only(bottom: MyTheme.bottom),
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 7.5.w),
@@ -207,6 +265,14 @@ class _ComicReaderContentState extends State<ComicReaderContent> with RouteAware
                   //下一话
                   jumpToChater(chapterIndex + 1);
                 }),
+            iconButton(
+                imageName: MyImagePaths.appComicSet,
+                title: 'sz'.tr(context: context),
+                func: () {
+                  setState(() {
+                    _isShowSetting = !_isShowSetting;
+                  });
+                }),
           ],
         ),
       ),
@@ -215,8 +281,9 @@ class _ComicReaderContentState extends State<ComicReaderContent> with RouteAware
 
   void showComicCatelogSheet(){
     showModalBottomSheet(
-        backgroundColor: Colors.transparent,
+        backgroundColor: MyTheme.bgColor,
         isScrollControlled: true,
+        constraints: BoxConstraints(maxHeight: 0.8.sh),
         context: context,
         builder: (BuildContext context) {
           return StatefulBuilder(builder: (ctx, setBottomSheetState) {
@@ -265,7 +332,7 @@ class _ComicReaderContentState extends State<ComicReaderContent> with RouteAware
   void showAlertVp() {
     final userNotifier = context.read<UserNotifier>();
     Member user = userNotifier.member;
-    int money = user.money ?? 0;
+    int money = user.money;
     int needmoney = currentChapter?.coins ?? 0;
     bool isInsufficient = money < needmoney;
     if (currentChapter?.type == 2) {
@@ -346,4 +413,167 @@ class _ComicReaderContentState extends State<ComicReaderContent> with RouteAware
       MyToast.showText(text: res.msg ?? '');
     }
   }
+
+  Widget settingView() {
+    return Container(
+      width: 1.sw,
+      color: const Color.fromRGBO(0, 0, 0, 0.9),
+      padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.w),
+      child: Stack(
+        children: [Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('阅读方式', style: MyTheme.white16),
+            SizedBox(height: 25.w),
+            Text('${_autoScrollSpeed}s', style: MyTheme.white14),
+            Row(
+              children: [
+                GestureDetector(
+                    onTap: () {
+                      if (_autoScrollSpeed > speedMin) {
+                        setState(() {
+                          _autoScrollSpeed--;
+                        });
+                        if (_isAutoScroll) startAutoScroll();
+                      }
+                    },
+                    child: Container(
+                      width: 24.w,
+                      height: 24.w,
+                      decoration: const BoxDecoration(
+                          color: Colors.white, shape: BoxShape.circle),
+                      child: Icon(Icons.remove, size: 16.w, color: Colors.black),
+                    )),
+                Expanded(
+                    child: SliderTheme(
+                        data: SliderTheme.of(context).copyWith(
+                          trackHeight: 2,
+                          thumbShape:
+                              const RoundSliderThumbShape(enabledThumbRadius: 6),
+                          overlayShape:
+                              const RoundSliderOverlayShape(overlayRadius: 10),
+                          activeTrackColor: MyTheme.primaryColor,
+                          inactiveTrackColor: MyTheme.white05Color,
+                          thumbColor: MyTheme.primaryColor,
+                        ),
+                        child: Slider(
+                          value: _autoScrollSpeed.toDouble(),
+                          min: speedMin.toDouble(),
+                          max: speedMax.toDouble(),
+                          divisions: speedMax - speedMin,
+                          onChanged: (v) {
+                            setState(() {
+                              _autoScrollSpeed = v.toInt();
+                            });
+                            if (_isAutoScroll) startAutoScroll();
+                          },
+                        ))),
+                GestureDetector(
+                    onTap: () {
+                      if (_autoScrollSpeed < speedMax) {
+                        setState(() {
+                          _autoScrollSpeed++;
+                        });
+                        if (_isAutoScroll) startAutoScroll();
+                      }
+                    },
+                    child: Container(
+                      width: 24.w,
+                      height: 24.w,
+                      decoration: const BoxDecoration(
+                          color: Colors.white, shape: BoxShape.circle),
+                      child: Icon(Icons.add, size: 16.w, color: Colors.black),
+                    )),
+              ],
+            )
+          ],
+        ),
+         Positioned(top: 3.w, right: 0, 
+           child: GestureDetector(
+                      onTap: toggleAutoScroll,
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        width: 74.w,
+                        height: 22.w,
+                        padding: EdgeInsets.all(2.w),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(14.w),
+                            border: Border.all(
+                                color: _isAutoScroll
+                                    ? const Color(0xFFE94079)
+                                    : const Color(0xFF657EF6),
+                                width: 1),
+                            color: Colors.transparent),
+                        child: Stack(
+                          children: [
+                            AnimatedAlign(
+                              duration: const Duration(milliseconds: 200),
+                              alignment: _isAutoScroll
+                                  ? Alignment.centerRight
+                                  : Alignment.centerLeft,
+                              child: Container(
+                                width: 34.w,
+                                height: double.infinity,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12.w),
+                                    gradient: LinearGradient(
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                        colors: _isAutoScroll
+                                            ? MyTheme.gradient_90_114_colors
+                                            : MyTheme.gradient_90_118_colors_blue)),
+                                child: Text(
+                                  _isAutoScroll ? '自动' : '手动',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 11.sp),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      )),
+         )]
+      ),
+    );
+  }
+
+  void toggleAutoScroll() {
+    setState(() {
+      _isAutoScroll = !_isAutoScroll;
+      if (_isAutoScroll) {
+        startAutoScroll();
+      } else {
+        stopAutoScroll();
+      }
+    });
+  }
+
+  void startAutoScroll() {
+    stopAutoScroll();
+    double pixelsPerTick =
+        (1.sh / (speedMax + speedMin - _autoScrollSpeed)) / 20;
+
+    _autoScrollTimer =
+        Timer.periodic(const Duration(milliseconds: 50), (timer) {
+      if (_scrollController.hasClients) {
+        if (_scrollController.offset >=
+            _scrollController.position.maxScrollExtent) {
+          stopAutoScroll();
+          setState(() {
+            _isAutoScroll = false;
+          });
+          return;
+        }
+        _scrollController.jumpTo(_scrollController.offset + pixelsPerTick);
+      }
+    });
+  }
+
+  void stopAutoScroll() {
+    _autoScrollTimer?.cancel();
+    _autoScrollTimer = null;
+  }
 }
+

@@ -181,6 +181,7 @@ class MyImagePaths {  static const appZfConN = './assets/images/app_zf_con_n.png
   static const appWdTzxxN = './assets/images/app_wd_tzxx_n.png';
   static const app2024ComFenxiangOn = './assets/images/app_2024_com_fenxiang_on.png';
   static const appMineGroups = './assets/images/app_mine_groups.png';
+  static const appComicSet = './assets/images/app_comic_set.png';
   static const appMineMessage = './assets/images/app_mine_message.png';
   static const appGameCollectOff = './assets/images/app_game_collect_off.png';
   static const appAsmrPause = './assets/images/app_asmr_pause.png';
