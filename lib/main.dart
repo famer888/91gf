@@ -12,6 +12,7 @@ import 'package:jygf/domain/remote_domain/domains/cartoon.dart';
 import 'package:jygf/domain/remote_domain/domains/comic.dart';
 import 'package:jygf/domain/remote_domain/domains/game.dart';
 import 'package:jygf/domain/remote_domain/domains/live.dart';
+import 'package:jygf/domain/remote_domain/domains/novel.dart';
 import 'package:jygf/domain/remote_domain/domains/rank.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -92,6 +93,7 @@ void main() async {
         Provider<ASMRDomain>(lazy: false, create: (_) => appRepo),
         Provider<RankDomain>(lazy: false, create: (_) => appRepo),
         Provider<ComicDomain>(lazy: false, create: (_) => appRepo),
+        Provider<NovelDomain>(lazy: false, create: (_) => appRepo),
         Provider<DownloadUtil>(
             lazy: false, create: (_) => DownloadUtil(cache: appRepo.cache)),
         ChangeNotifierProvider(create: (_) => HomeConfigNotifier(appRepo)),

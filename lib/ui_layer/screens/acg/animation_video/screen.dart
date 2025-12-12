@@ -49,7 +49,7 @@ class _AnimationVideoState extends State<AnimationVideo>
       titles: titles.map((e) => e.name ?? '').toList(),
       views: titles.map(
             (e) => KeepAliveWrapper(
-                child: e.type == '2'
+                child: e.type == 2
                     ? CartoonRecView(linkModel: e, onLinkNavTap: (value) {})
                     : CartoonContentView(
                         linkModel: e,

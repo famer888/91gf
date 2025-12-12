@@ -112,9 +112,10 @@ class _NovelDetalScreenState extends State<NovelDetalScreen> {
         tabBarHeight: 32.w,
         labelStyle: MyTheme.white255_16_M,
         unselectedLabelStyle: MyTheme.white08_15,
-        isCenter: true,
+        // isCenter: true,
+        isScrollable: false,
         titles: [
-          'xq'.tr(context: context),
+          'jj'.tr(context: context),
           '${'pl'.tr(context: context)}(${data.detail?.commentCt ?? 0})'
         ],
         views: [
@@ -230,7 +231,7 @@ class _HeaderState extends State<_Header> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(children: [
-                    MyImage.asset(MyImagePaths.appComicView,
+                    MyImage.asset(MyImagePaths.appViewIcon,
                         width: 20.w, height: 20.w),
                     SizedBox(width: 3.w),
                     Text(

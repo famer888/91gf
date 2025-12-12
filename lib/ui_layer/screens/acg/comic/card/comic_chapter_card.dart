@@ -104,6 +104,9 @@ class ComicChapterCard extends StatelessWidget {
     }
     return Container(
       padding: padding,
+      constraints: BoxConstraints(
+        minWidth: 40.w, // 设置最小宽度为 40
+      ),
       decoration: BoxDecoration(
           color: bgColor,
           gradient: gradient,

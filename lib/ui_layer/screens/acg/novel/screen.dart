@@ -43,12 +43,12 @@ class _NovelScreenState extends State<NovelScreen> {
         tabBarPadding: EdgeInsets.symmetric(vertical: 5.w),
         titles: titles.map((e) => e.name ?? '').toList(),
         views: titles.map((e) {
-          if(e.type == '3'){
+          if(e.type == 3){
             //关注
             return const KeepAliveWrapper(
               child: NovelFollowContent(),
             );
-          } else if (e.type == '2') {
+          } else if (e.type == 2) {
             //推荐
             return KeepAliveWrapper(
               child: NovelRecContent(id: e.id ?? 0),

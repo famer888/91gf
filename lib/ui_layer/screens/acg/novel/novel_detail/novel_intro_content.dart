@@ -160,7 +160,7 @@ class _NovelIntroContentState extends State<NovelIntroContent> with RouteAware {
                             padding: EdgeInsets.only(top: 3.w),
                             child: Text(
                                 '${'zjgx'.tr(context: context)}${widget.data.detail?.chapters?.length ?? 0}${'zang'.tr(context: context)}',
-                                style: MyTheme.white08_12),
+                                style: TextStyle(color:const Color.fromRGBO(255, 211, 123, 1),fontSize: 10.sp)),
                           ),
                           const Spacer(),
                           chapters.length > 3
@@ -179,62 +179,79 @@ class _NovelIntroContentState extends State<NovelIntroContent> with RouteAware {
                         ],
                       ),
                       SizedBox(height: 5.w),
-                      Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: (chapters.length > 3
-                                  ? chapters.sublist(0, 3)
-                                  : chapters)
-                              .asMap()
-                              .keys
-                              .map((index) {
-                            NovelChaptersModel chapter = chapters[index];
-                            return NovelChapterCard(
-                              data: chapter,
-                              tapCall: () {
-                                //章节点击进入阅读界面
-                                lastReadChapter = index;
-                                jumperNovelReaderView();
-                              },
-                            );
-                          }).toList()),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      Stack(
                         children: [
-                          chapters.length >= 4
-                              ? SizedBox(
-                                  height: 60.w,
-                                  child: Center(
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        //查看全部章节
-                                        NovelChaptersRoute(widget.data.detail!)
-                                            .push(context);
-                                      },
-                                      child: Container(
-                                        height: 30.w,
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: MyTheme.pagePadding),
-                                        decoration: BoxDecoration(
-                                            color: MyTheme.white008Color,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20.w))),
-                                        alignment: Alignment.center,
-                                        child: Row(children: [
-                                          MyImage.asset(
-                                              MyImagePaths.appNovelAllCatelog,
-                                              width: 12.w,
-                                              height: 12.w),
-                                          SizedBox(width: 5.w),
-                                          Text(
-                                            'ckqbzj'.tr(context: context),
-                                            style: MyTheme.white07_12,
-                                          ),
-                                        ]),
-                                      ),
-                                    ),
-                                  ),
+                          const Positioned.fill(
+                            child: MyImage.asset(
+                              MyImagePaths.appDialogBg,
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 8.w),
+                            child: Column(
+                              children: [
+                                Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: (chapters.length > 3
+                                            ? chapters.sublist(0, 3)
+                                            : chapters)
+                                        .asMap()
+                                        .keys
+                                        .map((index) {
+                                      NovelChaptersModel chapter = chapters[index];
+                                      return NovelChapterCard(
+                                        data: chapter,
+                                        tapCall: () {
+                                          //章节点击进入阅读界面
+                                          lastReadChapter = index;
+                                          jumperNovelReaderView();
+                                        },
+                                      );
+                                    }).toList()),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    chapters.length >= 4
+                                        ? SizedBox(
+                                            height: 60.w,
+                                            child: Center(
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  //查看全部章节
+                                                  NovelChaptersRoute(widget.data.detail!)
+                                                      .push(context);
+                                                },
+                                                child: Container(
+                                                  height: 30.w,
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 70.w),
+                                                  decoration: BoxDecoration(
+                                                      gradient: MyTheme.gradient_90_114,
+                                                      borderRadius: BorderRadius.all(
+                                                          Radius.circular(20.w))),
+                                                  alignment: Alignment.center,
+                                                  child: Row(children: [
+                                                    // MyImage.asset(
+                                                    //     MyImagePaths.appNovelAllCatelog,
+                                                    //     width: 12.w,
+                                                    //     height: 12.w),
+                                                    SizedBox(width: 5.w),
+                                                    Text(
+                                                      'ckqbzj'.tr(context: context),
+                                                      style: MyTheme.white12,
+                                                    ),
+                                                  ]),
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                        : Container(),
+                                  ],
                                 )
-                              : Container(),
+                              ],
+                            ),
+                          ),
                         ],
                       )
                     ],
@@ -294,9 +311,8 @@ class _NovelIntroContentState extends State<NovelIntroContent> with RouteAware {
                 children: [
                   Expanded(
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        SizedBox(width: 30.w),
                         iconButton(
                             imageName: widget.data.detail?.isFavorite == 1
                                 ? MyImagePaths.appGameCollectOn
@@ -305,13 +321,6 @@ class _NovelIntroContentState extends State<NovelIntroContent> with RouteAware {
                             func: () {
                               _changeFavorite();
                             }),
-                        // SizedBox(width: 40.w),
-                        // iconButton(
-                        //     imageName: MyImagePaths.appListenNovel,
-                        //     title: 'tshu'.tr(context: context),
-                        //     func: () {
-                        //       const NovelVoicePalyerContentRoute().push(context);
-                        //     }),
                       ],
                     ),
                   ),
@@ -325,25 +334,20 @@ class _NovelIntroContentState extends State<NovelIntroContent> with RouteAware {
               jumperNovelReaderView();
             },
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 10.w),
-              height: 40.w,
-              margin: EdgeInsets.only(right: MyTheme.pagePadding),
-              decoration: BoxDecoration(
-                color: MyTheme.jellyCyanColor,
-                borderRadius: BorderRadius.circular(20.w),
-              ),
+              width: 1.sw / 2,
+              height: 60.w,
+              decoration:
+                  const BoxDecoration(gradient: MyTheme.gradient_90_114),
               alignment: Alignment.center,
               child: Center(
                   child: RichText(
                       text: TextSpan(children: [
-                        TextSpan(
-                          text: lastReadChapter > -1
-                              ? 'jxyd'.tr(context: context)
-                              : 'ksyd'.tr(context: context),
-                              // ? '${'jxyd'.tr(context: context)} ${'di'.tr(context: context)}${lastReadChapter + 1}${'zang'.tr(context: context)}'
-                              // : '${'ksyd'.tr(context: context)} ${'di'.tr(context: context)}1${'zang'.tr(context: context)}',
-                          style: MyTheme.white14,
-                        )
+                TextSpan(
+                  text: lastReadChapter > -1
+                      ? 'jxyd'.tr(context: context)
+                      : 'ksyd'.tr(context: context),
+                  style: MyTheme.white14,
+                )
               ]))),
             ),
           )
@@ -365,17 +369,30 @@ class _NovelIntroContentState extends State<NovelIntroContent> with RouteAware {
       onTap: () {
         func?.call();
       },
-      child: Column(
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           MyImage.asset(
             imageName,
-            width: 25.w,
-            height: 25.w,
+            width: 22.w,
+            height: 22.w,
           ),
-          SizedBox(height: 3.w),
-          Text(title, style: MyTheme.white11),
+          SizedBox(width: 5.w),
+          SizedBox(
+            height: 30.w,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                      color: const Color.fromRGBO(255, 255, 255, 0.4),
+                      fontSize: 14.sp),
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );

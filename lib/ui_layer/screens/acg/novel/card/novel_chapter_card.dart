@@ -13,6 +13,15 @@ class NovelChapterCard extends StatelessWidget {
   final Function? tapCall;
   final bool? isLocation;
 
+  String get title {
+    String text = data.title ?? '';
+    int index = text.indexOf('章');
+    if (index != -1) {
+      return '${text.substring(0, index + 1)} │ ${text.substring(index + 1)}';
+    }
+    return text;
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -29,7 +38,7 @@ class NovelChapterCard extends StatelessWidget {
                 children: [
                   Flexible(
                     child: Text(
-                      data.title ?? '',
+                      title,
                       style: MyTheme.white14,
                       maxLines: 1,
                     ),
@@ -50,35 +59,28 @@ class NovelChapterCard extends StatelessWidget {
   }
 
   Widget isFreeBadge(NovelChaptersModel item) {
-    Color bgColor;
-    Color bordColor;
+    Color? bgColor;
+    Color? bordColor;
     Widget ww;
-    EdgeInsets padding;
+    EdgeInsets padding = EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.w);
+    Gradient? gradient;
 
     if (item.type == 0 || (item.txt?.isNotEmpty ?? false)) {
-      padding = EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.w);
-      bgColor = Colors.transparent;
+      bgColor = const Color.fromRGBO(255, 255, 255, 0);
       bordColor = const Color.fromRGBO(255, 255, 255, 0.7);
       ww = Text(
         'gk'.tr(),
-        style: TextStyle(
-            color: bordColor,
-            fontSize: 12.sp),
+        style: MyTheme.white12,
         textAlign: TextAlign.center,
       );
     } else if (item.type == 1) {
-      padding = EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.w);
-      bgColor = MyTheme.jellyCyanColor;
-      bordColor = MyTheme.jellyCyanColor;
+      gradient = MyTheme.gradient_90_114;
       ww = Text(
         'VIP',
-        style: TextStyle(
-            color: Colors.white,
-            fontSize: 12.sp),
+        style: MyTheme.white12,
         textAlign: TextAlign.center,
       );
     } else if (item.type == 2) {
-      padding = EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.w);
       bgColor = MyTheme.jellyCyanColor.withOpacity(0.2);
       bordColor = MyTheme.jellyCyanColor;
       ww = Row(
@@ -88,7 +90,8 @@ class NovelChapterCard extends StatelessWidget {
             style: MyTheme.white12medium,
           ),
           SizedBox(width: 2.w),
-          MyImage.asset(MyImagePaths.appCoinLogo,
+          MyImage.asset(
+            MyImagePaths.appCoinLogo,
             width: 12.w,
             height: 12.w,
           )
@@ -104,11 +107,12 @@ class NovelChapterCard extends StatelessWidget {
       ),
       decoration: BoxDecoration(
           color: bgColor,
+          gradient: gradient,
           border: Border.all(
-            color: bordColor, // 设置边框颜色
-            width: 0.5, // 设置边框宽度
+            color: bordColor ?? Colors.transparent, // 设置边框颜色
+            width: 1, // 设置边框宽度
           ),
-          borderRadius: BorderRadius.all(Radius.circular(5.w))),
+          borderRadius: BorderRadius.all(Radius.circular(3.w))),
       child: ww,
     );
   }

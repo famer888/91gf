@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jygf/domain/model/novel_model.dart';
 import 'package:jygf/ui_layer/router/routes.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
+import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 
@@ -34,38 +35,46 @@ class NovelItemCard extends StatelessWidget {
                   backgroundColor: MyTheme.imageBgColor,
                   borderRadius: 5.w,
                 ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    height: 40.w,
-                    decoration: BoxDecoration(
-                      gradient: MyTheme.gradient_90_114,
-                      borderRadius: BorderRadius.all(Radius.circular(5.w)),
-                    ),
-                  ),
-                ),
+              
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Padding(
                     padding: EdgeInsets.all(5.w),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        MyImage.asset(MyImagePaths.appComicView,
+                          width: 12.w,
+                          height: 12.w,
+                        ),
+                        SizedBox(width: 2.w),
                         Text(
-                          '${CommonUtils.renderFixedNumber(data.viewFct ?? 0)}${'yd'.tr(context: context)}',
+                          '${CommonUtils.renderEnFixedNumber(data.viewFct ?? 0)}',
                           style: MyTheme.white10,
                           // textAlign: ,
                         ),
-                        Text(
-                          data.isEnd == 1
-                              ? 'wj'.tr(context: context)
-                              : 'lzz'.tr(context: context),
-                          // '${'gxz'.tr(context: context)}${data.chapterCt}${'hua'.tr(context: context)}',
-                          style: MyTheme.white10,
-                          // textAlign: ,
-                        ),
+                        
                       ],
                     ),
+                  ),
+                ),
+                Positioned(
+                  top: 5.w,
+                  right: 5.w,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.w),
+                    decoration: BoxDecoration(
+                      color: data.isEnd == 1 ?const Color.fromRGBO(28, 149, 36, 1): const Color.fromRGBO(147, 19, 19, 1),
+                      borderRadius: BorderRadius.circular(2.w),
+                    ),
+                    child: Text(
+                              data.isEnd == 1
+                                  ? 'wj'.tr(context: context)
+                                  : 'lzz'.tr(context: context),
+                              // '${'gxz'.tr(context: context)}${data.chapterCt}${'hua'.tr(context: context)}',
+                              style: MyTheme.white10,
+                              // textAlign: ,
+                            ),
                   ),
                 ),
               ],
