@@ -245,18 +245,17 @@ class _ComicReaderContentState extends State<ComicReaderContent> with RouteAware
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             iconButton(
-                imageName: MyImagePaths.appComicPrevious,
-                title: 'syyh'.tr(context: context),
-                func: () {
-                  //上一话
-                  jumpToChater(chapterIndex - 1);
-                }),
-            iconButton(
                 imageName: MyImagePaths.appNovelMl,
                 title: 'ml'.tr(context: context),
                 func: () {
                   //目录
                   showComicCatelogSheet();
+                }),iconButton(
+                imageName: MyImagePaths.appComicPrevious,
+                title: 'syyh'.tr(context: context),
+                func: () {
+                  //上一话
+                  jumpToChater(chapterIndex - 1);
                 }),
             iconButton(
                 imageName: MyImagePaths.appComicNext,

@@ -39,21 +39,14 @@ class _NovelReadeSetSheetState extends State<NovelReadeSetSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedPadding(
-        padding: MediaQuery.of(context).viewInsets,
-        duration: const Duration(milliseconds: 100),
-        child: Container(
-            padding: EdgeInsets.all(MyTheme.pagePadding),
-            width: 1.sw,
-            height: 170.w,
-            decoration: BoxDecoration(
-              color: MyTheme.white008Color,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10.w),
-                topRight: Radius.circular(10.w),
-              ),
-            ),
-            child: cofigContentView()));
+    return Container(
+        padding: EdgeInsets.all(MyTheme.pagePadding),
+        width: 1.sw,
+        height: 170.w,
+        decoration: const BoxDecoration(
+          color: Color.fromRGBO(0, 0, 0, 0.9),
+        ),
+        child: cofigContentView());
   }
 
   Widget cofigContentView() {

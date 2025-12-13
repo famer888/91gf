@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +48,8 @@ class _NovelReaderContentState extends State<NovelReaderContent>
   String text = ''; //当前章节的显示内容
   late final cacheDomain = context.read<CacheDomain>();
   bool showControl = true; //控制器的隐藏显示
-  final bottomHeght = 130.w;
+  bool _isShowSetting = false;
+  final bottomHeght = 60.w + MyTheme.bottom;
   Color _bgColor = MyTheme.bgColor;
   double _fontSize = 15;
   int _bgColorIndex = 1;
@@ -159,6 +159,10 @@ class _NovelReaderContentState extends State<NovelReaderContent>
           Positioned.fill(
             child: GestureDetector(
               onTap: () {
+                if (_isShowSetting) {
+                  setState(() => _isShowSetting = false);
+                  return;
+                }
                 setState(() => showControl = !showControl);
               },
               child: ListView.builder(
@@ -189,19 +193,25 @@ class _NovelReaderContentState extends State<NovelReaderContent>
               bottom: showControl ? 0 : -bottomHeght,
               duration: const Duration(milliseconds: 250),
               child: bottomView()),
-          // AnimatedPositioned(
-          //     right: showControl ? 13.w : -100.w,
-          //     bottom: bottomHeght,
-          //     duration: const Duration(milliseconds: 250),
-          //     child: GestureDetector(
-          //       onTap: () {
-          //         //跳转听书界面
-          //         const NovelVoicePalyerContentRoute().push(context);
-          //       },
-          //       child: MyImage.asset(MyImagePaths.appNovelVoiceIcon,
-          //           width: 50.w,
-          //           height: 50.w),
-          //     ))
+          if (_isShowSetting && showControl)
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: bottomHeght,
+              child: NovelReadeSetSheet(
+                fontSize: _fontSize,
+                bgColorIndex: _bgColorIndex,
+                callback: (fontSize, bgColorIndex) {
+                  _fontSize = fontSize;
+                  _bgColorIndex = bgColorIndex;
+                  _bgColor = AppGlobal.bgColores[bgColorIndex];
+
+                  cacheDomain.upsertNovelFontSize(fontSize: _fontSize);
+                  cacheDomain.upsertNovelBgColorIndex(index: bgColorIndex);
+                  setState(() {});
+                },
+              ),
+            ),
         ],
       ),
     );
@@ -209,92 +219,47 @@ class _NovelReaderContentState extends State<NovelReaderContent>
 
   Widget bottomView() {
     return Container(
-      // height: 100.w,
-      // padding: EdgeInsets.only(bottom: MyTheme.bottom),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                  child: Container(
-                      alignment: Alignment.center,
-                      height: 36.w,
-                      width: 90.w,
-                      decoration: BoxDecoration(
-                          color: MyTheme.white008Color,
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(18.w))),
-                      child: Text('syzng'.tr(context: context),
-                          style: MyTheme.white14)),
-                  onTap: () {
-                    //上一章
-                    jumpToChater(chapterIndex - 1);
-                  },
-                ),
-                GestureDetector(
-                  child: Container(
-                      alignment: Alignment.center,
-                      height: 36.w,
-                      width: 90.w,
-                      decoration: BoxDecoration(
-                          color: MyTheme.white008Color,
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(18.w))),
-                      child: Text('xyzng'.tr(context: context),
-                          style: MyTheme.white14)),
-                  onTap: () {
-                    //下一章
-                    jumpToChater(chapterIndex + 1);
-                  },
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 13.w),
-          Container(
-            color: MyTheme.white008Color,
-            padding: EdgeInsets.symmetric(vertical: 13.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                iconButton(
-                    imageName: MyImagePaths.appNovelMl,
-                    title: 'ml'.tr(context: context),
-                    func: () {
-                      //目录
-                      showNovelCatelogSheet();
-                    }),
-                iconButton(
-                    imageName: widget.data.isFavorite == 1
-                        ? MyImagePaths.appGameCollectOn
-                        : MyImagePaths.appGameCollectOff,
-                    title: 'sc'.tr(context: context),
-                    func: () {
-                      //收藏
-                      _changeFavorite();
-                    }),
-                iconButton(
-                    imageName: MyImagePaths.appNavShare,
-                    title: 'fx'.tr(context: context),
-                    func: () {
-                      //分享
-                      const MineShareToUserRoute().push(context);
-                    }),
-                iconButton(
-                    imageName: MyImagePaths.appNovelSet,
-                    title: 'sz'.tr(context: context),
-                    func: () {
-                      //设置
-                      showNovelSetSheet();
-                    }),
-              ],
-            ),
-          ),
-        ],
+      width: 1.sw,
+      height: bottomHeght,
+      color: const Color.fromRGBO(0, 0, 0, 0.9),
+      padding: EdgeInsets.only(bottom: MyTheme.bottom),
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 7.5.w),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            iconButton(
+                imageName: MyImagePaths.appNovelMl,
+                title: 'ml'.tr(context: context),
+                func: () {
+                  //目录
+                  showNovelCatelogSheet();
+                }),
+            iconButton(
+                imageName: MyImagePaths.appComicPrevious,
+                title: 'syyh'.tr(context: context),
+                func: () {
+                  //上一章
+                  jumpToChater(chapterIndex - 1);
+                }),
+            iconButton(
+                imageName: MyImagePaths.appComicNext,
+                title: 'xyyh'.tr(context: context),
+                func: () {
+                  //下一章
+                  jumpToChater(chapterIndex + 1);
+                }),
+            iconButton(
+                imageName: MyImagePaths.appNovelSet,
+                title: 'sz'.tr(context: context),
+                func: () {
+                  //设置
+                  setState(() {
+                    _isShowSetting = !_isShowSetting;
+                  });
+                }),
+          ],
+        ),
       ),
     );
   }
@@ -303,6 +268,7 @@ class _NovelReaderContentState extends State<NovelReaderContent>
     showModalBottomSheet(
         backgroundColor: Colors.transparent,
         isScrollControlled: true,
+        constraints: BoxConstraints(maxHeight: 0.8.sh),
         context: context,
         builder: (BuildContext context) {
           return StatefulBuilder(builder: (ctx, setBottomSheetState) {
@@ -331,28 +297,7 @@ class _NovelReaderContentState extends State<NovelReaderContent>
     }
   }
 
-  void showNovelSetSheet() {
-    showModalBottomSheet(
-        backgroundColor: Colors.transparent,
-        isScrollControlled: true,
-        context: context,
-        builder: (BuildContext context) {
-          return StatefulBuilder(builder: (ctx, setBottomSheetState) {
-            return NovelReadeSetSheet(
-                fontSize: _fontSize,
-                bgColorIndex: _bgColorIndex,
-                callback: (fontSize, bgColorIndex) {
-                  _fontSize = fontSize;
-                  _bgColorIndex = bgColorIndex;
-                  _bgColor = AppGlobal.bgColores[bgColorIndex];
 
-                  cacheDomain.upsertNovelFontSize(fontSize: _fontSize);
-                  cacheDomain.upsertNovelBgColorIndex(index: bgColorIndex);
-                  setState(() {});
-                });
-          });
-        });
-  }
 
   jumpToChater(int index) {
     if (index < 0) {
@@ -382,7 +327,7 @@ class _NovelReaderContentState extends State<NovelReaderContent>
           ),
           Text(
             title,
-            style: MyTheme.white11,
+            style: MyTheme.white12,
           )
         ],
       ),
@@ -393,7 +338,7 @@ class _NovelReaderContentState extends State<NovelReaderContent>
   void showAlertVp() {
     final userNotifier = context.read<UserNotifier>();
     Member user = userNotifier.member;
-    int money = user.money ?? 0;
+    int money = user.money;
     int needmoney = currentChapter?.coins ?? 0;
     bool isInsufficient = money < needmoney;
     if (currentChapter?.type == 2) {
