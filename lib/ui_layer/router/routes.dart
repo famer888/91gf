@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jygf/domain/model/ai/ai_magic_model.dart';
+import 'package:jygf/domain/model/album_model.dart';
 import 'package:jygf/domain/model/comic_model.dart';
 import 'package:jygf/domain/model/novel_model.dart';
 import 'package:jygf/domain/model/soul_group_model.dart';
@@ -60,6 +61,10 @@ import 'package:jygf/ui_layer/screens/rank/screen.dart';
 import 'package:jygf/ui_layer/screens/vlog/screen.dart';
 import 'package:jygf/ui_layer/screens/vlog/vlog_second_page.dart';
 import 'package:jygf/ui_layer/screens/vlog/vlog_tag_screen.dart';
+import 'package:jygf/ui_layer/screens/yellow_picture/yellow_picture_conten/album_tag_screen.dart';
+import 'package:jygf/ui_layer/screens/yellow_picture/yellow_picture_conten/picture_more_content.dart';
+import 'package:jygf/ui_layer/screens/yellow_picture/yellow_picture_reader/picture_preview.dart';
+import 'package:jygf/ui_layer/screens/yellow_picture/yellow_picture_reader/yellow_picture_reader.dart';
 import '../../domain/model/video_detail_model.dart';
 import '../screens/community/module/screen.dart';
 import '../screens/bit/screen.dart';
@@ -1741,5 +1746,72 @@ class ChatDetailRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return ChatDetailScreen(id: id);
+  }
+}
+
+@TypedGoRoute<PictureMoreRoute>(path: AppRouterPaths.morePicture)
+class PictureMoreRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const PictureMoreRoute(this.$extra);
+
+  final RecAlbumModel $extra;
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CommonUtils.buildSlideTransitionPage(
+        state: state, child: PictureMoreContent(data: $extra));
+  }
+}
+
+@TypedGoRoute<PictureReaderRoute>(path: AppRouterPaths.pictureReader)
+class PictureReaderRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const PictureReaderRoute(this.id);
+
+  final String id;
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CommonUtils.buildSlideTransitionPage(
+        state: state, child: YellowPictureReader(id: id));
+  }
+}
+
+@TypedGoRoute<PicturePreViewRoute>(path: AppRouterPaths.picturePreView)
+class PicturePreViewRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const PicturePreViewRoute(this.index, this.$extra);
+
+  final List<Map> $extra;
+  final int index;
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CommonUtils.buildSlideTransitionPage(
+        state: state, child: PicturePreview(index: index, pictures: $extra));
+  }
+}
+
+@TypedGoRoute<AlbumTagRoute>(path: AppRouterPaths.albumTag)
+class AlbumTagRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const AlbumTagRoute({
+    required this.tag,
+  });
+
+  final String tag;
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CommonUtils.buildSlideTransitionPage(
+        state: state, child: AlbumTagScreen(tag: tag));
   }
 }

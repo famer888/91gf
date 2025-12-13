@@ -102,6 +102,10 @@ List<RouteBase> get $appRoutes => [
       $moreNovelRoute,
       $novelVoicePalyerContentRoute,
       $chatDetailRoute,
+      $pictureMoreRoute,
+      $pictureReaderRoute,
+      $picturePreViewRoute,
+      $albumTagRoute,
     ];
 
 RouteBase get $welcomeRoute => GoRouteData.$route(
@@ -2669,6 +2673,119 @@ extension $ChatDetailRouteExtension on ChatDetailRoute {
         queryParams: {
           'id': id.toString(),
         },
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $pictureMoreRoute => GoRouteData.$route(
+      path: '/morePicture',
+      parentNavigatorKey: PictureMoreRoute.$parentNavigatorKey,
+      factory: $PictureMoreRouteExtension._fromState,
+    );
+
+extension $PictureMoreRouteExtension on PictureMoreRoute {
+  static PictureMoreRoute _fromState(GoRouterState state) => PictureMoreRoute(
+        state.extra as RecAlbumModel,
+      );
+
+  String get location => GoRouteData.$location(
+        '/morePicture',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
+
+RouteBase get $pictureReaderRoute => GoRouteData.$route(
+      path: '/pictureReader',
+      parentNavigatorKey: PictureReaderRoute.$parentNavigatorKey,
+      factory: $PictureReaderRouteExtension._fromState,
+    );
+
+extension $PictureReaderRouteExtension on PictureReaderRoute {
+  static PictureReaderRoute _fromState(GoRouterState state) =>
+      PictureReaderRoute(
+        state.uri.queryParameters['id']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/pictureReader',
+        queryParams: {
+          'id': id,
+        },
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $picturePreViewRoute => GoRouteData.$route(
+      path: '/picturePreView',
+      parentNavigatorKey: PicturePreViewRoute.$parentNavigatorKey,
+      factory: $PicturePreViewRouteExtension._fromState,
+    );
+
+extension $PicturePreViewRouteExtension on PicturePreViewRoute {
+  static PicturePreViewRoute _fromState(GoRouterState state) =>
+      PicturePreViewRoute(
+        int.parse(state.uri.queryParameters['index']!),
+        state.extra as List<Map<dynamic, dynamic>>,
+      );
+
+  String get location => GoRouteData.$location(
+        '/picturePreView',
+        queryParams: {
+          'index': index.toString(),
+        },
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
+
+RouteBase get $albumTagRoute => GoRouteData.$route(
+      path: '/albumTag/:tag',
+      parentNavigatorKey: AlbumTagRoute.$parentNavigatorKey,
+      factory: $AlbumTagRouteExtension._fromState,
+    );
+
+extension $AlbumTagRouteExtension on AlbumTagRoute {
+  static AlbumTagRoute _fromState(GoRouterState state) => AlbumTagRoute(
+        tag: state.pathParameters['tag']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/albumTag/${Uri.encodeComponent(tag)}',
       );
 
   void go(BuildContext context) => context.go(location);

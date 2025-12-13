@@ -315,4 +315,15 @@ class AppRouterPaths {
    /// 裸聊 详情
   static const chatDetail = '/chatDetail';
 
+    /// 更多黄图列表
+  static const morePicture = '/morePicture';
+
+  /// 黄图阅读界面
+  static const pictureReader = '/pictureReader';
+
+  /// 黄图预览保存界面
+  static const picturePreView = '/picturePreView';
+
+  static const albumTag = '/albumTag/:tag';
+
 }

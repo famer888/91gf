@@ -180,6 +180,9 @@ class Config {
     required this.chatSelectNav,
     required this.circleNav,
     required this.vipNameCircleStrImg,
+    this.albumNav,
+    this.albumSortNav,
+    this.albumTagSort,
     this.postDetailAds,
     this.buoy,
     this.forumTips,
@@ -294,6 +297,9 @@ class Config {
   final List<ChatSelectNavModel> chatSelectNav;
   final List<NavigatorModel> circleNav;//圈子
   final String vipNameCircleStrImg;
+  final List<BitNavModel>? albumNav; //色图分类
+  final List<BitNavModel>? albumTagSort; //色图标签界面分类
+  final List<BitNavModel>? albumSortNav; //色图排序
   final List<FaceNavigatorModel> seedTopNav;
   final List<RankNavigatorModel>? rankTopNav;
   final List<RankNavigatorModel>? rankCycleNav;
@@ -528,6 +534,12 @@ class Config {
         circleNav: List<NavigatorModel>.from(
             json['circle_nav']?.map((x) => NavigatorModel.fromJson(x)) ?? []),
         vipNameCircleStrImg: json['vip_name_circle_str_img'] ?? '',
+        albumNav: List<BitNavModel>.from(
+            json['album_nav']?.map((x) => BitNavModel.fromJson(x)) ?? []),
+        albumTagSort: List<BitNavModel>.from(
+            json['album_tag_sort_nav']?.map((x) => BitNavModel.fromJson(x)) ?? []),
+        albumSortNav: List<BitNavModel>.from(
+            json['album_sort_nav']?.map((x) => BitNavModel.fromJson(x)) ?? []),
       );
 
   Map<String, dynamic> toJson() => {
@@ -633,6 +645,9 @@ class Config {
         'chat_select_nav': chatSelectNav.map((e) => e).toList(),
         'circle_nav': circleNav.map((e) => e).toList(),
         'vip_name_circle_str_img': vipNameCircleStrImg,
+        'album_nav': albumNav?.map((e) => e).toList() ?? [],
+        'album_tag_sort_nav': albumTagSort?.map((e) => e).toList() ?? [],
+        'album_sort_nav': albumSortNav?.map((e) => e).toList() ?? [],
       };
 }
 
