@@ -78,44 +78,41 @@ class _MineScreenState extends State<MineScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenBackground(
-        child: Scaffold(
-      body: SafeArea(
-        child: Stack(
-          children: [
-            SizedBox(
-              height: 666.w, // 1.sw * 666 / 380,
-              child: const MyImage.asset(
-                MyImagePaths.appMineBgTop,
-                fit: BoxFit.fill,
-                height: double.infinity,
-                width: double.infinity,
-              ),
+    final topPadding = MediaQuery.of(context).padding.top;
+    return Scaffold(
+      body: Stack(
+        children: [
+          const SizedBox(
+            width: double.infinity,
+            child: MyImage.asset(
+              MyImagePaths.appMineBgTop,
+              fit: BoxFit.fitWidth,
             ),
-            Column(
-              children: [
-                const _FixedTopArea(),
-                Expanded(
-                  child: CustomScrollView(
-                    physics: const BouncingScrollPhysics(
-                      parent: AlwaysScrollableScrollPhysics(),
-                    ),
-                    slivers: [
-                      MyIndicator(onRefresh: () async {
-                        await context.read<UserNotifier>().init();
-                      }),
-                      const SliverToBoxAdapter(
-                        child: _Body(),
-                      ),
-                    ],
+          ),
+          Column(
+            children: [
+              SizedBox(height: topPadding),
+              const _FixedTopArea(),
+              Expanded(
+                child: CustomScrollView(
+                  physics: const BouncingScrollPhysics(
+                    parent: AlwaysScrollableScrollPhysics(),
                   ),
+                  slivers: [
+                    MyIndicator(onRefresh: () async {
+                      await context.read<UserNotifier>().init();
+                    }),
+                    const SliverToBoxAdapter(
+                      child: _Body(),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+        ],
       ),
-    ));
+    );
   }
 }
 
@@ -209,9 +206,9 @@ class _Body extends StatelessWidget {
               // _FirstMenu(),
               SizedBox(height: 15),
               _AiEntry(),
-              SizedBox(height: 15),
+              SizedBox(height: 10),
               _SecondMenu(),
-              SizedBox(height: 15),
+              SizedBox(height: 10),
               _ThirdMenu(),
               SizedBox(height: 15),
             ],
@@ -521,8 +518,8 @@ class _CenterMenu extends StatelessWidget {
             right: 0,
             // bottom: 0,
             child: SizedBox(
-              width: 190.w,
-              height: 64.w,
+              width: 171.w,
+              height: 54.w,
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: () => const MineShareToUserRoute().push(context),
@@ -534,7 +531,7 @@ class _CenterMenu extends StatelessWidget {
                       height: double.infinity,
                     ),
                     Positioned.fill(
-                      left: 28.w,
+                      left: 20.w,
                       // top: 12.w,
                       // right: 0,
                       child: Column(
@@ -563,8 +560,8 @@ class _CenterMenu extends StatelessWidget {
             right: 0,
             bottom: 0,
             child: SizedBox(
-              width: 213.w,
-              height: 52.w,
+              width: 171.w,
+              height: 54.w,
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: () => const MineWelfareRoute().push(context),
@@ -577,7 +574,7 @@ class _CenterMenu extends StatelessWidget {
                     ),
                     Positioned.fill(
                       // top: 12.w,
-                      left: 32.w,
+                      left: 20.w,
                       // right: 0,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -603,38 +600,6 @@ class _CenterMenu extends StatelessWidget {
         ],
       ),
     );
-    return GridView.count(
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      crossAxisCount: 3,
-      crossAxisSpacing: 10,
-      addAutomaticKeepAlives: false,
-      addRepaintBoundaries: false,
-      children: [
-        Selector<UserNotifier, int>(
-            selector: (_, config) => config.member.money,
-            builder: (context, money, child) {
-              return _FirstMenuCard(
-                backgroundImg: MyImagePaths.appMineCoinChargeBackground,
-                title: 'jbcz'.tr(context: context),
-                subTitle: "${'dqye'.tr(context: context)} $money",
-                onTap: () => const CoinRechargeRoute().push(context),
-              );
-            }),
-        _FirstMenuCard(
-          backgroundImg: MyImagePaths.appMineShareBackground,
-          title: 'fxyqlhb'.tr(context: context),
-          subTitle: 'yqhydvp'.tr(context: context),
-          onTap: () => const MineShareToUserRoute().push(context),
-        ),
-        _FirstMenuCard(
-          backgroundImg: MyImagePaths.appMineWelfareBackground,
-          title: 'tgzxj'.tr(context: context),
-          subTitle: 'ye'.tr(context: context),
-          onTap: () => const MineWelfareRoute().push(context),
-        ),
-      ],
-    );
   }
 }
 
@@ -645,12 +610,12 @@ class _AiEntry extends StatelessWidget {
     return GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () => const AIServerRoute().push(context),
-        child: const SizedBox(
-          width: double.infinity,
-          height: 80,
-          child: MyImage.asset(
+        child:  SizedBox(
+          width: 1.sw,
+          height: 70.w,
+          child:const MyImage.asset(
             MyImagePaths.appMineAiEntry,
-            fit: BoxFit.cover,
+            fit: BoxFit.fill,
           ),
         ));
   }
@@ -813,11 +778,6 @@ class _SecondMenu extends StatelessWidget {
         onTap: () => const MineCollectionRoute().push(context),
       ),
       (
-        title: 'wdgz'.tr(context: context),
-        iconName: MyImagePaths.appMineFollow,
-        onTap: () => const MineFollowingRoute().push(context),
-      ),
-      (
         title: 'ycrz'.tr(context: context),
         iconName: MyImagePaths.appMineBlogger,
         onTap: () => const OriginalEnterRoute().push(context),
@@ -826,39 +786,44 @@ class _SecondMenu extends StatelessWidget {
 
     return Container(
         decoration: const BoxDecoration(
-          color: Color.fromRGBO(21, 19, 42, 1),
-          borderRadius: BorderRadius.all(Radius.circular(8)),
+          // color: Color.fromRGBO(21, 19, 42, 1),
+          // borderRadius: BorderRadius.all(Radius.circular(8)),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 13 / 2),
-        child: GridView(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 4),
+        padding: EdgeInsets.symmetric(vertical: 6.w),
+        child: Row(
           children: [
-            for (final data in menu)
-              GestureDetector(
-                onTap: data.onTap,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    MyImage.asset(
-                      data.iconName,
-                      width: 24,
-                      height: 24,
+            for (int i = 0; i < menu.length; i++) ...[
+              if (i > 0) SizedBox(width: 10.w),
+              Expanded(
+                child: GestureDetector(
+                  onTap: menu[i].onTap,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 12.w, horizontal: 12.w),
+                    decoration: BoxDecoration(
+                      color: const Color.fromRGBO(21, 19, 42, 1),
+                      borderRadius: BorderRadius.circular(20),
+                    
                     ),
-                    const SizedBox(height: 5),
-                    Text(
-                      data.title,
-                      style: const TextStyle(
-                        fontSize: 13,
-                        color: Color.fromRGBO(187, 187, 187, 1.0),
-                      ),
-                    )
-                  ],
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          menu[i].title,
+                          style: MyTheme.white12.copyWith(color: Color.fromRGBO(187, 187, 187, 1.0)),
+                        ),
+                        SizedBox(width: 4.w),
+                        const Icon(
+                          Icons.chevron_right,
+                          size: 30,
+                          color: Color.fromRGBO(187, 187, 187, 1),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              )
+              ),
+            ],
           ],
         ));
   }
@@ -879,6 +844,11 @@ class _ThirdMenu extends StatelessWidget {
         title: 'wdai'.tr(context: context),
         iconName: MyImagePaths.appMineAi,
         onTap: () => const MineAIRecordRoute().push(context),
+      ),
+      (
+        title: 'wdgz'.tr(context: context),
+        iconName: MyImagePaths.appMineFollow,
+        onTap: () => const MineFollowingRoute().push(context),
       ),
       (
         title: 'zxhc'.tr(context: context),
@@ -935,14 +905,14 @@ class _ThirdMenu extends StatelessWidget {
                   children: [
                     MyImage.asset(
                       data.iconName,
-                      width: 24,
-                      height: 24,
+                      width: 24.w,
+                      height: 24.w,
                     ),
                     const SizedBox(height: 5),
                     Text(
                       data.title,
                       style: const TextStyle(
-                        fontSize: 13,
+                        fontSize: 20,
                         color: Color.fromRGBO(187, 187, 187, 1.0),
                       ),
                     )

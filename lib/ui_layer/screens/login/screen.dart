@@ -154,45 +154,62 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     child: Column(
                       children: [
+                        
+                        MyImage.asset(
+                          MyImagePaths.appLogoIcon,
+                          width: 109.w,
+                        ),
+                        SizedBox(height: 10.w),
                         Text(
                           'yhldcm'.tr(context: context),
                           style: TextStyle(
                             color: const Color.fromRGBO(255, 255, 255, 1),
-                            fontSize: 18.sp,
+                            fontSize: 13.sp,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: 20.w),
-                        MyImage.asset(
-                          MyImagePaths.appLogoIcon,
-                          width: 63.w,
-                        ),
                         SizedBox(height: 38.w),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _LoginInputBox(
-                              controller: userNameController,
-                              hintText: 'qsrzh'.tr(context: context),
-                            ),
-                            SizedBox(height: 33.w),
-                            _LoginInputBox(
-                              controller: passwordController,
-                              hintText: 'qsrmm'.tr(context: context),
-                              isPassword: true,
-                            ),
-                          ],
+                        Container(
+                          clipBehavior: Clip.hardEdge,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.15),
+                            borderRadius: BorderRadius.circular(15.w),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _LoginInputBox(
+                                controller: userNameController,
+                                hintText: 'qsrzh'.tr(context: context),
+                                imgPath: MyImagePaths.appLoginAccount,
+                              ),
+                              Divider(
+                                height: 1.w,
+                                thickness: 1.w,
+                                color: Colors.white.withOpacity(0.1),
+                                indent: 20.w,
+                                endIndent: 20.w,
+                              ),
+                              _LoginInputBox(
+                                controller: passwordController,
+                                hintText: 'qsrmm'.tr(context: context),
+                                isPassword: true,
+                                imgPath: MyImagePaths.appLoginPwd,
+                              ),
+                            ],
+                          ),
                         ),
-                        SizedBox(height: 55.w),
+                        SizedBox(height: 40.w),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             MyButton.gradient(
+                              gradient: MyTheme.gradient_90_118,
                               minimumSize: Size(140.w, 40.w),
                               onPressed: () async {
                                 _register();
                               },
-                              borderRadius: 8,
+                              borderRadius: 20.w,
                               text: 'zc'.tr(context: context),
                             ),
                             MyButton.gradient(
@@ -200,7 +217,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               onPressed: () async {
                                 _login();
                               },
-                              borderRadius: 8,
+                              borderRadius: 20.w,
                               text: 'dl'.tr(context: context),
                             ),
                           ],
@@ -208,21 +225,28 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
                   ),
+                  SizedBox(height: 55.w),
+                  MyImage.asset(
+                    MyImagePaths.appLoginTs,
+                    width: double.infinity,
+                    height: 18.w,
+                    fit: BoxFit.contain,
+                  ),
                   Align(
                     alignment: Alignment.topLeft,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 26.5.w),
-                        Text(
-                          'ts'.tr(context: context),
-                          style: MyTheme.white255_15,
-                          textAlign: TextAlign.left,
-                        ),
+                        // SizedBox(height: 26.5.w),
+                        // Text(
+                        //   'ts'.tr(context: context),
+                        //   style: MyTheme.white255_15,
+                        //   textAlign: TextAlign.left,
+                        // ),
                         SizedBox(height: 20.w),
                         Text(
                           "1.${'zhty'.tr(context: context)}\n2.${'zhte'.tr(context: context)}\n3.${'zhts'.tr(context: context)}",
-                          style: MyTheme.white12,
+                          style: MyTheme.white08_12,
                         )
                       ],
                     ),
@@ -242,36 +266,52 @@ class _LoginInputBox extends StatelessWidget {
     required this.hintText,
     this.isPassword = false,
     required this.controller,
+    required this.imgPath,
   });
   final String hintText;
   final bool isPassword;
   final TextEditingController controller;
+  final String imgPath;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      clipBehavior: Clip.hardEdge,
-      height: 50.w,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.2),
-        borderRadius: BorderRadius.all(
-          Radius.circular(5.w),
-        ),
-      ),
-      child: TextField(
-        inputFormatters: [
-          FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]|[0-9]')),
-          LengthLimitingTextInputFormatter(20)
+    return SizedBox(
+      height: 55.w,
+      child: Row(
+        children: [
+          // 图标
+          Padding(
+            padding: EdgeInsets.only(left: 20.w, right: 10.w),
+            child: MyImage.asset(
+              imgPath,
+              width: 22.w,
+              height: 22.w,
+              fit: BoxFit.contain,
+            ),
+          ),
+          // 输入框
+          Expanded(
+            child: TextField(
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]|[0-9]')),
+                LengthLimitingTextInputFormatter(20)
+              ],
+              controller: controller,
+              obscureText: isPassword,
+              style: MyTheme.white255_14,
+              cursorColor: MyTheme.cyanColor00edfd,
+              decoration: InputDecoration(
+                hintText: hintText,
+                hintStyle: TextStyle(
+                  color: Colors.white.withOpacity(0.5),
+                  fontSize: 14.sp,
+                ),
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.zero,
+              ),
+            ),
+          ),
         ],
-        controller: controller,
-        obscureText: isPassword,
-        style: MyTheme.white255_14,
-        cursorColor: MyTheme.cyanColor00edfd,
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: MyTheme.gray180_14,
-        ),
       ),
     );
   }
