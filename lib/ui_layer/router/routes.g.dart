@@ -106,6 +106,10 @@ List<RouteBase> get $appRoutes => [
       $pictureReaderRoute,
       $picturePreViewRoute,
       $albumTagRoute,
+      $yelllowPictureRoute,
+      $dateRoute,
+      $chatRoute,
+      $taskRoute,
     ];
 
 RouteBase get $welcomeRoute => GoRouteData.$route(
@@ -2786,6 +2790,99 @@ extension $AlbumTagRouteExtension on AlbumTagRoute {
 
   String get location => GoRouteData.$location(
         '/albumTag/${Uri.encodeComponent(tag)}',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $yelllowPictureRoute => GoRouteData.$route(
+      path: '/yelllowPicture',
+      parentNavigatorKey: YelllowPictureRoute.$parentNavigatorKey,
+      factory: $YelllowPictureRouteExtension._fromState,
+    );
+
+extension $YelllowPictureRouteExtension on YelllowPictureRoute {
+  static YelllowPictureRoute _fromState(GoRouterState state) =>
+      const YelllowPictureRoute();
+
+  String get location => GoRouteData.$location(
+        '/yelllowPicture',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $dateRoute => GoRouteData.$route(
+      path: '/date',
+      parentNavigatorKey: DateRoute.$parentNavigatorKey,
+      factory: $DateRouteExtension._fromState,
+    );
+
+extension $DateRouteExtension on DateRoute {
+  static DateRoute _fromState(GoRouterState state) => const DateRoute();
+
+  String get location => GoRouteData.$location(
+        '/date',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $chatRoute => GoRouteData.$route(
+      path: '/chat',
+      parentNavigatorKey: ChatRoute.$parentNavigatorKey,
+      factory: $ChatRouteExtension._fromState,
+    );
+
+extension $ChatRouteExtension on ChatRoute {
+  static ChatRoute _fromState(GoRouterState state) => const ChatRoute();
+
+  String get location => GoRouteData.$location(
+        '/chat',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $taskRoute => GoRouteData.$route(
+      path: '/task',
+      parentNavigatorKey: TaskRoute.$parentNavigatorKey,
+      factory: $TaskRouteExtension._fromState,
+    );
+
+extension $TaskRouteExtension on TaskRoute {
+  static TaskRoute _fromState(GoRouterState state) => const TaskRoute();
+
+  String get location => GoRouteData.$location(
+        '/task',
       );
 
   void go(BuildContext context) => context.go(location);

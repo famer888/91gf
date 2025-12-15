@@ -42,6 +42,8 @@ import 'package:jygf/ui_layer/screens/anime/screen.dart';
 import 'package:jygf/ui_layer/screens/asmr/voice_player/local_voice_player.dart';
 import 'package:jygf/ui_layer/screens/asmr/voice_player/voice_player_content.dart';
 import 'package:jygf/ui_layer/screens/chat/detail/screen.dart';
+import 'package:jygf/ui_layer/screens/chat/screen.dart';
+import 'package:jygf/ui_layer/screens/circle/circle_screen.dart';
 import 'package:jygf/ui_layer/screens/community/ori_create_group_chat/group_chat/group_chat_detail_content.dart';
 import 'package:jygf/ui_layer/screens/community/ori_create_group_chat/group_chat/group_chat_list_content.dart';
 import 'package:jygf/ui_layer/screens/community/ori_create_group_chat/group_chat/group_chat_top_msg_content.dart';
@@ -57,12 +59,14 @@ import 'package:jygf/ui_layer/screens/live_video/live_nav/screen.dart';
 import 'package:jygf/ui_layer/screens/mine/ai_record/screen.dart';
 import 'package:jygf/ui_layer/screens/mine/bind_email/screen.dart';
 import 'package:jygf/ui_layer/screens/mine/vip_center/upgrade/screen.dart';
+import 'package:jygf/ui_layer/screens/mine/welfare/widgets/tasks_view.dart';
 import 'package:jygf/ui_layer/screens/rank/screen.dart';
 import 'package:jygf/ui_layer/screens/vlog/screen.dart';
 import 'package:jygf/ui_layer/screens/vlog/vlog_second_page.dart';
 import 'package:jygf/ui_layer/screens/vlog/vlog_tag_screen.dart';
 import 'package:jygf/ui_layer/screens/yellow_picture/yellow_picture_conten/album_tag_screen.dart';
 import 'package:jygf/ui_layer/screens/yellow_picture/yellow_picture_conten/picture_more_content.dart';
+import 'package:jygf/ui_layer/screens/yellow_picture/yellow_picture_conten/screen.dart';
 import 'package:jygf/ui_layer/screens/yellow_picture/yellow_picture_reader/picture_preview.dart';
 import 'package:jygf/ui_layer/screens/yellow_picture/yellow_picture_reader/yellow_picture_reader.dart';
 import '../../domain/model/video_detail_model.dart';
@@ -1813,5 +1817,60 @@ class AlbumTagRoute extends GoRouteData {
   Page<void> buildPage(BuildContext context, GoRouterState state) {
     return CommonUtils.buildSlideTransitionPage(
         state: state, child: AlbumTagScreen(tag: tag));
+  }
+}
+
+@TypedGoRoute<YelllowPictureRoute>(path: AppRouterPaths.yelllowPicture)
+class YelllowPictureRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const YelllowPictureRoute();
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CommonUtils.buildSlideTransitionPage(
+        state: state, child:const YellowPictureScreen());
+  }
+}
+
+@TypedGoRoute<DateRoute>(path: AppRouterPaths.date)
+class DateRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const DateRoute();
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CommonUtils.buildSlideTransitionPage(
+        state: state, child:const CircleCommunityScreen());
+  }
+}
+
+@TypedGoRoute<ChatRoute>(path: AppRouterPaths.chat)
+class ChatRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const ChatRoute();
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CommonUtils.buildSlideTransitionPage(
+        state: state, child:const ChatScreen());
+  }
+}
+
+@TypedGoRoute<TaskRoute>(path: AppRouterPaths.task)
+class TaskRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const TaskRoute();
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CommonUtils.buildSlideTransitionPage(state: state, child:const TaskView());
   }
 }

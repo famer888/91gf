@@ -326,4 +326,16 @@ class AppRouterPaths {
 
   static const albumTag = '/albumTag/:tag';
 
+  /// 美图
+  static const yelllowPicture = '/yelllowPicture';
+
+  /// 约炮
+  static const date = '/date';
+
+  /// 裸聊
+  static const chat = '/chat';
+
+  /// 签到
+  static const task = '/task';
+
 }

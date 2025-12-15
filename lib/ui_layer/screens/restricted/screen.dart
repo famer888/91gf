@@ -36,7 +36,7 @@ class _RestrictedScreenState extends State<RestrictedScreen> {
             body: TopNaviView(id: id),
           ),
         ),
-        // const _BlurView(),
+        const _BlurView(),
       ],
     );
   }
