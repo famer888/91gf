@@ -206,7 +206,7 @@ class _MineAgentScreenState extends State<MineAgentScreen> {
                               ],
                             ),
                       Container(
-                        padding: EdgeInsets.all(20.w),
+                        padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 20.w),
                         decoration: BoxDecoration(
                           color: MyTheme.blackColor32,
                           borderRadius: BorderRadius.circular(5.w),
@@ -264,7 +264,7 @@ class _MineAgentScreenState extends State<MineAgentScreen> {
                         ),
                       ),
                       Container(
-                          padding: EdgeInsets.all(20.w),
+                          padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 20.w),
                           decoration: BoxDecoration(
                             color: MyTheme.blackColor32,
                             borderRadius: BorderRadius.circular(5.w),
@@ -347,7 +347,7 @@ class _MineAgentScreenState extends State<MineAgentScreen> {
                             ),
                           ])),
                       Container(
-                          padding: EdgeInsets.all(20.w),
+                          padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 20.w),
                           decoration: BoxDecoration(
                               color: MyTheme.blackColor32,
                               borderRadius: BorderRadius.circular(5.w)),
@@ -372,7 +372,7 @@ class _MineAgentScreenState extends State<MineAgentScreen> {
                             ),
                           ])),
                       Container(
-                        padding: EdgeInsets.all(20.w),
+                        padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 20.w),
                         decoration: BoxDecoration(
                           color: MyTheme.blackColor32,
                           borderRadius: BorderRadius.circular(5.w),
@@ -583,6 +583,15 @@ class AgentTitleWidget extends StatelessWidget {
   final bool hideIcon;
   @override
   Widget build(BuildContext context) {
+
+    return Stack(children: [
+      Positioned.fill(child: MyImage.asset(MyImagePaths.appDlTitltBg, width: 43.w, height: 14.5.w,)),
+      Positioned(child: SizedBox(
+        width: 226.w,
+        height: 35.w,
+        child: Center(child: Text(title, style: MyTheme.white16,),),
+      ),)
+    ],);
     return Container(
       alignment: Alignment.center,
       child: UnconstrainedBox(
