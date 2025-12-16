@@ -23,7 +23,7 @@ class BitNavModel {
         name: json['name'] ?? '',
         type: json['type'],
         title: json['title'],
-        value: json['value'].toString(),
+        value: json['value']?.toString(),
         sort: json['sort'],
         uiType: json['ui_type'],
       );

@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jygf/domain/api_validator.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/gradient_text.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../domain/async_value.dart';
@@ -89,47 +90,46 @@ class _TaskViewState extends State<TaskView> {
           _MemberView(data: data),
           SizedBox(height: 6.w),
           _signInContent(data),
-          SizedBox(height: 13.w),
-          ClipRRect(
-            borderRadius: BorderRadius.only(topLeft: Radius.circular(20.w), topRight: Radius.circular(20.w)),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(
-                  color: Colors.white.withOpacity(0.03),
-                  width: 1.w,
-                ),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(8.w),
-                  topRight: Radius.circular(8.w),
-                ),
-              ),
-              padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-              child: Column(
-                children: [
-                  _Header(data: data),
-                  (data.list == null || data.list?.isEmpty == true)
-                      ? Column(
-                          children: [
-                            SizedBox(height: 20.w),
-                            const PageEmptyDataView(),
-                            SizedBox(height: 0.5.sh),
-                          ],
-                        )
-                      : ListView.builder(
-                          addAutomaticKeepAlives: false,
-                          addRepaintBoundaries: false,
-                          shrinkWrap: true,
-                          cacheExtent: 1.sh,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: data.list?.length,
-                          itemBuilder: (context, index) => _Tile(
-                            data: data.list![index],
-                            getTaskData: _initData,
-                          ),
+          // SizedBox(height: 13.w),
+          Container(
+              color:const Color.fromRGBO(29, 2, 24, 1),
+
+            // decoration: BoxDecoration(
+            //   color: Colors.white,
+            //   border: Border.all(
+            //     color: Colors.white.withOpacity(0.03),
+            //     width: 1.w,
+            //   ),
+            //   borderRadius: BorderRadius.only(
+            //     topLeft: Radius.circular(8.w),
+            //     topRight: Radius.circular(8.w),
+            //   ),
+            // ),
+            padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+            child: Column(
+              children: [
+                _Header(data: data),
+                (data.list == null || data.list?.isEmpty == true)
+                    ? Column(
+                        children: [
+                          SizedBox(height: 20.w),
+                          const PageEmptyDataView(),
+                          SizedBox(height: 0.5.sh),
+                        ],
+                      )
+                    : ListView.builder(
+                        addAutomaticKeepAlives: false,
+                        addRepaintBoundaries: false,
+                        shrinkWrap: true,
+                        cacheExtent: 1.sh,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: data.list?.length,
+                        itemBuilder: (context, index) => _Tile(
+                          data: data.list![index],
+                          getTaskData: _initData,
                         ),
-                ],
-              ),
+                      ),
+              ],
             ),
           )
         ]),
@@ -142,55 +142,66 @@ class _TaskViewState extends State<TaskView> {
     return data.signRewardList == null
         ? Container()
         : Container(
-            // height: 325.w,
-            margin: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-            padding: EdgeInsets.all(MyTheme.pagePadding),
+            // margin: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+            padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding, vertical: 20.w),
             decoration: BoxDecoration(
-              borderRadius: BorderRadiusDirectional.circular(10.w),
-              color: MyTheme.white008Color,
+              borderRadius: BorderRadiusDirectional.circular(30.w),
+              color:const Color.fromRGBO(29, 2, 24, 1),
+              //cursor:只添加顶部边框
+              border: Border(top: BorderSide(color:const Color.fromRGBO(154, 48, 133, 1), width: 1.w,)),
+              
             ),
             child: Column(children: [
               Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.baseline,
+                textBaseline: TextBaseline.alphabetic,
                 children: [
                   Text(
                     'zmrrw'.tr(context: context),
-                    style: MyTheme.white16bold,
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
-                  SizedBox(width: 10.w),
+                  SizedBox(width: 8.w),
                   Text(
                     'ljl'.tr(context: context),
-                    style: MyTheme.white04_12,
+                    style: MyTheme.white07_10,
                   ),
                   const Spacer(),
                   Text(
                     'yljqd'.tr(context: context),
-                    style: MyTheme.white04_12,
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: Colors.white,
+                    ),
                   ),
                   Text(
                     ' ${data.signNum} ',
-                    style: MyTheme.blue80_12,
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.bold,
+                      color: MyTheme.primaryColor, 
+                    ),
                   ),
                   Text(
                     'tian'.tr(context: context),
-                    style: MyTheme.white04_12,
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: Colors.white,
+                    ),
                   ),
                 ],
               ),
-              SizedBox(height: 10.w),
-              GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                  childAspectRatio: 150 / 200,
-                ),
-                itemCount: data.signRewardList?.length ?? 0,
-                itemBuilder: (context, index) => siginItem(data.signRewardList![index], data.signNum ?? 0),
+              SizedBox(height: 20.w),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: (data.signRewardList ?? [])
+                    .map((e) => Expanded(child: siginItem(e, data.signNum ?? 0)))
+                    .toList(),
               ),
-              SizedBox(height: 13.w),
+              SizedBox(height: 10.w),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -201,33 +212,50 @@ class _TaskViewState extends State<TaskView> {
                       }
                     },
                     child: Container(
-                      width: 150.w,
-                      height: 40.w,
+                      width: 93.w,
+                      height: 35.w,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadiusDirectional.circular(20.w),
-                        gradient: data.signStatus == true ? MyTheme.gradient_228_246 : MyTheme.shareButtonGradient,
+                        borderRadius: BorderRadiusDirectional.circular(22.5.w),
+                        gradient: MyTheme.gradient_90_118,
                       ),
                       child: Selector<UserNotifier, Member?>(
                         selector: (_, notifier) => notifier.member,
                         builder: (context, member, child) {
-                          return Text(data.signStatus == true ? tr('yqiandao') : tr('ljqd'), style: MyTheme.white15_M);
+                          return Text(
+                            data.signStatus == true ? tr('yqiandao') : tr('ljqd'),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.sp,
+                              // fontWeight: FontWeight.w600,
+                            ),
+                          );
                         },
                       ),
                     ),
                   ),
-                  SizedBox(width: 13.w),
+                  SizedBox(width: 20.w),
                   GestureDetector(
                     onTap: () {
                       //兑换VIP
                       const VipCenterRoute(pageIndex: 1).push(context);
                     },
                     child: Container(
-                      width: 150.w,
-                      height: 40.w,
+                      width: 93.w,
+                      height: 35.w,
                       alignment: Alignment.center,
-                      decoration: BoxDecoration(borderRadius: BorderRadiusDirectional.circular(20.w), gradient: MyTheme.shareButtonGradient),
-                      child: Text(tr('dhvp'), style: MyTheme.white15_M),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadiusDirectional.circular(22.5.w),
+                        gradient: MyTheme.gradient_90_114,
+                      ),
+                      child: Text(
+                        tr('dhvp'),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16.sp,
+                          // fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -237,58 +265,59 @@ class _TaskViewState extends State<TaskView> {
   }
 
   Widget siginItem(WelfareTaskListModel data, int signNum) {
-    return Container(
-      clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(
-        color: const Color.fromRGBO(45, 48, 65, 1),
-        borderRadius: BorderRadius.all(
-          Radius.circular(10.w),
-        ),
-      ),
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  data.title ?? '',
-                  style: MyTheme.white10,
-                ),
-                SizedBox(height: 10.w),
-                SizedBox(
-                  width: 40.w,
-                  height: 40.w,
-                  child: MyImage.network(data.icon ?? ''),
-                ),
-                SizedBox(height: 5.w),
-                Text(
-                  data.desc ?? '',
-                  style: MyTheme.blue80_11,
-                ),
-              ],
-            ),
+    bool isSigned = (data.sort ?? 0) <= signNum;
+    return Column(
+      children: [
+        Container(
+          width: 46.w,
+          height: 81.w,
+          decoration: BoxDecoration(
+            gradient: isSigned
+                ? const LinearGradient(
+                    colors: [Color.fromRGBO(59, 12, 79, 1),Color.fromRGBO(78, 12, 79, 1)],
+                  )
+                : const LinearGradient(
+                    colors: MyTheme.gradient_90_114_colors,
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+            borderRadius: BorderRadius.circular(22.w),
           ),
-          // data.sort == 7
-          //     ? Positioned(
-          //         right: 0,
-          //         top: 0,
-          //         child: MyImage.asset(MyImagePaths.appSiginCZ,
-          //             width: 30.w, height: 30.w))
-          //     : Container(),
-          (data.sort ?? 0) <= signNum
-              ? Container(
-                  color: Colors.black45,
-                  child: Center(
-                      child: Text(
-                    'yqiandao'.tr(context: context),
-                    style: MyTheme.white14,
-                  )))
-              : Container(),
-        ],
-      ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                isSigned ? 'yqiandao'.tr(context: context) : 'wks'.tr(context: context), // 已签到/未签到
+                style: TextStyle(
+                  color: isSigned ? Colors.white.withOpacity(0.5) : Colors.white,
+                  fontSize: 10.sp,
+                ),
+              ),
+              SizedBox(height: 4.w),
+              isSigned
+                  ? MyImage.asset(MyImagePaths.appTaskSigned, width: 22.w, height: 22.w,fit: BoxFit.contain,)
+                  : MyImage.asset(MyImagePaths.appTaskUnsigned, width: 22.w, height: 22.w,fit: BoxFit.cover,),
+              SizedBox(height: 4.w),
+              Text(
+                '${data.desc}',
+                style: TextStyle(
+                  color: isSigned ? const Color(0xFF8E7AA6) : const Color(0xFFFFE066), // 深紫灰 / 亮黄
+                  fontSize: 10.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 5.w),
+        Text(
+          data.title ?? '',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 11.sp,
+          ),
+        ),
+      ],
     );
   }
 
@@ -379,28 +408,24 @@ class _MemberView extends StatelessWidget {
                   width: 300.w,
                   height: 40.w,
                   alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadiusDirectional.circular(20.w),
-                      gradient: const LinearGradient(
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter,
-                        colors: <Color>[Color.fromRGBO(239, 205, 168, 1), Color.fromRGBO(252, 231, 207, 1)],
-                      )),
+                  // decoration: BoxDecoration(
+                  //     borderRadius: BorderRadiusDirectional.circular(20.w),
+                  //     gradient: const LinearGradient(
+                  //       begin: Alignment.bottomCenter,
+                  //       end: Alignment.topCenter,
+                  //       colors: <Color>[Color.fromRGBO(239, 205, 168, 1), Color.fromRGBO(252, 231, 207, 1)],
+                  //     )),
                   child: Selector<UserNotifier, Member?>(
                     selector: (_, notifier) => notifier.member,
                     builder: (context, member, child) {
-                      return Text(
-                        member == null
-                            ? ''
-                            : member.vipLevel > 0
-                                ? tr('xfvpbxk')
-                                : tr('ktvpbxk'),
-                        style: TextStyle(
-                            color: const Color.fromRGBO(46, 24, 12, 1),
-                            fontSize: 13.sp,
-                            overflow: TextOverflow.ellipsis,
-                            fontWeight: FontWeight.w500,
-                            decoration: TextDecoration.none),
+                      if (member == null) return const SizedBox.shrink();
+                      return MyImage.asset(
+                        member.vipLevel > 0
+                            ? MyImagePaths.appTaskVipIcon
+                            : MyImagePaths.appTaskBuyVip,
+                        width: 300.w,
+                        height: 40.w,
+                        fit: BoxFit.fill,
                       );
                     },
                   ),
@@ -423,17 +448,23 @@ class _Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: 20.w),
+        // SizedBox(height: 10.w),
         Row(
+          crossAxisAlignment: CrossAxisAlignment.baseline,
+          textBaseline: TextBaseline.alphabetic,
           children: [
             Text(
               'flrw'.tr(context: context),
-              style: MyTheme.black26_18_semi,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18.sp,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             SizedBox(width: 10.w),
             Text(
               '${'ts'.tr(context: context)}: ${'rwwchsx'.tr(context: context)}',
-              style: MyTheme.gray13,
+              style: MyTheme.white07_10,
             )
           ],
         ),
@@ -443,20 +474,20 @@ class _Header extends StatelessWidget {
           children: [
             Text('${'yqrs'.tr(context: context)}${data.invitedNum}人',
                 style: TextStyle(
-                  color: const Color.fromRGBO(26, 26, 26, 1),
+                  color: Colors.white,
                   fontSize: ScreenUtil().setSp(15),
                   overflow: TextOverflow.ellipsis,
-                  fontWeight: FontWeight.w600,
+                  // fontWeight: FontWeight.w600,
                   decoration: TextDecoration.none,
                 )),
             Selector<UserNotifier, Member?>(
                 builder: (context, member, child) {
                   return Text('${'wdjf'.tr(context: context)}${member?.exp ?? ''}',
                       style: TextStyle(
-                        color: const Color.fromRGBO(26, 26, 26, 1),
+                        color: Colors.white,
                         fontSize: ScreenUtil().setSp(15),
                         overflow: TextOverflow.ellipsis,
-                        fontWeight: FontWeight.w600,
+                        // fontWeight: FontWeight.w600,
                         decoration: TextDecoration.none,
                       ));
                 },
@@ -465,17 +496,21 @@ class _Header extends StatelessWidget {
               onTap: () async {
                 const VipCenterRoute().push(context);
               },
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(16.w),
+              child: Container(
+                width: 60.w,
+                height: 20.w,
+                padding: EdgeInsets.all(1.w),
+                decoration: BoxDecoration(
+                  gradient: MyTheme.gradient_90_114,
+                  borderRadius: BorderRadius.circular(16.w),
+                ),
                 child: Container(
-                  width: 75.w,
-                  height: 32.w,
-                  decoration: const BoxDecoration(color: Color.fromRGBO(250, 217, 163, 1)),
-                  child: Center(
-                      child: Text(
-                    tr('dhvp'),
-                    style: MyTheme.brown_996619_13_M,
-                  )),
+                  decoration: BoxDecoration(
+                    color:const Color.fromRGBO(29, 2, 24, 1),
+                    borderRadius: BorderRadius.circular(15.w),
+                  ),
+                  alignment: Alignment.center,
+                  child:GradientText(tr('dhvp'), gradient: MyTheme.gradient_90_114,style: TextStyle(color: Colors.white, fontSize: 12.sp,),),
                 ),
               ),
             )
@@ -529,15 +564,19 @@ class _Tile extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     '${data.title}',
-                    style: MyTheme.black1534,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
                     '${data.subTitle}',
-                    style: MyTheme.gray153_11,
-                    maxLines: 30,
+                    style: MyTheme.white07_11,
+                    maxLines: 1,
                   ),
                 ),
               ],
@@ -559,54 +598,50 @@ class _Tile extends StatelessWidget {
                 }
               }
             },
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(16.w),
-              child: Container(
-                width: 75.w,
-                height: 32.w,
-                decoration: state == 2
-                    ? const BoxDecoration(gradient: MyTheme.gradient_90_114)
-                    : state == 3
-                        ? const BoxDecoration(color: MyTheme.grayColor150)
-                        : const BoxDecoration(
-                            color: Color.fromRGBO(250, 217, 163, 1),
-                          ),
-                child: Center(
-                  child: Builder(builder: (context) {
-                    String text = '';
-                    text = state == 2
-                        ? 'lq'.tr(context: context)
-                        : state == 1
-                            ? 'wwc'.tr(context: context)
-                            : state == 3
-                                ? 'ylq'.tr(context: context)
-                                : 'wks'.tr(context: context);
-                    if (type == 3) {
-                      text = state == 2
-                          ? 'lq'.tr(context: context)
-                          : state == 3
-                              ? 'ylq'.tr(context: context)
-                              : 'ljxz'.tr(context: context);
-                    } else if (type >= 4 && type <= 7) {
-                      text = state == 2
-                          ? 'lq'.tr(context: context)
-                          : state == 3
-                              ? 'ylq'.tr(context: context)
-                              : 'qyq'.tr(context: context);
-                    }
-                    return Text(
-                      text,
-                      style: state == 2
-                          ? MyTheme.white255_13_M
-                          : state == 1
-                              ? MyTheme.brown_996619_13_M
-                              : state == 3
-                                  ? MyTheme.white255_13_M
-                                  : MyTheme.brown_996619_13_M,
-                    );
-                  }),
-                ),
+            child: Container(
+              width: 60.w,
+              height: 20.w,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16.w),
+                color: state == 3 ? const Color(0xFF2C1E40) : null,
+                gradient: state == 3
+                    ? null
+                    : (state == 2 || (type == 3 && state != 3) || (type >= 4 && type <= 7 && state != 3))
+                        ? MyTheme.gradient_90_118
+                        : MyTheme.gradient_90_114,
               ),
+              child: Builder(builder: (context) {
+                String text = '';
+                text = state == 2
+                    ? 'lq'.tr(context: context)
+                    : state == 1
+                        ? 'wwc'.tr(context: context)
+                        : state == 3
+                            ? 'ylq'.tr(context: context)
+                            : 'wks'.tr(context: context);
+                if (type == 3) {
+                  text = state == 2
+                      ? 'lq'.tr(context: context)
+                      : state == 3
+                          ? 'ylq'.tr(context: context)
+                          : 'ljxz'.tr(context: context);
+                } else if (type >= 4 && type <= 7) {
+                  text = state == 2
+                      ? 'lq'.tr(context: context)
+                      : state == 3
+                          ? 'ylq'.tr(context: context)
+                          : 'qyq'.tr(context: context);
+                }
+                return Text(
+                  text,
+                  style: TextStyle(
+                    color: state == 3 ? Colors.white.withOpacity(0.6) : Colors.white,
+                    fontSize: 11.sp,
+                    // fontWeight: FontWeight.w500,
+                  ),
+                );
+              }),
             ),
           )
         ],
