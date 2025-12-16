@@ -959,17 +959,17 @@ class _ExpItemState extends State<_ExpItem> {
                 // color: Colors.deepOrange,
                 child: Stack(
                   children: [
-                    Positioned.fill(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(6.w),
-                        child: MyImage.asset(
-                          MyImagePaths.appMineCzItem,
-                          // width: itemWidth - 20.w,
-                          // height: 60.w,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                    ),
+                    // Positioned.fill(
+                    //   child: ClipRRect(
+                    //     borderRadius: BorderRadius.circular(6.w),
+                    //     child: MyImage.asset(
+                    //       MyImagePaths.appMineCzItem,
+                    //       // width: itemWidth - 20.w,
+                    //       // height: 60.w,
+                    //       fit: BoxFit.fill,
+                    //     ),
+                    //   ),
+                    // ),
                     Positioned.fill(
                       child: Container(
                         margin: EdgeInsets.symmetric(horizontal: 10.w),

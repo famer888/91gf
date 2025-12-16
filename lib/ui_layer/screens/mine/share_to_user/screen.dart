@@ -104,24 +104,26 @@ class _MineShareToUserScreenState extends State<MineShareToUserScreen> {
         ),
       ),
       data: (data) => showApplyPage
-          ? Scaffold(
-              appBar: MyAppBar(
-                title: 'fxtg'.tr(context: context),
-                rightWidget: GestureDetector(
-                  onTap: () => const MineShareToUserRecordRoute().push(context),
-                  child: Text(
-                    'yqjl'.tr(context: context),
-                    style: MyTheme.graya3a2a2_15,
+          ? ScreenBackground(
+            child: Scaffold(
+                appBar: MyAppBar(
+                  title: 'fxtg'.tr(context: context),
+                  rightWidget: GestureDetector(
+                    onTap: () => const MineShareToUserRecordRoute().push(context),
+                    child: Text(
+                      'yqjl'.tr(context: context),
+                      style: MyTheme.graya3a2a2_15,
+                    ),
                   ),
                 ),
+                body: MineAgentApplyView(
+                  applySuccess: () {
+                    showApplyPage = false;
+                    _loadUserAgentData();
+                  },
+                ),
               ),
-              body: MineAgentApplyView(
-                applySuccess: () {
-                  showApplyPage = false;
-                  _loadUserAgentData();
-                },
-              ),
-            )
+          )
           : Scaffold(body: _Body(proxyDetail: data)),
     );
   }
@@ -339,7 +341,7 @@ class _BodyState extends State<_Body> {
       children: [
         MyButton.gradient(
           minimumSize: Size(150.w, 38.5.w),
-          text: 'bctp'.tr(context: context),
+          text: 'bczshb'.tr(context: context),
           gradient: MyTheme.shareButtonGradient,
           onPressed: () async {
             if (snapShotViewKey.currentContext case final context?) {
@@ -351,7 +353,7 @@ class _BodyState extends State<_Body> {
         MyButton.gradient(
           minimumSize: Size(150.w, 38.5.w),
           text: 'fztglj'.tr(context: context),
-          gradient: MyTheme.shareButtonGradient,
+          gradient: MyTheme.gradient_90_114,
           onPressed: () async {
             _copyLinkShare();
           },
@@ -388,70 +390,71 @@ class _BodyState extends State<_Body> {
             ),
           ),
         ),
-        Scaffold(
-          extendBodyBehindAppBar: true,
-          appBar: MyAppBar(
-            title: '分享推广',
-            rightWidget: GestureDetector(
-              onTap: () => const MineShareToUserRecordRoute().push(context),
-              child: Text(
-                'yqjl'.tr(context: context),
-                style: MyTheme.graya3a2a2_15,
+        ScreenBackground(
+          child: Scaffold(
+            extendBodyBehindAppBar: true,
+            appBar: MyAppBar(
+              title: '分享推广',
+              rightWidget: GestureDetector(
+                onTap: () => const MineShareToUserRecordRoute().push(context),
+                child: Text(
+                  'yqjl'.tr(context: context),
+                  style: MyTheme.graya3a2a2_15,
+                ),
               ),
             ),
-          ),
-          body: SingleChildScrollView(
-            child: Stack(
-              alignment: Alignment.topCenter,
-              children: [
-                const MyImage.asset(MyImagePaths.appShareUpBg),
-                SafeArea(
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 20),
-                      JellyShareCard(proxyDetail: proxyDetail),
-                      SizedBox(height: 31.w),
-                      _buildActionView(),
-                      SizedBox(height: 20.w),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.5.w),
-                        child: MineShareToUserTips(
-                          proxyDetail: proxyDetail,
-                        ),
-                      ),
-                      SizedBox(height: 30.w),
-                      Text(
-                        'yqbz'.tr(context: context),
-                        style: MyTheme.white255_24_B,
-                      ),
-                      SizedBox(height: 10.w),
-                      Text(
-                        config.tipsShareText ?? 'loading',
-                        style: MyTheme.white255_15,
-                      ),
-                      SizedBox(height: 50.w),
-                      Stack(
-                        children: [
-                          MyImage.asset(
-                            MyImagePaths.appWdFxbotmbgN,
-                            height: 500.w,
+            body: SingleChildScrollView(
+              child: Stack(
+                alignment: Alignment.topCenter,
+                children: [
+                  SafeArea(
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 20),
+                        Padding(padding: EdgeInsets.symmetric(horizontal: 16.5.w), child: JellyShareCard(proxyDetail: proxyDetail)),
+                        SizedBox(height: 20.w),
+                        _buildActionView(),
+                        SizedBox(height: 20.w),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.5.w),
+                          child: MineShareToUserTips(
+                            proxyDetail: proxyDetail,
                           ),
-                          Positioned(
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            height: 20.w,
-                            child: GestureDetector(
-                              onTap: () => const MineAgentRoute().push(context),
+                        ),
+                        SizedBox(height: 30.w),
+                        Text(
+                          'yqbz'.tr(context: context),
+                          style: MyTheme.white255_24_B,
+                        ),
+                        SizedBox(height: 10.w),
+                        Text(
+                          config.tipsShareText ?? 'loading',
+                          style: MyTheme.white255_15,
+                        ),
+                        SizedBox(height: 50.w),
+                        Stack(
+                          children: [
+                            MyImage.asset(
+                              MyImagePaths.appWdFxbotmbgN,
+                              height: 500.w,
                             ),
-                          )
-                        ],
-                      ),
-                      SizedBox(height: 50.w),
-                    ],
+                            Positioned(
+                              bottom: 0,
+                              left: 0,
+                              right: 0,
+                              height: 20.w,
+                              child: GestureDetector(
+                                onTap: () => const MineAgentRoute().push(context),
+                              ),
+                            )
+                          ],
+                        ),
+                        SizedBox(height: 50.w),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
