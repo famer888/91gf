@@ -25,66 +25,103 @@ class _OriginalEnterScreenState extends State<OriginalEnterScreen> {
     return ScreenBackground(
       child: Scaffold(
         appBar: MyAppBar(title: 'ycrz'.tr(context: context)),
-        body: Stack(
-          children: [
-            const MyImage.asset(
-              MyImagePaths.appMeOriginalN,
-              width: double.infinity,
-              height: double.infinity,
-              fit: BoxFit.cover,
-            ),
-            Positioned(
-              left: 70.w,
-              right: 70.w,
-              bottom: 220.w,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              const MyImage.asset(
+                MyImagePaths.appMeOriginalN,
+                fit: BoxFit.fitWidth,
+              ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+              height: 306.w,
+              decoration: BoxDecoration(
+                color: const Color.fromRGBO(75, 22, 91, 0.39),
+                borderRadius: BorderRadius.circular(20.w),
+                border: const Border(
+                  top: BorderSide(
+                    color: MyTheme.white02Color,
+                    width: 1.5,
+                  ),
+                  left: BorderSide(
+                    color: MyTheme.white02Color,
+                    width: 1.5,
+                  ),
+                ),
+              ),
               child: Column(
                 children: [
-                  Text(
-                    '请通过以下方式添加官方审核账号',
-                    style: MyTheme.black15,
-                    maxLines: 2,
-                  ),
+                  SizedBox(height: 15.w),
+                  Text('tjgfglry'.tr(context: context),style: MyTheme.white15,),
                   SizedBox(height: 20.w),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        behavior: HitTestBehavior.translucent,
-                        onTap: () {
-                          CommonUtils.launchUrl(config.potatoGroup);
-                        },
-                        child: Column(
-                          children: [
-                            MyImage.asset(MyImagePaths.appWdLxpotao,
-                                width: 39.w, height: 39.w),
-                            SizedBox(height: 10.w),
-                            Text('gfqtd'.tr(context: context),
-                                style: MyTheme.black15)
-                          ],
+                  Text('qtgyxfsjgfshzh'.tr(context: context),style: MyTheme.white06_12,),
+                  SizedBox(height: 30.w),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 55.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onTap: () {
+                            CommonUtils.launchUrl(config.potatoGroup);
+                          },
+                          child: Column(
+                            children: [
+                              MyImage.asset(
+                                MyImagePaths.appWdLxpotao,
+                                width: 40.w,
+                                height: 40.w,
+                              ),
+                              SizedBox(height: 10.w),
+                              Text('gfqtd'.tr(context: context),style: MyTheme.white11)
+                            ],
+                          ),
                         ),
+                        GestureDetector(
+                          behavior: HitTestBehavior.translucent,
+                          onTap: () {
+                            CommonUtils.launchUrl(config.tgGroup);
+                          },
+                          child: Column(
+                            children: [
+                              MyImage.asset(
+                                MyImagePaths.appWdLxtgN,
+                                width: 40.w,
+                                height: 40.w,
+                              ),
+                              SizedBox(height: 10.w),
+                              Text('gfqfj'.tr(context: context),style: MyTheme.white11)
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 30.w),
+                  Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 10.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('rzsm'.tr(context: context),style: MyTheme.white15,),
+                          SizedBox(height: 10.w),
+                          Text('rzsm1'.tr(context: context),style: MyTheme.white07_14,),
+                          Text('rzsm2'.tr(context: context),style: MyTheme.white07_14,),
+                          Text('rzsm3'.tr(context: context),style: MyTheme.white07_14,),
+                        ],
                       ),
-                      GestureDetector(
-                        behavior: HitTestBehavior.translucent,
-                        onTap: () {
-                          CommonUtils.launchUrl(config.tgGroup);
-                        },
-                        child: Column(
-                          children: [
-                            MyImage.asset(MyImagePaths.appWdLxtgN,
-                                width: 39.w, height: 39.w),
-                            SizedBox(height: 10.w),
-                            Text('gfqfj'.tr(context: context),
-                                style: MyTheme.black15)
-                          ],
-                        ),
-                      )
-                    ],
+                    ),
                   )
                 ],
               ),
-            )
-          ],
-        ),
+            ),
+            SizedBox(height: 20.w),
+            ],
+          ),
+        )
       ),
     );
   }

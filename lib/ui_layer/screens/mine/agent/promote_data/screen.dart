@@ -211,6 +211,7 @@ Widget _buildDataItem(
           mainAxisSize: MainAxisSize.min,
           children: [
             Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(label1.tr(context: context), style: MyTheme.white11),
@@ -220,6 +221,7 @@ Widget _buildDataItem(
             ),
             SizedBox(width: 8.w),
             Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(

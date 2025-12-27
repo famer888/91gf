@@ -40,6 +40,7 @@ class _PostCenterState extends State<PostCenter> {
   @override
   Widget build(BuildContext context) {
     return ScreenBackground(
+      needBgImg: false,
       child: Scaffold(
         body: MyListView.list(
           padding: EdgeInsets.zero,

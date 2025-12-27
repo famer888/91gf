@@ -206,92 +206,120 @@ class _AgentViewState extends State<AgentView> {
                 sliver: SliverList.list(
                   // padding: const EdgeInsets.all(18),
                   children: [
-                    Container(
-                      height: 157.w,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage(
-                            MyImagePaths.appDlPenal,
-                          ),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      child: Column(
-                        children: [
-                          Container(
-                            height: 53.w,
-                            margin: EdgeInsets.all(16.5.w),
-                            child: Row(
-                              children: [
-                                MyAvatar(
-                                  size: 53.w,
-                                  thumb: member.thumb,
-                                ),
-                                SizedBox(width: 9.w),
-                                Expanded(
+                    Stack(
+                      children: [
+                        Column(
+                          children: [
+                            SizedBox(
+                              height: 53.w,
+                              child: Row(
+                                children: [
+                                  ClipRRect(
+                                    clipBehavior: Clip.hardEdge,
+                                    borderRadius: BorderRadius.circular(26.5.w),
+                                    child: MyAvatar(
+                                      size: 53.w,
+                                      thumb: member.thumb,
+                                    ),
+                                  ),
+                                  SizedBox(width: 9.w),
+                                  Expanded(
                                     child: Column(
-                                  children: [
-                                    Expanded(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            '${data?.levelStr}',
-                                            style: MyTheme.brown916044_14medium,
+                                      children: [
+                                        Expanded(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                '${data?.levelStr}',
+                                                style: MyTheme.white14Medium,
+                                              ),
+                                            ],
                                           ),
+                                        ),
+                                        Expanded(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                'yhysj'.tr(context: context),
+                                                style: MyTheme.white06_12,
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 10.w),
+                            Container(
+                              decoration: const BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage(
+                                    MyImagePaths.appAgentUserbg,
+                                  ),
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                              width: double.infinity,
+                              height: 72.w,
+                              child: Center(
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 16.5.w),
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
                                           Text(
                                             'ktxje'.tr(context: context),
-                                            style:
-                                                MyTheme.brown916044_12semibold,
+                                            style: MyTheme.white12,
+                                          ),
+                                          Text(
+                                            data?.money ?? '',
+                                            style: TextStyle(
+                                              fontSize: 24.sp,
+                                              fontWeight: FontWeight.bold,
+                                              color: const Color.fromRGBO(255, 211, 123, 1),
+                                            ),
                                           ),
                                         ],
                                       ),
-                                    ),
-                                    Expanded(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                      const Spacer(),
+                                      Row(
                                         children: [
-                                          Text(
-                                            'yhysj'.tr(context: context),
-                                            style: MyTheme.brown916044_12medium,
+                                          _CardButton(
+                                            onTap: () {
+                                              const MineWithdrawalRoute(true).push(context);
+                                            },
+                                            text: 'ljtx'.tr(context: context),
+                                            colorFlag: false,
                                           ),
-                                          Text(
-                                            '${data?.money}',
-                                            style:
-                                                MyTheme.brown916044_24semibold,
-                                          )
+                                          SizedBox(width: 10.w),
+                                          _CardButton(
+                                            onTap: () {
+                                              const MineAgentPromoteDataRoute()
+                                                  .push(context);
+                                            },
+                                            text: 'tgsj'.tr(context: context),
+                                            colorFlag: true,
+                                          ),
                                         ],
                                       ),
-                                    )
-                                  ],
-                                )),
-                              ],
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 10.w),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              _CardButton(
-                                onTap: () {
-                                  const MineWithdrawalRoute(true).push(context);
-                                },
-                                text: 'ljtx'.tr(context: context),
-                              ),
-                              SizedBox(width: 54.w),
-                              _CardButton(
-                                onTap: () {
-                                  const MineAgentPromoteDataRoute()
-                                      .push(context);
-                                },
-                                text: 'tgsj'.tr(context: context),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                          ],
+                        )
+                      ],
                     ),
                     SizedBox(height: 5.w),
                     MineShareToUserTips(proxyDetail: data),
@@ -359,30 +387,28 @@ class _CardButton extends StatelessWidget {
   const _CardButton({
     required this.onTap,
     required this.text,
+    required this.colorFlag,
   });
 
   final GestureTapCallback onTap;
   final String text;
+  final bool colorFlag;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 115.w,
-        height: 35.w,
+        width: 100.w,
+        height: 30.w,
         alignment: Alignment.center,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(
-              MyImagePaths.appProxyBtnBg,
-            ),
-            fit: BoxFit.cover,
-          ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadiusDirectional.circular(15.w),
+          gradient: colorFlag ? MyTheme.gradient_90_114 : MyTheme.gradient_90_118,
         ),
         child: Text(
           text,
-          style: MyTheme.brown_1378860_14_M,
+          style: MyTheme.white15_M,
         ),
       ),
     );

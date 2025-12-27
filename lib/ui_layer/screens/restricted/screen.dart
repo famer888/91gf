@@ -105,6 +105,7 @@ class _BlurView extends StatelessWidget {
 
   Widget _buildSpecialCard(List<String> items) {
     return Container(
+      width: 318.w,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.w),
       ),
@@ -116,34 +117,36 @@ class _BlurView extends StatelessWidget {
               fit: BoxFit.fill,
             ),
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.w),
-            child: Column(
-              children: [
-                Text(items[0], style: MyTheme.white14),
-                kIsWeb
-                    ? Text(items[1],
-                        style: TextStyle(
-                            fontSize: 16.sp, color: MyTheme.primaryColor))
-                    : ShaderMask(
-                        shaderCallback: (bounds) => const LinearGradient(
-                          colors: [
-                            Color.fromRGBO(255, 133, 164, 1),
-                            Color.fromRGBO(255, 173, 66, 1),
-                            Color.fromRGBO(133, 202, 255, 1)
-                          ],
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                        ).createShader(bounds),
-                        blendMode: BlendMode.srcIn,
-                        child: Text(
-                          items[1],
-                          style:
-                              TextStyle(fontSize: 16.sp, color: Colors.white),
+          Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.w),
+              child: Column(
+                children: [
+                  Text(items[0], style: MyTheme.white14),
+                  kIsWeb
+                      ? Text(items[1],
+                          style: TextStyle(
+                              fontSize: 16.sp, color: MyTheme.primaryColor))
+                      : ShaderMask(
+                          shaderCallback: (bounds) => const LinearGradient(
+                            colors: [
+                              Color.fromRGBO(255, 133, 164, 1),
+                              Color.fromRGBO(255, 173, 66, 1),
+                              Color.fromRGBO(133, 202, 255, 1)
+                            ],
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                          ).createShader(bounds),
+                          blendMode: BlendMode.srcIn,
+                          child: Text(
+                            items[1],
+                            style:
+                                TextStyle(fontSize: 16.sp, color: Colors.white),
+                          ),
                         ),
-                      ),
-                Text(items[2], style: MyTheme.white14),
-              ],
+                  Text(items[2], style: MyTheme.white14),
+                ],
+              ),
             ),
           ),
         ],
