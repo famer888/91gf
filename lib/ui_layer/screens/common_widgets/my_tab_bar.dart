@@ -4,7 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../theme.dart';
 import 'package:extended_tabs/extended_tabs.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'my_image.dart';
+import '../image_paths.dart';
 
 enum TabBarType {
   /// 下滑线
@@ -15,6 +17,17 @@ enum TabBarType {
 
   /// 选中时使用图片
   image,
+}
+
+enum IndicatorType {
+  /// 渐变线条
+  line,
+
+  /// 使用 light 图片
+  light,
+
+  /// 使用 curve 图片
+  curve,
 }
 
 class TabBarWithView extends StatefulWidget {
@@ -35,6 +48,7 @@ class TabBarWithView extends StatefulWidget {
     this.borderRadius,
     this.isStack = false,
     this.indexChangeCall,
+    this.indicatorType = IndicatorType.line,
   })  : type = TabBarType.line,
         selectedImgs = null,
         unselectedImgs = null,
@@ -64,7 +78,8 @@ class TabBarWithView extends StatefulWidget {
         selectedImgs = null,
         unselectedImgs = null,
         imageWidth = null,
-        imageHeight = null;
+        imageHeight = null,
+        indicatorType = IndicatorType.line;
 
   TabBarWithView.image({
     super.key,
@@ -88,7 +103,8 @@ class TabBarWithView extends StatefulWidget {
     this.isStack = false,
     this.indexChangeCall,
   })  : type = TabBarType.image,
-        tabBarRightWidget = null;
+        tabBarRightWidget = null,
+        indicatorType = IndicatorType.line;
 
   final TabBarType type;
   final int initialIndex;
@@ -115,6 +131,8 @@ class TabBarWithView extends StatefulWidget {
   final double labelPadding;
   final bool isStack; // 是colume上下分布 还是stack那样把标题重叠在上面
   final Function(int)? indexChangeCall;
+  final IndicatorType indicatorType; 
+
 
   @override
   State<TabBarWithView> createState() => _TabBarWithViewState();
@@ -125,6 +143,7 @@ class _TabBarWithViewState extends State<TabBarWithView> with SingleTickerProvid
       widget.tabController ?? TabController(length: widget.views.length, vsync: this, initialIndex: widget.initialIndex);
 
   late LinkPageController _pageController;
+  bool _isImagePrecached = false;
 
   @override
   void initState() {
@@ -136,6 +155,48 @@ class _TabBarWithViewState extends State<TabBarWithView> with SingleTickerProvid
     _tabController.animation?.addListener(_handleTabAnimation);
 
     indexChangeNotifier = ValueNotifier(_tabController.index);
+
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_isImagePrecached) {
+      _precacheIndicatorImages().then((_) {
+        // 加载完成后，如果组件还在树中，强制刷新一次
+        if (mounted) {
+          setState(() {});
+        }
+      });
+      _isImagePrecached = true;
+    }
+  }
+
+  Future<void> _precacheIndicatorImages() async {
+    // 只有在 line 类型且需要图片的指示器时才预加载
+    if (widget.type == TabBarType.line) {
+      if (widget.indicatorType == IndicatorType.light) {
+        _doPrecache(MyImagePaths.appIndicatorLight);
+      } else if (widget.indicatorType == IndicatorType.curve) {
+        _doPrecache(MyImagePaths.appIndicatorCurve);
+      }
+    }
+    
+    // 如果 TabBarType.image 类型，也可以预加载选中的图片
+    if (widget.type == TabBarType.image && widget.selectedImgs != null) {
+      for (var img in widget.selectedImgs!) {
+        _doPrecache(img);
+      }
+    }
+  }
+
+  void _doPrecache(String path) {
+    if (path.isEmpty) return;
+    String processedPath = path;
+    if (processedPath.startsWith('./')) {
+      processedPath = processedPath.substring(2);
+    }
+    precacheImage(AssetImage(processedPath), context);
   }
 
   @override
@@ -221,8 +282,9 @@ class _TabBarWithViewState extends State<TabBarWithView> with SingleTickerProvid
               ),
             ),
           ),
-        _ => (!kIsWeb && indexChangeNotifier.value == index)
-            ? Tab(
+        // _ => (!kIsWeb && indexChangeNotifier.value == index)
+        _ => 
+            Tab(
                 height: MyTheme.navbarHegiht,
                 child: ShaderMask(
                   shaderCallback: (bounds) => MyTheme.gradient_90_114.createShader(bounds),
@@ -233,10 +295,10 @@ class _TabBarWithViewState extends State<TabBarWithView> with SingleTickerProvid
                   ),
                 ),
               )
-            : Tab(
-                height: MyTheme.navbarHegiht,
-                text: title,
-              ),
+            // : Tab(
+            //     height: MyTheme.navbarHegiht,
+            //     text: title,
+            //   ),
       };
     });
   }
@@ -245,6 +307,7 @@ class _TabBarWithViewState extends State<TabBarWithView> with SingleTickerProvid
     TabBarType.line => MyTabBarTheme.line(
         labelStyle: widget.labelStyle,
         unselectedLabelStyle: widget.unselectedLabelStyle,
+        indicatorType: widget.indicatorType,
       ),
     TabBarType.fillColor => MyTabBarTheme.fillColor(
         tabAlignment: widget.isScrollable ? TabAlignment.start : null,
@@ -470,26 +533,33 @@ class MyTabBarTheme extends TabBarTheme {
   factory MyTabBarTheme.line({
     TextStyle? labelStyle,
     TextStyle? unselectedLabelStyle,
-  }) =>
-      MyTabBarTheme(
-        labelStyle: labelStyle ?? MyTheme.jellyCyan_17,
-        labelPadding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-        unselectedLabelStyle: unselectedLabelStyle ??
-            TextStyle(
-              color: const Color.fromRGBO(255, 255, 255, 0.6),
-              fontSize: 17.sp,
-              overflow: TextOverflow.visible,
-              decoration: TextDecoration.none,
-            ),
-        indicatorSize: TabBarIndicatorSize.label,
-        indicator: const LineIndicator(),
-        indicatorColor: Colors.transparent,
-        overlayColor: WidgetStateProperty.resolveWith<Color>(
-          (_) => Colors.transparent,
-        ),
-        tabAlignment: TabAlignment.start,
-        dividerColor: Colors.transparent,
-      );
+    IndicatorType indicatorType = IndicatorType.line,
+  }) {
+    // web下统一使用默认类型
+    final effectiveIndicatorType = kIsWeb ? IndicatorType.line : indicatorType;
+    
+    return MyTabBarTheme(
+      labelStyle: labelStyle ?? MyTheme.jellyCyan_17,
+      labelPadding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+      unselectedLabelStyle: unselectedLabelStyle ??
+          TextStyle(
+            color: const Color.fromRGBO(255, 255, 255, 0.6),
+            fontSize: 17.sp,
+            overflow: TextOverflow.visible,
+            decoration: TextDecoration.none,
+          ),
+      indicatorSize: TabBarIndicatorSize.label,
+      indicator: LineIndicator(
+        indicatorType: effectiveIndicatorType,
+      ),
+      indicatorColor: Colors.transparent,
+      overlayColor: WidgetStateProperty.resolveWith<Color>(
+        (_) => Colors.transparent,
+      ),
+      tabAlignment: TabAlignment.start,
+      dividerColor: Colors.transparent,
+    );
+  }
 
   factory MyTabBarTheme.fillColor({
     TabAlignment? tabAlignment,
@@ -516,11 +586,15 @@ class MyTabBarTheme extends TabBarTheme {
 }
 
 class LineIndicator extends Decoration {
-  const LineIndicator();
+  const LineIndicator({
+    this.indicatorType = IndicatorType.line,
+  });
+
+  final IndicatorType indicatorType;
 
   @override
   BoxPainter createBoxPainter([VoidCallback? onChanged]) {
-    return _LinePainter(this, onChanged);
+    return _LinePainter(this, onChanged)..init();
   }
 }
 
@@ -531,36 +605,133 @@ class _LinePainter extends BoxPainter {
   );
 
   final LineIndicator decoration;
+  ui.Image? _cachedImage;
+  ImageStream? _imageStream;
+  ImageStreamListener? _listener;
+
+
+  void init() {
+    if (decoration.indicatorType != IndicatorType.line) {
+      _loadImage();
+    }
+  }
+
+  @override
+  void dispose() {
+    if (_imageStream != null && _listener != null) {
+      _imageStream!.removeListener(_listener!);
+    }
+    _cachedImage?.dispose();
+    super.dispose();
+  }
+
+  void _loadImage() {
+    if (_cachedImage != null) return;
+
+
+    String imagePath;
+    switch (decoration.indicatorType) {
+      case IndicatorType.line:
+        // line 使用默认
+        return;
+      case IndicatorType.light:
+        imagePath = MyImagePaths.appIndicatorLight;
+        break;
+      case IndicatorType.curve:
+        imagePath = MyImagePaths.appIndicatorCurve;
+        break;
+    }
+
+    String processedPath = imagePath;
+    if (processedPath.startsWith('./')) {
+      processedPath = processedPath.substring(2);
+    }
+
+    _imageStream = AssetImage(processedPath).resolve(const ImageConfiguration());
+    _listener = ImageStreamListener(
+      (ImageInfo info, _) {
+        _cachedImage = info.image;
+        onChanged?.call();
+      },
+    );
+    _imageStream!.addListener(_listener!);
+  }
 
   @override
   void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
     assert(configuration.size != null);
-
     final size = configuration.size!;
 
-    final indicatorW = 21.5.w;
+    switch (decoration.indicatorType) {
+      case IndicatorType.light:
+        // if (_cachedImage == null) _loadImage();
+        if (_cachedImage != null) {
+          final imageWidth = _cachedImage!.width.toDouble();
+          final imageHeight = _cachedImage!.height.toDouble();
 
-    final Rect indicator = Rect.fromLTWH(
-      offset.dx + (size.width - indicatorW) / 2,
-      size.height - 8,
-      indicatorW,
-      3.5.w,
-    );
+          final w = 32.w;
+          final h = 17.w;
 
-    final centerY = indicator.center.dy;
-    final startOffset = Offset(indicator.left, centerY);
-    final endOffset = Offset(indicator.right, centerY);
-    canvas.drawLine(
-      startOffset,
-      endOffset,
-      Paint()
-        ..shader = ui.Gradient.linear(
-          startOffset,
-          endOffset,
-          MyTheme.gradient_90_114_colors,
-        )
-        ..strokeWidth = 4.w
-        ..strokeCap = StrokeCap.round,
-    );
+          final rect = Rect.fromLTWH(
+            offset.dx + (size.width - w) / 2,
+            size.height - h - 1.5,
+            w,
+            h,
+          );
+          canvas.drawImageRect(
+            _cachedImage!,
+            Rect.fromLTWH(0, 0, imageWidth, imageHeight),
+            rect,
+            Paint(),
+          );
+        }
+        break;
+
+      case IndicatorType.curve:
+        if (_cachedImage == null) _loadImage();
+        if (_cachedImage != null) {
+          final imageWidth = _cachedImage!.width.toDouble();
+          final imageHeight = _cachedImage!.height.toDouble();
+
+          final w = 19.w;
+          final h = 5.w;
+
+          final rect = Rect.fromLTWH(
+            offset.dx + (size.width - w) / 2,
+            size.height - h -4,
+            w,
+            h,
+          );
+          canvas.drawImageRect(
+            _cachedImage!,
+            Rect.fromLTWH(0, 0, imageWidth, imageHeight),
+            rect,
+            Paint(),
+          );
+        }
+        break;
+
+      case IndicatorType.line:
+      default:
+        final indicatorW = 21.5.w;
+        final indicator = Rect.fromLTWH(
+          offset.dx + (size.width - indicatorW) / 2,
+          size.height - 8,
+          indicatorW,
+          3.5.w,
+        );
+        final centerY = indicator.center.dy;
+        final start = Offset(indicator.left, centerY);
+        final end = Offset(indicator.right, centerY);
+        canvas.drawLine(
+          start,
+          end,
+          Paint()
+            ..shader = ui.Gradient.linear(start, end, MyTheme.gradient_90_114_colors)
+            ..strokeWidth = 4.w
+            ..strokeCap = StrokeCap.round,
+        );
+        break;
+    }
   }
 }
