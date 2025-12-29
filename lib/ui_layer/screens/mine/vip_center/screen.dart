@@ -84,7 +84,6 @@ class _VipCenterScreenState extends State<VipCenterScreen> {
   Widget build(BuildContext context) {
     return ScreenBackground(
       child: Scaffold(
-        backgroundColor: MyTheme.color11_10_33,
         appBar: MyAppBar(
           title: 'hyzx'.tr(context: context),
           rightWidget: GestureDetector(
@@ -125,31 +124,33 @@ class _BodyState extends State<_Body> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        const _UserInfoArea(),
-        Expanded(
-          child: TabBarWithView.line(
-            initialIndex: widget.initialIndex,
-            tabBarPadding: EdgeInsets.symmetric(
-                vertical: MyTheme.pagePadding.w,
-                horizontal: MyTheme.pagePadding),
-            labelStyle: MyTheme.color93_163_247_16medium,
-            unselectedLabelStyle: MyTheme.color141_144_154_16medium,
-            tabBarHeight: 46.w,
-            isScrollable: false,
-            titles: [
-              'khy'.tr(context: context),
-              'jfdhvip'.tr(context: context)
-            ],
-            views: [
-              KeepAliveWrapper(child: _openVipContent()),
-              KeepAliveWrapper(child: _pointExchangeContent()),
-            ],
+    return NestedScrollView(
+      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+        return [
+          const  SliverToBoxAdapter(
+            child:  _UserInfoArea(),
           ),
-        ),
-      ],
+        ];
+      },
+      body: TabBarWithView.line(
+        indicatorType: IndicatorType.light,
+        initialIndex: widget.initialIndex,
+        tabBarPadding: EdgeInsets.symmetric(
+            vertical: 5.w,
+            horizontal: MyTheme.pagePadding),
+        labelStyle: MyTheme.color93_163_247_16medium,
+        unselectedLabelStyle: MyTheme.color141_144_154_16medium,
+        tabBarHeight: 38.w,
+        isScrollable: false,
+        titles: [
+          'khy'.tr(context: context),
+          'jfdhvip'.tr(context: context)
+        ],
+        views: [
+          KeepAliveWrapper(child: _openVipContent()),
+          KeepAliveWrapper(child: _pointExchangeContent()),
+        ],
+      ),
     );
   }
 
@@ -164,7 +165,6 @@ class _BodyState extends State<_Body> {
                   title: 'ktvpxs'.tr(context: context),
                   subTitle: 'zmzxs'.tr(context: context),
                 ),
-                SizedBox(height: 13.w),
                 _ProductCardArea(
                   products: widget.productOfVIP.products,
                   selectedNotifier: productSelectedNotifier,
@@ -175,11 +175,17 @@ class _BodyState extends State<_Body> {
                 //   products: widget.productOfVIP.products,
                 // ),
                 Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 10),
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: const Color.fromRGBO(35, 34, 55, 1)),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30.w),
+                        topRight: Radius.circular(30.w),
+                      ),
+                      color: MyTheme.blackColor29_2_24,
+                      border: Border(
+                        top: BorderSide(color: const Color.fromRGBO(154, 48, 133, 1), width: 1.w),
+                      )
+                      ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -268,12 +274,13 @@ class _UserInfoArea extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
       child: Column(
         children: [
+          SizedBox(height: 10.w),
           Row(
             children: [
               MyAvatar(
                 thumb: member.thumb,
                 margin: 2,
-                size: 67.w,
+                size: 50.w,
                 gradient: const LinearGradient(
                   colors: [Color(0xffdfab8f), Color(0xffcf8856)],
                   begin: Alignment.topCenter,
@@ -285,8 +292,7 @@ class _UserInfoArea extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      child: Row(
+                      Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Container(
@@ -321,27 +327,25 @@ class _UserInfoArea extends StatelessWidget {
                             ),
                         ],
                       ),
-                    ),
                     SizedBox(height: 10.w),
                     Container(
                       padding: EdgeInsets.symmetric(
-                          vertical: 3.0.w, horizontal: 6.0.w),
+                          vertical: 2.0.w, horizontal: 6.0.w),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(4.w),
-                              bottomRight: Radius.circular(4.5.w)),
-                          border: Border.all(
-                              color: const Color.fromRGBO(105, 136, 248, 1),
-                              width: 0.5),
+                              bottomLeft: Radius.circular(4.w),
+                              bottomRight: Radius.circular(10.w),
+                              topRight: Radius.circular(10.w)),
+
                           gradient: const LinearGradient(colors: [
-                            Color.fromRGBO(61, 84, 245, 1),
-                            Color.fromRGBO(17, 52, 96, 1)
+                            Color.fromRGBO(90, 135, 232, 1),
+                            Color.fromRGBO(118, 90, 232, 1)
                           ])),
                       child: Text(
                         member.vipLevel < 2
                             ? 'khykp'.tr(context: context)
                             : '${'dqrq'.tr(context: context)} $expiredTime',
-                        style: MyTheme.color255_236_90,
+                        style: TextStyle(color: const Color.fromRGBO(239, 220, 255, 1), fontSize: 11.sp),
                       ),
                     ),
                     // Row(
@@ -373,144 +377,144 @@ class _UserInfoArea extends StatelessWidget {
               children: [
                 Container(
                   padding:
-                      EdgeInsets.symmetric(vertical: 4.0.w, horizontal: 6.0.w),
+                      EdgeInsets.symmetric(vertical: 2.0.w, horizontal: 6.0.w),
                   decoration: const BoxDecoration(
-                      color: Color.fromRGBO(35, 34, 55, 0.8),
+                      color: MyTheme.white01Color,
                       borderRadius: BorderRadius.all(Radius.circular(45))),
                   child: ColoredNumberText(
                     ('cspsyxz')
                         .tr()
                         .replaceAll("00", "${member.videoLongDownValue ?? 0}"),
-                    normalTextStyle: MyTheme.gray163_12,
-                    colorTextStyle: MyTheme.color93_163_247_12,
+                    normalTextStyle: MyTheme.white11,
+                    colorTextStyle: MyTheme.white11.copyWith(color: MyTheme.primaryColor),
                   ),
                 ),
                 Container(
                   padding:
-                      EdgeInsets.symmetric(vertical: 4.0.w, horizontal: 6.0.w),
+                      EdgeInsets.symmetric(vertical: 2.0.w, horizontal: 6.0.w),
                   decoration: const BoxDecoration(
-                      color: Color.fromRGBO(35, 34, 55, 0.8),
+                      color: MyTheme.white01Color,
                       borderRadius: BorderRadius.all(Radius.circular(45))),
                   child: ColoredNumberText(
                     ('dmsyxz')
                         .tr()
                         .replaceAll("00", "${member.cartoonDownValue ?? 0}"),
-                    normalTextStyle: MyTheme.gray163_12,
-                    colorTextStyle: MyTheme.color93_163_247_12,
+                    normalTextStyle: MyTheme.white11,
+                    colorTextStyle: MyTheme.white11.copyWith(color: MyTheme.primaryColor),
                   ),
                 ),
                 Container(
                   padding:
-                      EdgeInsets.symmetric(vertical: 4.0.w, horizontal: 6.0.w),
+                      EdgeInsets.symmetric(vertical: 2.0.w, horizontal: 6.0.w),
                   decoration: const BoxDecoration(
-                      color: Color.fromRGBO(35, 34, 55, 0.8),
+                      color: MyTheme.white01Color,
                       borderRadius: BorderRadius.all(Radius.circular(45))),
                   child: ColoredNumberText(
                     ('asyxz')
                         .tr()
                         .replaceAll("00", "${member.voiceDownValue ?? 0}"),
-                    normalTextStyle: MyTheme.gray163_12,
-                    colorTextStyle: MyTheme.color93_163_247_12,
+                    normalTextStyle: MyTheme.white11,
+                    colorTextStyle: MyTheme.white11.copyWith(color: MyTheme.primaryColor),
                   ),
                 ),
                 Container(
                   padding:
-                      EdgeInsets.symmetric(vertical: 4.0.w, horizontal: 6.0.w),
+                      EdgeInsets.symmetric(vertical: 2.0.w, horizontal: 6.0.w),
                   decoration: const BoxDecoration(
-                      color: Color.fromRGBO(35, 34, 55, 0.8),
+                      color: MyTheme.white01Color,
                       borderRadius: BorderRadius.all(Radius.circular(45))),
                   child: ColoredNumberText(
                     ('aimf0c').tr().replaceAll("00", "${member.aiMagicValue}"),
-                    normalTextStyle: MyTheme.gray163_12,
-                    colorTextStyle: MyTheme.color93_163_247_12,
+                    normalTextStyle: MyTheme.white11,
+                    colorTextStyle: MyTheme.white11.copyWith(color: MyTheme.primaryColor),
                   ),
                 ),
                 Container(
                   padding:
-                      EdgeInsets.symmetric(vertical: 4.0.w, horizontal: 6.0.w),
+                      EdgeInsets.symmetric(vertical: 2.0.w, horizontal: 6.0.w),
                   decoration: const BoxDecoration(
-                      color: Color.fromRGBO(35, 34, 55, 0.8),
+                      color: MyTheme.white01Color,
                       borderRadius: BorderRadius.all(Radius.circular(45))),
                   child: ColoredNumberText(
                     ('aitysy0c').tr().replaceAll("00", "${member.stripValue}"),
-                    normalTextStyle: MyTheme.gray163_12,
-                    colorTextStyle: MyTheme.color93_163_247_12,
+                    normalTextStyle: MyTheme.white11,
+                    colorTextStyle: MyTheme.white11.copyWith(color: MyTheme.primaryColor),
                   ),
                 ),
                 Container(
                   padding:
-                      EdgeInsets.symmetric(vertical: 4.0.w, horizontal: 6.0.w),
+                      EdgeInsets.symmetric(vertical: 2.0.w, horizontal: 6.0.w),
                   decoration: const BoxDecoration(
-                      color: Color.fromRGBO(35, 34, 55, 0.8),
+                      color: MyTheme.white01Color,
                       borderRadius: BorderRadius.all(Radius.circular(45))),
                   child: ColoredNumberText(
                     ('aijw0c').tr().replaceAll("00", "${member.aiKissValue}"),
-                    normalTextStyle: MyTheme.gray163_12,
-                    colorTextStyle: MyTheme.color93_163_247_12,
+                    normalTextStyle: MyTheme.white11,
+                    colorTextStyle: MyTheme.white11.copyWith(color: MyTheme.primaryColor),
                   ),
                 ),
                 Container(
                   padding:
-                      EdgeInsets.symmetric(vertical: 4.0.w, horizontal: 6.0.w),
+                      EdgeInsets.symmetric(vertical: 2.0.w, horizontal: 6.0.w),
                   decoration: const BoxDecoration(
-                      color: Color.fromRGBO(35, 34, 55, 0.8),
+                      color: MyTheme.white01Color,
                       borderRadius: BorderRadius.all(Radius.circular(45))),
                   child: ColoredNumberText(
                     ('tphlsy0c')
                         .tr()
                         .replaceAll("00", "${member.imgFaceValue}"),
-                    normalTextStyle: MyTheme.gray163_12,
-                    colorTextStyle: MyTheme.color93_163_247_12,
+                    normalTextStyle: MyTheme.white11,
+                    colorTextStyle: MyTheme.white11.copyWith(color: MyTheme.primaryColor),
                   ),
                 ),
                 Container(
                   padding:
-                      EdgeInsets.symmetric(vertical: 4.0.w, horizontal: 6.0.w),
+                      EdgeInsets.symmetric(vertical: 2.0.w, horizontal: 6.0.w),
                   decoration: const BoxDecoration(
-                      color: Color.fromRGBO(35, 34, 55, 0.8),
+                      color: MyTheme.white01Color,
                       borderRadius: BorderRadius.all(Radius.circular(45))),
                   child: ColoredNumberText(
                     ('aixs0c').tr().replaceAll("00", "${member.aiNovelValue}"),
-                    normalTextStyle: MyTheme.gray163_12,
-                    colorTextStyle: MyTheme.color93_163_247_12,
+                      normalTextStyle: MyTheme.white11,
+                    colorTextStyle: MyTheme.white11.copyWith(color: MyTheme.primaryColor),
                   ),
                 ),
                 Container(
                   padding:
-                      EdgeInsets.symmetric(vertical: 4.0.w, horizontal: 6.0.w),
+                      EdgeInsets.symmetric(vertical: 2.0.w, horizontal: 6.0.w),
                   decoration: const BoxDecoration(
-                      color: Color.fromRGBO(35, 34, 55, 0.8),
+                      color: MyTheme.white01Color,
                       borderRadius: BorderRadius.all(Radius.circular(45))),
                   child: ColoredNumberText(
                     ('aiyy0c').tr().replaceAll("00", "${member.aiAudioValue}"),
-                    normalTextStyle: MyTheme.gray163_12,
-                    colorTextStyle: MyTheme.color93_163_247_12,
+                    normalTextStyle: MyTheme.white11,
+                    colorTextStyle: MyTheme.white11.copyWith(color: MyTheme.primaryColor),
                   ),
                 ),
                 Container(
                   padding:
-                      EdgeInsets.symmetric(vertical: 4.0.w, horizontal: 6.0.w),
+                    EdgeInsets.symmetric(vertical: 2.0.w, horizontal: 6.0.w),
                   decoration: const BoxDecoration(
-                      color: Color.fromRGBO(35, 34, 55, 0.8),
+                      color: MyTheme.white01Color,
                       borderRadius: BorderRadius.all(Radius.circular(45))),
                   child: ColoredNumberText(
                     ('sphlsy0c')
                         .tr()
                         .replaceAll("00", "${member.aiVideoFaceValue}"),
-                    normalTextStyle: MyTheme.gray163_12,
-                    colorTextStyle: MyTheme.color93_163_247_12,
+                    normalTextStyle: MyTheme.white11,
+                    colorTextStyle: MyTheme.white11.copyWith(color: MyTheme.primaryColor),
                   ),
                 ),
                 Container(
                   padding:
-                      EdgeInsets.symmetric(vertical: 4.0.w, horizontal: 6.0.w),
+                    EdgeInsets.symmetric(vertical: 2.0.w, horizontal: 6.0.w),
                   decoration: const BoxDecoration(
-                      color: Color.fromRGBO(35, 34, 55, 0.8),
+                      color: MyTheme.white01Color,
                       borderRadius: BorderRadius.all(Radius.circular(45))),
                   child: ColoredNumberText(
                     ('aihh0c').tr().replaceAll("00", "${member.aiDrawValue}"),
-                    normalTextStyle: MyTheme.gray163_12,
-                    colorTextStyle: MyTheme.color93_163_247_12,
+                    normalTextStyle: MyTheme.white11,
+                    colorTextStyle: MyTheme.white11.copyWith(color: MyTheme.primaryColor),
                   ),
                 ),
               ]
