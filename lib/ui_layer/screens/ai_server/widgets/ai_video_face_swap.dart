@@ -160,7 +160,7 @@ class _AiVideoFaceSwapState extends State<AiVideoFaceSwap> {
   Future<void> onOpenMaterialDetail(VideoFaceMaterials item) async {
     const String uploadMaxSize = '2M';
     return showModalBottomSheet(
-      backgroundColor:  const Color.fromRGBO(29, 2, 24, 1),
+      backgroundColor: MyTheme.blackColor29_2_24,
       isScrollControlled: true,
       constraints: BoxConstraints(
         maxHeight: MediaQuery.of(context).size.height * 0.9,

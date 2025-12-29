@@ -160,7 +160,7 @@ class _NovelIntroContentState extends State<NovelIntroContent> with RouteAware {
                             padding: EdgeInsets.only(top: 3.w),
                             child: Text(
                                 '${'zjgx'.tr(context: context)}${widget.data.detail?.chapters?.length ?? 0}${'zang'.tr(context: context)}',
-                                style: TextStyle(color:const Color.fromRGBO(255, 211, 123, 1),fontSize: 10.sp)),
+                                style: TextStyle(color:MyTheme.goldColor255_211_123,fontSize: 10.sp)),
                           ),
                           const Spacer(),
                           chapters.length > 3

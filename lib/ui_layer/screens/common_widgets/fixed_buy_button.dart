@@ -77,7 +77,7 @@ class _FixedBuyButtonState extends State<FixedBuyButton> {
                       TextSpan(
                         text: 'zxkf'.tr(context: context),
                         style: TextStyle(
-                          color: MyTheme.gradient_90_114_colors.first,
+                          color: MyTheme.primaryColor,
                           fontSize: 10.sp,
                         ),
                       )

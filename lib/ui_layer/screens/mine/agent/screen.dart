@@ -242,7 +242,7 @@ class _AgentHeaderWidget extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 24.sp,
                               fontWeight: FontWeight.bold,
-                              color: const Color.fromRGBO(255, 211, 123, 1),
+                              color: MyTheme.goldColor255_211_123,
                             ),
                           ),
                         ],

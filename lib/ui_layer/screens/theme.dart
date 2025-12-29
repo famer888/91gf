@@ -319,6 +319,8 @@ static const gradient_90_114_colors_15 = [
   static const blackColor49 = Color.fromRGBO(49, 49, 49, 1);
   static const blackColor61 = Color.fromRGBO(61, 61, 61, 1);
   static const Color blackColor25505 = Color.fromRGBO(0, 0, 0, 0.5);
+  static const blackColor29_2_24 =  Color.fromRGBO(29, 2, 24, 1);
+
 
   static const bloodOrange2501046 = Color.fromRGBO(250, 104, 6, 1);
   static const bloodOrange2557710 = Color.fromRGBO(255, 77, 11, 1);
@@ -330,6 +332,7 @@ static const gradient_90_114_colors_15 = [
   static const grayColor150 = Color.fromRGBO(150, 150, 150, 1);
 
   static const goldColor234_202_147 = Color.fromRGBO(234, 202, 147, 1);
+  static const goldColor255_211_123 = Color.fromRGBO(255, 211, 123, 1);
 
   static const blueColor81_151_241 = Color.fromRGBO(55, 110, 246, 1);
 

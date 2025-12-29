@@ -92,7 +92,7 @@ class _TaskViewState extends State<TaskView> {
           _signInContent(data),
           // SizedBox(height: 13.w),
           Container(
-              color:const Color.fromRGBO(29, 2, 24, 1),
+              color: MyTheme.blackColor29_2_24,
 
             // decoration: BoxDecoration(
             //   color: Colors.white,
@@ -146,8 +146,7 @@ class _TaskViewState extends State<TaskView> {
             padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding, vertical: 20.w),
             decoration: BoxDecoration(
               borderRadius: BorderRadiusDirectional.circular(30.w),
-              color:const Color.fromRGBO(29, 2, 24, 1),
-              //cursor:只添加顶部边框
+              color: MyTheme.blackColor29_2_24,
               border: Border(top: BorderSide(color:const Color.fromRGBO(154, 48, 133, 1), width: 1.w,)),
               
             ),
@@ -506,7 +505,7 @@ class _Header extends StatelessWidget {
                 ),
                 child: Container(
                   decoration: BoxDecoration(
-                    color:const Color.fromRGBO(29, 2, 24, 1),
+                    color: MyTheme.blackColor29_2_24,
                     borderRadius: BorderRadius.circular(15.w),
                   ),
                   alignment: Alignment.center,

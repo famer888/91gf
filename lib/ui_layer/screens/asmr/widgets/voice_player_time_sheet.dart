@@ -30,7 +30,7 @@ class _VoicePlayerTimeSheetState extends State<VoicePlayerTimeSheet> {
             left: MyTheme.pagePadding,
             right: MyTheme.pagePadding),
         decoration: BoxDecoration(
-            color: const Color.fromRGBO(29, 2, 24, 1),
+            color: MyTheme.blackColor29_2_24,
             border:const Border(top: BorderSide(color: Color.fromRGBO(154, 48, 133, 1), width: 1)),
             borderRadius: BorderRadius.vertical(top: Radius.circular(30.w))),
         height: 46.w * titles.length + bottomBarHeight + 20.w + 70.w,

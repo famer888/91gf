@@ -174,7 +174,7 @@ class _AIFaceSwapState extends State<AIFaceSwap> {
           builder: (BuildContext context, StateSetter setState) {
         return DecoratedBox(
           decoration: BoxDecoration(
-            color: const Color.fromRGBO(29, 2, 24, 1),
+            color: MyTheme.blackColor29_2_24,
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(30.w),
               topRight: Radius.circular(30.w),
