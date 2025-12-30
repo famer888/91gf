@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/dialog/my_dialog.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/dialog/widgets/regular_dialog.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/gradient_text.dart';
 import 'package:jygf/ui_layer/screens/mine/bind_email/screen.dart';
 import 'package:provider/provider.dart';
 import 'dart:ui' as ui;
@@ -201,7 +202,6 @@ class _Body extends StatelessWidget {
               SizedBox(height: 20),
               _VIPCenter(),
               SizedBox(height: 15),
-
               _CenterMenu(),
               // _FirstMenu(),
               SizedBox(height: 15),
@@ -368,9 +368,29 @@ class _VIPCenterState extends State<_VIPCenter> {
 
   @override
   Widget build(BuildContext context) {
+    final menu = [
+      (
+        title: 'vpsp'.tr(context: context),
+        iconName: MyImagePaths.appMineVipmv,
+        onTap: null,
+      ),
+      (
+        title: 'dsp'.tr(context: context),
+        iconName: MyImagePaths.appMineShortmv,
+        onTap: null,
+      ),
+      (
+        title: 'zsxl'.tr(context: context),
+        iconName: MyImagePaths.appMineLine,
+        onTap: null,
+      ),
+      (
+        title: 'plhf'.tr(context: context),
+        iconName: MyImagePaths.appMineReply,
+        onTap: null,
+      )];
     return SizedBox(
-      // color: Colors.red,
-      height: 75.w,
+      height: 150.w,
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () => const VipCenterRoute().push(context),
@@ -393,9 +413,9 @@ class _VIPCenterState extends State<_VIPCenter> {
                         isVIP: member.vipLevel.isVip());
 
                     return Padding(
-                      padding: EdgeInsets.only(bottom: 8.w),
+                      padding: EdgeInsets.only(top: 20.w,left: 10.w),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // Text(
@@ -410,33 +430,30 @@ class _VIPCenterState extends State<_VIPCenter> {
                           // const SizedBox(height: 6),
                           Row(
                             children: [
-                              // Text(
-                              //   member.vipStr,
-                              //   style: const TextStyle(
-                              //     color: Color.fromRGBO(246, 203, 163, 1.0),
-                              //     fontSize: 12,
-                              //   ),
-                              //   maxLines: 1,
-                              // ),
-                              Text(
+                              MyImage.asset(
+                                MyImagePaths.appMineKtVip,
+                                height: 16.w,
+                                fit: BoxFit.fitHeight,
+                              ),
+                              SizedBox(width: 8.w),
+                              GradientText(
                                 subTitle,
-                                style: const TextStyle(
-                                  color: Color.fromRGBO(246, 203, 163, 1.0),
-                                  fontSize: 12,
+                                gradient: MyTheme.gradient_90_114,
+                                style:  TextStyle(
+                                  fontSize: 12.sp,
                                 ),
                                 maxLines: 1,
                               ),
                               const SizedBox(width: 5),
-                              Text(
+                              
+                            ],
+                          ),
+                          SizedBox(height: 5.w),
+                          Text(
                                 "${'syxzcs'.tr(context: context)}${member.videoDownloadValue}",
-                                style: const TextStyle(
-                                  color: Color.fromRGBO(246, 203, 163, 1.0),
-                                  fontSize: 12,
-                                ),
+                                style: MyTheme.white10.copyWith(color: const Color.fromRGBO(187, 187, 187, 1.0)),
                                 maxLines: 1,
                               ),
-                            ],
-                          )
                         ],
                       ),
                     );
@@ -444,6 +461,7 @@ class _VIPCenterState extends State<_VIPCenter> {
                 ),
               ),
             ),
+            Align(alignment: Alignment.bottomCenter,child: _MenuButtonGrid(menu: menu, isVipCenter: true)),
           ],
         ),
       ),
@@ -497,11 +515,11 @@ class _CenterMenu extends StatelessWidget {
                                     text: TextSpan(children: [
                                   TextSpan(
                                     text: "${'yee'.tr(context: context)} : ",
-                                    style: MyTheme.white255_12,
+                                    style: MyTheme.white255_12.copyWith(color: const Color.fromRGBO(187, 187, 187, 1.0)),
                                   ),
                                   TextSpan(
                                     text: "$money",
-                                    style: MyTheme.white12.yellow255,
+                                    style: MyTheme.white12.yellow255.copyWith(color: const Color.fromRGBO(246, 203, 163, 1.0)),
                                   ),
                                 ])),
                               ],
@@ -546,7 +564,7 @@ class _CenterMenu extends StatelessWidget {
                           const SizedBox(height: 5),
                           Text(
                             'yqhydvp'.tr(context: context),
-                            style: MyTheme.white255_11.white25506,
+                            style: MyTheme.white255_11.white25506.copyWith(color: const Color.fromRGBO(187, 187, 187, 1.0)),
                           ),
                         ],
                       ),
@@ -587,7 +605,7 @@ class _CenterMenu extends StatelessWidget {
                           const SizedBox(height: 5),
                           Text(
                             'ye'.tr(context: context),
-                            style: MyTheme.white255_11.white25506,
+                            style: MyTheme.white255_11.white25506.copyWith(color: const Color.fromRGBO(187, 187, 187, 1.0)),
                           ),
                         ],
                       ),
@@ -884,11 +902,44 @@ class _ThirdMenu extends StatelessWidget {
       ),
     ];
 
-    return Container(
-        decoration: const BoxDecoration(
-          color: Color.fromRGBO(21, 19, 42, 1),
-          borderRadius: BorderRadius.all(Radius.circular(8)),
+    return Container(color: const Color.fromRGBO(21, 19, 42, 1),child: _MenuButtonGrid(menu: menu));
+  }
+}
+
+class _MenuButtonGrid extends StatelessWidget {
+  const _MenuButtonGrid ({required this.menu, this.isVipCenter = false});
+  final List<({String iconName, String title, VoidCallback? onTap})> menu;
+  final bool? isVipCenter;
+  
+  Widget _buildButton(({String iconName, String title, VoidCallback? onTap}) data) {
+    final content = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        MyImage.asset(
+          data.iconName,
+          width: 40.w,
+          height: 40.w,
         ),
+        const SizedBox(height: 5),
+        isVipCenter == true ? GradientText(data.title,
+         gradient: MyTheme.gradient_90_114,style: TextStyle(fontSize: 14.sp),):Text(
+          data.title,
+          style:  TextStyle(
+            fontSize: 11.sp,
+            color: const Color.fromRGBO(187, 187, 187, 1.0),
+          ),
+        )
+      ],
+    );
+    return data.onTap != null
+        ? GestureDetector(onTap: data.onTap, child: content)
+        : content;
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    return Container(
         padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 13 / 2),
         child: GridView(
           shrinkWrap: true,
@@ -897,85 +948,7 @@ class _ThirdMenu extends StatelessWidget {
               crossAxisCount: 4),
           children: [
             for (final data in menu)
-              GestureDetector(
-                onTap: data.onTap,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    MyImage.asset(
-                      data.iconName,
-                      width: 24.w,
-                      height: 24.w,
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      data.title,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        color: Color.fromRGBO(187, 187, 187, 1.0),
-                      ),
-                    )
-                  ],
-                ),
-              )
-          ],
-        ));
-
-    return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 27.5, vertical: 10),
-        decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [
-              Color.fromRGBO(21, 21, 42, 1),
-              Color.fromRGBO(11, 11, 33, 1),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-          borderRadius: BorderRadius.circular(5),
-        ),
-        child: ListView(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          addAutomaticKeepAlives: false,
-          addRepaintBoundaries: false,
-          children: [
-            for (final data in menu)
-              GestureDetector(
-                behavior: HitTestBehavior.translucent,
-                onTap: data.onTap,
-                child: SizedBox(
-                  height: 44,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          MyImage.asset(
-                            data.iconName,
-                            width: 20,
-                            height: 20,
-                          ),
-                          const SizedBox(width: 9.5),
-                          Text(
-                            data.title,
-                            overflow: TextOverflow.ellipsis,
-                            style: MyTheme.white14w400,
-                          ),
-                        ],
-                      ),
-                      const MyImage.asset(
-                        MyImagePaths.appMineRightArrow,
-                        width: 10,
-                        height: 10,
-                      )
-                    ],
-                  ),
-                ),
-              )
+              _buildButton(data)
           ],
         ));
   }
