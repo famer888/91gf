@@ -223,4 +223,15 @@ class CommunityService extends BaseService {
   /// 获取圈子导航
   AsyncJson reqGetCircleNav({String type = ''}) =>
       post('/circle_nav', data: {'type': type});
+
+  AsyncJson myPosts({
+    required int page,
+    required int limit,
+    required int status,
+  }) =>
+      post('/list_my', data: {
+        'page': page,
+        'limit': limit,
+        'status': status,
+      });
 }

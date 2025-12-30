@@ -154,11 +154,11 @@ class AppInfo extends StatelessWidget {
               CommonUtils.launchUrl(info.url ?? '');
             },
             child: Container(
-              height: 30.w,
-              width: 70.w,
+              height: 24.w,
+              width: 58.w,
               decoration: BoxDecoration(
-                gradient: MyTheme.gradient_84_55,
-                borderRadius: BorderRadius.circular(15.w),
+                gradient: MyTheme.gradient_90_118,
+                borderRadius: BorderRadius.circular(4.w),
               ),
               child: Center(
                 child: Text(

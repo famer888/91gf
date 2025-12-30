@@ -213,4 +213,12 @@ mixin _Community on _BaseAppRepo implements CommunityDomain {
           .deserializeJsonListBy(
               (e) => e.map(CirclePostNavModel.fromJson).toList())
           .guard;      
+
+  @override
+  AsyncResult<List<TieztModel>> myPosts({
+    required int page,
+    required int limit,
+    required int status,
+  }) =>
+      _communityService.myPosts(page: page, limit: limit, status: status).deserializeJsonListBy((e) => e.map(TieztModel.fromJson).toList()).guard;
 }

@@ -377,7 +377,7 @@ class _UserCenterScreenState extends State<UserCenterScreen> {
               views: [
                 KeepAliveWrapper(child: _VideoView(aff: widget.aff)),
                 KeepAliveWrapper(child: _VlogVideoView(aff: widget.aff)),
-                KeepAliveWrapper(child: PostCenter(aff: widget.aff)),
+                KeepAliveWrapper(child: PostCenter(aff: widget.aff, type: 2)),
               ],
             ),
           ],

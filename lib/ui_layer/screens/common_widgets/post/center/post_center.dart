@@ -9,9 +9,10 @@ import '../../screen_background.dart';
 import 'card/card.dart';
 
 class PostCenter extends StatefulWidget {
-  const PostCenter({super.key, this.aff, this.header});
+  const PostCenter({super.key, this.aff, this.header,required this.type});
   final String? aff;
   final Widget? header;
+  final int type; // 0-待审核 1-已通过 2-已拒绝
   @override
   State<PostCenter> createState() => _PostCenterState();
 }
@@ -21,12 +22,11 @@ class _PostCenterState extends State<PostCenter> {
   bool get isSelf => widget.aff == null;
 
   late final communityDomain = context.read<CommunityDomain>();
-  late final userDomain = context.read<UserDomain>();
 
   Future<List<TieztModel>> getData(
       {required int currentPage, required int limit}) async {
     final res = await (isSelf
-        ? userDomain.userMyPosts(page: currentPage, limit: limit)
+        ? communityDomain.myPosts(page: currentPage, limit: limit, status: widget.type)
         : communityDomain.peerCenterPost(
             page: currentPage, aff: widget.aff ?? '', limit: limit));
 

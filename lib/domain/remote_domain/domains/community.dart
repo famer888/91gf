@@ -145,4 +145,11 @@ abstract class CommunityDomain {
 
    /// 获取圈子导航
   AsyncResult<List<CirclePostNavModel>> reqGetCircleNav({String type = ''});
+
+  /// 我的帖子
+  AsyncResult<List<TieztModel>> myPosts({
+    required int page,
+    required int limit,
+    required int status,
+  });
 }
