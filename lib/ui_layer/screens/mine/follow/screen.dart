@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../domain/api_validator.dart';
@@ -36,6 +37,7 @@ class _MineFollowingScreenState extends State<MineFollowingScreen> {
           title: 'wdgz'.tr(context: context),
         ),
         body: TabBarWithView.line(
+          indicatorType: IndicatorType.light,
           tabBarPadding: EdgeInsets.symmetric(
             vertical: 0.w,
             horizontal: MyTheme.pagePadding,
@@ -143,7 +145,7 @@ class _FollowingUserViewState extends State<FollowingUserView> {
                         height: 25.w,
                         decoration: BoxDecoration(
                             color: MyTheme.cyanColor00edfd,
-                            borderRadius: BorderRadius.circular(12.5.w)),
+                            borderRadius: BorderRadius.circular(4.w)),
                         child: Center(
                             child: Text(tr('qxgz'), style: MyTheme.white11)),
                       );
@@ -220,13 +222,22 @@ class _FollowingTopicState extends State<FollowingTopic> {
               CommunityTagDetailRoute('${data.id}').push(context);
             },
             child: SizedBox(
-              height: w / 170 * 85,
+              height: w / 170 * 75,
               child: Stack(
                 children: [
                   MyImage.network(
                     data.bgThumb,
-                    borderRadius: 5.w,
+                    borderRadius: 6.w,
                   ),
+                  Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6.w),
+                            gradient: const LinearGradient(colors: [
+                              Color.fromRGBO(176, 66, 255, 0.45),
+                              Color.fromRGBO(255, 133, 164, 0.45),
+                            ]),
+                          ),
+                        ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -275,13 +286,13 @@ class _FollowingTopicState extends State<FollowingTopic> {
                 isLoading = false;
               },
               child: Container(
-                width: 75.w,
-                height: 25.w,
+                width: 65.w,
+                height: 20.w,
                 decoration: BoxDecoration(
                     color: isFollowing
                         ? MyTheme.cyanColor00edfd
                         : Colors.transparent,
-                    borderRadius: BorderRadius.circular(12.5.w),
+                    borderRadius: BorderRadius.circular(4.w),
                     border: Border.all(
                         color: isFollowing
                             ? Colors.transparent
@@ -306,7 +317,7 @@ class _FollowingTopicState extends State<FollowingTopic> {
     return MyListView.grid(
       padding: EdgeInsets.all(MyTheme.pagePadding),
       itemBuilder: (context, item, index) => _buildTile(item),
-      childAspectRatio: 204 / 148,
+      childAspectRatio: 204 / 138,
       mainAxisSpacing: 10.w,
       crossAxisSpacing: 20.w,
       onFetchingMore: (currentPage, pageSize) =>

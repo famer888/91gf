@@ -280,7 +280,7 @@ class _MineBindEmialScreenState extends State<MineBindEmailScreen> {
                                   width: 95.w,
                                   // height: 24.w,
                                   decoration: const BoxDecoration(
-                                    color: MyTheme.blueColor63,
+                                    gradient: MyTheme.gradient_90_118,
                                     // borderRadius: BorderRadius.circular(12.w),
                                   ),
                                   child: Center(
@@ -308,7 +308,7 @@ class _MineBindEmialScreenState extends State<MineBindEmailScreen> {
                         decoration: BoxDecoration(
                             gradient: MyTheme.gradient_90_114,
                             borderRadius:
-                                BorderRadius.all(Radius.circular(4.w))),
+                                BorderRadius.all(Radius.circular(20.w))),
                         child: Center(
                           child: Text(
                             'qr'.tr(context: context),

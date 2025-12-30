@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jygf/domain/model/order_model.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/order_list_item.dart';
 import 'package:provider/provider.dart';
 import '../../../../../domain/api_validator.dart';
 import '../../../../../domain/domain.dart';
@@ -76,7 +78,8 @@ class _CoinDetailScreenState extends State<CoinDetailScreen> {
               key: ValueKey(filterType),
               padding: EdgeInsets.all(MyTheme.pagePadding),
               contentPadding: 16.w,
-              itemBuilder: (context, item, index) => _CoinItem(item: item),
+              itemBuilder: (context, item, index) => OrderListItem(order: Order(id: item.id, descp: item.coin.toString(), payType: item.typeStr,amount: item.coin.toString(), 
+              payway: item.desc, createdAt: item.createdAt,statusText: item.sourceStr), type: OrderListItemType.coinExpenditure),
               onFetchingMore: (currentPage, pageSize) =>
                   _getData(currentPage: currentPage, limit: pageSize),
             ),

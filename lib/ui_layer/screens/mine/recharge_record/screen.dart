@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/order_list_item.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../domain/domain.dart';
@@ -55,7 +56,7 @@ class _RechargeRecordScreenState extends State<RechargeRecordScreen> {
       body: MyListView.list(
         padding: EdgeInsets.all(MyTheme.pagePadding),
         contentPadding: 16.w,
-        itemBuilder: (context, item, index) => OrderItem(order: item),
+        itemBuilder: (context, item, index) => OrderListItem(order: item, type: OrderListItemType.coinRecharge),
         onFetchingMore: (currentPage, pageSize) =>
             _getData(page: currentPage, pageSize: pageSize),
       ),
