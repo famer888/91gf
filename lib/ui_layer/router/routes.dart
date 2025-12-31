@@ -42,6 +42,7 @@ import 'package:jygf/ui_layer/screens/anime/screen.dart';
 import 'package:jygf/ui_layer/screens/asmr/voice_player/local_voice_player.dart';
 import 'package:jygf/ui_layer/screens/asmr/voice_player/voice_player_content.dart';
 import 'package:jygf/ui_layer/screens/chat/detail/screen.dart';
+import 'package:jygf/ui_layer/screens/chat/issue/screen.dart';
 import 'package:jygf/ui_layer/screens/chat/screen.dart';
 import 'package:jygf/ui_layer/screens/circle/circle_screen.dart';
 import 'package:jygf/ui_layer/screens/community/ori_create_group_chat/group_chat/group_chat_detail_content.dart';
@@ -1750,6 +1751,19 @@ class ChatDetailRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return ChatDetailScreen(id: id);
+  }
+}
+
+@TypedGoRoute<ChatIssueRoute>(path: AppRouterPaths.chatIssue)
+class ChatIssueRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const ChatIssueRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const ChatIssueScreen();
   }
 }
 

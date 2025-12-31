@@ -335,6 +335,9 @@ class AppRouterPaths {
   /// 裸聊
   static const chat = '/chat';
 
+  /// 裸聊发布
+  static const chatIssue = '/chatIssue';
+
   /// 签到
   static const task = '/task';
 

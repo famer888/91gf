@@ -102,6 +102,7 @@ List<RouteBase> get $appRoutes => [
       $moreNovelRoute,
       $novelVoicePalyerContentRoute,
       $chatDetailRoute,
+      $chatIssueRoute,
       $pictureMoreRoute,
       $pictureReaderRoute,
       $picturePreViewRoute,
@@ -2677,6 +2678,30 @@ extension $ChatDetailRouteExtension on ChatDetailRoute {
         queryParams: {
           'id': id.toString(),
         },
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $chatIssueRoute => GoRouteData.$route(
+      path: '/chatIssue',
+      parentNavigatorKey: ChatIssueRoute.$parentNavigatorKey,
+      factory: $ChatIssueRouteExtension._fromState,
+    );
+
+extension $ChatIssueRouteExtension on ChatIssueRoute {
+  static ChatIssueRoute _fromState(GoRouterState state) =>
+      const ChatIssueRoute();
+
+  String get location => GoRouteData.$location(
+        '/chatIssue',
       );
 
   void go(BuildContext context) => context.go(location);

@@ -8,11 +8,14 @@ import 'package:jygf/domain/model/girl/girl_option_model.dart';
 import 'package:jygf/domain/model/tip_model.dart';
 import 'package:jygf/domain/remote_domain/domains/chat.dart';
 import 'package:jygf/ui_layer/notifiers/home_config_notifier.dart';
+import 'package:jygf/ui_layer/router/routes.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/chat/card.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/general_banner.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/gradient_border.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_app_bar.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_list_view.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_tab_bar.dart';
+import 'package:jygf/ui_layer/screens/community/issue/widgets/post_button.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:provider/provider.dart';
 
@@ -46,6 +49,19 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: MyAppBar(
         title: 'luol'.tr(),
+        rightWidget: GestureDetector(
+          onTap: () {
+            const ChatIssueRoute().push(context);
+          },
+          child: GradientBorder(
+            gradient: MyTheme.gradient_90_114,
+            borderRadius: BorderRadius.circular(4.w),
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 1.w),
+              child: Text('fb'.tr(), style: MyTheme.white10),
+            ),
+          ),
+        ),
       ),
       body: Stack(children: [
         NestedScrollView(
