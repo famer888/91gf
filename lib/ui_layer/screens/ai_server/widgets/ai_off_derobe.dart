@@ -129,7 +129,7 @@ class _AIOffDeRobeState extends State<AIOffDeRobe> {
                     height: 140.w,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(6.w)),
-                      color: const Color(0xff1b1c2b),
+                      color: MyTheme.white02Color,
                     ),
                     child: uploadObject.isEmpty
                         ? Column(

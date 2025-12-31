@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jygf/domain/api_validator.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/gradient_text.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/my_app_bar.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/screen_background.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../domain/async_value.dart';
@@ -24,8 +26,8 @@ import '../../../image_paths.dart';
 import '../../../theme.dart';
 
 class TaskView extends StatefulWidget {
-  const TaskView({super.key});
-
+  const TaskView({super.key, this.needNavi = true});
+  final bool needNavi;
   @override
   State<TaskView> createState() => _TaskViewState();
 }
@@ -81,9 +83,6 @@ class _TaskViewState extends State<TaskView> {
 
   Widget _buildDataView(WelfareTaskModel data) {
     return CustomScrollView(
-      // physics: const BouncingScrollPhysics(
-      //   parent: AlwaysScrollableScrollPhysics(),
-      // ),
       slivers: [
         MyIndicator(onRefresh: _initData),
         SliverList.list(children: [
@@ -322,7 +321,7 @@ class _TaskViewState extends State<TaskView> {
 
   @override
   Widget build(BuildContext context) {
-    return _asyncValue.maybeWhen(
+    Widget content = _asyncValue.maybeWhen(
       error: (_, __) => NetworkErrorView(onTap: _initData),
       orElse: () => const LoadingView(),
       loading: (data) {
@@ -331,6 +330,7 @@ class _TaskViewState extends State<TaskView> {
       },
       data: _buildDataView,
     );
+    return widget.needNavi ? ScreenBackground(child: Scaffold(appBar: MyAppBar(title: 'flrw'.tr()),body:content)) : content;
   }
 }
 

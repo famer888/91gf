@@ -53,6 +53,7 @@ class _MineCollectionScreenState extends State<MineCollectionScreen> {
           title: 'wdsc'.tr(context: context),
         ),
         body: TabBarWithView.line(
+          indicatorType: IndicatorType.curve,
           labelStyle: MyTheme.jellyCyan_15,
           unselectedLabelStyle: TextStyle(
             color: const Color.fromRGBO(255, 255, 255, 0.8),

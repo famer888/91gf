@@ -19,6 +19,7 @@ import 'package:jygf/data_layer/data_source/remote/album_service.dart';
 import 'package:jygf/data_layer/data_source/remote/asmr_service.dart';
 import 'package:jygf/data_layer/data_source/remote/aikiss_service.dart';
 import 'package:jygf/data_layer/data_source/remote/cartoon_service.dart';
+import 'package:jygf/data_layer/data_source/remote/chat_service.dart';
 import 'package:jygf/data_layer/data_source/remote/comic_service.dart';
 import 'package:jygf/data_layer/data_source/remote/game_service.dart';
 import 'package:jygf/data_layer/data_source/remote/live_service.dart';
@@ -31,6 +32,9 @@ import 'package:jygf/domain/model/ai/ai_magic_model.dart';
 import 'package:jygf/domain/model/ai/ai_magic_record_model.dart';
 import 'package:jygf/domain/model/ai_model.dart';
 import 'package:jygf/domain/model/album_model.dart';
+import 'package:jygf/domain/model/chat/chat_detail_model.dart';
+import 'package:jygf/domain/model/chat/chat_index_model.dart';
+import 'package:jygf/domain/model/chat/chat_list_model.dart';
 import 'package:jygf/domain/model/comic_model.dart';
 import 'package:jygf/domain/model/live_model.dart';
 import 'package:jygf/domain/model/live_video_detail_model.dart';
@@ -45,6 +49,7 @@ import 'package:jygf/domain/remote_domain/domains/album.dart';
 import 'package:jygf/domain/remote_domain/domains/asmr.dart';
 import 'package:jygf/domain/remote_domain/domains/aiaudio.dart';
 import 'package:jygf/domain/remote_domain/domains/cartoon.dart';
+import 'package:jygf/domain/remote_domain/domains/chat.dart';
 import 'package:jygf/domain/remote_domain/domains/comic.dart';
 import 'package:jygf/domain/remote_domain/domains/game.dart';
 
@@ -165,6 +170,7 @@ part 'mixin/aikiss_mixin.dart';
 part 'mixin/comic_mixin.dart';
 part 'mixin/novel_mixin.dart';
 part 'mixin/album_mixin.dart';
+part 'mixin/chat_mixin.dart';
 
 class AppRepo extends _BaseAppRepo
     with
@@ -198,7 +204,8 @@ class AppRepo extends _BaseAppRepo
         _Rank,
         _Comic,
         _Novel,
-        _Album {}
+        _Album,
+        _Chat{}
 
 abstract class _BaseAppRepo implements AppDomain {
   late final _homeService = HomeService(_apiDio);
@@ -232,7 +239,8 @@ abstract class _BaseAppRepo implements AppDomain {
   late final _comicService = ComicService(_apiDio);
   late final _novelService = NovelService(_apiDio);
   late final _albumService = AlbumService(_apiDio);
-  
+  late final _chatService = ChatService(_apiDio);
+
   final _cacheManager = _CacheManager();
 
   @override

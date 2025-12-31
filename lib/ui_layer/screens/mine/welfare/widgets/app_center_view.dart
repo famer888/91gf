@@ -86,17 +86,17 @@ class _AppCenterViewState extends State<AppCenterView> {
                     children: [
                       SizedBox(height: 20.w),
                       Text('xswtj'.tr(context: context),
-                          style: MyTheme.yellow16w600),
+                          style: MyTheme.white16bold),
                       GridView.builder(
                           shrinkWrap: true,
                           padding: EdgeInsets.only(top: 10.w),
                           itemCount: recommend.length,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 4,
+                            crossAxisCount: 5,
                             mainAxisSpacing: 20.w,
                             crossAxisSpacing: 15.w,
-                            childAspectRatio: 100 / 140,
+                            childAspectRatio: 100 / 155,
                           ),
                           physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {

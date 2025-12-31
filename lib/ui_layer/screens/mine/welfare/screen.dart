@@ -41,7 +41,7 @@ class _MineWelfareScreenState extends State<MineWelfareScreen>
           controller: tabController,
           children: const [
             KeepAliveWrapper(child: AgentView()),
-            KeepAliveWrapper(child: TaskView()),
+            KeepAliveWrapper(child: TaskView(needNavi: false)),
             KeepAliveWrapper(child: AppCenterView()),
           ],
         ),

@@ -80,7 +80,7 @@ class _AIMagicState extends State<AIMagic> {
             childAspectRatio: MagicCard.aspectRatio,
             crossAxisSpacing: 10.w,
             mainAxisSpacing: 10.w,
-            itemBuilder: (context, item, index) => MagicCard(data: item),
+            itemBuilder: (context, item, index) => MagicCard(data: item, index: index),
             onFetchingMore: (currentPage, pageSize) =>
                 _getData(page: currentPage, pageSize: pageSize),
           ),

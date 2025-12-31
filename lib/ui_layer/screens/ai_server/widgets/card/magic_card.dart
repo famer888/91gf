@@ -1,15 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jygf/domain/model/ai/ai_magic_model.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/gradient_text.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import '../../../../router/routes.dart';
 import '../../../../utils/common_utils.dart';
 import '../../../theme.dart';
 
 class MagicCard extends StatelessWidget {
-  const MagicCard({super.key, required this.data});
+  const MagicCard({super.key, required this.data, required this.index});
   final AIMagicModel data;
+  final int index;
   static const aspectRatio = 9 / 16;
+  
+  static final List<List<Color>> _gradientColors = [
+    [
+      const Color.fromRGBO(115, 194, 255, 1),
+      const Color.fromRGBO(236, 255, 246, 1),
+      const Color.fromRGBO(131, 249, 255, 1),
+    ],
+    [
+      const Color.fromRGBO(183, 115, 255, 1),
+      const Color.fromRGBO(236, 255, 246, 1),
+      const Color.fromRGBO(183, 115, 255, 1),
+    ],
+    [
+     const Color.fromRGBO(255, 211, 115, 1),
+     const Color.fromRGBO(236, 255, 246, 1),
+     const Color.fromRGBO(255, 211, 115, 1),
+    ],
+  ];
+  
+  List<Color> get _currentGradientColors => _gradientColors[index % 3];
 
   String get imageUrl => CommonUtils.getThumb(data.toJson());
 
@@ -33,23 +55,30 @@ class MagicCard extends StatelessWidget {
             ),
             Container(
               decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.2),
+              gradient: const LinearGradient(colors: [
+                              Color.fromRGBO(176, 66, 255, 0.3),
+                              Color.fromRGBO(255, 133, 164, 0.3),
+                            ]),
               borderRadius: BorderRadius.circular(5.w),
               ),
             ),
             Center(
-              child: Text(
-              data.title ?? '',
-              style: MyTheme.white244_20.copyWith(
-                shadows: [
-                Shadow(
-                  color: Colors.black.withOpacity(0.7),
-                  offset: Offset(0, 2),
-                  blurRadius: 4,
+              child: GradientText(
+                data.title,
+                gradient: LinearGradient(
+                  colors: _currentGradientColors,
                 ),
-                ],
-              ),
-              maxLines: 1,
+                style: MyTheme.white244_20.copyWith(
+                  color: Colors.white,
+                  shadows: [
+                    Shadow(
+                      color: Colors.black.withOpacity(0.7),
+                      offset: Offset(0, 2),
+                      blurRadius: 4,
+                    ),
+                  ],
+                ),
+                maxLines: 1,
               ),
             ),
           ],

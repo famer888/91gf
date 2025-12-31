@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jygf/domain/model/banner_model.dart';
@@ -9,6 +10,7 @@ import 'package:jygf/domain/remote_domain/domains/chat.dart';
 import 'package:jygf/ui_layer/notifiers/home_config_notifier.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/chat/card.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/general_banner.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/my_app_bar.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_list_view.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_tab_bar.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
@@ -42,6 +44,9 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: MyAppBar(
+        title: 'luol'.tr(),
+      ),
       body: Stack(children: [
         NestedScrollView(
           headerSliverBuilder: (_, __) => [
@@ -52,6 +57,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ],
           body: TabBarWithView.line(
+            indicatorType: IndicatorType.curve,
             tabBarHeight: 35.w,
             tabBarPadding: EdgeInsets.fromLTRB(MyTheme.pagePadding, 5.w,
                 MyTheme.pagePadding, 0),
@@ -86,7 +92,7 @@ class _Header extends StatelessWidget {
       builder: (context, banners, child) {
         if (banners.isEmpty) return const SizedBox.shrink();
         return Padding(
-          padding: EdgeInsets.fromLTRB(MyTheme.pagePadding, 5.w,
+          padding: EdgeInsets.fromLTRB(MyTheme.pagePadding, 10.w,
               MyTheme.pagePadding, 5.w),
           child: GeneralBannerAppsListWidget(data: banners),
         );
