@@ -42,8 +42,40 @@ class _MineAgentProfitScreenState extends State<MineAgentProfitScreen> {
           title: 'yjmx'.tr(context: context),
         ),
         body: MyListView.list(
-          padding: EdgeInsets.zero,
-          itemBuilder: (context, item, index) => _Tile(data: item),
+          contentPadding: 0,
+          itemBuilder: (context, item, index) {
+            if (index == 0) {
+              return Column(
+                children: [
+                  SizedBox(height: 10.w),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 10.w),
+                    decoration: BoxDecoration(
+                      color: MyTheme.white02Color,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10.w),
+                        topRight: Radius.circular(10.w),
+                      ),
+                    ),
+                    child: DefaultTextStyle(
+                      textAlign: TextAlign.center,
+                      style: MyTheme.white255_15,
+                      child:const Row(
+                        children: [
+                          Expanded(child: Text('用户')),
+                          Expanded(child: Text('类型')),
+                          Expanded(child: Text('收益')),
+                          Expanded(child: Text('时间')),
+                        ],
+                      ),
+                    ),
+                  ),
+                  ProfitRecordItem(data: item, index: index),
+                ],
+              );
+            }
+            return ProfitRecordItem(data: item, index: index);
+          },
           onFetchingMore: (currentPage, pageSize) =>
               getProxyProfitList(currentPage: currentPage, limit: pageSize),
         ),
@@ -52,66 +84,69 @@ class _MineAgentProfitScreenState extends State<MineAgentProfitScreen> {
   }
 }
 
-class _Tile extends StatelessWidget {
-  const _Tile({required this.data});
+class ProfitRecordItem extends StatelessWidget {
+  const ProfitRecordItem({super.key, required this.data, required this.index});
   final ProxyProfit data;
+  final int index;
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          alignment: Alignment.center,
-          padding: EdgeInsets.symmetric(
-              horizontal: MyTheme.pagePadding, vertical: 13.w),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    '${data.nickName}',
-                    style: MyTheme.white244_16,
-                  ),
-                  Text(
-                    ("${switch (data.type) {
-                      ProxyProfitType.income => "+",
-                      ProxyProfitType.expenditure => "-",
-                      _ => ''
-                    }}${data.amount}"),
-                    style: MyTheme.teal103224185_20_M,
-                  ),
-                ],
+    final backgroundColor = index % 2 == 1
+        ? MyTheme.white015Color
+        : MyTheme.white008Color;
+
+    String getTypeText() {
+      return switch (data.source) {
+        ProxyProfitSource.withdrawal => 'tx'.tr(context: context),
+        ProxyProfitSource.refundWithdrawal => 'txtk'.tr(context: context),
+        ProxyProfitSource.agentCommission => 'dlfc'.tr(context: context),
+        _ => '',
+      };
+    }
+
+    String getAmountText() {
+      final prefix = switch (data.type) {
+        ProxyProfitType.income => '+',
+        ProxyProfitType.expenditure => '-',
+        _ => '',
+      };
+      return '$prefix${data.amount}';
+    }
+
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 13.w),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+      ),
+      child: DefaultTextStyle(
+        style: MyTheme.white255_13,
+        textAlign: TextAlign.center,
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                data.nickName ?? '',
+                overflow: TextOverflow.ellipsis,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    switch (data.source) {
-                      ProxyProfitSource.withdrawal => 'tx'.tr(context: context),
-                      ProxyProfitSource.refundWithdrawal =>
-                        'txtk'.tr(context: context),
-                      ProxyProfitSource.agentCommission =>
-                        'dlfc'.tr(context: context),
-                      _ => ''
-                    },
-                    style: MyTheme.gray153_12,
-                  ),
-                  Text(
-                    '${data.createdAt}',
-                    style: MyTheme.gray153_12,
-                  ),
-                ],
-              )
-            ],
-          ),
+            ),
+            Expanded(child: Text(getTypeText())),
+            Expanded(
+              child: Text(
+                getAmountText(),
+                style: data.type == ProxyProfitType.income
+                    ? MyTheme.red13
+                    : MyTheme.green0_13_M,
+              ),
+            ),
+            Expanded(
+              child: Text(
+                data.createdAt ?? '',
+                style: MyTheme.gray153_12,
+              ),
+            ),
+          ],
         ),
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-          height: 0.5.w,
-          color: const Color.fromRGBO(21, 21, 42, 1),
-        )
-      ],
+      ),
     );
   }
 }
