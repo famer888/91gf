@@ -186,6 +186,7 @@ class _MineSetupScreenState extends State<MineSetupScreen> {
                           selector: (_, userNotifier) => userNotifier.member,
                           builder: (context, member, child) {
                             return SetupItem(
+                              iconName: MyImagePaths.appSettingNickname,
                               title: 'nc'.tr(context: context),
                               subTitle: member.nickname,
                               onTap: () =>
@@ -194,14 +195,17 @@ class _MineSetupScreenState extends State<MineSetupScreen> {
                           }),
                       const SetupItemDivider(),
                       SetupItem(
+                          iconName: MyImagePaths.appSettingMail,
                           title: 'bdyx'.tr(context: context),
                           onTap: _bindEmail),
                       const SetupItemDivider(),
                       SetupItem(
+                          iconName: MyImagePaths.appSettingClearcache,
                           title: 'qchc'.tr(context: context),
                           onTap: _clearCache),
                       const SetupItemDivider(),
                       SetupItem(
+                        iconName: MyImagePaths.appSettingUpdate,
                         title: 'bbgx'.tr(context: context),
                         subTitle: version,
                       ),
@@ -216,23 +220,27 @@ class _MineSetupScreenState extends State<MineSetupScreen> {
                   selector: (_, userNotifier) =>
                       userNotifier.tokenStatus == MyTokenStatus.valid,
                   builder: (context, isLogin, child) => isLogin
-                      ? GestureDetector(
-                          onTap: _logOut,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF23262e),
-                              border: Border(
-                                top: BorderSide(
-                                    color: const Color(0xFF272727), width: 1.w),
+                      ? Padding(
+                          padding: EdgeInsets.only(
+                            left: MyTheme.pagePadding,
+                            right: MyTheme.pagePadding,
+                            bottom: MyTheme.pagePadding,
+                          ),
+                          child: GestureDetector(
+                            onTap: _logOut,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                gradient: MyTheme.gradient_90_114,
+                                borderRadius: BorderRadius.all(Radius.circular(20.w)),
                               ),
-                            ),
-                            child: SafeArea(
-                              child: Container(
-                                height: 49.w,
-                                alignment: Alignment.center,
-                                child: Text(
-                                  'tcdl'.tr(context: context),
-                                  style: MyTheme.white255_18_B,
+                              child: SafeArea(
+                                child: Container(
+                                  height: 40.w,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    'tcdl'.tr(context: context),
+                                    style: MyTheme.white255_18_B,
+                                  ),
                                 ),
                               ),
                             ),
@@ -261,7 +269,8 @@ class SetupItemDivider extends StatelessWidget {
 }
 
 class SetupItem extends StatelessWidget {
-  const SetupItem({super.key, this.onTap, required this.title, this.subTitle});
+  const SetupItem({super.key, this.onTap, required this.title, this.subTitle, required this.iconName});
+  final String iconName;
   final VoidCallback? onTap;
   final String title;
   final String? subTitle;
@@ -275,6 +284,11 @@ class SetupItem extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            MyImage.asset(
+              iconName,
+              width: 25.w,
+              height: 25.w,
+            ),
             Text(
               title,
               style: MyTheme.black64_15_M,
