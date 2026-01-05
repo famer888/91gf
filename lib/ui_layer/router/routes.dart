@@ -216,12 +216,18 @@ class RestrictedRoute extends GoRouteData {
       const RestrictedScreen();
 }
 
+@TypedGoRoute<LiveBroadcastRoute>(path: AppRouterPaths.live)
 class LiveBroadcastRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
   const LiveBroadcastRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) =>
-      const LiveBroadcastScreen();
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CommonUtils.buildSlideTransitionPage(
+        state: state, child: const LiveBroadcastScreen());
+  }
 }
 
 class VlogRoute extends GoRouteData {

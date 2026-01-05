@@ -9,6 +9,7 @@ part of 'routes.dart';
 List<RouteBase> get $appRoutes => [
       $welcomeRoute,
       $statefulShellRoute,
+      $liveBroadcastRoute,
       $vlogSecondRoute,
       $vlogTagRoute,
       $groupChatListContentRoute,
@@ -286,6 +287,30 @@ extension $MineRouteExtension on MineRoute {
 
   String get location => GoRouteData.$location(
         '/mine',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $liveBroadcastRoute => GoRouteData.$route(
+      path: '/liveVideo',
+      parentNavigatorKey: LiveBroadcastRoute.$parentNavigatorKey,
+      factory: $LiveBroadcastRouteExtension._fromState,
+    );
+
+extension $LiveBroadcastRouteExtension on LiveBroadcastRoute {
+  static LiveBroadcastRoute _fromState(GoRouterState state) =>
+      const LiveBroadcastRoute();
+
+  String get location => GoRouteData.$location(
+        '/liveVideo',
       );
 
   void go(BuildContext context) => context.go(location);
