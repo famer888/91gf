@@ -15,6 +15,7 @@ import 'package:jygf/ui_layer/screens/common_widgets/dialog/widgets/regular_dial
 import 'package:jygf/ui_layer/screens/common_widgets/my_app_bar.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_button.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/screen_background.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
@@ -242,7 +243,6 @@ class _ChatIssueScreenState extends State<ChatIssueScreen> {
             context.pop();
           },
           cancelOnTap: () {
-            //取消
             context.pop();
           },
         ),
@@ -265,7 +265,6 @@ class _ChatIssueScreenState extends State<ChatIssueScreen> {
             FocusScope.of(context).unfocus();
           },
           cancelOnTap: () {
-            //取消
             context.pop();
             FocusScope.of(context).unfocus();
           },
@@ -276,556 +275,666 @@ class _ChatIssueScreenState extends State<ChatIssueScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MyAppBar(title: 'fbll'.tr(context: context)),
-      body: GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: EdgeInsets.symmetric(
-            horizontal: MyTheme.pagePadding,
-            vertical: 10.w
-          ),
-          child: Column(children: [
-            Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-              Text(
-                '*',
-                style: TextStyle(
-                  color: MyTheme.white08Color,
-                  fontSize: 15.sp,
-                  overflow: TextOverflow.ellipsis,
-                  fontWeight: FontWeight.w500,
-                  decoration: TextDecoration.none,
-                  height: 2,
-                ),
-              ),
-              SizedBox(width: 5.w),
-              Text(
-                '${'nc'.tr()}:',
-                style: MyTheme.black51_15,
-              ),
-              SizedBox(width: 10.w),
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 12.5.w),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.w),
-                    color: MyTheme.white08Color,
-                  ),
-                  child: TextField(
-                    onChanged: (value) {
-                      girlName = value;
-                    },
-                    style: MyTheme.white04_10,
-                    cursorColor: MyTheme.white08Color,
-                    textInputAction: TextInputAction.done,
-                    decoration: CommonUtils.customInputStyle(
-                      horizontal: 15.w,
-                      hit: 'qsrnh'.tr() + 'nc'.tr(),
-                    ),
-                  ),
-                ),
-              ),
-            ]),            
-            SizedBox(height: 15.w),
-            Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-              Text(
-                '*',
-                style: TextStyle(
-                  color: MyTheme.white08Color,
-                  fontSize: 15.sp,
-                  overflow: TextOverflow.ellipsis,
-                  fontWeight: FontWeight.w500,
-                  decoration: TextDecoration.none,
-                  height: 2,
-                ),
-              ),
-              SizedBox(width: 5.w),
-              Text(
-                '${'tdzl'.tr()}:',
-                style: MyTheme.white08_15,
-              ),
-            ]),
-            SizedBox(height: 10.w),
-            Row(children: [
-              SizedBox(
-                width: 80.w,
-                child: Center(
-                  child: Text(
-                    '${'liex'.tr()}:',
-                    style: MyTheme.white08_15,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    showClass(context);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 12.5.w),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.w),
-                      color: MyTheme.white08Color,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Builder(builder: (context) {
-                          String text = 'qxzyx'.tr();
-
-                          if (_seletedCates.isNotEmpty) {
-                            text = _seletedCates.map((e) => e.name).join(',');
-                          }
-                          return Text(
-                            text,
-                            style: _seletedCates.isEmpty
-                                ? TextStyle(
-                                    color: const Color.fromRGBO(0, 0, 0, 0.35),
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w500,
-                                  )
-                                : MyTheme.white04_10,
-                          );
-                        }),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ]),
-            SizedBox(height: 15.w),
-            Row(children: [
-              SizedBox(
-                width: 80.w,
-                child: Center(
-                  child: Text(
-                    '${'nl'.tr()}:',
-                    style: MyTheme.white08_15,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 12.5.w),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.w),
-                    color: MyTheme.white08Color,
-                  ),
-                  child: TextField(
-                    onChanged: (value) {
-                      girlAge = value;
-                    },
-                    style: MyTheme.white04_10,
-                    cursorColor: MyTheme.white08Color,
-                    inputFormatters: [
-                      FilteringTextInputFormatter(RegExp('[0-9]'),
-                          allow: true),
-                      LengthLimitingTextInputFormatter(4),
-                    ],
-                    keyboardType: TextInputType.number,
-                    textInputAction: TextInputAction.done,
-                    decoration: CommonUtils.customInputStyle(
-                      horizontal: 15.w,
-                      hit: 'qsrnh'.tr() + 'nl'.tr(),
-                    ),
-                  ),
-                ),
-              ),
-            ]),
-            SizedBox(height: 15.w),
-            Row(children: [
-              SizedBox(
-                width: 80.w,
-                child: Center(
-                  child: Text(
-                    '${'sg'.tr()}:',
-                    style: MyTheme.white08_15,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 12.5.w),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.w),
-                    color: MyTheme.white08Color,
-                  ),
-                  child: TextField(
-                    onChanged: (value) {
-                      girlHeight = value;
-                    },
-                        style: MyTheme.white04_10,
-                    cursorColor: MyTheme.white08Color,
-                    inputFormatters: [
-                      FilteringTextInputFormatter(RegExp('[0-9]'),
-                          allow: true),
-                      LengthLimitingTextInputFormatter(4),
-                    ],
-                    keyboardType: TextInputType.number,
-                    textInputAction: TextInputAction.done,
-                    decoration: CommonUtils.customInputStyle(
-                      horizontal: 15.w,
-                      hit: '${'qsrnh'.tr()}${'sg'.tr()} cm'),
-                    ),
-                ),
-              ),
-            ]),
-            SizedBox(height: 15.w),
-            Row(children: [
-              SizedBox(
-                width: 80.w,
-                child: Center(
-                  child: Text(
-                    '${'tz'.tr()}:',
-                    style: MyTheme.white08_15,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 12.5.w),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.w),
-                    color: MyTheme.white08Color,
-                  ),
-                  child: TextField(
-                    onChanged: (value) {
-                      girlWeight = value;
-                    },
-                    style: MyTheme.white04_10,
-                    cursorColor: MyTheme.white08Color,
-                    inputFormatters: [
-                      FilteringTextInputFormatter(RegExp('[0-9]'),
-                          allow: true),
-                      LengthLimitingTextInputFormatter(4),
-                    ],
-                    keyboardType: TextInputType.number,
-                    textInputAction: TextInputAction.done,
-                    decoration: CommonUtils.customInputStyle(
-                      horizontal: 15.w,
-                      hit: '${'qsrnh'.tr()}${'tz'.tr()} kg',
-                    ),
-                  ),
-                ),
-              ),
-            ]),
-            SizedBox(height: 15.w),
-            Row(children: [
-              SizedBox(
-                width: 80.w,
-                child: Center(
-                  child: Text(
-                    '${'bzcup'.tr()}:',
-                    style: MyTheme.white08_15,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 12.5.w),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.w),
-                    color: MyTheme.white08Color,
-                  ),
-                  child: TextField(
-                    onChanged: (value) {
-                      girlCup = value;
-                    },
-                    style: MyTheme.white04_10,
-                    cursorColor: MyTheme.white08Color,
-                    textInputAction: TextInputAction.done,
-                    decoration: CommonUtils.customInputStyle(
-                      horizontal: 15.w,
-                      hit: 'qsrnh'.tr() + 'bzcup'.tr(),
-                    ),
-                  ),
-                ),
-              ),
-            ]),
-            SizedBox(height: 15.w),
-            Row(children: [
-              SizedBox(
-                width: 80.w,
-                child: Center(
-                  child: Text(
-                    '${'fybz'.tr()}:',
-                    style: MyTheme.white08_15,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 12.55.w),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.w),
-                    color: MyTheme.white08Color,
-                  ),
-                  child: TextField(
-                    onChanged: (value) {
-                      girlPrice = value;
-                    },
-                    style: MyTheme.white04_10,
-                    cursorColor: MyTheme.white08Color,
-                    textInputAction: TextInputAction.done,
-                    decoration: CommonUtils.customInputStyle(
-                      horizontal: 15.w,
-                      hit: 'qsrfybz'.tr(),
-                    ),
-                  ),
-                ),
-              ),
-            ]),
-            SizedBox(height: 15.w),
-            Row(children: [
-              SizedBox(
-                width: 80.w,
-                child: Center(
-                  child: Text(
-                    '${'fwsj'.tr()}:',
-                    style: MyTheme.white08_15,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 12.5.w),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.w),
-                      color: MyTheme.white08Color,
-                  ),
-                  child: TextField(
-                    onChanged: (value) {
-                      girlTime = value;
-                    },
-                    style: MyTheme.white04_10,
-                    cursorColor: MyTheme.white08Color,
-                    textInputAction: TextInputAction.done,
-                    decoration: CommonUtils.customInputStyle(
-                      horizontal: 10.w,
-                      hit: 'qsrfwsj'.tr(),
-                    ),
-                  ),
-                ),
-              ),
-            ]),
-            SizedBox(height: 15.w),
-            Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              SizedBox(
-                width: 80.w,
-                child: Center(
-                  child: Text(
-                    '${'fwxm'.tr()}:',
-                    style: MyTheme.white08_15,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: SizedBox(
-                  height: 150.w,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.w),
-                      color: MyTheme.white08Color,
-                    ),
-                    child: TextField(
-                      keyboardType: TextInputType.multiline,
-                      maxLines: 10,
-                      autofocus: false,
-                      onChanged: (value) {
-                        girlOption = value;
-                      },
-                      style: MyTheme.white04_10,
-                      cursorColor: MyTheme.white08Color,
-                      textInputAction: TextInputAction.done,
-                      decoration: CommonUtils.customInputStyle(
-                        horizontal: 15.w,
-                        hit: 'qsrfwxm'.tr(),
-                        vertical: 8,
+    return ScreenBackground(
+      child: Scaffold(
+        appBar: MyAppBar(title: 'fbll'.tr(context: context)),
+        body: GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: EdgeInsets.symmetric(
+              horizontal: MyTheme.pagePadding,
+              vertical: 10.w
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 15.w),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 80.w,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            '*',
+                            style: TextStyle(
+                              color: MyTheme.primaryColor,
+                              fontSize: 15.sp,
+                              overflow: TextOverflow.ellipsis,
+                              fontWeight: FontWeight.w500,
+                              decoration: TextDecoration.none,
+                              height: 2,
+                            ),
+                          ),
+                          SizedBox(width: 5.w),
+                          Text(
+                            '${'fbnc'.tr()}',
+                            style: MyTheme.white16medium,
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                ),
-              ),
-            ]),
-            SizedBox(height: 15.w),
-            Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              SizedBox(
-                width: 80.w,
-                child: Center(
-                  child: Text(
-                    '${'fwjs'.tr()}:',
-                    style: MyTheme.white08_15,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: SizedBox(
-                  height: 150.w,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.w),
-                      color: MyTheme.white08Color,
-                    ),
-                    child: TextField(
-                      keyboardType: TextInputType.multiline,
-                      maxLines: 10,
-                      autofocus: false,
-                      onChanged: (value) {
-                        girlIntro = value;
-                      },
-                      style: MyTheme.white04_10,
-                      cursorColor: MyTheme.white08Color,
-                      textInputAction: TextInputAction.done,
-                      decoration: CommonUtils.customInputStyle(
-                        horizontal: 15.w,
-                        hit: 'qsrfwjs'.tr(),
-                        vertical: 8,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ]),
-            SizedBox(height: 15.w),
-            Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-              Text(
-                '*',
-                style: TextStyle(
-                  color: MyTheme.white08Color,
-                  fontSize: 15.sp,
-                  overflow: TextOverflow.ellipsis,
-                  fontWeight: FontWeight.w500,
-                  decoration: TextDecoration.none,
-                  height: 2,
-                ),
-              ),
-              SizedBox(width: 5.w),
-              Text(
-                '${'lxfs'.tr()}:',
-                  style: MyTheme.white08_15,
-              ),
-              SizedBox(width: 10.w),
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 12.5.w),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.w),
-                    color: MyTheme.white08Color,
-                  ),
-                  child: TextField(
-                    onChanged: (value) {
-                      girlContact = value;
-                    },
-                    style: MyTheme.white04_10,
-                    cursorColor: MyTheme.white08Color,
-                    textInputAction: TextInputAction.done,
-                    decoration: CommonUtils.customInputStyle(
-                      horizontal: 15.w,
-                      hit: 'qsrlxfs'.tr(),
-                    ),
-                  ),
-                ),
-              ),
-            ]),
-            SizedBox(height: 15.w),
-            Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-              Text(
-                '*',
-                style: TextStyle(
-                  color: MyTheme.white08Color,
-                  fontSize: 15.sp,
-                  overflow: TextOverflow.ellipsis,
-                  fontWeight: FontWeight.w500,
-                  decoration: TextDecoration.none,
-                  height: 2,
-                ),
-              ),
-              SizedBox(width: 5.w),
-              Text(
-                '${'sctp'.tr()}:',
-                style: MyTheme.white08_15,
-              ),
-            ]),
-            SizedBox(height: 7.5.w),
-            GridView.count(
-              padding: EdgeInsets.zero,
-              crossAxisCount: 3,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              mainAxisSpacing: 10.w,
-              crossAxisSpacing: 10.w,
-              children: upList.map((e) {
-                Widget w = Stack(children: [
-                  Padding(
-                    padding: EdgeInsets.only(top: 9.w, right: 9.w),
-                    child: Container(
-                      width: double.infinity,
-                      height: double.infinity,
-                      clipBehavior: Clip.hardEdge,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5.w),
-                      ),
-                      child: MyImage.network(
-                        e['url'] ?? '',
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () {
-                        upList.remove(e);
-                        if (mounted) setState(() {});
-                      },
-                      child: MyImage.asset(
-                        MyImagePaths.appIssueCancelIcon,
-                        width: 18.w,
-                        height: 18.w,
-                      ),
-                    ),
-                  )
-                ]);
-                return w;
-              }).toList()
-                ..add(
-                  upList.length == picLimit
-                      ? const SizedBox()
-                      : GestureDetector(
-                          onTap: imagePickerAssets,
-                          child: const MyImage.asset(MyImagePaths.appIssueAdd),
+                    SizedBox(width: 10.w),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 5.w),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.w),
+                          color: MyTheme.white02Color,
                         ),
+                        child: TextField(
+                          onChanged: (value) {
+                            girlName = value;
+                          },
+                          style: MyTheme.white12,
+                          cursorColor: MyTheme.white08Color,
+                          textInputAction: TextInputAction.done,
+                          decoration: CommonUtils.customInputStyle(
+                            horizontal: 5.w,
+                            hit: 'qsrnh'.tr() + 'nc'.tr(),
+                            style: MyTheme.white04_12,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
+                SizedBox(height: 15.w),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 80.w,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            '*',
+                            style: TextStyle(
+                              color: MyTheme.primaryColor,
+                              fontSize: 15.sp,
+                              overflow: TextOverflow.ellipsis,
+                              fontWeight: FontWeight.w500,
+                              decoration: TextDecoration.none,
+                              height: 2,
+                            ),
+                          ),
+                          SizedBox(width: 5.w),
+                          Text(
+                            '${'tdzl'.tr()}',
+                            style: MyTheme.white16medium,
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 10.w),
+                    Expanded(child: SizedBox()),
+                  ],
+                ),
+                SizedBox(height: 10.w),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 80.w,
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          '${'liex'.tr()}',
+                          style: MyTheme.white255_15,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10.w),
+                    Expanded(
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onTap: () {
+                          showClass(context);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.w),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.w),
+                            color: MyTheme.white02Color,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Builder(builder: (context) {
+                                String text = 'qxzyx'.tr();
+
+                                if (_seletedCates.isNotEmpty) {
+                                  text = _seletedCates.map((e) => e.name).join(',');
+                                }
+                                return Text(
+                                  text,
+                                  style: _seletedCates.isEmpty
+                                      ? MyTheme.white04_12
+                                      : MyTheme.white12,
+                                );
+                              }),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 15.w),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 80.w,
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          '${'nl'.tr()}',
+                          style: MyTheme.white255_15,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10.w),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 5.w),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.w),
+                          color: MyTheme.white02Color,
+                        ),
+                        child: TextField(
+                          onChanged: (value) {
+                            girlAge = value;
+                          },
+                          style: MyTheme.white12,
+                          cursorColor: MyTheme.white08Color,
+                          inputFormatters: [
+                            FilteringTextInputFormatter(RegExp('[0-9]'),
+                                allow: true),
+                            LengthLimitingTextInputFormatter(4),
+                          ],
+                          keyboardType: TextInputType.number,
+                          textInputAction: TextInputAction.done,
+                          decoration: CommonUtils.customInputStyle(
+                            horizontal: 5.w,
+                            hit: 'qsrnh'.tr() + 'nl'.tr(),
+                            style: MyTheme.white04_12,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 15.w),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 80.w,
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          '${'sg'.tr()}',
+                          style: MyTheme.white255_15,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10.w),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 5.w),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.w),
+                          color: MyTheme.white02Color,
+                        ),
+                        child: TextField(
+                          onChanged: (value) {
+                            girlHeight = value;
+                          },
+                          style: MyTheme.white12,
+                          cursorColor: MyTheme.white08Color,
+                          inputFormatters: [
+                            FilteringTextInputFormatter(RegExp('[0-9]'),
+                                allow: true),
+                            LengthLimitingTextInputFormatter(4),
+                          ],
+                          keyboardType: TextInputType.number,
+                          textInputAction: TextInputAction.done,
+                          decoration: CommonUtils.customInputStyle(
+                            horizontal: 5.w,
+                            hit: '${'qsrnh'.tr()}${'sg'.tr()} cm',
+                            style: MyTheme.white04_12,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 15.w),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 80.w,
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          '${'tz'.tr()}',
+                          style: MyTheme.white255_15,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10.w),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 5.w),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.w),
+                          color: MyTheme.white02Color,
+                        ),
+                        child: TextField(
+                          onChanged: (value) {
+                            girlWeight = value;
+                          },
+                          style: MyTheme.white12,
+                          cursorColor: MyTheme.white08Color,
+                          inputFormatters: [
+                            FilteringTextInputFormatter(RegExp('[0-9]'),
+                                allow: true),
+                            LengthLimitingTextInputFormatter(4),
+                          ],
+                          keyboardType: TextInputType.number,
+                          textInputAction: TextInputAction.done,
+                          decoration: CommonUtils.customInputStyle(
+                            horizontal: 5.w,
+                            hit: '${'qsrnh'.tr()}${'tz'.tr()} kg',
+                            style: MyTheme.white04_12,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 15.w),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 80.w,
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          '${'bzcup'.tr()}',
+                          style: MyTheme.white255_15,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10.w),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 5.w),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.w),
+                          color: MyTheme.white02Color,
+                        ),
+                        child: TextField(
+                          onChanged: (value) {
+                            girlCup = value;
+                          },
+                          style: MyTheme.white12,
+                          cursorColor: MyTheme.white08Color,
+                          textInputAction: TextInputAction.done,
+                          decoration: CommonUtils.customInputStyle(
+                            horizontal: 5.w,
+                            hit: 'qsrnh'.tr() + 'bzcup'.tr(),
+                            style: MyTheme.white04_12,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 15.w),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 80.w,
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          '${'fybz'.tr()}',
+                          style: MyTheme.white255_15,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10.w),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 5.w),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.w),
+                          color: MyTheme.white02Color,
+                        ),
+                        child: TextField(
+                          onChanged: (value) {
+                            girlPrice = value;
+                          },
+                          style: MyTheme.white12,
+                          cursorColor: MyTheme.white08Color,
+                          textInputAction: TextInputAction.done,
+                          decoration: CommonUtils.customInputStyle(
+                            horizontal: 5.w,
+                            hit: 'qsrfybz'.tr(),
+                            style: MyTheme.white04_12,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 15.w),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 80.w,
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          '${'fwsj'.tr()}',
+                          style: MyTheme.white255_15,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10.w),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 5.w),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.w),
+                          color: MyTheme.white02Color,
+                        ),
+                        child: TextField(
+                          onChanged: (value) {
+                            girlTime = value;
+                          },
+                          style: MyTheme.white12,
+                          cursorColor: MyTheme.white08Color,
+                          textInputAction: TextInputAction.done,
+                          decoration: CommonUtils.customInputStyle(
+                            horizontal: 5.w,
+                            hit: 'qsrfwsj'.tr(),
+                            style: MyTheme.white04_12,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 15.w),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 80.w,
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          '${'fwxm'.tr()}',
+                          style: MyTheme.white255_15,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10.w),
+                    Expanded(
+                      child: SizedBox(
+                        height: 150.w,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.w),
+                            color: MyTheme.white02Color,
+                          ),
+                          child: TextField(
+                            keyboardType: TextInputType.multiline,
+                            maxLines: 10,
+                            autofocus: false,
+                            onChanged: (value) {
+                              girlOption = value;
+                            },
+                            style: MyTheme.white12,
+                            cursorColor: MyTheme.white08Color,
+                            textInputAction: TextInputAction.done,
+                            decoration: CommonUtils.customInputStyle(
+                              horizontal: 5.w,
+                              hit: 'qsrfwxm'.tr(),
+                              vertical: 8,
+                              style: MyTheme.white04_12,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 15.w),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 80.w,
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          '${'fwjs'.tr()}',
+                          style: MyTheme.white255_15,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10.w),
+                    Expanded(
+                      child: SizedBox(
+                        height: 150.w,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.w),
+                            color: MyTheme.white02Color,
+                          ),
+                          child: TextField(
+                            keyboardType: TextInputType.multiline,
+                            maxLines: 10,
+                            autofocus: false,
+                            onChanged: (value) {
+                              girlIntro = value;
+                            },
+                            style: MyTheme.white12,
+                            cursorColor: MyTheme.white08Color,
+                            textInputAction: TextInputAction.done,
+                            decoration: CommonUtils.customInputStyle(
+                              horizontal: 5.w,
+                              hit: 'qsrfwjs'.tr(),
+                              vertical: 8,
+                              style: MyTheme.white04_12,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 15.w),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 80.w,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            '*',
+                            style: TextStyle(
+                              color: MyTheme.white08Color,
+                              fontSize: 15.sp,
+                              overflow: TextOverflow.ellipsis,
+                              fontWeight: FontWeight.w500,
+                              decoration: TextDecoration.none,
+                              height: 2,
+                            ),
+                          ),
+                          SizedBox(width: 5.w),
+                          Text(
+                            '${'lxfs'.tr()}',
+                            style: MyTheme.white255_15,
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 10.w),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 5.w),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.w),
+                          color: MyTheme.white02Color,
+                        ),
+                        child: TextField(
+                          onChanged: (value) {
+                            girlContact = value;
+                          },
+                          style: MyTheme.white12,
+                          cursorColor: MyTheme.white08Color,
+                          textInputAction: TextInputAction.done,
+                          decoration: CommonUtils.customInputStyle(
+                            horizontal: 5.w,
+                            hit: 'qsrlxfs'.tr(),
+                            style: MyTheme.white04_12,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 15.w),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 80.w,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            '*',
+                            style: TextStyle(
+                              color: MyTheme.white08Color,
+                              fontSize: 15.sp,
+                              overflow: TextOverflow.ellipsis,
+                              fontWeight: FontWeight.w500,
+                              decoration: TextDecoration.none,
+                              height: 2,
+                            ),
+                          ),
+                          SizedBox(width: 5.w),
+                          Text(
+                            '${'sctp'.tr()}',
+                            style: MyTheme.white255_15,
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 10.w),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 7.5.w),
+                          GridView.count(
+                            padding: EdgeInsets.zero,
+                            crossAxisCount: 3,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            mainAxisSpacing: 10.w,
+                            crossAxisSpacing: 10.w,
+                            children: upList.map((e) {
+                              Widget w = Stack(children: [
+                                Padding(
+                                  padding: EdgeInsets.only(top: 9.w, right: 9.w),
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                    clipBehavior: Clip.hardEdge,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5.w),
+                                    ),
+                                    child: MyImage.network(
+                                      e['url'] ?? '',
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  top: 0,
+                                  right: 0,
+                                  child: GestureDetector(
+                                    behavior: HitTestBehavior.translucent,
+                                    onTap: () {
+                                      upList.remove(e);
+                                      if (mounted) setState(() {});
+                                    },
+                                    child: MyImage.asset(
+                                      MyImagePaths.appIssueCancelIcon,
+                                      width: 18.w,
+                                      height: 18.w,
+                                    ),
+                                  ),
+                                )
+                              ]);
+                              return w;
+                            }).toList()
+                              ..add(
+                                upList.length == picLimit
+                                    ? const SizedBox()
+                                    : GestureDetector(
+                                        onTap: imagePickerAssets,
+                                        child: const MyImage.asset(MyImagePaths.appIssueAdd),
+                                      ),
+                              ),
+                          ),
+                          SizedBox(height: 10.w),
+                          Text(
+                            'zuscazpbcgbm'
+                                .tr()
+                                .replaceAll('a', '$picLimit')
+                                .replaceAll('b', '2'),
+                            style: MyTheme.white04_14,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 40.w),
+                MyButton.gradient(
+                  minimumSize: Size.fromHeight(40.w),
+                  onPressed: () async {
+                    uploadData();
+                  },
+                  borderRadius: 20.w,
+                  text: 'ljfb'.tr(context: context),
+                ),
+                SizedBox(height: 100.w)
+              ],
             ),
-            SizedBox(height: 10.w),
-            Row(children: [
-              Text(
-                'zuscazpbcgbm'
-                    .tr()
-                    .replaceAll('a', '$picLimit')
-                    .replaceAll('b', '2'),
-                style: MyTheme.white04_14,
-              ),
-            ]),
-            SizedBox(height: 40.w),
-            MyButton.gradient(
-              minimumSize: Size.fromHeight(40.w),
-              onPressed: () async {
-                uploadData();
-              },
-              borderRadius: 8,
-              text: 'ljfb'.tr(context: context),
-            ),
-            SizedBox(height: 100.w)
-          ]),
+          ),
         ),
       ),
     );
