@@ -4,22 +4,32 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jygf/app_global.dart';
 import 'package:jygf/domain/api_validator.dart';
 import 'package:jygf/domain/domain.dart';
+import 'package:jygf/domain/model/album_model.dart';
 import 'package:jygf/domain/model/cartoon/cartoon_model.dart';
+import 'package:jygf/domain/model/chat/chat_list_model.dart';
+import 'package:jygf/domain/model/comic_model.dart';
 import 'package:jygf/domain/model/feed/feed_model.dart';
 import 'package:jygf/domain/model/game/game_model.dart';
 import 'package:jygf/domain/model/live_model.dart';
+import 'package:jygf/domain/model/novel_model.dart';
 import 'package:jygf/domain/model/post_model.dart';
 import 'package:jygf/domain/model/vlog_model.dart';
 import 'package:jygf/domain/model/voice_model.dart';
+import 'package:jygf/domain/remote_domain/domains/album.dart';
 import 'package:jygf/domain/remote_domain/domains/asmr.dart';
 import 'package:jygf/domain/remote_domain/domains/cartoon.dart';
+import 'package:jygf/domain/remote_domain/domains/comic.dart';
 import 'package:jygf/domain/remote_domain/domains/game.dart';
 import 'package:jygf/domain/remote_domain/domains/live.dart';
+import 'package:jygf/domain/remote_domain/domains/novel.dart';
 import 'package:jygf/ui_layer/const.dart';
 import 'package:jygf/ui_layer/notifiers/home_config_notifier.dart';
 import 'package:jygf/ui_layer/router/routes.dart';
+import 'package:jygf/ui_layer/screens/acg/comic/card/comic_item_card.dart';
+import 'package:jygf/ui_layer/screens/acg/novel/card/novel_item_card.dart';
 import 'package:jygf/ui_layer/screens/asmr/card/voice_gird_card.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/cartoon/card/video_card.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/chat/list_card.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/feed/card/video_card.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/feed/feed_card.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/game/card/game_card.dart';
@@ -32,8 +42,11 @@ import 'package:jygf/ui_layer/screens/common_widgets/screen_background.dart';
 import 'package:jygf/ui_layer/screens/live_video/live_card/live_video_card.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/screens/vlog/card/vlog_card.dart';
+import 'package:jygf/ui_layer/screens/yellow_picture/card/yellow_picture_item_card.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:provider/provider.dart';
+
+import '../../../../domain/remote_domain/domains/chat.dart';
 
 class SearchResultScreen extends StatefulWidget {
   const SearchResultScreen({super.key, required this.title});
@@ -51,6 +64,73 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
   Widget build(BuildContext context) {
     final openLive = homeConfigNotifier.config.openLive == 1 ? true : false;
 
+    final titles = <String>[
+      'shp'.tr(context: context), 
+      'dsp'.tr(context: context), 
+      'tiezt'.tr(context: context), 
+      'xx黑料xx', // 黑料 
+      'meit'.tr(context: context), 
+      'dman'.tr(), 
+      'mh'.tr(context: context), 
+      'xs'.tr(context: context), 
+      'hyou'.tr(), 
+      if (openLive) 'zhib'.tr(context: context), 
+      'ASMR', 
+      'yuep'.tr(context: context), 
+      'luol'.tr(context: context), 
+      'zhoz'.tr(context: context),
+      '查档', //查档
+    ];
+
+    final views = <Widget>[
+      KeepAliveWrapper(
+        child: _VideoView(word: widget.title),
+      ),
+      KeepAliveWrapper(
+        child: _VlogVideoView(word: widget.title),
+      ),
+      KeepAliveWrapper(
+        child: _TieztView(word: widget.title),
+      ),
+      KeepAliveWrapper(
+        child: _PlaceholderView(placeholderText: 'xx黑料xx'),
+      ),
+      KeepAliveWrapper(
+        child: _YellowPictureView(word: widget.title),
+      ),
+      KeepAliveWrapper(
+        child: _CartoonView(word: widget.title),
+      ),
+      KeepAliveWrapper(
+        child: _ComicView(word: widget.title),
+      ),
+      KeepAliveWrapper(
+        child: _NovelView(word: widget.title),
+      ),
+      KeepAliveWrapper(
+        child: _GameView(word: widget.title),
+      ),
+      if (openLive)
+        KeepAliveWrapper(
+          child: _LiveVideoView(word: widget.title),
+        ),
+      KeepAliveWrapper(
+        child: _ASMRView(word: widget.title),
+      ),
+      KeepAliveWrapper(
+        child: _DataView(word: widget.title),
+      ),
+      KeepAliveWrapper(
+        child: _ChatView(word: widget.title),
+      ),
+      KeepAliveWrapper(
+        child: _TorrentView(word: widget.title),
+      ),
+      KeepAliveWrapper(
+        child: _ChaDangView(word: widget.title),
+      ),
+    ];
+
     return ScreenBackground(
       child: Scaffold(
         appBar: MyAppBar(
@@ -63,43 +143,8 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
           ),
           tabBarHeight: 32.w,
           isScrollable: true,
-          titles: [
-            'shp'.tr(context: context),
-            'tiezt'.tr(context: context),
-            if (openLive) 'zhib'.tr(context: context),
-            'ASMR',
-            'zhoz'.tr(context: context),
-            'dsp'.tr(context: context),
-            'dman'.tr(),
-            'hyou'.tr(),
-          ],
-          views: [
-            KeepAliveWrapper(
-              child: _VideoView(word: widget.title),
-            ),
-            KeepAliveWrapper(
-              child: _TieztView(word: widget.title),
-            ),
-            if (openLive)
-              KeepAliveWrapper(
-                child: _LiveVideoView(word: widget.title),
-              ),
-            KeepAliveWrapper(
-              child: _ASMRView(word: widget.title),
-            ),
-            KeepAliveWrapper(
-              child: _TorrentView(word: widget.title),
-            ),
-            KeepAliveWrapper(
-              child: _VlogVideoView(word: widget.title),
-            ),
-            KeepAliveWrapper(
-              child: _CartoonView(word: widget.title),
-            ),
-            KeepAliveWrapper(
-              child: _GameView(word: widget.title),
-            ),
-          ],
+          titles: titles,
+          views: views,
         ),
       ),
     );
@@ -164,6 +209,7 @@ class _TieztViewState extends State<_TieztView> {
       page: page,
       limit: pageSize,
       word: widget.word,
+      type: '1',
     );
 
     return result.data!;
@@ -480,6 +526,259 @@ class _GameViewState extends State<_GameView> {
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,
         pageSize: pageSize,
+      ),
+    );
+  }
+}
+//约炮
+class _DataView extends StatefulWidget {
+  const _DataView({required this.word});
+
+  final String word;
+
+  @override
+  State<_DataView> createState() => _DataViewState();
+}
+
+class _DataViewState extends State<_DataView> {
+  late final communityDomain = context.read<CommunityDomain>();
+
+  Future<List<PostModel>> _getData({
+    required int page,
+    required int pageSize,
+  }) async {
+    final result = await communityDomain.searchCommunity(
+      page: page,
+      limit: pageSize,
+      word: widget.word,
+      type: '1',
+    );
+
+    return result.data!;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MyListView.list(
+      contentPadding: 15.w,
+      itemBuilder: (context, item, index) => PostCard.community(data: item),
+      onFetchingMore: (currentPage, pageSize) => _getData(
+        page: currentPage,
+        pageSize: pageSize,
+      ),
+    );
+  }
+}
+
+//查档
+class _ChaDangView extends StatefulWidget {
+  const _ChaDangView({required this.word});
+
+  final String word;
+
+  @override
+  State<_ChaDangView> createState() => _ChaDangViewState();
+}
+
+class _ChaDangViewState extends State<_ChaDangView> {
+  late final communityDomain = context.read<CommunityDomain>();
+
+  Future<List<PostModel>> _getData({
+    required int page,
+    required int pageSize,
+  }) async {
+    final result = await communityDomain.searchCommunity(
+      page: page,
+      limit: pageSize,
+      word: widget.word,
+      type: '3',
+    );
+
+    return result.data!;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MyListView.list(
+      contentPadding: 15.w,
+      itemBuilder: (context, item, index) => PostCard.community(data: item),
+      onFetchingMore: (currentPage, pageSize) => _getData(
+        page: currentPage,
+        pageSize: pageSize,
+      ),
+    );
+  }
+}
+//美图
+class _YellowPictureView extends StatefulWidget {
+  const _YellowPictureView({required this.word});
+
+  final String word;
+
+  @override
+  State<_YellowPictureView> createState() => _YellowPictureViewState();
+}
+
+class _YellowPictureViewState extends State<_YellowPictureView> {
+  late final albumDomain = context.read<AlbumDomain>();
+
+  Future<List<AlbumItemsModel>> _getData({
+    required int page,
+    required int pageSize,
+  }) async {
+    final result = await albumDomain.albumSearchList(
+      page: page,
+      limit: pageSize,
+      word: widget.word,
+    );
+
+    return result.data!;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MyListView.list(
+      contentPadding: 15.w,
+      itemBuilder: (context, item, index) => YellowPictureItemCard(data: item),
+      onFetchingMore: (currentPage, pageSize) => _getData(
+        page: currentPage,
+        pageSize: pageSize,
+      ),
+    );
+  }
+}
+//漫画
+class _ComicView extends StatefulWidget {
+  const _ComicView({required this.word});
+
+  final String word;
+
+  @override
+  State<_ComicView> createState() => _ComicViewState();
+}
+
+class _ComicViewState extends State<_ComicView> {
+  late final comicDomain = context.read<ComicDomain>();
+
+  Future<List<ComicItemsModel>> _getData({
+    required int page,
+    required int pageSize,
+  }) async {
+    final result = await comicDomain.comicSearchList(
+      page: page,
+      limit: pageSize,
+      word: widget.word,
+    );
+
+    return result.data!;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MyListView.list(
+      contentPadding: 15.w,
+      itemBuilder: (context, item, index) => ComicItemCard(data: item),
+      onFetchingMore: (currentPage, pageSize) => _getData(
+        page: currentPage,
+        pageSize: pageSize,
+      ),
+    );
+  }
+}
+//小说
+class _NovelView extends StatefulWidget {
+  const _NovelView({required this.word});
+
+  final String word;
+
+  @override
+    State<_NovelView> createState() => _NovelViewState();
+}
+
+class _NovelViewState extends State<_NovelView> {
+  late final novelDomain = context.read<NovelDomain>();
+
+  Future<List<NovelItemsModel>> _getData({
+    required int page,
+    required int pageSize,
+  }) async {
+    final result = await novelDomain.novelSearchList(
+      page: page,
+      limit: pageSize,
+      word: widget.word,
+    );
+
+    return result.data!;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MyListView.list(
+      contentPadding: 15.w,
+      itemBuilder: (context, item, index) => NovelItemCard(data: item),
+      onFetchingMore: (currentPage, pageSize) => _getData(
+        page: currentPage,
+        pageSize: pageSize,
+      ),
+    );
+  }
+}
+//裸聊
+class _ChatView extends StatefulWidget {
+  const _ChatView({required this.word});
+
+  final String word;
+
+  @override
+    State<_ChatView> createState() => _ChatViewState();
+}
+
+class _ChatViewState extends State<_ChatView> {
+  late final chatDomain = context.read<ChatDomain>();
+
+  Future<List<ChatListChatModel>> _getData({
+    required int page,
+    required int pageSize,
+  }) async {
+    final result = await chatDomain.chatSearchList(
+      page: page,
+      limit: pageSize,
+      word: widget.word,
+    );
+
+    return result.data!;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MyListView.list(
+      contentPadding: 15.w,
+      itemBuilder: (context, item, index) => ChatListCard(data: item),
+      onFetchingMore: (currentPage, pageSize) => _getData(
+        page: currentPage,
+        pageSize: pageSize,
+      ),
+    );
+  }
+}
+
+class _PlaceholderView extends StatelessWidget {
+  const _PlaceholderView({required this.placeholderText});
+
+  final String placeholderText;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(20.w),
+        child: Text(
+          placeholderText,
+          style: TextStyle(
+            fontSize: 16.sp,
+            color: MyTheme.white25506Color,
+          ),
+        ),
       ),
     );
   }
