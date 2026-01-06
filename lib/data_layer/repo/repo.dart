@@ -36,6 +36,7 @@ import 'package:jygf/domain/model/chat/chat_detail_model.dart';
 import 'package:jygf/domain/model/chat/chat_index_model.dart';
 import 'package:jygf/domain/model/chat/chat_list_model.dart';
 import 'package:jygf/domain/model/comic_model.dart';
+import 'package:jygf/domain/model/community/community_model.dart';
 import 'package:jygf/domain/model/live_model.dart';
 import 'package:jygf/domain/model/live_video_detail_model.dart';
 import 'package:jygf/domain/model/novel_model.dart';

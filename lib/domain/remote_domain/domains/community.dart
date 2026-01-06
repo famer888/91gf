@@ -1,3 +1,4 @@
+import 'package:jygf/domain/model/community/community_model.dart';
 import 'package:jygf/domain/model/post/circle/circle_post_nav_model.dart';
 import 'package:jygf/domain/model/posts_with_banners_model.dart';
 
@@ -14,6 +15,20 @@ import '../../model/topics_with_banners_model.dart';
 import '../../type_def.dart';
 
 abstract class CommunityDomain {
+
+  /// 分类Tab
+  AsyncResult<List<CommunityCategoryTabModel>> getCategoryTabList();
+
+  /// 社区列表排序
+  AsyncResult<CommunityWithBannerModel> communitySortList({
+    required int id,
+    required String sort,
+    required int page,
+    required int limit,
+  });
+
+
+
   /// 话题列表
   AsyncResult<TopicsWithBannersModel> postList({
     required int page,
@@ -25,14 +40,6 @@ abstract class CommunityDomain {
 
   /// 获取帖子
   AsyncResult<List<CommunityNavModel>> reqGetPostNav({String type = ''});
-
-  /// 社区列表排序
-  AsyncResult<CommunityWithBannerModel> communitySortList({
-    required int id,
-    required String sort,
-    required int page,
-    required int limit,
-  });
 
   /// 社区列表排序
   AsyncResult<CommunityWithBannerModel> communityAiList({
@@ -65,7 +72,7 @@ abstract class CommunityDomain {
   AsyncJson reqGetPostURL({required int id});
 
   /// 帖子收藏/取消收藏
-  AsyncResult communityTopicFavorite({required String id});
+  AsyncResult communityTopicFavorite({required String id, required int type, required int requestType});
 
   /// 评论详情列表
   AsyncResult<List<ReviewData>> communityPostCommentsSecond({

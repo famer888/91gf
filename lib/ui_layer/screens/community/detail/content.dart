@@ -224,7 +224,7 @@ class _LikeCollectShareAreaState extends State<_LikeCollectShareArea> {
     _isChangeCollectLoading = true;
 
     try {
-      final result = await _domain.communityTopicFavorite(id: '${widget.data.id}');
+      final result = await _domain.communityTopicFavorite(id: '${widget.data.id}', type: 14, requestType: 1);
       if (result.status == 1) {
         final oldValue = widget.data.isFavorite ?? 0;
         final newValue = oldValue == 0 ? 1 : 0;
@@ -248,9 +248,9 @@ class _LikeCollectShareAreaState extends State<_LikeCollectShareArea> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           PostLikeButton(isLiked: widget.data.isLike == 1, onTap: _changeLike),
-          SizedBox(width: 20.w),
+          SizedBox(width: 16.w),
           PostCollectButton(isCollected: widget.data.isFavorite == 1, onTap: _changeCollect),
-          SizedBox(width: 20.w),
+          SizedBox(width: 16.w),
           PostShareButton(onTap: () {
             const MineShareToUserRoute().push(context);
           }),

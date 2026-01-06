@@ -24,9 +24,8 @@ class PostLikeButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           MyImage.asset(
-            isLiked
-                ? MyImagePaths.appThumbUpOnIcon
-                : MyImagePaths.appThumbUpOffIcon,
+            isLiked ? MyImagePaths.appThumbUpOnIcon : MyImagePaths.appThumbUpOffIcon,
+            iconColor: isLiked ? MyTheme.primaryColor : MyTheme.whiteColor,
             width: 18.w,
             height: 18.w,
           ),
@@ -43,8 +42,7 @@ class PostLikeButton extends StatelessWidget {
 }
 
 class PostCollectButton extends StatelessWidget {
-  const PostCollectButton(
-      {super.key, required this.isCollected, required this.onTap});
+  const PostCollectButton({super.key, required this.isCollected, required this.onTap});
 
   final bool isCollected;
   final VoidCallback onTap;
@@ -61,17 +59,14 @@ class PostCollectButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           MyImage.asset(
-            isCollected
-                ? MyImagePaths.appCollectOn
-                : MyImagePaths.appCollectOff,
+            isCollected ? MyImagePaths.appCollectOn : MyImagePaths.appCollectOff,
+            iconColor: isCollected ? MyTheme.primaryColor : MyTheme.whiteColor,
             width: 18.7.w,
             height: 18.7.w,
           ),
           SizedBox(width: 2.w),
           Text(
-            isCollected
-                ? 'ysc'.tr(context: context)
-                : 'sc'.tr(context: context),
+            isCollected ? 'ysc'.tr(context: context) : 'sc'.tr(context: context),
             style: MyTheme.gray190_12,
           ),
           SizedBox(width: 15.w),
@@ -98,6 +93,7 @@ class PostShareButton extends StatelessWidget {
         children: [
           MyImage.asset(
             MyImagePaths.appShareOn,
+            iconColor: MyTheme.whiteColor,
             width: 18.w,
             height: 18.w,
           ),

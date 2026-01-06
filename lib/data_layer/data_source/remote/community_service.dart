@@ -7,17 +7,8 @@ class CommunityService extends BaseService {
   @override
   final service = 'community';
 
-  /// 话题列表
-  AsyncJson postList({required int page, required int limit}) =>
-      post('/list_tutorial', data: {'page': page, 'limit': limit});
-
-  /// 购买帖子列表
-  AsyncJson buyPostTutorials({required int id}) =>
-      post('/unlock_topic', data: {'id': id});
-
-  /// 获取帖子导航
-  AsyncJson reqGetPostNav({String type = ''}) =>
-      post('/nav', data: {'type': type});
+  /// 获取Tab分类列表
+  AsyncJson getCategoryTabList() => post('/category');
 
   /// 社区排序列表
   AsyncJson communitySortList({
@@ -33,6 +24,19 @@ class CommunityService extends BaseService {
         'limit': limit,
         'type': '',
       });
+
+
+  /// 话题列表
+  AsyncJson postList({required int page, required int limit}) =>
+      post('/list_tutorial', data: {'page': page, 'limit': limit});
+
+  /// 购买帖子列表
+  AsyncJson buyPostTutorials({required int id}) =>
+      post('/unlock_topic', data: {'id': id});
+
+  /// 获取帖子导航
+  AsyncJson reqGetPostNav({String type = ''}) =>
+      post('/nav', data: {'type': type});
 
   /// 社区排序列表
   AsyncJson communityAiList({
@@ -88,8 +92,8 @@ class CommunityService extends BaseService {
       post('/unlock', data: {'id': id});
 
   /// 帖子收藏/取消收藏
-  AsyncJson communityTopicFavorite({required String id}) =>
-      post('/favorite', data: {'id': id});
+  AsyncJson communityTopicFavorite({required String id, required int type, required int requestType}) =>
+      post('/favorite', data: {'id': id, 'type': type, 'request_type': requestType});
 
   /// 二级评论列表
   AsyncJson communityPostCommentsSecond(
