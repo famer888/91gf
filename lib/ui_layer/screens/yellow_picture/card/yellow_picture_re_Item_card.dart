@@ -84,10 +84,10 @@ class _YellowPictureReItemCardState extends State<YellowPictureReItemCard> {
                 },
                 child: Container(
                   decoration: BoxDecoration(
-                      color: MyTheme.white008Color,
-                      borderRadius: BorderRadius.all(Radius.circular(5.w))),
+                      gradient: MyTheme.gradient_90_118,
+                      borderRadius: BorderRadius.all(Radius.circular(17.5.w))),
                   alignment: Alignment.center,
-                  width: (1.sw - MyTheme.pagePadding * 2 - 8.w) / 2,
+                  width: (1.sw - MyTheme.pagePadding * 2 - 100.w) / 2,
                   height: 35.w,
                   child:
                   Row(
@@ -100,7 +100,7 @@ class _YellowPictureReItemCardState extends State<YellowPictureReItemCard> {
                   ),
                 ),
               ),
-              SizedBox(width: 8.w),
+              SizedBox(width: 30.w),
               GestureDetector(
                 onTap: () {
                   //查看更多
@@ -108,10 +108,10 @@ class _YellowPictureReItemCardState extends State<YellowPictureReItemCard> {
                 },
                 child: Container(
                   decoration: BoxDecoration(
-                      color: MyTheme.white008Color,
-                      borderRadius: BorderRadius.all(Radius.circular(5.w))),
+                      gradient: MyTheme.gradient_90_114,
+                      borderRadius: BorderRadius.all(Radius.circular(17.5.w))),
                   alignment: Alignment.center,
-                  width: (1.sw - MyTheme.pagePadding * 2 - 8.w) / 2,
+                  width: (1.sw - MyTheme.pagePadding * 2 - 100.w) / 2,
                   height: 35.w,
                   child:
                   Row(

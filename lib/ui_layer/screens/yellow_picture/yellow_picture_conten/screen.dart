@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/my_app_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:jygf/domain/model/bit_nav_model.dart';
 import 'package:jygf/ui_layer/notifiers/home_config_notifier.dart';
@@ -17,9 +19,6 @@ class YellowPictureScreen extends StatefulWidget {
 }
 
 class _YellowPictureScreenState extends State<YellowPictureScreen> {
-  late final _homeConfig = context.read<HomeConfigNotifier>();
-  late final List<BitNavModel> titles = _homeConfig.config.albumNav ?? [];
-
   @override
   void initState() {
     super.initState();
@@ -32,18 +31,31 @@ class _YellowPictureScreenState extends State<YellowPictureScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: cofigContentView());
+    final homeConfig = context.watch<HomeConfigNotifier>();
+    final titles = homeConfig.config.albumNav ?? [];
+    
+    return Scaffold(
+      appBar: MyAppBar(
+        title: 'meit'.tr(),
+      ),
+      body: cofigContentView(titles),
+    );
   }
 
-  Widget cofigContentView() {
-    return TabBarWithView.fillColor(
-        tabBarHeight: 32.w,
-        labelStyle: MyTheme.white15_M,
-        tabBarPadding: EdgeInsets.symmetric(vertical: 5.w),
-        unselectedLabelStyle: MyTheme.white08_15,
-        titles: titles.map((e) => e.name ?? '').toList(),
+  Widget cofigContentView(List<BitNavModel> titles) {
+    if (titles.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    
+    return TabBarWithView.line(
+      indicatorType: IndicatorType.curve,
+        tabBarPadding: EdgeInsets.only(left: 5.w, right: 5.w, bottom: 5.w),
+        tabBarHeight: 35.w,
+        labelStyle: MyTheme.white08_15,
+        unselectedLabelStyle: MyTheme.gray153_15,
+        titles: titles.map((e) => e.name).toList(),
         views: titles.map((e) {
-          if (e.type == '2') {
+          if (e.type == 2) {
             //推荐
             return KeepAliveWrapper(
               child: PictureRecContent(id: e.id ?? 0),

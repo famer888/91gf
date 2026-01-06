@@ -84,7 +84,7 @@ class _YellowPictureReaderState extends State<YellowPictureReader> {
             right: 0,
             duration: const Duration(milliseconds: 250),
             child: Container(
-              color: MyTheme.white08Color,
+              color: Colors.transparent,
               height: MyTheme.statusHeight,
             )),
         AnimatedPositioned(
@@ -95,7 +95,7 @@ class _YellowPictureReaderState extends State<YellowPictureReader> {
             right: 0,
             duration: const Duration(milliseconds: 250),
             child: Container(
-                color: MyTheme.white08Color,
+                color: Colors.transparent,
                 height: MyTheme.statusHeight + MyTheme.navbarHegiht,
                 child: MyAppBar(
                     title: data?.title,
@@ -136,7 +136,7 @@ class _YellowPictureReaderState extends State<YellowPictureReader> {
     return Container(
       key: _key,
       padding: EdgeInsets.all(MyTheme.pagePadding),
-      color: MyTheme.white08Color,
+      color: MyTheme.blackColor25505,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

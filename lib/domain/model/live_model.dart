@@ -128,7 +128,7 @@ class TipModel {
   factory TipModel.fromJson(Map<String, dynamic> json) => TipModel(
         id: json['id'],
         title: json['title'],
-        type: json['type'],
+        type: json['type'] is int ? json['type'].toString() : json['type'],
         config: json['config'],
         router: json['router'],
         urlStr: json['url_str'],
