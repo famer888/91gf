@@ -192,12 +192,12 @@ class CommunityService extends BaseService {
         'type': type,
       });
 
-  /// 取得搜索帖子结果
+  /// 取得搜索帖子结果 type 1.社区 2.约炮 3.查档
   AsyncJson searchCommunity({
     required int page,
     required int limit,
     required String word,
-    String type = '',
+    required String type,
   }) =>
       post('/search', data: {
         'page': page,

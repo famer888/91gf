@@ -83,14 +83,14 @@ mixin _Chat on _BaseAppRepo implements ChatDomain {
           .guard;
 
   @override
-  AsyncResult<List<ChatListModel>> chatSearchList({
+  AsyncResult<List<ChatListChatModel>> chatSearchList({
     required String word,
     required int page,
     required int limit,
   }) =>
       _chatService
-          .chatSarchList(word: word, page: page, limit: limit)
-          .deserializeJsonListBy((e) => e.map(ChatListModel.fromJson).toList())
+          .chatSearchList(word: word, page: page, limit: limit)
+          .deserializeJsonListBy((e) => e.map(ChatListChatModel.fromJson).toList())
           .guard;
 
   @override

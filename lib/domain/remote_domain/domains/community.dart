@@ -132,7 +132,7 @@ abstract class CommunityDomain {
     required int page,
     required int limit,
     required String word,
-    String type = '',
+    required String type,
   });
 
    /// 圈子排序列表

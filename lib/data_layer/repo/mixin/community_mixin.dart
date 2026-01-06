@@ -187,7 +187,7 @@ mixin _Community on _BaseAppRepo implements CommunityDomain {
     required int page,
     required int limit,
     required String word,
-    String type = '',
+    required String type,
   }) =>
       _communityService
           .searchCommunity(page: page, limit: limit, word: word, type: type)

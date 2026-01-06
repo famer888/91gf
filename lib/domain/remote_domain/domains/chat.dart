@@ -59,7 +59,7 @@ abstract class ChatDomain {
   });
 
   /// 搜索
-  AsyncResult<List<ChatListModel>> chatSearchList({
+  AsyncResult<List<ChatListChatModel>> chatSearchList({
     required String word,
     required int page,
     required int limit,
