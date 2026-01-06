@@ -36,40 +36,32 @@ class YellowPictureItemCard extends StatelessWidget {
                 data.type == 0
                     ? Container()
                     : Positioned(
-                    top: 5.w,
-                    left: 5.w,
+                    top: 0,
+                    left: 0,
                     child: Container(
                         padding: EdgeInsets.symmetric(
                             horizontal: 5.w, vertical: 1.w),
                         decoration: BoxDecoration(
-                            color: MyTheme.white08Color,
-                            borderRadius: BorderRadius.all(
-                                Radius.circular(10.w))),
-                        child: Row(children: [
-                          MyImage.asset(
-                              data.type == 2
-                                  ? MyImagePaths.appVideoCoins
-                                  : MyImagePaths.appVideoVip,
-                              width: 11.5.w,
-                              height: 11.5.w),
-                          SizedBox(width: 3.w),
-                          Text(
-                            data.type == 2
-                                ? 'jb'.tr(context: context)
-                                : 'VIP',
-                            style: MyTheme.white10,
-                          ),
-                        ]))),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    height: 40.w,
-                    decoration: BoxDecoration(
-                      gradient: MyTheme.gradient_90_114,
-                      borderRadius: BorderRadius.all(Radius.circular(5.w)),
-                    ),
-                  ),
-                ),
+                            gradient: data.type == 1
+                                        ? MyTheme.shareButtonGradient
+                                        : MyTheme.orangeGradient,
+                            borderRadius: BorderRadius.only(topLeft: Radius.circular(5.w),bottomRight: Radius.circular(5.w))),
+                        child: Text(
+                          data.type == 2
+                              ? 'jb'.tr(context: context)
+                              : 'VIP',
+                          style: MyTheme.white10,
+                        ))),
+                // Align(
+                //   alignment: Alignment.bottomCenter,
+                //   child: Container(
+                //     height: 40.w,
+                //     decoration: BoxDecoration(
+                //       gradient: MyTheme.gradient_90_114,
+                //       borderRadius: BorderRadius.all(Radius.circular(5.w)),
+                //     ),
+                //   ),
+                // ),
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Padding(

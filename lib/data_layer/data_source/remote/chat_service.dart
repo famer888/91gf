@@ -82,7 +82,7 @@ class ChatService extends BaseService {
       });
 
   /// 搜索
-  AsyncJson chatSarchList({
+  AsyncJson chatSearchList({
     required String word,
     required int page,
     required int limit,

@@ -205,6 +205,9 @@ class AppRouterPaths {
   /// 长视频详情页
   static const videoDetail = '/videoDetail';
 
+  /// 直播
+  static const live = '/liveVideo';
+
   /// 直播详情页
   static const livesDetail = '/livesDetail';
 

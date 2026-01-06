@@ -101,7 +101,7 @@ class _VlogScreenState extends State<VlogScreen> with TickerProviderStateMixin {
                     ),
                   );
                 } else if (e.value == 2) {
-                   return const LiveBroadcastScreen();
+                   return const LiveBroadcastScreen(needNavi: false);
                   
 
                   // return KeepAliveWrapper(
