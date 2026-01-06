@@ -1,6 +1,29 @@
 part of '../repo.dart';
 
 mixin _Community on _BaseAppRepo implements CommunityDomain {
+
+  @override
+  AsyncResult<List<CommunityCategoryTabModel>> getCategoryTabList() =>
+      _communityService
+          .getCategoryTabList()
+          .deserializeJsonListBy(
+              (e) => e.map(CommunityCategoryTabModel.fromJson).toList())
+          .guard;
+
+  @override
+  AsyncResult<CommunityWithBannerModel> communitySortList({
+    required int id,
+    required String sort,
+    required int page,
+    required int limit,
+  }) =>
+      _communityService
+          .communitySortList(id: id, sort: sort, page: page, limit: limit)
+          .deserializeJsonBy(CommunityWithBannerModel.fromJson)
+          .guard;
+
+
+
   @override
   AsyncResult<TopicsWithBannersModel> postList(
           {required int page, int limit = 15}) =>
@@ -19,18 +42,6 @@ mixin _Community on _BaseAppRepo implements CommunityDomain {
           .reqGetPostNav(type: type)
           .deserializeJsonListBy(
               (e) => e.map(CommunityNavModel.fromJson).toList())
-          .guard;
-
-  @override
-  AsyncResult<CommunityWithBannerModel> communitySortList({
-    required int id,
-    required String sort,
-    required int page,
-    required int limit,
-  }) =>
-      _communityService
-          .communitySortList(id: id, sort: sort, page: page, limit: limit)
-          .deserializeJsonBy(CommunityWithBannerModel.fromJson)
           .guard;
 
   @override
@@ -79,8 +90,8 @@ mixin _Community on _BaseAppRepo implements CommunityDomain {
       _communityService.reqGetPostURL(id: id);
 
   @override
-  AsyncResult communityTopicFavorite({required String id}) =>
-      _communityService.communityTopicFavorite(id: id).deserialize().guard;
+  AsyncResult communityTopicFavorite({required String id, required int type, required int requestType}) =>
+      _communityService.communityTopicFavorite(id: id, type: type, requestType: requestType).deserialize().guard;
 
   @override
   AsyncResult<List<ReviewData>> communityPostCommentsSecond({

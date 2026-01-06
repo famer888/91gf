@@ -85,6 +85,7 @@ class MyImage extends StatelessWidget {
     this.height,
     this.borderRadius,
     this.backgroundColor,
+    this.iconColor,
   })  : _type = _ImageType.asset,
         placeHolder = null;
 
@@ -96,6 +97,7 @@ class MyImage extends StatelessWidget {
     this.height,
     this.borderRadius,
     this.backgroundColor,
+    this.iconColor,
     this.placeHolder = MyImagePaths.appFigureN,
   }) : _type = _ImageType.network;
 
@@ -108,6 +110,7 @@ class MyImage extends StatelessWidget {
   final double? borderRadius;
   final Color? backgroundColor;
   final String? placeHolder;
+  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) {
@@ -117,14 +120,12 @@ class MyImage extends StatelessWidget {
           width: width,
           height: height,
           fit: fit,
+          color: iconColor,
         ),
       _ImageType.network => LayoutBuilder(builder: (context, constraints) {
-          final hasBoundedWidth =
-              constraints.hasBoundedWidth && constraints.maxWidth.isFinite;
-          final effectiveInputWidth =
-              hasBoundedWidth ? constraints.maxWidth : (width ?? height ?? 120);
-          final url =
-              CommonUtils.clipImageUrl(src, inputWidth: effectiveInputWidth);
+          final hasBoundedWidth = constraints.hasBoundedWidth && constraints.maxWidth.isFinite;
+          final effectiveInputWidth = hasBoundedWidth ? constraints.maxWidth : (width ?? height ?? 120);
+          final url = CommonUtils.clipImageUrl(src, inputWidth: effectiveInputWidth);
 
           final img = FadeInImage.memoryNetwork(
             width: width,
@@ -144,9 +145,7 @@ class MyImage extends StatelessWidget {
           if (!hasBoundedWidth) {
             final phSize = width ?? height ?? 40.0;
             final double w = phSize;
-            final double h = placeHolder == MyImagePaths.appFigureN
-                ? w / 117 * 40
-                : (height ?? phSize);
+            final double h = placeHolder == MyImagePaths.appFigureN ? w / 117 * 40 : (height ?? phSize);
             return Stack(
               alignment: Alignment.center,
               children: [

@@ -33,7 +33,7 @@ class CommunityContentView extends StatefulWidget {
   State<CommunityContentView> createState() => _CommunityContentViewState();
 }
 
-class _CommunityContentViewState extends State<CommunityContentView> {
+class _CommunityContentViewState extends State<CommunityContentView> with TickerProviderStateMixin {
   late final _domain = context.read<CommunityDomain>();
   late final _homeConfig = context.read<HomeConfigNotifier>();
   late final _userNotifier = context.read<UserNotifier>();
@@ -45,6 +45,8 @@ class _CommunityContentViewState extends State<CommunityContentView> {
   late final List<NavigatorModel> _titles = _homeConfig.config.forumNav ?? [];
 
   List<TipModel> tips = [];
+  late final TabController? tabController;
+  int _initialIndex = 0;
 
   bool isInit = false;
 
@@ -77,17 +79,20 @@ class _CommunityContentViewState extends State<CommunityContentView> {
       }
 
       if (result.data?.posts case final posts?) {
-        _userNotifier.patchUserFollowStatus(
-          posts
-              .where((post) => post.user?.isFollow == 1)
-              .map((post) => '${post.user?.aff}'),[]
-        );
+        _userNotifier.patchUserFollowStatus(posts.where((post) => post.user?.isFollow == 1).map((post) => '${post.user?.aff}'), []);
         return posts;
       }
     } else {
       MyToast.showText(text: result.msg ?? '');
     }
     return null;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initialIndex = _titles.indexWhere((element) => element.type == 'new');
+    tabController = TabController(initialIndex: _initialIndex, length: _titles.length, vsync: this);
   }
 
   @override
@@ -107,6 +112,8 @@ class _CommunityContentViewState extends State<CommunityContentView> {
           body: Padding(
             padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
             child: TabBarWithView.fillColor(
+              initialIndex: _initialIndex,
+              tabController: tabController,
               tabBarPadding: EdgeInsets.symmetric(vertical: 6.w),
               tabBarHeight: 32.w,
               borderRadius: 5.w,
@@ -125,13 +132,14 @@ class _CommunityContentViewState extends State<CommunityContentView> {
           ),
         ),
         Positioned(
-            bottom: 10.w,
-            right: 13.w,
-            child: GestureDetector(
-              onTap: _showIssueAlert,
-              behavior: HitTestBehavior.translucent,
-              child: MyImage.asset(MyImagePaths.appIssueIcon, width: 50.w, height: 50.w),
-            ))
+          bottom: 10.w,
+          right: 13.w,
+          child: GestureDetector(
+            onTap: _showIssueAlert,
+            behavior: HitTestBehavior.translucent,
+            child: MyImage.asset(MyImagePaths.appIssueIcon, width: 50.w, height: 50.w),
+          ),
+        ),
       ],
     );
   }
