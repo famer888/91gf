@@ -40,7 +40,7 @@ class _MineFaceSwapRecordScreenState extends State<MineFaceSwapRecordScreen> {
   @override
   Widget build(BuildContext context) {
     return TabBarWithView.line(
-      labelStyle: MyTheme.white16medium,
+      indicatorType: IndicatorType.curve,
       unselectedLabelStyle: MyTheme.white25508_16_M,
       tabBarHeight: 40.w,
       isScrollable: false,

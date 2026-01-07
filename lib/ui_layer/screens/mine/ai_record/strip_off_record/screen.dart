@@ -41,7 +41,7 @@ class _MineStrpOffRecordScreenState extends State<MineStrpOffRecordScreen> {
   @override
   Widget build(BuildContext context) {
     return TabBarWithView.line(
-      labelStyle: MyTheme.white16medium,
+      indicatorType: IndicatorType.curve,
       unselectedLabelStyle: MyTheme.white25508_16_M,
       tabBarHeight: 40.w,
       isScrollable: false,

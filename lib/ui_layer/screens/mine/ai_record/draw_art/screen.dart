@@ -28,10 +28,10 @@ class _MineDrawArtScreenState extends State<MineDrawArtScreen> {
   @override
   Widget build(BuildContext context) {
     return TabBarWithView.line(
-      labelStyle: MyTheme.white16medium,
+      indicatorType: IndicatorType.curve,
       unselectedLabelStyle: MyTheme.white25508_16_M,
       tabBarHeight: 40.w,
-      isScrollable: false,
+      isScrollable: true,
       titles: [
         'pdz'.tr(context: context),
         'clz'.tr(context: context),
