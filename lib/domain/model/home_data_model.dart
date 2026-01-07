@@ -537,9 +537,9 @@ class Config {
         albumNav: List<BitNavModel>.from(
             json['album_nav']?.map((x) => BitNavModel.fromJson(x)) ?? []),
         albumTagSort: List<BitNavModel>.from(
-            json['album_tag_sort_nav']?.map((x) => BitNavModel.fromJson(x)) ?? []),
+            json['album_tag_sort']?.map((x) => BitNavModel.fromJson(x)) ?? []),
         albumSortNav: List<BitNavModel>.from(
-            json['album_sort_nav']?.map((x) => BitNavModel.fromJson(x)) ?? []),
+            json['album_sort']?.map((x) => BitNavModel.fromJson(x)) ?? []),
       );
 
   Map<String, dynamic> toJson() => {

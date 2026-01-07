@@ -69,4 +69,10 @@ abstract class AlbumDomain {
     required int page,
     required int limit
   });
+
+  ///点赞
+  AsyncResult albumLike({required int id});
+
+  ///收藏
+  AsyncResult albumFavorite({required int id});
 }

@@ -141,4 +141,12 @@ mixin _Album on _BaseAppRepo implements AlbumDomain {
               (e) => e.map(AlbumItemsModel.fromJson).toList())
           .guard;
 
+  @override
+  AsyncResult albumLike({required int id}) =>
+      _albumService.albumLike(id: id).deserialize().guard;
+
+  @override
+  AsyncResult albumFavorite({required int id}) =>
+      _albumService.albumFavorite(id: id).deserialize().guard;
+
 }

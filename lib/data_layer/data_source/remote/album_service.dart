@@ -50,4 +50,7 @@ class AlbumService extends BaseService {
       {required String sort, required String tag, required int page, required int limit}) =>
       post('/list_tag_album', data: {'sort': sort, 'tag': tag, 'page': page, 'limit': limit});
 
+  AsyncJson albumLike({required int id}) => post('/like', data: {'id': id});
+
+  AsyncJson albumFavorite({required int id}) => post('/favorite', data: {'id': id});
 }

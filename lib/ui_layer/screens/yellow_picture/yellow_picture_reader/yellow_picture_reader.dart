@@ -291,7 +291,7 @@ class _YellowPictureReaderState extends State<YellowPictureReader> {
   }
 
   Future<void> _changeLike() async {
-    final result = await domain.userLike(type: 10, id: data?.id ?? 0);
+    final result = await _domain.albumLike(id: data?.id ?? 0);
     if (result.status == 1) {
       final oldValue = data?.isLike ?? 0;
       final newValue = oldValue == 0 ? 1 : 0;
@@ -310,7 +310,7 @@ class _YellowPictureReaderState extends State<YellowPictureReader> {
   }
 
   Future<void> _changeFavorite() async {
-    final result = await domain.userFavorite(type: 10, id: data?.id ?? 0);
+    final result = await _domain.albumFavorite(id: data?.id ?? 0);
     if (result.status == 1) {
       final oldValue = data?.isFavorite ?? 0;
       final newValue = oldValue == 0 ? 1 : 0;
