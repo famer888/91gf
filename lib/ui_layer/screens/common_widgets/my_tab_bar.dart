@@ -163,7 +163,6 @@ class _TabBarWithViewState extends State<TabBarWithView> with SingleTickerProvid
     super.didChangeDependencies();
     if (!_isImagePrecached) {
       _precacheIndicatorImages().then((_) {
-        // 加载完成后，如果组件还在树中，强制刷新一次
         if (mounted) {
           setState(() {});
         }
@@ -173,7 +172,7 @@ class _TabBarWithViewState extends State<TabBarWithView> with SingleTickerProvid
   }
 
   Future<void> _precacheIndicatorImages() async {
-    // 只有在 line 类型且需要图片的指示器时才预加载
+    //  line 类型预加载
     if (widget.type == TabBarType.line) {
       if (widget.indicatorType == IndicatorType.light) {
         _doPrecache(MyImagePaths.appIndicatorLight);
@@ -182,7 +181,7 @@ class _TabBarWithViewState extends State<TabBarWithView> with SingleTickerProvid
       }
     }
     
-    // 如果 TabBarType.image 类型，也可以预加载选中的图片
+    // TabBarType.image 类型预加载
     if (widget.type == TabBarType.image && widget.selectedImgs != null) {
       for (var img in widget.selectedImgs!) {
         _doPrecache(img);
@@ -214,9 +213,6 @@ class _TabBarWithViewState extends State<TabBarWithView> with SingleTickerProvid
   void _handleTabAnimation() {
     final double animationValue = _tabController.animation?.value ?? _tabController.index.toDouble();
     final double diff = (animationValue - _tabController.index).abs();
-    // During a standard drag/scroll, _tabController.index is derived from animation.value.round(),
-    // so diff will always be <= 0.5.
-    // If diff > 0.5, it indicates the index (target) is forced (jump/animation) and we should stick to it.
     if (_tabController.indexIsChanging || diff > 0.5) {
       if (indexChangeNotifier.value != _tabController.index) {
         indexChangeNotifier.value = _tabController.index;
@@ -271,6 +267,8 @@ class _TabBarWithViewState extends State<TabBarWithView> with SingleTickerProvid
     }
     return List.generate(widget.titles.length, (index) {
       final title = widget.titles[index];
+      final bool isSelected = indexChangeNotifier.value == index;
+
       return switch (widget.type) {
         TabBarType.fillColor => Tab(
             height: MyTheme.navbarHegiht,
@@ -282,23 +280,28 @@ class _TabBarWithViewState extends State<TabBarWithView> with SingleTickerProvid
               ),
             ),
           ),
-        // _ => (!kIsWeb && indexChangeNotifier.value == index)
-        _ => 
-            Tab(
+        _ => !kIsWeb && isSelected && widget.labelStyle == null
+            ? Tab(
                 height: MyTheme.navbarHegiht,
                 child: ShaderMask(
-                  shaderCallback: (bounds) => MyTheme.gradient_90_114.createShader(bounds),
+                  shaderCallback: (bounds) =>
+                      MyTheme.gradient_90_114.createShader(bounds),
                   blendMode: BlendMode.srcIn,
                   child: Text(
                     title,
-                    style: widget.labelStyle ?? MyTheme.jellyCyan_17,
+                    style: MyTheme.jellyCyan_17,
                   ),
                 ),
               )
-            // : Tab(
-            //     height: MyTheme.navbarHegiht,
-            //     text: title,
-            //   ),
+            : Tab(
+                height: MyTheme.navbarHegiht,
+                child: Text(
+                  title,
+                  style: isSelected
+                      ? (widget.labelStyle ?? MyTheme.jellyCyan_17)
+                      : (widget.unselectedLabelStyle ?? MyTheme.white08_15),
+                ),
+              ),
       };
     });
   }
@@ -310,7 +313,9 @@ class _TabBarWithViewState extends State<TabBarWithView> with SingleTickerProvid
         indicatorType: widget.indicatorType,
       ),
     TabBarType.fillColor => MyTabBarTheme.fillColor(
-        tabAlignment: widget.isScrollable ? TabAlignment.start : null,
+        tabAlignment: widget.isScrollable 
+            ? (widget.isCenter ? TabAlignment.center : TabAlignment.start)
+            : (widget.isCenter ? TabAlignment.center : null),
         labelStyle: widget.labelStyle,
         borderRadius: widget.borderRadius,
         unselectedLabelStyle: widget.unselectedLabelStyle,
@@ -409,16 +414,19 @@ class _TabBarWithViewState extends State<TabBarWithView> with SingleTickerProvid
                         child: ValueListenableBuilder(
                             valueListenable: indexChangeNotifier,
                             builder: (context, selectedIndex, child) {
+                              final bool effectiveIsScrollable =
+                                  widget.isCenter ? true : widget.isScrollable;
+
                               return TabBar(
                                 physics: const BouncingScrollPhysics(),
-                                isScrollable: widget.isScrollable,
+                                isScrollable: effectiveIsScrollable,
                                 padding: EdgeInsets.symmetric(vertical: 2.w),
                                 controller: _tabController,
                                 tabs: tabs,
                                 indicatorColor: Colors.transparent,
                                 dividerColor: Colors.transparent,
                                 overlayColor: WidgetStateProperty.all(Colors.transparent),
-                                tabAlignment: widget.isScrollable
+                                tabAlignment: effectiveIsScrollable
                                     ? (widget.isCenter ? TabAlignment.center : TabAlignment.start)
                                     : (widget.isCenter ? TabAlignment.center : TabAlignment.fill),
                                 // labelPadding: widget.type == TabBarType.line

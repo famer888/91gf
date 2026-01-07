@@ -78,8 +78,8 @@ class _ChatScreenState extends State<ChatScreen> {
             tabBarPadding: EdgeInsets.fromLTRB(MyTheme.pagePadding, 5.w,
                 MyTheme.pagePadding, 0),
             // labelPadding: EdgeInsets.only(right: 19.w),
-            labelStyle: MyTheme.white08_15,
-            unselectedLabelStyle: MyTheme.gray153_15,
+            // labelStyle: MyTheme.white08_15,
+            unselectedLabelStyle: MyTheme.white08_15,
             titles: [for (final title in _titles) title.name ?? ''],
             views: [
               for (final ChatNavModel nav in _titles)

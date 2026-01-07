@@ -93,8 +93,11 @@ class _PictureContentState extends State<PictureContent> {
       ],
       body: TabBarWithView.fillColor(
         tabBarPadding: EdgeInsets.only(bottom: 5.w),
-        tabBarHeight: 32.w,
+        tabBarHeight: 28.w,
+        borderRadius: 4.w,
         labelStyle: MyTheme.white14Medium,
+        isCenter: true,
+        isScrollable: false,
         unselectedLabelStyle: MyTheme.white07_14,
         titles: isInit ? [for (final title in titles) title.title ?? ''] : [],
         views: [

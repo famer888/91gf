@@ -420,53 +420,61 @@ class _ChatDetailScreenState extends State<ChatDetailScreen>
                                             ),
                                           )
                                         ])
-                                      : Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(8.w),
-                                            color: const Color
-                                                .fromRGBO(255, 255, 255, 0.7),
-                                          ),
-                                          height: 70.w,
-                                          width: double.infinity,
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 15.w),
-                                          child: Center(
-                                            child: RichText(
-                                              maxLines: 999,
-                                              text: TextSpan(children: [
-                                                TextSpan(
-                                                  text: '${'lxfs'.tr()}: ${data.contact}',
-                                                  style: TextStyle(
-                                                    color: MyTheme.white08Color,
-                                                    fontSize: 13.sp,
-                                                    fontWeight: FontWeight.w500,
+                                      : CommonUtils.dashedBorder(
+                                        color: MyTheme.primaryColor,
+                                        borderRadius: BorderRadius.circular(8.w),
+                                        child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(8.w),
+                                              color: MyTheme.white02Color,
+                                            ),
+                                            height: 70.w,
+                                            width: double.infinity,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 15.w),
+                                            child: Center(
+                                              child: RichText(
+                                                maxLines: 999,
+                                                text: TextSpan(children: [
+                                                  TextSpan(text: '${'lxfs'.tr()}: ', style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 13.sp,
+                                                      fontWeight: FontWeight.w500,
+                                                    ),),  
+                                                  TextSpan(
+                                                    text: data.contact,
+                                                    style: TextStyle(
+                                                      color: const Color.fromRGBO(255, 211, 123, 1),
+                                                      fontSize: 13.sp,
+                                                      fontWeight: FontWeight.w500,
+                                                    ),
                                                   ),
-                                                ),
-                                                WidgetSpan(
-                                                  child: GestureDetector(
-                                                    behavior:
-                                                    HitTestBehavior.translucent,
-                                                    onTap: () {
-                                                      CommonUtils.copyToClipboard(
-                                                          text: '${data.contact}');
-      
-                                                      MyToast.showText(
-                                                          text: 'yfz'.tr());
-                                                    },
-                                                    child: Text(
-                                                      '（${'djfz'.tr()}）',
-                                                      style: TextStyle(
-                                                        color: MyTheme.white08Color,
-                                                        fontSize: 13.sp,
-                                                        fontWeight: FontWeight.w500,
+                                                  WidgetSpan(
+                                                    child: GestureDetector(
+                                                      behavior:
+                                                      HitTestBehavior.translucent,
+                                                      onTap: () {
+                                                        CommonUtils.copyToClipboard(
+                                                            text: '${data.contact}');
+                                              
+                                                        MyToast.showText(
+                                                            text: 'yfz'.tr());
+                                                      },
+                                                      child: Text(
+                                                        '（${'djfz'.tr()}）',
+                                                        style: TextStyle(
+                                                          color: MyTheme.primaryColor,
+                                                          fontSize: 13.sp,
+                                                          fontWeight: FontWeight.w500,
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
-                                                ),
-                                              ]),
+                                                ]),
+                                              ),
                                             ),
                                           ),
-                                        ),
+                                      ),
                                   SizedBox(height: 15.w),
                                 ],
                               ),
