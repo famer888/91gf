@@ -201,10 +201,10 @@ class _KeywordTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 30.w,
+      height: 22.w,
       decoration: BoxDecoration(
-        color: const Color.fromRGBO(47, 47, 66, 1),
-        borderRadius: BorderRadius.circular(15.w),
+        gradient: MyTheme.gradient_90_114_15,
+        borderRadius: BorderRadius.circular(4.w),
       ),
       padding: EdgeInsets.symmetric(horizontal: 13.w),
       child: Row(
@@ -216,7 +216,7 @@ class _KeywordTile extends StatelessWidget {
               constraints: BoxConstraints(maxWidth: 100.w),
               child: Text(
                 text,
-                style: MyTheme.white255_14,
+                style: MyTheme.white15,
               ),
             ),
           ),
@@ -231,8 +231,8 @@ class _KeywordTile extends StatelessWidget {
             onTap: onDelete,
             child: MyImage.asset(
               MyImagePaths.appRecordDeleteIcon,
-              width: 10.w,
-              height: 10.w,
+              width: 8.w,
+              height: 8.w,
               fit: BoxFit.fitWidth,
             ),
           )
@@ -318,8 +318,8 @@ class _SearchContentViewState extends State<_SearchContentView> {
   /// 热搜文字颜色
   final Map<int, int> colorMap = {
     0: 0xFFE83125,
-    1: 0xFFECAE37,
-    2: 0xFFDF3C9E,
+    1: 0xFFFFD93B,
+    2: 0xFF00D1FF,
   };
 
   @override
@@ -348,7 +348,7 @@ class _SearchContentViewState extends State<_SearchContentView> {
                       SizedBox(width: 4.w),
                       Text(
                         'rszb'.tr(context: context),
-                        style: MyTheme.jellyCyan_18_M,
+                        style: MyTheme.white16medium,
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(width: 10.w)
@@ -376,33 +376,13 @@ class _SearchContentViewState extends State<_SearchContentView> {
                                   Container(
                                     height: ScreenUtil().setWidth(20),
                                     width: ScreenUtil().setWidth(20),
-                                    decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          colors: [
-                                            Color(index == 0
-                                                ? 0xFFff9020
-                                                : (index == 1
-                                                    ? 0xFF1afbb5
-                                                    : (index == 2
-                                                        ? 0xFFa3fb59
-                                                        : 0xFF7e7d8b))),
-                                            Color(index == 0
-                                                ? 0xFFf55b5b
-                                                : (index == 1
-                                                    ? 0xFF13c4d6
-                                                    : (index == 2
-                                                        ? 0xFF21da3f
-                                                        : 0xFF9c9ea7)))
-                                          ],
-                                          begin: Alignment.centerLeft,
-                                          end: Alignment.centerRight,
-                                        ),
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(3))),
-                                    child: Center(
-                                      child: Text(
-                                        '${index + 1}',
-                                        style: MyTheme.white255_13_B,
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      '${index + 1}',
+                                      style: MyTheme.white255_13_B.copyWith(
+                                        color: colorMap[index] != null
+                                            ? Color(colorMap[index]!)
+                                            : MyTheme.white08Color,
                                       ),
                                     ),
                                   ),
@@ -412,7 +392,7 @@ class _SearchContentViewState extends State<_SearchContentView> {
                                       hotTags[index].work,
                                       style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 14.sp,
+                                        fontSize: 15.sp,
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                       maxLines: 1,
@@ -431,8 +411,7 @@ class _SearchContentViewState extends State<_SearchContentView> {
                                         '${CommonUtils.renderFixedNumber(hotTags[index].num)}${'rd'.tr(context: context)}',
                                         style: TextStyle(
                                           fontSize: 13.sp,
-                                          color: const Color.fromRGBO(
-                                              231, 98, 54, 1.0),
+                                          color: MyTheme.white08Color,
                                         ),
                                       ),
                                     ],
