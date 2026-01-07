@@ -38,9 +38,7 @@ class _NovelScreenState extends State<NovelScreen> {
 
   Widget cofigContentView() {
     return TabBarWithView.line(
-        initialIndex: 1,
-        tabBarHeight: 32.w,
-        tabBarPadding: EdgeInsets.symmetric(vertical: 5.w),
+        tabBarPadding: EdgeInsets.only( bottom: 5.w),
         titles: titles.map((e) => e.name ?? '').toList(),
         views: titles.map((e) {
           if(e.type == 3){

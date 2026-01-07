@@ -43,8 +43,8 @@ class _AnimationVideoState extends State<AnimationVideo>
   @override
   Widget build(BuildContext context) {
     return TabBarWithView.line(
-      tabBarHeight: 32.w,
-      tabBarPadding: EdgeInsets.symmetric(vertical: 5.w),
+      // tabBarHeight: 32.w,
+      tabBarPadding: EdgeInsets.only( bottom: 5.w),
       tabController: _tabController,
       titles: titles.map((e) => e.name ?? '').toList(),
       views: titles.map(
