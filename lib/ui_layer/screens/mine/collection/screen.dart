@@ -3,25 +3,40 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jygf/app_global.dart';
 import 'package:jygf/domain/api_validator.dart';
+import 'package:jygf/domain/model/album_model.dart';
+import 'package:jygf/domain/model/cartoon/cartoon_model.dart';
+import 'package:jygf/domain/model/chat/chat_list_model.dart';
+import 'package:jygf/domain/model/comic_model.dart';
 import 'package:jygf/domain/model/game/game_model.dart';
+import 'package:jygf/domain/model/novel_model.dart';
 import 'package:jygf/domain/model/vlog_model.dart';
 import 'package:jygf/domain/model/voice_model.dart';
+import 'package:jygf/domain/remote_domain/domains/album.dart';
 import 'package:jygf/domain/remote_domain/domains/asmr.dart';
+import 'package:jygf/domain/remote_domain/domains/cartoon.dart';
+import 'package:jygf/domain/remote_domain/domains/chat.dart';
+import 'package:jygf/domain/remote_domain/domains/comic.dart';
 import 'package:jygf/domain/remote_domain/domains/game.dart';
+import 'package:jygf/domain/remote_domain/domains/live.dart';
+import 'package:jygf/domain/remote_domain/domains/novel.dart';
 import 'package:jygf/domain/remote_domain/domains/seed.dart';
+import 'package:jygf/domain/remote_domain/domains/user.dart';
 import 'package:jygf/domain/remote_domain/domains/vlog.dart';
 import 'package:jygf/ui_layer/notifiers/home_config_notifier.dart';
 import 'package:jygf/ui_layer/router/routes.dart';
+import 'package:jygf/ui_layer/screens/acg/comic/card/comic_item_card.dart';
+import 'package:jygf/ui_layer/screens/acg/novel/card/novel_item_card.dart';
 import 'package:jygf/ui_layer/screens/asmr/card/voice_gird_card.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/cartoon/card/video_card.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/chat/list_card.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/game/card/game_card.dart';
 import 'package:jygf/ui_layer/screens/vlog/card/vlog_card.dart';
+import 'package:jygf/ui_layer/screens/yellow_picture/card/yellow_picture_item_card.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:jygf/domain/model/collection_model.dart';
 import 'package:jygf/domain/model/live_model.dart';
 import 'package:jygf/domain/model/post_model.dart';
-import 'package:jygf/domain/remote_domain/domains/live.dart';
-import 'package:jygf/domain/remote_domain/domains/user.dart';
 import 'package:jygf/domain/result.dart';
 import 'package:jygf/ui_layer/const.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/keep_alive_wrapper.dart';
@@ -54,7 +69,7 @@ class _MineCollectionScreenState extends State<MineCollectionScreen> {
         ),
         body: TabBarWithView.line(
           indicatorType: IndicatorType.curve,
-          labelStyle: MyTheme.jellyCyan_15,
+          // labelStyle: MyTheme.jellyCyan_15,
           unselectedLabelStyle: TextStyle(
             color: const Color.fromRGBO(255, 255, 255, 0.8),
             fontSize: 15.sp,
@@ -65,35 +80,67 @@ class _MineCollectionScreenState extends State<MineCollectionScreen> {
           isScrollable: true,
           titles: [
             'shp'.tr(context: context),
+            'dsp'.tr(context: context),
             'tiezt'.tr(context: context),
-            if (openLive) 'zhib'.tr(context: context),
-            'zhoz'.tr(context: context),
-            'ASMR',
-            'dsp'.tr(),
+            'xx黑料xx', // 黑料
+            'meit'.tr(context: context),
+            'dman'.tr(),
+            'mh'.tr(context: context),
+            'xs'.tr(context: context),
             'hyou'.tr(),
+            if (openLive) 'zhib'.tr(context: context),
+            'ASMR',
+            'yuep'.tr(context: context),
+            'luol'.tr(context: context),
+            'zhoz'.tr(context: context),
+            '查档', //查档
           ],
           views: [
             const KeepAliveWrapper(
               child: _VideoView(),
             ),
             const KeepAliveWrapper(
+              child: _VlogVideoView(),
+            ),
+            const KeepAliveWrapper(
               child: _TieztView(type: _TieztType.community),
+            ),
+            const KeepAliveWrapper(
+              child: _PlaceholderView(placeholderText: 'xx黑料xx'),
+            ),
+            const KeepAliveWrapper(
+              child: _YellowPictureView(),
+            ),
+            const KeepAliveWrapper(
+              child: _CartoonView(),
+            ),
+            const KeepAliveWrapper(
+              child: _ComicView(),
+            ),
+            const KeepAliveWrapper(
+              child: _NovelView(),
+            ),
+            const KeepAliveWrapper(
+              child: _GameView(),
             ),
             if (openLive)
               const KeepAliveWrapper(
                 child: _LiveView(),
               ),
             const KeepAliveWrapper(
+              child: _ASMRView(),
+            ),
+            KeepAliveWrapper(
+              child: _PlaceholderView(placeholderText: 'yuep'.tr(context: context)),
+            ),
+            const KeepAliveWrapper(
+              child: _ChatView(),
+            ),
+            const KeepAliveWrapper(
               child: _ZhozView(),
             ),
             const KeepAliveWrapper(
-              child: _ASMRView(),
-            ),
-            const KeepAliveWrapper(
-              child: _VlogVideoView(),
-            ),
-            const KeepAliveWrapper(
-              child: _GameView(),
+              child: _PlaceholderView(placeholderText: '查档'),
             ),
           ],
         ),
@@ -399,6 +446,212 @@ class _GameViewState extends State<_GameView> {
       childAspectRatio: GameCard.aspectRatio,
       crossAxisSpacing: 8.w,
       itemBuilder: (context, item, index) => GameCard(data: item),
+      onFetchingMore: (currentPage, pageSize) => _getData(
+        page: currentPage,
+        pageSize: pageSize,
+      ),
+    );
+  }
+}
+
+class _PlaceholderView extends StatelessWidget {
+  const _PlaceholderView({required this.placeholderText});
+
+  final String placeholderText;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(20.w),
+        child: Text(
+          placeholderText,
+          style: TextStyle(
+            fontSize: 16.sp,
+            color: MyTheme.white25506Color,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _YellowPictureView extends StatefulWidget {
+  const _YellowPictureView();
+
+  @override
+  State<_YellowPictureView> createState() => _YellowPictureViewState();
+}
+
+class _YellowPictureViewState extends State<_YellowPictureView> {
+  late final albumDomain = context.read<AlbumDomain>();
+
+  Future<List<AlbumItemsModel>> _getData({
+    required int page,
+    required int pageSize,
+  }) async {
+    final result = await albumDomain.albumFavoriteList(
+      page: page,
+      limit: pageSize,
+    );
+
+    return result.data!;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MyListView.list(
+      contentPadding: 15.w,
+      itemBuilder: (context, item, index) => YellowPictureItemCard(data: item),
+      onFetchingMore: (currentPage, pageSize) => _getData(
+        page: currentPage,
+        pageSize: pageSize,
+      ),
+    );
+  }
+}
+
+class _CartoonView extends StatefulWidget {
+  const _CartoonView();
+
+  @override
+  State<_CartoonView> createState() => _CartoonViewState();
+}
+
+class _CartoonViewState extends State<_CartoonView> {
+  late final _domain = context.read<CartoonDomain>();
+
+  Future<List<CartoonModel>?> _getData({
+    required int page,
+    required int pageSize,
+  }) async {
+    final result = await _domain.cartoonFavoriteList(
+      page: page,
+      limit: pageSize,
+    );
+    if (result.isValid) {
+      List<CartoonModel> tp = List.from(result.data ?? []);
+      return tp;
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MyListView.grid(
+      padding:
+          EdgeInsets.symmetric(horizontal: MyTheme.pagePadding, vertical: 8.w),
+      childAspectRatio: CartoonVideoCard.aspectRatio,
+      crossAxisSpacing: 8.w,
+      itemBuilder: (context, item, index) => CartoonVideoCard(data: item),
+      onFetchingMore: (currentPage, pageSize) => _getData(
+        page: currentPage,
+        pageSize: pageSize,
+      ),
+    );
+  }
+}
+
+class _ComicView extends StatefulWidget {
+  const _ComicView();
+
+  @override
+  State<_ComicView> createState() => _ComicViewState();
+}
+
+class _ComicViewState extends State<_ComicView> {
+  late final comicDomain = context.read<ComicDomain>();
+
+  Future<List<ComicItemsModel>> _getData({
+    required int page,
+    required int pageSize,
+  }) async {
+    final result = await comicDomain.comicFavoriteList(
+      page: page,
+      limit: pageSize,
+    );
+
+    return result.data!;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MyListView.list(
+      contentPadding: 15.w,
+      itemBuilder: (context, item, index) => ComicItemCard(data: item),
+      onFetchingMore: (currentPage, pageSize) => _getData(
+        page: currentPage,
+        pageSize: pageSize,
+      ),
+    );
+  }
+}
+
+class _NovelView extends StatefulWidget {
+  const _NovelView();
+
+  @override
+  State<_NovelView> createState() => _NovelViewState();
+}
+
+class _NovelViewState extends State<_NovelView> {
+  late final novelDomain = context.read<NovelDomain>();
+
+  Future<List<NovelItemsModel>> _getData({
+    required int page,
+    required int pageSize,
+  }) async {
+    final result = await novelDomain.novelFavoriteList(
+      page: page,
+      limit: pageSize,
+    );
+
+    return result.data!;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MyListView.list(
+      contentPadding: 15.w,
+      itemBuilder: (context, item, index) => NovelItemCard(data: item),
+      onFetchingMore: (currentPage, pageSize) => _getData(
+        page: currentPage,
+        pageSize: pageSize,
+      ),
+    );
+  }
+}
+
+class _ChatView extends StatefulWidget {
+  const _ChatView();
+
+  @override
+  State<_ChatView> createState() => _ChatViewState();
+}
+
+class _ChatViewState extends State<_ChatView> {
+  late final chatDomain = context.read<ChatDomain>();
+
+  Future<List<ChatListChatModel>> _getData({
+    required int page,
+    required int pageSize,
+  }) async {
+    final result = await chatDomain.chatFavoriteList(
+      page: page,
+      limit: pageSize,
+    );
+
+    return result.data!
+        .whereType<ChatListChatModel>()
+        .toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MyListView.list(
+      contentPadding: 15.w,
+      itemBuilder: (context, item, index) => ChatListCard(data: item),
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,
         pageSize: pageSize,
