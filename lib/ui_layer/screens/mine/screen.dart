@@ -250,6 +250,14 @@ class _HeaderInfo extends StatelessWidget {
                         style: MyTheme.white18bold,
                       ),
                     ),
+                    if (member.vipLevel.isVip())
+                      Padding(
+                        padding: const EdgeInsets.only(left: 12),
+                        child: MemberVipWidget(
+                          height: 15.w,
+                          vipImage: member.vipImg,
+                        ),
+                      ),
                     if (member.agent == 1)
                       Container(
                         margin: EdgeInsets.only(left: 5.w),
@@ -275,20 +283,9 @@ class _HeaderInfo extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 6),
-                Row(
-                  children: [
-                    if (member.vipLevel.isVip())
-                      Padding(
-                        padding: const EdgeInsets.only(right: 12),
-                        child: MemberVipWidget(
-                          vipImage: member.vipImg,
-                        ),
-                      ),
-                    Text(
-                      'ID: ${member.aff ?? '0000000'}',
-                      style: MyTheme.white255_14.white25507,
-                    ),
-                  ],
+                Text(
+                  'ID: ${member.aff ?? '0000000'}',
+                  style: MyTheme.white255_14.white25507,
                 ),
               ],
             ),
@@ -430,7 +427,10 @@ class _VIPCenterState extends State<_VIPCenter> {
                           // const SizedBox(height: 6),
                           Row(
                             children: [
-                              MyImage.asset(
+                              member.vipLevel.isVip() ? MemberVipWidget(
+                                height: 16.w,
+                                vipImage: member.vipImg,
+                              ): MyImage.asset(
                                 MyImagePaths.appMineKtVip,
                                 height: 16.w,
                                 fit: BoxFit.fitHeight,
@@ -445,7 +445,6 @@ class _VIPCenterState extends State<_VIPCenter> {
                                 maxLines: 1,
                               ),
                               const SizedBox(width: 5),
-                              
                             ],
                           ),
                           SizedBox(height: 5.w),
@@ -462,6 +461,7 @@ class _VIPCenterState extends State<_VIPCenter> {
               ),
             ),
             Align(alignment: Alignment.bottomCenter,child: _MenuButtonGrid(menu: menu, isVipCenter: true)),
+            Positioned(top: 0.5,right: 1.w,child:const MyImage.asset(MyImagePaths.appMineMoreRight,fit: BoxFit.fill)),
           ],
         ),
       ),
