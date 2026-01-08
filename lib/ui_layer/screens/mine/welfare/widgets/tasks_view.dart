@@ -2,7 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jygf/domain/api_validator.dart';
+import 'package:jygf/domain/type_def.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/gradient_text.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/member_vip.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_app_bar.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/screen_background.dart';
 import 'package:provider/provider.dart';
@@ -377,9 +379,12 @@ class _MemberView extends StatelessWidget {
                                                 overflow: TextOverflow.ellipsis,
                                                 decoration: TextDecoration.none)),
                                         SizedBox(width: 9.w),
-                                        member.vipLevel > 0
-                                            ? MyImage.asset(MyImagePaths.appTaskVipIcon, width: 39.w, height: 18.w)
-                                            : const SizedBox.shrink(),
+                                       if (member.vipLevel.isVip())
+                                       Padding( padding:  EdgeInsets.only(left: 5.w),
+                                         child: MemberVipWidget(
+                                         height: 15.w,
+                                         vipImage: member.vipImg,
+                                         ),),
                                       ],
                                     ),
                                   ),
@@ -387,7 +392,7 @@ class _MemberView extends StatelessWidget {
                                     flex: 1,
                                     child: Row(
                                       children: [
-                                        member.vipLevel > 0
+                                        member.vipLevel.isVip()
                                             ? Text('vpwxk'.tr(context: context), style: MyTheme.gray127_14)
                                             : Text('${'sygkcs'.tr(context: context)}: ${data.freeViewCnt}/${data.totalFreeViewCnt}',
                                                 style: MyTheme.gray127_14),
@@ -420,7 +425,7 @@ class _MemberView extends StatelessWidget {
                       if (member == null) return const SizedBox.shrink();
                       return MyImage.asset(
                         member.vipLevel > 0
-                            ? MyImagePaths.appTaskVipIcon
+                            ? MyImagePaths.appTaskRenewVip
                             : MyImagePaths.appTaskBuyVip,
                         width: 300.w,
                         height: 40.w,

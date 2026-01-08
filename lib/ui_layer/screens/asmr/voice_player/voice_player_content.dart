@@ -278,7 +278,7 @@ class _VioicPlayerContentViewState extends State<VioicPlayerContentView>
                     builder: (context, bool value, child) {
                       return _btnItem(
                           icon: value
-                              ? MyImagePaths.appCollectOn
+                              ? MyImagePaths.appAsmrCollectionS
                               : MyImagePaths.appAsmrCollectionN,
                           name: 'sc'.tr(context: context),
                           onTap: () {

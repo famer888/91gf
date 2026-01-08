@@ -444,7 +444,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen>
                                                   TextSpan(
                                                     text: data.contact,
                                                     style: TextStyle(
-                                                      color: const Color.fromRGBO(255, 211, 123, 1),
+                                                      color: MyTheme.yellow255123Color,
                                                       fontSize: 13.sp,
                                                       fontWeight: FontWeight.w500,
                                                     ),

@@ -252,7 +252,7 @@ class _HeaderInfo extends StatelessWidget {
                     ),
                     if (member.vipLevel.isVip())
                       Padding(
-                        padding: const EdgeInsets.only(left: 12),
+                        padding: EdgeInsets.only(left: 5.w),
                         child: MemberVipWidget(
                           height: 15.w,
                           vipImage: member.vipImg,

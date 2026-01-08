@@ -82,7 +82,7 @@ class _MineAIRecordScreenState extends State<MineAIRecordScreen> {
                   isScrollable: true,
                   isCenter: false,
                   tabBarPadding: EdgeInsets.only(left: 48.w),
-                  labelStyle: MyTheme.white_17.copyWith(color: const Color.fromRGBO(255, 211, 123, 1)),
+                  labelStyle: MyTheme.white_17.copyWith(color: MyTheme.yellow255123Color),
                 ),
               ),
               Positioned(

@@ -291,6 +291,7 @@ static const gradient_90_114_colors_15 = [
   static Color white255Color = const Color.fromRGBO(255, 255, 255, 1);
 
   static const Color yellow255Color = Color.fromRGBO(255, 197, 48, 1);
+  static const Color yellow255123Color = Color.fromRGBO(255, 211, 123, 1);
 
   static const Color white01Color = Color.fromRGBO(255, 255, 255, 0.1);
   static const Color white015Color = Color.fromRGBO(255, 255, 255, 0.15);
