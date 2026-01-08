@@ -26,21 +26,23 @@ import 'package:jygf/ui_layer/screens/acg/novel/novel_part_content/novel_updatin
 import 'package:jygf/ui_layer/screens/acg/novel/novel_voice_player/novel_voice_player_content.dart';
 import 'package:jygf/ui_layer/screens/acg/screen.dart';
 import 'package:jygf/ui_layer/screens/ai_server/screen.dart';
-import 'package:jygf/ui_layer/screens/ai_server/widgets/detail/ai_magic_detail.dart';
-import 'package:jygf/ui_layer/screens/ai_server/widgets/ai_magic.dart';
 import 'package:jygf/ui_layer/screens/ai_server/widgets/ai_art.dart';
-import 'package:jygf/ui_layer/screens/ai_server/widgets/ai_novel_page.dart';
-import 'package:jygf/ui_layer/screens/ai_server/widgets/ai_novel_detail_page.dart';
-import 'package:jygf/ui_layer/screens/ai_server/widgets/ai_voice_page.dart';
-import 'package:jygf/ui_layer/screens/ai_server/widgets/ai_kiss_page.dart';
 import 'package:jygf/ui_layer/screens/ai_server/widgets/ai_face_swap.dart';
-import 'package:jygf/ui_layer/screens/ai_server/widgets/ai_video_face_swap.dart';
+import 'package:jygf/ui_layer/screens/ai_server/widgets/ai_kiss_page.dart';
+import 'package:jygf/ui_layer/screens/ai_server/widgets/ai_magic.dart';
+import 'package:jygf/ui_layer/screens/ai_server/widgets/ai_novel_detail_page.dart';
+import 'package:jygf/ui_layer/screens/ai_server/widgets/ai_novel_page.dart';
 import 'package:jygf/ui_layer/screens/ai_server/widgets/ai_off_derobe.dart';
+import 'package:jygf/ui_layer/screens/ai_server/widgets/ai_video_face_swap.dart';
+import 'package:jygf/ui_layer/screens/ai_server/widgets/ai_voice_page.dart';
+import 'package:jygf/ui_layer/screens/ai_server/widgets/detail/ai_magic_detail.dart';
 import 'package:jygf/ui_layer/screens/anime/detail/screen.dart';
 import 'package:jygf/ui_layer/screens/anime/more/screen.dart';
 import 'package:jygf/ui_layer/screens/anime/screen.dart';
 import 'package:jygf/ui_layer/screens/asmr/voice_player/local_voice_player.dart';
 import 'package:jygf/ui_layer/screens/asmr/voice_player/voice_player_content.dart';
+import 'package:jygf/ui_layer/screens/black/screen/black_details_screen.dart';
+import 'package:jygf/ui_layer/screens/black/screen/black_label_screen.dart';
 import 'package:jygf/ui_layer/screens/chat/detail/screen.dart';
 import 'package:jygf/ui_layer/screens/chat/issue/screen.dart';
 import 'package:jygf/ui_layer/screens/chat/screen.dart';
@@ -70,15 +72,16 @@ import 'package:jygf/ui_layer/screens/yellow_picture/yellow_picture_conten/pictu
 import 'package:jygf/ui_layer/screens/yellow_picture/yellow_picture_conten/screen.dart';
 import 'package:jygf/ui_layer/screens/yellow_picture/yellow_picture_reader/picture_preview.dart';
 import 'package:jygf/ui_layer/screens/yellow_picture/yellow_picture_reader/yellow_picture_reader.dart';
+
 import '../../domain/model/video_detail_model.dart';
-import '../screens/community/module/screen.dart';
-import '../screens/bit/screen.dart';
 import '../screens/bit/detail/screen.dart';
+import '../screens/bit/screen.dart';
 import '../screens/bottom_navi_bar.dart';
+import '../screens/community/community_screen/screen.dart';
 import '../screens/community/detail/screen.dart';
 import '../screens/community/issue/screen.dart';
+import '../screens/community/module/screen.dart';
 import '../screens/community/original_screen/original_screen.dart';
-import '../screens/community/community_screen/screen.dart';
 import '../screens/community/tag_detail/screen.dart';
 import '../screens/home/screen.dart';
 import '../screens/local_video/screen.dart';
@@ -97,7 +100,6 @@ import '../screens/mine/follow/screen.dart';
 import '../screens/mine/help/screen.dart';
 import '../screens/mine/income_detail/screen.dart';
 import '../screens/mine/message_center/chat_message/screen.dart';
-import '../screens/mine/message_center/customer_service/screen.dart';
 import '../screens/mine/message_center/customer_service/screen_net.dart';
 import '../screens/mine/message_center/screen.dart';
 import '../screens/mine/message_center/system_message/screen.dart';
@@ -125,6 +127,7 @@ import '../screens/welcome.dart';
 import '../utils/common_utils.dart';
 import 'paths.dart';
 import 'router.dart';
+
 part 'routes.g.dart';
 
 @TypedGoRoute<WelcomeRoute>(path: AppRouterPaths.root)
@@ -414,6 +417,34 @@ class GameRoute extends GoRouteData {
   Page<void> buildPage(BuildContext context, GoRouterState state) {
     return CommonUtils.buildSlideTransitionPage(
         state: state, child: const YellowGameScreen());
+  }
+}
+
+@TypedGoRoute<BlockDetailsRoute>(path: AppRouterPaths.heiLiaoDetails)
+class BlockDetailsRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey = AppRouter.rootNavigatorKey;
+
+  const BlockDetailsRoute({required this.id});
+
+  final int id;
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CommonUtils.buildSlideTransitionPage(state: state, child: BlackDetailsScreen(id: id));
+  }
+}
+
+@TypedGoRoute<BlockTagListRoute>(path: AppRouterPaths.heiLiaoTagList)
+class BlockTagListRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey = AppRouter.rootNavigatorKey;
+
+  const BlockTagListRoute({required this.tag});
+
+  final String tag;
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CommonUtils.buildSlideTransitionPage(state: state, child: BlackLabelScreen(tag: tag));
   }
 }
 

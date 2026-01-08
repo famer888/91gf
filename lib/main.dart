@@ -9,6 +9,7 @@ import 'package:jygf/domain/remote_domain/domains/aimagic.dart';
 import 'package:jygf/domain/remote_domain/domains/ainovel.dart';
 import 'package:jygf/domain/remote_domain/domains/album.dart';
 import 'package:jygf/domain/remote_domain/domains/asmr.dart';
+import 'package:jygf/domain/remote_domain/domains/black_domain.dart';
 import 'package:jygf/domain/remote_domain/domains/cartoon.dart';
 import 'package:jygf/domain/remote_domain/domains/chat.dart';
 import 'package:jygf/domain/remote_domain/domains/comic.dart';
@@ -98,8 +99,8 @@ void main() async {
         Provider<NovelDomain>(lazy: false, create: (_) => appRepo),
         Provider<AlbumDomain>(lazy: false, create: (_) => appRepo),
         Provider<ChatDomain>(lazy: false, create: (_) => appRepo),
-        Provider<DownloadUtil>(
-            lazy: false, create: (_) => DownloadUtil(cache: appRepo.cache)),
+        Provider<BlackDomain>(lazy: false, create: (_) => appRepo),
+        Provider<DownloadUtil>(lazy: false, create: (_) => DownloadUtil(cache: appRepo.cache)),
         ChangeNotifierProvider(create: (_) => HomeConfigNotifier(appRepo)),
         ChangeNotifierProvider(create: (_) => UserNotifier(appRepo)),
         ChangeNotifierProxyProvider<UserNotifier, ChatNotifier?>(

@@ -107,6 +107,9 @@ class Member {
     required this.vipImg,
     required this.vipIcon,
     required this.circlePrivilege,
+    this.vipAppPrivilege,
+    this.coinsHlPrivilege,
+    this.vipHlPrivilege,
   });
 
   final int? isFollow;
@@ -208,7 +211,9 @@ class Member {
   final String vipImg;
   final String vipIcon;
   final int circlePrivilege;
-
+  final int? vipAppPrivilege;
+  final int? coinsHlPrivilege;
+  final int? vipHlPrivilege;
 
   factory Member.fromJson(Map<String, dynamic> json) => Member(
         postCount: json['post_count'] ?? 0,
@@ -282,9 +287,7 @@ class Member {
                 ? json['free_view_cnt']
                 : int.parse(json['free_view_cnt']),
         lastactivity: json['lastactivity'],
-        thumbStr: json['thumb_str'] == null || json['thumb_str'] == ''
-            ? null
-            : json['thumb_str'],
+        thumbStr: json['thumb_str'] == null || json['thumb_str'] == '' ? null : json['thumb_str'],
         oauthStr: json['oauth_str'],
         isSetPassword: json['is_set_password'],
         level: json['level'],
@@ -315,6 +318,9 @@ class Member {
         vipImg: json['vip_img'] ?? '',
         vipIcon: json['vip_icon'] ?? '',
         circlePrivilege: json['circle_privilege'] ?? 0,
+        vipAppPrivilege: json['vip_app_privilege'] ?? 0,
+        coinsHlPrivilege: json['coins_hl_privilege'] ?? 0,
+        vipHlPrivilege: json['vip_hl_privilege'] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -416,6 +422,9 @@ class Member {
         'vip_image': vipImg,
         'vip_icon': vipIcon,
         'circle_privilege': circlePrivilege,
+        'vip_app_privilege': vipAppPrivilege,
+        'coins_hl_privilege': coinsHlPrivilege,
+        'vip_hl_privilege': vipHlPrivilege,
       };
 
   Member copyWith({
@@ -517,6 +526,9 @@ class Member {
     String? vipImage,
     String? vipIcon,
     int? circlePrivilege,
+    int? vipAppPrivilege,
+    int? coinsHlPrivilege,
+    int? vipHlPrivilege,
   }) =>
       Member(
         isFollow: isFollow ?? this.isFollow,
@@ -617,6 +629,9 @@ class Member {
         vipImg: vipImg ?? this.vipImg,
         vipIcon: vipIcon ?? this.vipIcon,
         circlePrivilege: circlePrivilege ?? this.circlePrivilege,
+        vipAppPrivilege: vipAppPrivilege ?? this.vipAppPrivilege,
+        coinsHlPrivilege: coinsHlPrivilege ?? this.coinsHlPrivilege,
+        vipHlPrivilege: vipHlPrivilege ?? this.vipHlPrivilege,
       );
 }
 
@@ -632,9 +647,7 @@ class Share {
   final String? affUrl;
 
   factory Share.fromJson(Map<String, dynamic> json) => Share(
-        affUrlCopy: json['aff_url_copy'] == null
-            ? null
-            : AffUrlCopy.fromJson(json['aff_url_copy']),
+        affUrlCopy: json['aff_url_copy'] == null ? null : AffUrlCopy.fromJson(json['aff_url_copy']),
         affCode: json['aff_code'],
         affUrl: json['aff_url'],
       );

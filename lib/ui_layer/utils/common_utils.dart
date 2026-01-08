@@ -11,7 +11,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jygf/app_config.dart';
@@ -310,6 +309,22 @@ class CommonUtils {
       return c + 1;
     } else {
       return c;
+    }
+  }
+
+  static String formatNumber(dynamic value, [int? digit]) {
+    double count = double.tryParse(value.toString()) ?? 0.0;
+    if (count >= 1000000) {
+      count = count / 1000000;
+      return "${count.toStringAsFixed(digit ?? 1)}m";
+    } else if (count >= 10000) {
+      count = count / 10000;
+      return "${count.toStringAsFixed(digit ?? 1)}w";
+    } else if (count >= 1000) {
+      count = count / 1000;
+      return "${count.toStringAsFixed(digit ?? 1)}k";
+    } else {
+      return value.toString();
     }
   }
 

@@ -191,69 +191,70 @@ class _CommunityPostDetailScreenState extends State<CommunityPostDetailScreen> w
     return _asyncValue.maybeWhen(
         data: (data) {
           return ScreenBackground(
-              child: Scaffold(
-            appBar: MyAppBar(
-              leftWidget: GestureDetector(
+            child: Scaffold(
+              appBar: MyAppBar(
+                leftWidget: GestureDetector(
+                  onTap: () {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                    context.pop();
+                  },
+                  child: SizedBox(
+                    height: double.infinity,
+                    child: MyImage.asset(MyImagePaths.appBackIcon, width: 20.w, height: 20.w, fit: BoxFit.contain),
+                  ),
+                ),
+                // _AvatarWithNickName(user: data.user),
+                title: 'tiezixq'.tr(),
+                // rightWidget: Selector<UserNotifier, bool>(
+                //   selector: (_, notifier) => notifier.userFollowingStatus.contains('${data.user?.aff}'),
+                //   builder: (_, isFollowed, __) => FollowButton(
+                //     isFollowed: isFollowed,
+                //     onTap: () => context.read<UserNotifier>().changeUserFollow('${data.user?.aff}'),
+                //   ),
+                // ),
+              ),
+              body: GestureDetector(
                 onTap: () {
-                  FocusManager.instance.primaryFocus?.unfocus();
-                  context.pop();
+                  unfocus();
                 },
-                child: SizedBox(
-                  height: double.infinity,
-                  child: MyImage.asset(MyImagePaths.appBackIcon, width: 20.w, height: 20.w, fit: BoxFit.contain),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: MyListView.list(
+                        header: CommunityDetailContentView(data: data),
+                        padding: EdgeInsets.symmetric(
+                          vertical: 5.w,
+                          horizontal: MyTheme.pagePadding,
+                        ),
+                        itemBuilder: (context, item, index) {
+                          return PostCommentView(
+                            type: CommunityType.community,
+                            commentData: item,
+                            onReply: () {
+                              currentReply = item;
+                              hintNotifier.value = '${'hf'.tr()}@${item.user?.nickname ?? ""}';
+                              inputFocusNode.requestFocus();
+                            },
+                            onMoreCommentTap: () => _showMoreReview(item),
+                            changeLike: () => _changeCommentLike('${item.id}'),
+                          );
+                        },
+                        onFetchingMore: (currentPage, pageSize) => getReviewData(currentPage: currentPage, pageSize: pageSize),
+                      ),
+                    ),
+                    CommentInput(
+                      controller: textEditingController,
+                      focusNode: inputFocusNode,
+                      hintNotifier: hintNotifier,
+                      onSubmitted: () async {
+                        await _sendComment(target: currentReply, text: textEditingController.text);
+                      },
+                    ),
+                  ],
                 ),
               ),
-              // _AvatarWithNickName(user: data.user),
-              title: 'tiezixq'.tr(),
-              // rightWidget: Selector<UserNotifier, bool>(
-              //   selector: (_, notifier) => notifier.userFollowingStatus.contains('${data.user?.aff}'),
-              //   builder: (_, isFollowed, __) => FollowButton(
-              //     isFollowed: isFollowed,
-              //     onTap: () => context.read<UserNotifier>().changeUserFollow('${data.user?.aff}'),
-              //   ),
-              // ),
             ),
-            body: GestureDetector(
-              onTap: () {
-                unfocus();
-              },
-              child: Column(
-                children: [
-                  Expanded(
-                    child: MyListView.list(
-                      header: CommunityDetailContentView(data: data),
-                      padding: EdgeInsets.symmetric(
-                        vertical: 5.w,
-                        horizontal: MyTheme.pagePadding,
-                      ),
-                      itemBuilder: (context, item, index) {
-                        return PostCommentView(
-                          type: CommunityType.community,
-                          commentData: item,
-                          onReply: () {
-                            currentReply = item;
-                            hintNotifier.value = '${'hf'.tr()}@${item.user?.nickname ?? ""}';
-                            inputFocusNode.requestFocus();
-                          },
-                          onMoreCommentTap: () => _showMoreReview(item),
-                          changeLike: () => _changeCommentLike('${item.id}'),
-                        );
-                      },
-                      onFetchingMore: (currentPage, pageSize) => getReviewData(currentPage: currentPage, pageSize: pageSize),
-                    ),
-                  ),
-                  CommentInput(
-                    controller: textEditingController,
-                    focusNode: inputFocusNode,
-                    hintNotifier: hintNotifier,
-                    onSubmitted: () async {
-                      await _sendComment(target: currentReply, text: textEditingController.text);
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ));
+          );
         },
         error: (error, __) => NetworkErrorView(
               text: error is String? ? error : null,

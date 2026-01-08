@@ -58,6 +58,12 @@ class AppRouterPaths {
   /// 游戏标签
   static const gameTag = '/gameTag/:tag';
 
+  /// 黑料详情
+  static const heiLiaoDetails = '/heiLiaoDetail';
+
+  /// 黑料标签列表页
+  static const heiLiaoTagList = '/heiLiaoTagList';
+
   /// 资源
   static const ziYuan = '/ziYuan';
 

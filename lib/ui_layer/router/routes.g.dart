@@ -20,6 +20,8 @@ List<RouteBase> get $appRoutes => [
       $cartoonMoreRoute,
       $cartoonDetailRoute,
       $gameRoute,
+      $blockDetailsRoute,
+      $blockTagListRoute,
       $gameMoreRoute,
       $gameNavRoute,
       $gameDetailRoute,
@@ -576,6 +578,62 @@ extension $GameRouteExtension on GameRoute {
 
   String get location => GoRouteData.$location(
         '/game',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $blockDetailsRoute => GoRouteData.$route(
+      path: '/heiLiaoDetail',
+      parentNavigatorKey: BlockDetailsRoute.$parentNavigatorKey,
+      factory: $BlockDetailsRouteExtension._fromState,
+    );
+
+extension $BlockDetailsRouteExtension on BlockDetailsRoute {
+  static BlockDetailsRoute _fromState(GoRouterState state) => BlockDetailsRoute(
+        id: int.parse(state.uri.queryParameters['id']!),
+      );
+
+  String get location => GoRouteData.$location(
+        '/heiLiaoDetail',
+        queryParams: {
+          'id': id.toString(),
+        },
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $blockTagListRoute => GoRouteData.$route(
+      path: '/heiLiaoTagList',
+      parentNavigatorKey: BlockTagListRoute.$parentNavigatorKey,
+      factory: $BlockTagListRouteExtension._fromState,
+    );
+
+extension $BlockTagListRouteExtension on BlockTagListRoute {
+  static BlockTagListRoute _fromState(GoRouterState state) => BlockTagListRoute(
+        tag: state.uri.queryParameters['tag']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/heiLiaoTagList',
+        queryParams: {
+          'tag': tag,
+        },
       );
 
   void go(BuildContext context) => context.go(location);

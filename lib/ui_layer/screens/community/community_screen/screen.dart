@@ -6,6 +6,8 @@ import 'package:jygf/domain/model/community/community_model.dart';
 import 'package:jygf/domain/model/navigator_model.dart';
 import 'package:jygf/domain/remote_domain/domains/community.dart';
 import 'package:jygf/ui_layer/notifiers/home_config_notifier.dart';
+import 'package:jygf/ui_layer/screens/acg/yellow_game/screen.dart';
+import 'package:jygf/ui_layer/screens/black/screen/black_screen.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/event_bus/event_bus.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_tab_bar.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/screen_background.dart';
@@ -13,6 +15,8 @@ import 'package:jygf/ui_layer/screens/common_widgets/search_app_bar.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/status/loading.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/status/network_error.dart';
 import 'package:jygf/ui_layer/screens/community/community_screen/content.dart';
+import 'package:jygf/ui_layer/screens/community/community_screen/seed_down_content.dart';
+import 'package:jygf/ui_layer/screens/file_search/file_search_screen.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:provider/provider.dart';
 
@@ -102,16 +106,19 @@ class _BodyState extends State<_Body> with TickerProviderStateMixin {
         initialIndex: _initialIndex,
         titles: data.map((e) => e.title).toList(),
         views: data.map((e) {
-          // if (e.type == 2) {//ASMR
-          //   return const ASMRContentView();
-          // } else if (e.type == 3) {//种子下载
-          //   return const SeedDwonContentView();
-          // } else {
-          //
-          // }
-          // return Center(
-          //   child: Text('煞笔'),
-          // );
+          if (e.type == 2) {
+            // 黑料
+            return const BlackScreen();
+          } else if (e.type == 3) {
+            // 查档
+            return const FileSearchScreen();
+          } else if (e.type == 4) {
+            // 种子
+            return const SeedDwonContentView();
+          } else if (e.type == 5) {
+            // 黄游
+            return const YellowGameScreen();
+          }
           return CommunityContentView(id: e.id);
         }).toList(),
       ),

@@ -5,19 +5,21 @@ import 'dart:io';
 import 'package:android_id/android_id.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:convert/convert.dart';
+import 'package:cross_file/cross_file.dart';
 import 'package:crypto/crypto.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:jygf/data_layer/data_source/remote/aiaudio_service.dart';
 import 'package:jygf/data_layer/data_source/remote/aidraw_service.dart';
+import 'package:jygf/data_layer/data_source/remote/aikiss_service.dart';
 import 'package:jygf/data_layer/data_source/remote/aimagic_service.dart';
 import 'package:jygf/data_layer/data_source/remote/ainovel_service.dart';
-import 'package:jygf/data_layer/data_source/remote/aiaudio_service.dart';
 import 'package:jygf/data_layer/data_source/remote/album_service.dart';
 import 'package:jygf/data_layer/data_source/remote/asmr_service.dart';
-import 'package:jygf/data_layer/data_source/remote/aikiss_service.dart';
+import 'package:jygf/data_layer/data_source/remote/black_service.dart';
 import 'package:jygf/data_layer/data_source/remote/cartoon_service.dart';
 import 'package:jygf/data_layer/data_source/remote/chat_service.dart';
 import 'package:jygf/data_layer/data_source/remote/comic_service.dart';
@@ -43,33 +45,37 @@ import 'package:jygf/domain/model/novel_model.dart';
 import 'package:jygf/domain/model/post/circle/circle_post_nav_model.dart';
 import 'package:jygf/domain/model/vlog_model.dart';
 import 'package:jygf/domain/model/voice_model.dart';
+import 'package:jygf/domain/remote_domain/domains/aiaudio.dart';
 import 'package:jygf/domain/remote_domain/domains/aidraw.dart';
 import 'package:jygf/domain/remote_domain/domains/aimagic.dart';
 import 'package:jygf/domain/remote_domain/domains/ainovel.dart';
 import 'package:jygf/domain/remote_domain/domains/album.dart';
 import 'package:jygf/domain/remote_domain/domains/asmr.dart';
-import 'package:jygf/domain/remote_domain/domains/aiaudio.dart';
 import 'package:jygf/domain/remote_domain/domains/cartoon.dart';
 import 'package:jygf/domain/remote_domain/domains/chat.dart';
 import 'package:jygf/domain/remote_domain/domains/comic.dart';
 import 'package:jygf/domain/remote_domain/domains/game.dart';
-
 import 'package:jygf/domain/remote_domain/domains/live.dart';
 import 'package:jygf/domain/remote_domain/domains/novel.dart';
 import 'package:jygf/domain/remote_domain/domains/rank.dart';
-import 'package:http_parser/http_parser.dart';
+import 'package:jygf/domain/remote_domain/domains/black_domain.dart';
+import 'package:jygf/ui_layer/screens/black/model/black_model.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:utils/utils.dart';
 import 'package:universal_html/html.dart' as html;
+import 'package:utils/utils.dart';
 
 import '../../app_config.dart';
 import '../../crypto.dart';
+import '../../domain/domain.dart';
 import '../../domain/enum.dart';
 import '../../domain/model/ai_server_face_model.dart';
 import '../../domain/model/app_center_model.dart';
 import '../../domain/model/bank_card_model.dart';
 import '../../domain/model/bit_detail_model.dart';
 import '../../domain/model/bit_nav_model.dart';
+import '../../domain/model/cartoon/cartoon_comment_model.dart';
+import '../../domain/model/cartoon/cartoon_detail_model.dart';
+import '../../domain/model/cartoon/cartoon_model.dart';
 import '../../domain/model/cash_withdraw_rule_model.dart';
 import '../../domain/model/coin_detail_model.dart';
 import '../../domain/model/collection_model.dart';
@@ -81,6 +87,9 @@ import '../../domain/model/exp_of_vip_model.dart';
 import '../../domain/model/feed/feed_model.dart';
 import '../../domain/model/feedback_data_model.dart';
 import '../../domain/model/follow_user_model.dart';
+import '../../domain/model/game/game_comment_model.dart';
+import '../../domain/model/game/game_detail_model.dart';
+import '../../domain/model/game/game_model.dart';
 import '../../domain/model/home_data_model.dart';
 import '../../domain/model/income_detail_data_model.dart';
 import '../../domain/model/member_model.dart';
@@ -104,20 +113,11 @@ import '../../domain/model/topics_with_banners_model.dart';
 import '../../domain/model/video_comment_model.dart';
 import '../../domain/model/video_detail_model.dart';
 import '../../domain/model/welfare_task_model.dart';
-import '../../domain/model/game/game_model.dart';
-import '../../domain/model/game/game_detail_model.dart';
-import '../../domain/model/game/game_comment_model.dart';
-
-import '../../domain/model/cartoon/cartoon_model.dart';
-import '../../domain/model/cartoon/cartoon_detail_model.dart';
-import '../../domain/model/cartoon/cartoon_comment_model.dart';
-
 import '../../domain/remote_domain/domains/ai.dart';
 import '../../domain/remote_domain/domains/aikiss.dart';
 import '../../domain/remote_domain/domains/original.dart';
 import '../../domain/result.dart';
 import '../../domain/type_def.dart';
-import '../../domain/domain.dart';
 import '../../logger.dart';
 import '../data_source/remote/account_service.dart';
 import '../data_source/remote/ai_service.dart';
@@ -127,7 +127,6 @@ import '../data_source/remote/element_service.dart';
 import '../data_source/remote/home_service.dart';
 import '../data_source/remote/message_service.dart';
 import '../data_source/remote/mv_service.dart';
-import '../data_source/remote/vlog_service.dart';
 import '../data_source/remote/order_service.dart';
 import '../data_source/remote/original_service.dart';
 import '../data_source/remote/privilege_service.dart';
@@ -136,42 +135,45 @@ import '../data_source/remote/search_service.dart';
 import '../data_source/remote/seed_service.dart';
 import '../data_source/remote/sign_service.dart';
 import '../data_source/remote/user_service.dart';
+import '../data_source/remote/vlog_service.dart';
 import '../data_source/remote/withdraw_service.dart';
 import 'http_interceptor.dart';
 import 'utils.dart';
+
 part 'cache.dart';
-part 'mixin/home_mixin.dart';
-part 'mixin/user_mixin.dart';
-part 'mixin/element_mixin.dart';
-part 'mixin/dynamic_mixin.dart';
-part 'mixin/community_mixin.dart';
-part 'mixin/seed_mixin.dart';
-part 'mixin/order_mixin.dart';
-part 'mixin/sign_mixin.dart';
 part 'mixin/account_mixin.dart';
-part 'mixin/proxy_mixin.dart';
-part 'mixin/withdraw_mixin.dart';
-part 'mixin/search_mixin.dart';
-part 'mixin/mv_mixin.dart';
-part 'mixin/vlog_mixin.dart';
-part 'mixin/cartoon_mixin.dart';
-part 'mixin/game_mixin.dart';
-part 'mixin/message_mixin.dart';
-part 'mixin/privilege_mixin.dart';
-part 'mixin/original_mixim.dart';
-part 'mixin/live_mixin.dart';
 part 'mixin/ai_mixin.dart';
-part 'mixin/asmr_mixin.dart';
-part 'mixin/rank_mixin.dart';
-part 'mixin/aimagic_mixin.dart';
-part 'mixin/aidraw_mixin.dart';
-part 'mixin/ainovel_mixin.dart';
 part 'mixin/aiaudio_mixin.dart';
+part 'mixin/aidraw_mixin.dart';
 part 'mixin/aikiss_mixin.dart';
-part 'mixin/comic_mixin.dart';
-part 'mixin/novel_mixin.dart';
+part 'mixin/aimagic_mixin.dart';
+part 'mixin/ainovel_mixin.dart';
 part 'mixin/album_mixin.dart';
+part 'mixin/asmr_mixin.dart';
+part 'mixin/cartoon_mixin.dart';
 part 'mixin/chat_mixin.dart';
+part 'mixin/comic_mixin.dart';
+part 'mixin/community_mixin.dart';
+part 'mixin/black_mixin.dart';
+part 'mixin/dynamic_mixin.dart';
+part 'mixin/element_mixin.dart';
+part 'mixin/game_mixin.dart';
+part 'mixin/home_mixin.dart';
+part 'mixin/live_mixin.dart';
+part 'mixin/message_mixin.dart';
+part 'mixin/mv_mixin.dart';
+part 'mixin/novel_mixin.dart';
+part 'mixin/order_mixin.dart';
+part 'mixin/original_mixim.dart';
+part 'mixin/privilege_mixin.dart';
+part 'mixin/proxy_mixin.dart';
+part 'mixin/rank_mixin.dart';
+part 'mixin/search_mixin.dart';
+part 'mixin/seed_mixin.dart';
+part 'mixin/sign_mixin.dart';
+part 'mixin/user_mixin.dart';
+part 'mixin/vlog_mixin.dart';
+part 'mixin/withdraw_mixin.dart';
 
 class AppRepo extends _BaseAppRepo
     with
@@ -206,7 +208,8 @@ class AppRepo extends _BaseAppRepo
         _Comic,
         _Novel,
         _Album,
-        _Chat{}
+        _Chat,
+        _Black {}
 
 abstract class _BaseAppRepo implements AppDomain {
   late final _homeService = HomeService(_apiDio);
@@ -241,6 +244,7 @@ abstract class _BaseAppRepo implements AppDomain {
   late final _novelService = NovelService(_apiDio);
   late final _albumService = AlbumService(_apiDio);
   late final _chatService = ChatService(_apiDio);
+  late final _blackService = BlackService(_apiDio);
 
   final _cacheManager = _CacheManager();
 

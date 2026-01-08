@@ -34,6 +34,11 @@ class MyTheme {
     end: Alignment.centerRight,
   );
 
+  static const gradient_90_135_colors = [
+    Color.fromRGBO(118, 90, 232, 1),
+    Color.fromRGBO(90, 135, 232, 1),
+  ];
+
   static const LinearGradient shareButtonGradient = LinearGradient(
     colors: [Color.fromRGBO(55, 110, 246, 1), Color.fromRGBO(100, 150, 252, 1)],
     begin: Alignment.centerLeft,
@@ -217,6 +222,13 @@ static const gradient_90_114_colors_15 = [
     Color.fromRGBO(90, 135, 232, 1),
     Color.fromRGBO(118, 90, 232, 1)
   ];
+
+  static const LinearGradient vip_gradient_90_135 = LinearGradient(
+    colors: [Color.fromRGBO(255, 139, 23, 1), Color.fromRGBO(255, 173, 72, 1)],
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+  );
+
   static const LinearGradient gradient_90_114 = LinearGradient(
     colors: gradient_90_114_colors,
     begin: Alignment.centerLeft,
@@ -234,6 +246,10 @@ static const gradient_90_114_colors_15 = [
     end: Alignment.centerRight,
   );
 
+  static const tagBgGradient = LinearGradient(colors: [
+    Color.fromRGBO(76, 190, 255, 0.2),
+    Color.fromRGBO(75, 146, 254, 0.2),
+  ], begin: Alignment.topCenter, end: Alignment.bottomCenter);
 
   static const Color imageBgColor = Color.fromRGBO(255, 255, 255, 0.03);
 
@@ -308,7 +324,7 @@ static const gradient_90_114_colors_15 = [
   static const Color whiteColor = Color.fromRGBO(255, 255, 255, 1);
 
   static const Color orange24718713 = Color.fromRGBO(247, 187, 13, 1);
-
+  static Color color250_255_115 = const Color.fromRGBO(250, 255, 115, 1);
   static const bgColor = Color.fromRGBO(17, 3, 27, 1);
   static const naviColor = Color.fromRGBO(11, 11, 33, 1);
 
@@ -3181,6 +3197,7 @@ static const gradient_90_114_colors_15 = [
 
 extension MyHeightEx on TextStyle {
   TextStyle get h1 => copyWith(height: 1);
+  TextStyle get h1_5 => copyWith(height: 1.5);
 }
 
 extension MySizeEx on TextStyle {
@@ -3219,6 +3236,8 @@ extension MyTextColorEx on TextStyle {
   TextStyle get white25509 => copyWith(color: MyTheme.white25509Color);
   TextStyle get white => copyWith(color: MyTheme.white255Color);
   TextStyle get cyanColor00edfd => copyWith(color: MyTheme.cyanColor00edfd);
+  TextStyle get blueColor63 => copyWith(color: MyTheme.blueColor63);
+  TextStyle get color250_255_115 => copyWith(color: MyTheme.color250_255_115);
 
   TextStyle get yellow255 => copyWith(color: MyTheme.yellow255Color);
 }

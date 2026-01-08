@@ -6,8 +6,7 @@ mixin _Community on _BaseAppRepo implements CommunityDomain {
   AsyncResult<List<CommunityCategoryTabModel>> getCategoryTabList() =>
       _communityService
           .getCategoryTabList()
-          .deserializeJsonListBy(
-              (e) => e.map(CommunityCategoryTabModel.fromJson).toList())
+          .deserializeJsonListBy((e) => e.map(CommunityCategoryTabModel.fromJson).toList())
           .guard;
 
   @override
