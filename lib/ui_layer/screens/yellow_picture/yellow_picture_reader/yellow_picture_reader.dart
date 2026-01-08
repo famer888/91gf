@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/dialog/widgets/regular_dialog.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/gradient_text.dart';
 import 'package:provider/provider.dart';
 import 'package:jygf/domain/api_validator.dart';
 import 'package:jygf/domain/model/album_model.dart';
@@ -223,7 +225,7 @@ class _YellowPictureReaderState extends State<YellowPictureReader> {
                       MyImage.asset(
                           data?.isLike == 1
                               ? MyImagePaths.appShortLikeH
-                              : MyImagePaths.appShortLikeN,
+                              : MyImagePaths.appAlbumLikeN,
                           width: 20.w,
                           height: 20.w),
                       SizedBox(width: 3.w),
@@ -243,7 +245,7 @@ class _YellowPictureReaderState extends State<YellowPictureReader> {
                       MyImage.asset(
                           data?.isFavorite == 1
                               ? MyImagePaths.appGameCollectOn
-                              : MyImagePaths.appGameCollectOff,
+                              : MyImagePaths.appAlbumCollectN,
                           width: 22.w,
                           height: 22.w),
                       SizedBox(width: 3.w),
@@ -260,7 +262,7 @@ class _YellowPictureReaderState extends State<YellowPictureReader> {
                       _showCommentSheet(context: context);
                     },
                     child: Row(children: [
-                      MyImage.asset(MyImagePaths.appComicComment,
+                      MyImage.asset(MyImagePaths.appAlbumComment,
                           width: 22.w, height: 22.w),
                       SizedBox(width: 3.w),
                       Text(
@@ -391,33 +393,16 @@ class _YellowPictureReaderState extends State<YellowPictureReader> {
             child: Center(
               child: FittedBox(
                 child: Container(
-                  height: 40.w,
-                  padding: EdgeInsets.symmetric(horizontal: 13.w),
+                  // height: 40.w,
+                  padding: EdgeInsets.symmetric(horizontal: 13.w, vertical: 5.w),
                   decoration: BoxDecoration(
-                      color: data?.type == 1
-                          ? MyTheme.redColorVIP
-                          : MyTheme.jellyCyanColor,
+                      color: const Color.fromRGBO(0, 0, 0, 0.6),
                       borderRadius: BorderRadius.all(Radius.circular(20.w))),
                   alignment: Alignment.center,
                   child: data?.type == 1
-                      ? RichText(
-                          text: TextSpan(children: [
-                          TextSpan(
-                              text: 'vipgktj'.tr(context: context),
-                              style: MyTheme.white14),
-                        ]))
-                      : RichText(
-                          text: TextSpan(children: [
-                          TextSpan(
-                              text: 'zf'.tr(context: context),
-                              style: MyTheme.white14),
-                          TextSpan(
-                              text: '${data?.coins ?? 0}',
-                              style: MyTheme.white16),
-                          TextSpan(
-                              text: 'jbgktj'.tr(context: context),
-                              style: MyTheme.white14),
-                        ])),
+                      ? GradientText("开通VIP，观看完整图集",style: MyTheme.white14, gradient: MyTheme.gradient_90_114)
+                      : GradientText("支付${data?.coins ?? 0}金币观看完整图集", style: MyTheme.white14, gradient: MyTheme.gradient_90_114)
+                      ,
                 ),
               ),
             ),
@@ -435,55 +420,37 @@ class _YellowPictureReaderState extends State<YellowPictureReader> {
     int needmoney = data?.coins ?? 0;
     bool isInsufficient = money < needmoney;
     if (data?.type == 2) {
-      MyDialog.showAnimationDialog(
-          cancelTxt: 'qx'.tr(context: context),
-          confirmTxt: isInsufficient
+      CommonUtils.showDialog(
+        context: context,
+        builder: (context) => RegularDialog(
+          title: 'wxts'.tr(context: context),
+          content: Text('当前图集需${data?.coins ?? 0}金币解锁查看！\n可用金币：${user.money}金币', style: MyTheme.white15, maxLines: 10, textAlign: TextAlign.center),
+          cancelText: 'qx'.tr(context: context),
+          buttonText: isInsufficient
               ? 'qwcz'.tr(context: context)
               : 'gmgk'.tr(context: context),
-          setContent: () {
-            return Column(
-              children: [
-                Text(
-                    'dqtjxhfajb'
-                        .tr(context: context)
-                        .replaceAll('a', '$needmoney'),
-                    style: MyTheme.black15,
-                    maxLines: 10,
-                    textAlign: TextAlign.center),
-                SizedBox(height: 15.w),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("${'ktvpzk'.tr(context: context)}：$money",
-                        style: MyTheme.black15, textAlign: TextAlign.center),
-                  ],
-                ),
-              ],
-            );
-          },
-          confirm: () {
+          confirmOnTap: () {
             if (isInsufficient) {
               const CoinRechargeRoute().push(context);
             } else {
               byVideoRes(money - needmoney); //直接购买
             }
-          });
+          },
+        ),
+      );
     } else {
-      MyDialog.showAnimationDialog(
-          cancelTxt: 'fxlvip'.tr(context: context),
-          confirmTxt: 'czvip'.tr(context: context),
-          setContent: () {
-            return Text('vipgktj'.tr(context: context),
-                style: MyTheme.black15,
-                maxLines: 10,
-                textAlign: TextAlign.center);
-          },
-          cancel: () {
-            const MineShareToUserRoute().push(context);
-          },
-          confirm: () {
+      CommonUtils.showDialog(
+        context: context,
+        builder: (context) => RegularDialog(
+          title: 'wxts'.tr(context: context),
+          content: Text('当前图集需开通VIP解锁查看！', style: MyTheme.white15, maxLines: 10, textAlign: TextAlign.center),
+          cancelText: 'fxlvip'.tr(context: context),
+          buttonText: 'czvip'.tr(context: context),
+          confirmOnTap: () {
             const VipCenterRoute().push(context);
-          });
+          },
+        ),
+      );
     }
   }
 
