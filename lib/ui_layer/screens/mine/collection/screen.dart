@@ -16,6 +16,7 @@ import 'package:jygf/domain/remote_domain/domains/asmr.dart';
 import 'package:jygf/domain/remote_domain/domains/cartoon.dart';
 import 'package:jygf/domain/remote_domain/domains/chat.dart';
 import 'package:jygf/domain/remote_domain/domains/comic.dart';
+import 'package:jygf/domain/remote_domain/domains/community.dart';
 import 'package:jygf/domain/remote_domain/domains/game.dart';
 import 'package:jygf/domain/remote_domain/domains/live.dart';
 import 'package:jygf/domain/remote_domain/domains/novel.dart';
@@ -130,8 +131,8 @@ class _MineCollectionScreenState extends State<MineCollectionScreen> {
             const KeepAliveWrapper(
               child: _ASMRView(),
             ),
-            KeepAliveWrapper(
-              child: _PlaceholderView(placeholderText: 'yuep'.tr(context: context)),
+            const KeepAliveWrapper(
+              child: _DateView(),
             ),
             const KeepAliveWrapper(
               child: _ChatView(),
@@ -191,10 +192,12 @@ class _VideoViewState extends State<_VideoView> {
 enum _TieztType {
   community,
   bit;
+  // date;
 
   int get id => switch (this) {
         _TieztType.community => 14,
         _TieztType.bit => 19,
+        // _TieztType.date => 10,
       };
 }
 
@@ -652,6 +655,47 @@ class _ChatViewState extends State<_ChatView> {
     return MyListView.list(
       contentPadding: 15.w,
       itemBuilder: (context, item, index) => ChatListCard(data: item),
+      onFetchingMore: (currentPage, pageSize) => _getData(
+        page: currentPage,
+        pageSize: pageSize,
+      ),
+    );
+  }
+}
+
+//约炮
+class _DateView extends StatefulWidget {
+  const _DateView();
+
+
+  @override
+  State<_DateView> createState() => _DateViewState();
+}
+
+class _DateViewState extends State<_DateView> {
+late final userDomain = context.read<UserDomain>();
+  String lastIx = '';
+
+  Future<List<PostModel>> _getData({
+    required int page,
+    required int pageSize,
+  }) async {
+    final result = await userDomain.getUserFavor(
+      page: page,
+      limit: pageSize,
+      type: 10,
+      lastIx: page == 1 ? '' : lastIx,
+    ) as Result<MineTieztListModel>;
+    lastIx = result.data?.lastIx ?? '';
+
+    return result.data!.list!;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MyListView.list(
+      contentPadding: 15.w,
+      itemBuilder: (context, item, index) => PostCard.community(data: item),
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,
         pageSize: pageSize,

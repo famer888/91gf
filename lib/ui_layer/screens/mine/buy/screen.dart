@@ -3,26 +3,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jygf/app_global.dart';
 import 'package:jygf/domain/api_validator.dart';
+import 'package:jygf/domain/model/album_model.dart';
 import 'package:jygf/domain/model/cartoon/cartoon_model.dart';
+import 'package:jygf/domain/model/chat/chat_list_model.dart';
 import 'package:jygf/domain/model/collection_model.dart';
+import 'package:jygf/domain/model/comic_model.dart';
 import 'package:jygf/domain/model/game/game_model.dart';
 import 'package:jygf/domain/model/live_model.dart';
+import 'package:jygf/domain/model/novel_model.dart';
 import 'package:jygf/domain/model/post_model.dart';
 import 'package:jygf/domain/model/vlog_model.dart';
 import 'package:jygf/domain/model/voice_model.dart';
+import 'package:jygf/domain/remote_domain/domains/album.dart';
 import 'package:jygf/domain/remote_domain/domains/asmr.dart';
+import 'package:jygf/domain/remote_domain/domains/cartoon.dart';
+import 'package:jygf/domain/remote_domain/domains/chat.dart';
+import 'package:jygf/domain/remote_domain/domains/comic.dart';
+import 'package:jygf/domain/remote_domain/domains/community.dart';
+import 'package:jygf/domain/remote_domain/domains/game.dart';
 import 'package:jygf/domain/remote_domain/domains/live.dart';
+import 'package:jygf/domain/remote_domain/domains/novel.dart';
 import 'package:jygf/domain/remote_domain/domains/seed.dart';
 import 'package:jygf/domain/remote_domain/domains/user.dart';
-import 'package:jygf/domain/remote_domain/domains/cartoon.dart';
-import 'package:jygf/domain/remote_domain/domains/game.dart';
 import 'package:jygf/domain/remote_domain/domains/vlog.dart';
 import 'package:jygf/domain/result.dart';
 import 'package:jygf/ui_layer/const.dart';
 import 'package:jygf/ui_layer/notifiers/home_config_notifier.dart';
 import 'package:jygf/ui_layer/router/routes.dart';
+import 'package:jygf/ui_layer/screens/acg/comic/card/comic_item_card.dart';
+import 'package:jygf/ui_layer/screens/acg/novel/card/novel_item_card.dart';
 import 'package:jygf/ui_layer/screens/asmr/card/voice_gird_card.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/cartoon/card/video_card.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/chat/list_card.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/game/card/game_card.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/keep_alive_wrapper.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_app_bar.dart';
@@ -34,6 +46,7 @@ import 'package:jygf/ui_layer/screens/live_video/live_card/live_video_card.dart'
 import 'package:jygf/ui_layer/screens/mine/common_widgets/video_tile.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/screens/vlog/card/vlog_card.dart';
+import 'package:jygf/ui_layer/screens/yellow_picture/card/yellow_picture_item_card.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:provider/provider.dart';
 
@@ -51,11 +64,67 @@ class _MineBuyScreenState extends State<MineBuyScreen> {
   Widget build(BuildContext context) {
     final openLive = homeConfigNotifier.config.openLive == 1 ? true : false;
 
+    final titles = <String>[
+      'shp'.tr(context: context),
+      'dsp'.tr(context: context),
+      'tiezt'.tr(context: context),
+      'xx黑料xx', // 黑料
+      'meit'.tr(context: context),
+      'dman'.tr(),
+      'hyou'.tr(),
+      if (openLive) 'zhib'.tr(context: context),
+      'ASMR',
+      'luol'.tr(), 
+      'zhoz'.tr(context: context),
+      '查档', //查档
+    ];
+
+    final views = <Widget>[
+      const KeepAliveWrapper(
+        child: _VideoView(),
+      ),
+      const KeepAliveWrapper(
+        child: _VlogVideoView(),
+      ),
+      const KeepAliveWrapper(
+        child: _TieztView(type: _TieztType.community),
+      ),
+      const KeepAliveWrapper(
+        child: _PlaceholderView(placeholderText: 'xx黑料xx'),
+      ),
+      const KeepAliveWrapper(
+        child: _YellowPictureView(),
+      ),
+      const KeepAliveWrapper(
+        child: _CartoonView(),
+      ),
+      const KeepAliveWrapper(
+        child: _GameView(),
+      ),
+      if (openLive)
+        const KeepAliveWrapper(
+          child: _LiveView(),
+        ),
+      const KeepAliveWrapper(
+        child: _ASMRView(),
+      ),
+      const KeepAliveWrapper(
+        child: _ChatView(),
+      ),
+      const KeepAliveWrapper(
+        child: _ZhozView(),
+      ),
+      const KeepAliveWrapper(
+        child: _ChaDangView(), 
+      ),
+    ];
+
     return ScreenBackground(
       child: Scaffold(
         appBar: MyAppBar(title: 'wdgm'.tr(context: context)),
         body: TabBarWithView.line(
-          labelStyle: MyTheme.jellyCyan_15,
+          indicatorType: IndicatorType.curve,
+          // labelStyle: MyTheme.jellyCyan_15,
           unselectedLabelStyle: TextStyle(
             color: const Color.fromRGBO(255, 255, 255, 0.8),
             fontSize: 15.sp,
@@ -64,43 +133,8 @@ class _MineBuyScreenState extends State<MineBuyScreen> {
           ),
           tabBarHeight: 40.w,
           // isScrollable: false,
-          titles: [
-            'shp'.tr(context: context),
-            'tiezt'.tr(context: context),
-            if (openLive) 'zhib'.tr(context: context),
-            'zhoz'.tr(context: context),
-            'ASMR',
-            'dsp'.tr(context: context),
-            'dman'.tr(),
-            'hyou'.tr(),
-          ],
-          views: [
-            const KeepAliveWrapper(
-              child: _VideoView(),
-            ),
-            const KeepAliveWrapper(
-              child: _TieztView(type: _TieztType.community),
-            ),
-            if (openLive)
-              const KeepAliveWrapper(
-                child: _LiveView(),
-              ),
-            const KeepAliveWrapper(
-              child: _ZhozView(),
-            ),
-            const KeepAliveWrapper(
-              child: _ASMRView(),
-            ),
-            const KeepAliveWrapper(
-              child: _VlogVideoView(),
-            ),
-            const KeepAliveWrapper(
-              child: _CartoonView(),
-            ),
-            const KeepAliveWrapper(
-              child: _GameView(),
-            ),
-          ],
+          titles: titles,
+          views: views,
         ),
       ),
     );
@@ -439,6 +473,141 @@ class _GameViewState extends State<_GameView> {
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,
         pageSize: pageSize,
+      ),
+    );
+  }
+}
+
+//美图
+class _YellowPictureView extends StatefulWidget {
+  const _YellowPictureView();
+
+  @override
+  State<_YellowPictureView> createState() => _YellowPictureViewState();
+}
+
+class _YellowPictureViewState extends State<_YellowPictureView> {
+  late final albumDomain = context.read<AlbumDomain>();
+
+  Future<List<AlbumItemsModel>> _getData({
+    required int page,
+    required int pageSize,
+  }) async {
+    final result = await albumDomain.albumBuyList(
+      page: page,
+      limit: pageSize,
+    );
+
+    return result.data!;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MyListView.list(
+      contentPadding: 15.w,
+      itemBuilder: (context, item, index) => YellowPictureItemCard(data: item),
+      onFetchingMore: (currentPage, pageSize) => _getData(
+        page: currentPage,
+        pageSize: pageSize,
+      ),
+    );
+  }
+}
+
+//裸聊
+class _ChatView extends StatefulWidget {
+  const _ChatView();
+
+  @override
+  State<_ChatView> createState() => _ChatViewState();
+}
+
+class _ChatViewState extends State<_ChatView> {
+  late final chatDomain = context.read<ChatDomain>();
+
+  Future<List<ChatListChatModel>> _getData({
+    required int page,
+    required int pageSize,
+  }) async {
+    final result = await chatDomain.chatBuyList(
+      page: page,
+      limit: pageSize,
+    );
+
+    return result.data!
+        .whereType<ChatListChatModel>()
+        .toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MyListView.list(
+      contentPadding: 15.w,
+      itemBuilder: (context, item, index) => ChatListCard(data: item),
+      onFetchingMore: (currentPage, pageSize) => _getData(
+        page: currentPage,
+        pageSize: pageSize,
+      ),
+    );
+  }
+}
+
+//查档
+class _ChaDangView extends StatefulWidget {
+  const _ChaDangView();
+
+  @override
+  State<_ChaDangView> createState() => _ChaDangViewState();
+}
+
+class _ChaDangViewState extends State<_ChaDangView> {
+  late final communityDomain = context.read<CommunityDomain>();
+
+  Future<List<PostModel>> _getData({
+    required int page,
+    required int pageSize,
+  }) async {
+    // TODO:接口未实现
+    final result = await communityDomain.searchCommunity(
+      page: page,
+      limit: pageSize,
+      word: '', 
+      type: '3',
+    );
+
+    return result.data!;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MyListView.list(
+      contentPadding: 15.w,
+      itemBuilder: (context, item, index) => PostCard.community(data: item),
+      onFetchingMore: (currentPage, pageSize) => _getData(
+        page: currentPage,
+        pageSize: pageSize,
+      ),
+    );
+  }
+}
+
+class _PlaceholderView extends StatelessWidget {
+  const _PlaceholderView({required this.placeholderText});
+
+  final String placeholderText;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(20.w),
+        child: Text(
+          placeholderText,
+          style: TextStyle(
+            fontSize: 16.sp,
+            color: MyTheme.white25506Color,
+          ),
+        ),
       ),
     );
   }

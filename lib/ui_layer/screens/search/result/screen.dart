@@ -118,7 +118,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
         child: _ASMRView(word: widget.title),
       ),
       KeepAliveWrapper(
-        child: _DataView(word: widget.title),
+        child: _DateView(word: widget.title),
       ),
       KeepAliveWrapper(
         child: _ChatView(word: widget.title),
@@ -531,16 +531,16 @@ class _GameViewState extends State<_GameView> {
   }
 }
 //约炮
-class _DataView extends StatefulWidget {
-  const _DataView({required this.word});
+class _DateView extends StatefulWidget {
+  const _DateView({required this.word});
 
   final String word;
 
   @override
-  State<_DataView> createState() => _DataViewState();
+  State<_DateView> createState() => _DateViewState();
 }
 
-class _DataViewState extends State<_DataView> {
+class _DateViewState extends State<_DateView> {
   late final communityDomain = context.read<CommunityDomain>();
 
   Future<List<PostModel>> _getData({
