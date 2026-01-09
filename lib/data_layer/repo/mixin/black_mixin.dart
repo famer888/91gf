@@ -24,11 +24,14 @@ mixin _Black on _BaseAppRepo implements BlackDomain {
       .guard;
 
   @override
-  AsyncResult<BlackDetailModel> getBlackDetail({required int id, String token = ''})
-    => _blackService
-      .getBlackDetail(id: id, token: token)
-      .deserializeJsonBy(BlackDetailModel.fromJson)
-      .guard;
+  AsyncResult<BlackDetailModel> getBlackDetail({required int id}) {
+    final token = info.token ?? '';
+    CommonUtils.log('黑料详情 token:$token');
+    return _blackService
+        .getBlackDetail(id: id, token: token)
+        .deserializeJsonBy(BlackDetailModel.fromJson)
+        .guard;
+  }
 
   /// 黑料点赞
   /// @param mid 黑料id 必传

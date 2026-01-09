@@ -27,7 +27,8 @@ abstract class CommunityDomain {
     required int limit,
   });
 
-
+  /// 查档获取帖子列表
+  AsyncResult getCheckFileList();
 
   /// 话题列表
   AsyncResult<TopicsWithBannersModel> postList({

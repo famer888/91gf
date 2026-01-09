@@ -20,7 +20,7 @@ abstract class BlackDomain {
   /// 黑料详情
   /// @param id 黑料id 必传
   /// @param token 登录token 选传
-  AsyncResult<BlackDetailModel> getBlackDetail({required int id, String token = ''});
+  AsyncResult<BlackDetailModel> getBlackDetail({required int id});
 
   /// 黑料点赞
   /// @param mid 黑料id 必传

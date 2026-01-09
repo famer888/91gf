@@ -57,6 +57,7 @@ class _BlackDetailsScreenState extends State<BlackDetailsScreen> {
       _asyncValue = const AsyncLoading();
     });
 
+
     final result = await _blackDomain.getBlackDetail(id: selectedId);
     if (result.status == 1) {
       if (result.data != null) {

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:isolated_worker/worker_delegator.dart';
 import 'package:jygf/domain/remote_domain/domains/aiaudio.dart';
 import 'package:jygf/domain/remote_domain/domains/aidraw.dart';
 import 'package:jygf/domain/remote_domain/domains/aikiss.dart';
@@ -22,6 +23,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:utils/utils.dart';
 
+import 'crypto.dart';
 import 'data_layer/repo/repo.dart';
 import 'domain/domain.dart';
 import 'domain/remote_domain/domains/ai.dart';
@@ -61,6 +63,20 @@ void main() async {
 
   /// 设置屏幕状态栏、导航列底色
   CommonUtils.setStatusBar(isLight: true);
+  // ==============注册图片加载线程=======================
+  DefaultDelegate<dynamic, dynamic> fooDelegate = const DefaultDelegate(callback: PlatformAwareCrypto.decryptImage);
+  JsDelegate fooJsDelegate = const JsDelegate(callback: 'decryptImage');
+  List<WorkerDelegate<dynamic, dynamic>> wds = List.generate(
+    5,
+        (index) => WorkerDelegate(
+      key: 'decryptImage$index',
+      defaultDelegate: fooDelegate,
+      jsDelegate: fooJsDelegate,
+    ),
+  );
+  WorkerDelegator().addAllDelegates(wds);
+  await WorkerDelegator()
+      .importScripts(const <String>['js/aware.js?v=2', 'https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js?v=2']);
 
   runApp(
     MultiProvider(

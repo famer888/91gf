@@ -60,6 +60,7 @@ import 'package:jygf/domain/remote_domain/domains/novel.dart';
 import 'package:jygf/domain/remote_domain/domains/rank.dart';
 import 'package:jygf/domain/remote_domain/domains/black_domain.dart';
 import 'package:jygf/ui_layer/screens/black/model/black_model.dart';
+import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:utils/utils.dart';

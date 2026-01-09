@@ -41,7 +41,7 @@ class _BlackScreenState extends State<BlackScreen> with TickerProviderStateMixin
       _asyncValue = const AsyncLoading();
     });
     await _getBlackNotice();
-    final res = await _domain.getCategoryList();
+    final res = await _domain.getCategoryList(token: '');
     if (res.status == 1) {
       if (res.data?.list case final data? when data.isNotEmpty) {
         _initialIndex = data.indexWhere((e) => e.current == true);

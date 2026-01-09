@@ -7,6 +7,9 @@ class CommunityService extends BaseService {
   @override
   final service = 'community';
 
+  /// 查档获取帖子列表
+  AsyncJson getCheckFileList() => post('/list_check_file');
+
   /// 获取Tab分类列表
   AsyncJson getCategoryTabList() => post('/category');
 

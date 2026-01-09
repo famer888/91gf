@@ -252,13 +252,13 @@ class AuthorModel {
 
   factory AuthorModel.fromJson(Map<dynamic, dynamic> json) {
     return AuthorModel(
-      aff: json['aff'],
-      nickname: json['nickname'],
-      isSetPassword: json['is_set_password'],
-      newUser: json['new_user'],
-      isFollow: json['is_follow'],
-      tagList: json['tag_list'],
-      vipStr: json['vip_str'],
+      aff: json['aff'] ?? 0,
+      nickname: json['nickname'] ?? '',
+      isSetPassword: json['is_set_password'] ?? 0,
+      newUser: json['new_user'] ?? false,
+      isFollow: json['is_follow'] ?? 0,
+      tagList: json['tag_list'] ?? [],
+      vipStr: json['vip_str'] ?? '',
     );
   }
 
@@ -321,8 +321,8 @@ class BlackDetailModel {
       prev: json['prev'] ?? [],
       cur: CurDetailsModel.fromJson(json['cur']),
       next: json['next'] ?? [],
-      topBanner: json['top_banner'] != null ? List<Notice>.from(json['top_banner'].map((app) => RecommendModel.fromJson(app))) : [],
-      botBanner: json['bot_banner'] != null ? List<Notice>.from(json['bot_banner'].map((app) => RecommendModel.fromJson(app))) : [],
+      topBanner: json['top_banner'] != null ? List<Notice>.from(json['top_banner'].map((app) => Notice.fromJson(app))) : [],
+      botBanner: json['bot_banner'] != null ? List<Notice>.from(json['bot_banner'].map((app) => Notice.fromJson(app))) : [],
       recommend: List<RecommendModel>.from(json['recommend']?.map((app) => RecommendModel.fromJson(app))),
     );
   }
@@ -484,26 +484,26 @@ class RecommendModel {
 
   factory RecommendModel.fromJson(Map<String, dynamic> json) {
     return RecommendModel(
-      id: json['id'],
-      aff: json['aff'],
-      title: json['title'],
-      thumb: json['thumb'],
-      createdAt: json['created_at'],
-      type: json['type'],
-      coins: json['coins'],
-      commentNum: json['comment_num'],
-      isHome: json['is_home'],
-      homeTop: json['home_top'],
-      likeNum: json['like_num'],
-      favoriteNum: json['favorite_num'],
-      viewNum: json['view_num'],
+      id: json['id'] ?? 0,
+      aff: json['aff'] ?? 0,
+      title: json['title'] ?? '',
+      thumb: json['thumb'] ?? '',
+      createdAt: json['created_at'] ?? '',
+      type: json['type'] ?? 0,
+      coins: json['coins'] ?? 0,
+      commentNum: json['comment_num'] ?? 0,
+      isHome: json['is_home'] ?? 0,
+      homeTop: json['home_top'] ?? 0,
+      likeNum: json['like_num'] ?? 0,
+      favoriteNum: json['favorite_num'] ?? 0,
+      viewNum: json['view_num'] ?? 0,
       isLike: (json['is_like'] ?? 0) > 0,
       isFavorite: (json['is_favorite'] ?? 0) > 0,
       isPay: (json['is_pay'] ?? 0) > 0,
       isNew: (json['is_new'] ?? 0) > 0,
       isHot: (json['is_hot'] ?? 0) > 0,
       needVip: (json['need_vip'] ?? 0) > 0,
-      author: AuthorModel.fromJson(json['author']),
+      author: AuthorModel.fromJson(json['author'] ?? {}),
     );
   }
 }

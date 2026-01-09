@@ -21,7 +21,12 @@ mixin _Community on _BaseAppRepo implements CommunityDomain {
           .deserializeJsonBy(CommunityWithBannerModel.fromJson)
           .guard;
 
-
+  @override
+  AsyncResult getCheckFileList()
+    => _communityService
+        .getCheckFileList()
+        .deserialize()
+        .guard;
 
   @override
   AsyncResult<TopicsWithBannersModel> postList(

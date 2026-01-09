@@ -16,7 +16,7 @@ import 'package:jygf/ui_layer/screens/common_widgets/status/loading.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/status/network_error.dart';
 import 'package:jygf/ui_layer/screens/community/community_screen/content.dart';
 import 'package:jygf/ui_layer/screens/community/community_screen/seed_down_content.dart';
-import 'package:jygf/ui_layer/screens/file_search/file_search_screen.dart';
+import 'package:jygf/ui_layer/screens/file_search/check_file_screen.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:provider/provider.dart';
 
@@ -111,7 +111,7 @@ class _BodyState extends State<_Body> with TickerProviderStateMixin {
             return const BlackScreen();
           } else if (e.type == 3) {
             // 查档
-            return const FileSearchScreen();
+            return const CheckFileScreen();
           } else if (e.type == 4) {
             // 种子
             return const SeedDwonContentView();
