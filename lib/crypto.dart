@@ -24,6 +24,18 @@ String getSign(Map obj) {
   return md5Text;
 }
 
+String getReportSign(Map obj, {String signKey = ''}) {
+  final keyValues = [];
+  keyValues.add("client=${obj['client']}");
+  keyValues.add("data=${obj['data']}");
+  keyValues.add("timestamp=${obj['timestamp']}");
+
+  final text = '${keyValues.join('&')}$signKey';
+  final digest = sha256.convert(utf8.encode(text));
+  final md5Text = md5.convert(utf8.encode(digest.toString())).toString();
+  return md5Text;
+}
+
 class PlatformAwareCrypto {
   static dynamic encryptReqParams(Object value) {
     final word = jsonEncode(value);
@@ -49,6 +61,20 @@ class PlatformAwareCrypto {
     return jsonDecode(utf8.decode(raw));
   }
 
+  static dynamic encryptReportParams(Object value,
+      {String keyString = '', String ivString = '', String signKey = ''}) {
+    final word = jsonEncode(value);
+    final encrypter =
+        Encrypter(AES(Key.fromUtf8(keyString), mode: AESMode.cbc));
+    final encrypted =
+        encrypter.encryptBytes(utf8.encode(word), iv: IV.fromUtf8(ivString));
+    final data = utf8.decode(encrypted.base64.codeUnits);
+    final timestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+    final sign = getReportSign(
+        {'client': 'pwa', 'data': data, 'timestamp': timestamp},
+        signKey: signKey);
+    return 'client=pwa&timestamp=$timestamp&data=$data&sign=$sign';
+  }
   //获取小说
   static FutureOr<String> decryptNovel(String? base64) async {
     if (base64 != null) {

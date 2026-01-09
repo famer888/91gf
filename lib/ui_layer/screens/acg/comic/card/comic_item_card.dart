@@ -116,7 +116,7 @@ class ComicItemCard extends StatelessWidget {
                       padding: EdgeInsets.symmetric(
                           horizontal: 3.w, vertical: 1.w),
                       decoration: BoxDecoration(
-                        color: AppGlobal.tagColors[entry.key % AppGlobal.tagColors.length],
+                        color: MyTheme.tagColors[entry.key % MyTheme.tagColors.length],
                         borderRadius: BorderRadius.circular(2.w),
                       ),
                       child: Text(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:jygf/app_global.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
@@ -80,7 +79,7 @@ class _NovelReadeSetSheetState extends State<NovelReadeSetSheet> {
             vertical: MyTheme.pagePadding,
           ),
           shrinkWrap: true,
-          itemCount: AppGlobal.bgColores.length,
+          itemCount: MyTheme.bgColores.length,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 5,
             childAspectRatio: 70 / 30,
@@ -97,7 +96,7 @@ class _NovelReadeSetSheetState extends State<NovelReadeSetSheet> {
             child: Container(
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: AppGlobal.bgColores[index],
+                color: MyTheme.bgColores[index],
                 borderRadius: BorderRadius.all(
                   Radius.circular(2.w),
                 ),

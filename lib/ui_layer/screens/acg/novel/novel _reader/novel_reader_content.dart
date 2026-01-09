@@ -130,7 +130,7 @@ class _NovelReaderContentState extends State<NovelReaderContent>
       _fontSize = fontsize;
     });
     await cacheDomain.readNovelReaderBgColorIndex().then((bgColorIndex) {
-      _bgColor = AppGlobal.bgColores[bgColorIndex];
+      _bgColor = MyTheme.bgColores[bgColorIndex];
       _bgColorIndex = bgColorIndex;
       if (mounted) setState(() {});
     });
@@ -204,7 +204,7 @@ class _NovelReaderContentState extends State<NovelReaderContent>
                 callback: (fontSize, bgColorIndex) {
                   _fontSize = fontSize;
                   _bgColorIndex = bgColorIndex;
-                  _bgColor = AppGlobal.bgColores[bgColorIndex];
+                  _bgColor = MyTheme.bgColores[bgColorIndex];
 
                   cacheDomain.upsertNovelFontSize(fontSize: _fontSize);
                   cacheDomain.upsertNovelBgColorIndex(index: bgColorIndex);

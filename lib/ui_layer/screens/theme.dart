@@ -28,6 +28,20 @@ class MyTheme {
     static Color primaryColor_01 = const Color.fromRGBO(176, 66, 255, 0.1);
 
 
+  static List<Color> bgColores =  [
+    const Color.fromRGBO(217, 208, 40, 1),
+    MyTheme.bgColor,
+    const Color.fromRGBO(232, 62, 204, 1),
+    const Color.fromRGBO(62, 116, 232, 1),
+    const Color.fromRGBO(195, 62, 232, 1),
+  ];
+  // 标签颜色
+  static List<Color> tagColors = [
+              const Color.fromRGBO(74, 41, 9, 1), 
+              const Color.fromRGBO(39, 19, 114, 1), 
+              const Color.fromRGBO(8, 61, 56, 1), 
+            ];
+
   static const LinearGradient dhButtonGradient = LinearGradient(
     colors: [Color.fromRGBO(255, 133, 164, 1),Color.fromRGBO(176, 66, 255, 1)],
     begin: Alignment.centerLeft,
