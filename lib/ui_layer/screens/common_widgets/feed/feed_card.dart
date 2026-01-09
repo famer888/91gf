@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
+import 'package:jygf/report/ui_layer/report_ad_card.dart';
 
 import '../../../../domain/model/feed/feed_model.dart';
-import 'card/ad_card.dart';
 import 'card/video_card.dart';
 
 class FeedCard extends StatelessWidget {
@@ -12,7 +12,7 @@ class FeedCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return feed.map(
       video: (video) => VideoCard(data: video),
-      ad: (ad) => AdCard(ad: ad),
+      ad: (ad) => ReportAdCard(ad: ad),
     );
   }
 }

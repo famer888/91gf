@@ -253,6 +253,7 @@ class Config {
     this.videoFaceTopNav,
     this.videoFaceSortNav,
     required this.aiAudioFontCt,
+    required this.buryPoint,
   });
 
   final int? imCoins;
@@ -382,6 +383,7 @@ class Config {
   final int payAiNovel;
   final int payAiKiss;
   final int aiAudioFontCt; //音频生成字数限制
+  ReportConfig buryPoint;
 
   factory Config.fromJson(Map<String, dynamic> json) => Config(
         nav_default: json['nav_default'],
@@ -561,6 +563,7 @@ class Config {
             json['album_tag_sort']?.map((x) => BitNavModel.fromJson(x)) ?? []),
         albumSortNav: List<BitNavModel>.from(
             json['album_sort']?.map((x) => BitNavModel.fromJson(x)) ?? []),
+        buryPoint: ReportConfig.fromJson(json['bury_point'] ?? {}),
       );
 
   Map<String, dynamic> toJson() => {
@@ -669,6 +672,7 @@ class Config {
         'album_nav': albumNav?.map((e) => e).toList() ?? [],
         'album_tag_sort_nav': albumTagSort?.map((e) => e).toList() ?? [],
         'album_sort_nav': albumSortNav?.map((e) => e).toList() ?? [],
+        'bury_point': buryPoint.toJson(),
       };
 }
 
