@@ -66,6 +66,10 @@ class FeedModel with _$FeedModel {
     int reportId,
     int reportType,
     String? subTitle,
+    int? adType,
+    String? adSlotName,
+    String? advertiseCode,
+    String? advertiseLocationCode,
   ) = FeedAdModel;
 
   factory FeedModel.fromJson(Map<String, dynamic> json) {

@@ -12,6 +12,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:jygf/app_global.dart';
 import 'package:jygf/data_layer/data_source/remote/aiaudio_service.dart';
 import 'package:jygf/data_layer/data_source/remote/aidraw_service.dart';
 import 'package:jygf/data_layer/data_source/remote/aikiss_service.dart';
@@ -59,6 +60,8 @@ import 'package:jygf/domain/remote_domain/domains/live.dart';
 import 'package:jygf/domain/remote_domain/domains/novel.dart';
 import 'package:jygf/domain/remote_domain/domains/rank.dart';
 import 'package:jygf/domain/remote_domain/domains/black_domain.dart';
+import 'package:jygf/report/event_tracking.dart';
+import 'package:jygf/report/ui_layer/report_timing_interceptor.dart';
 import 'package:jygf/ui_layer/screens/black/model/black_model.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -298,6 +301,7 @@ abstract class _BaseAppRepo implements AppDomain {
         },
       ),
     );
+    _apiDio.interceptors.add(ReportTimingInterceptor());
   }
 
   Future _cleanToken() async {
@@ -401,6 +405,12 @@ abstract class _BaseAppRepo implements AppDomain {
   }
 
   @override
+  void setReportTraceId(String id) async {
+    _cacheManager.upsertReportTraceId(id);
+    AppGlobal.reportTraceId = id;
+  }
+
+  @override
   void initLine({
     Function? success,
     Function? failed,
@@ -417,6 +427,17 @@ abstract class _BaseAppRepo implements AppDomain {
       final fdsKey = await _getFdsKey();
       final secretValue = PlatformAwareCrypto.secretValue(fdsKey: fdsKey);
       _apiDio.options.headers = {'Cf-Ray-Xf': secretValue};
+    }
+    // 读取本地上报AppId
+    final String? localReportAppId = await _cacheManager.readReportAppId();
+    if (localReportAppId case final String reportAppId) {
+      AppGlobal.reportAppId = reportAppId;
+    }
+
+    // 读取本地上报traceId
+    final String? localReportTraceId = await _cacheManager.readReportTraceId();
+    if (localReportTraceId case final String reportTraceId) {
+      AppGlobal.reportTraceId = reportTraceId;
     }
 
     // 检查网络

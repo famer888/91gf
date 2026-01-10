@@ -10,6 +10,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper_null_safety_flutter3/flutter_swiper_null_safety_flutter3.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jygf/domain/model/banner_model.dart';
+import 'package:jygf/report/event_tracking.dart';
+import 'package:jygf/report/ui_layer/report_app_down_center_dialog.dart';
+import 'package:jygf/report/ui_layer/report_popup_alert.dart';
+import 'package:jygf/report/ui_layer/report_timing_observer.dart';
+import 'package:jygf/report/ui_layer/report_top_ad_widget.dart';
 import 'package:jygf/ui_layer/screens/asmr/voice_player/voice_player_manager.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/dialog/widgets/app_down_center_dialog.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/event_bus/event_bus.dart';
@@ -138,62 +143,73 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
 
   Future<void> _getClipboardText() async {
     if (kIsWeb) {
-      final uri = Uri.parse(html.window.location.href);
-      final affCode = uri.queryParameters[BuildConfig.affCodeKey] ?? '';
-      if (affCode.isNotEmpty) {
-        domain.toInvitation(affCode: affCode);
-      }
+      final uri = Uri.parse(html.window.location.href.replaceAll('amp;', ''));
+      String aff = uri.queryParameters[BuildConfig.affCodeKey] ?? '';
+      if (aff.isNotEmpty) domain.toInvitation(affCode: aff);
     } else {
       final result = await Clipboard.getData(Clipboard.kTextPlain);
-      if (result?.text?.split(':') case final clipTextList?
-          when clipTextList.length > 1 &&
-              clipTextList[0] == BuildConfig.affCodeKey) {
-        if (clipTextList[1] case final affCode when affCode.isNotEmpty) {
-          domain.toInvitation(affCode: affCode);
+      if (result?.text case final String text when text.isNotEmpty) {
+        try {
+          final params = Uri.splitQueryString(text);
+          String aff = params[BuildConfig.affCodeKey] ?? '';
+          if (aff.isNotEmpty) domain.toInvitation(affCode: aff);
+        } catch (e) {
+          return;
         }
       }
     }
   }
-
-  /// 活动弹窗
-  void _showActivityDialog({required int index}) {
+  
+  /// 活动弹窗 带report
+  void _showActivityDialogReport() {
     final popAds = homeConfigNotifier.homeData.popAds;
-    final int adsLength = popAds?.length ?? 0;
-    final bool isLastAd = index == adsLength - 1;
-    if (popAds?.isNotEmpty == true) {
-      if (index < adsLength) {
-        final Notice? notice = popAds?[index];
-        BotToast.showWidget(
-            toastBuilder: (cancelFunc) => AdDialog(
-                  cancel: () {
-                    cancelFunc();
-                    if (isLastAd) {
-                      _showAppDownCenterDialog();
-                    } else {
-                      _showActivityDialog(index: index + 1);
-                    }
-                  },
-                  confirm: () {
-                    cancelFunc();
-                    if (notice?.redirect_type != 1) {
-                      //跳转内部结束继续弹窗
-                      if (isLastAd) {
-                        _showAppDownCenterDialog();
-                      } else {
-                        _showActivityDialog(index: index + 1);
-                      }
-                    }
-                    _adOnTap(notice: notice);
-                  },
-                  adUrl: notice?.imgUrl ?? '',
-                  adWidth: notice?.width,
-                  adHeight: notice?.height,
-                ));
-      }
-    } else {
-      _showAppDownCenterDialog();
-    }
+    ReportPopupAlert(
+      popAds,
+      context,
+      cancel: () {
+        _showAppDownCenterDialog();
+      },
+    );
   }
+  /// 活动弹窗
+  // void _showActivityDialog({required int index}) {
+  //   final popAds = homeConfigNotifier.homeData.popAds;
+  //   final int adsLength = popAds?.length ?? 0;
+  //   final bool isLastAd = index == adsLength - 1;
+  //   if (popAds?.isNotEmpty == true) {
+  //     if (index < adsLength) {
+  //       final Notice? notice = popAds?[index];
+  //       BotToast.showWidget(
+  //           toastBuilder: (cancelFunc) => AdDialog(
+  //                 cancel: () {
+  //                   cancelFunc();
+  //                   if (isLastAd) {
+  //                     _showAppDownCenterDialog();
+  //                   } else {
+  //                     _showActivityDialog(index: index + 1);
+  //                   }
+  //                 },
+  //                 confirm: () {
+  //                   cancelFunc();
+  //                   if (notice?.redirect_type != 1) {
+  //                     //跳转内部结束继续弹窗
+  //                     if (isLastAd) {
+  //                       _showAppDownCenterDialog();
+  //                     } else {
+  //                       _showActivityDialog(index: index + 1);
+  //                     }
+  //                   }
+  //                   _adOnTap(notice: notice);
+  //                 },
+  //                 adUrl: notice?.imgUrl ?? '',
+  //                 adWidth: notice?.width,
+  //                 adHeight: notice?.height,
+  //               ));
+  //     }
+  //   } else {
+  //     _showAppDownCenterDialog();
+  //   }
+  // }
 
   /// 检查更新
   Future<void> _checkUpdateAnnouncement() async {
@@ -208,7 +224,7 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
           (int.tryParse(currentVersion) ?? 0);
 
       if (kIsWeb) {
-        _showActivityDialog(index: 0); //web端直接去展示广告
+        _showActivityDialogReport(); //web端直接去展示广告
         return;
       }
       if (needUpdate) {
@@ -216,7 +232,7 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
         return;
       }
 
-      _showActivityDialog(index: 0); // 无更新，展示广告
+      _showActivityDialogReport(); // 无更新，展示广告
     }
   }
 
@@ -228,7 +244,7 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
         toastBuilder: (cancelFunc) => UpdateDialog(
               cancel: () {
                 cancelFunc();
-                _showActivityDialog(index: 0);
+                _showActivityDialogReport();
               },
               confirm: () {
                 cancelFunc();
@@ -267,7 +283,7 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
 
     if (homeData.noticeApps?.isNotEmpty ?? false) {
       BotToast.showWidget(
-          toastBuilder: (cancelFunc) => AppDownCenterDialog(
+          toastBuilder: (cancelFunc) => ReportAppDownCenterDialog(
                 cancel: () {
                   cancelFunc();
                   _showAnnouncementDialog(); //app推荐下载弹窗展示完后再展示公告
@@ -425,7 +441,7 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
             Positioned(
               right: 13.w,
               bottom: 110.w,
-              child: TopADWidget(toADs: homeConfigNotifier.config.buoy ?? []),
+              child: ReportTopADWidget(toADs: homeConfigNotifier.config.buoy ?? []),
             )
           ],
         ),
@@ -433,10 +449,24 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
       selector: (_, userNotifier) => userNotifier.isInit,
     );
   }
-
+  
   void _goBranch(int index) {
     widget.navigationShell.goBranch(index,
         initialLocation: index == widget.navigationShell.currentIndex);
+
+    // 获取当前路由的路径
+    final currentLocation =
+        GoRouter.of(context).routerDelegate.currentConfiguration.uri.toString();
+
+    PageInfo info = PageInfo.path(currentLocation);
+    RouteStore.currentPageKey = info.key;
+    RouteStore.currentPageName = info.name;
+
+    EventTracking().reportSingle({
+      "event": "navigation",
+      "navigation_key": currentLocation, //RouteStore.currentPageKey,
+      "navigation_name": RouteStore.currentPageName,
+    });
   }
 }
 

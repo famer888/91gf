@@ -23,6 +23,12 @@ mixin _Home on _BaseAppRepo implements HomeDomain {
           if (config.officeSite case final url? when url.isNotEmpty) {
             await _cacheManager.upsertOfficeWeb(url);
           }
+          if (config.buryPoint case final buryPoint) {
+            AppGlobal.reportConfig = buryPoint;
+            EventTracking.reportUrl = buryPoint.clickTransitPath;
+            await _cacheManager.upsertReportAppId(buryPoint.clickAppId);
+            AppGlobal.reportAppId = buryPoint.clickAppId;
+          }          
           //seo设置
           if (kIsWeb) {
             final descTag = html.document.head!

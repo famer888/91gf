@@ -18,6 +18,7 @@ import 'package:jygf/domain/remote_domain/domains/chat.dart';
 import 'package:jygf/domain/remote_domain/domains/comic.dart';
 import 'package:jygf/domain/remote_domain/domains/game.dart';
 import 'package:jygf/domain/remote_domain/domains/live.dart';
+import 'package:jygf/domain/remote_domain/domains/black_domain.dart';
 import 'package:jygf/domain/remote_domain/domains/novel.dart';
 import 'package:jygf/domain/remote_domain/domains/seed.dart';
 import 'package:jygf/domain/remote_domain/domains/user.dart';
@@ -29,6 +30,8 @@ import 'package:jygf/ui_layer/screens/acg/novel/card/novel_item_card.dart';
 import 'package:jygf/ui_layer/screens/asmr/card/voice_gird_card.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/cartoon/card/video_card.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/chat/list_card.dart';
+import 'package:jygf/ui_layer/screens/black/model/black_model.dart';
+import 'package:jygf/ui_layer/screens/black/widgets/black_item_widget.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/game/card/game_card.dart';
 import 'package:jygf/ui_layer/screens/vlog/card/vlog_card.dart';
 import 'package:jygf/ui_layer/screens/yellow_picture/card/yellow_picture_item_card.dart';
@@ -82,7 +85,7 @@ class _MineCollectionScreenState extends State<MineCollectionScreen> {
             'shp'.tr(context: context),
             'dsp'.tr(context: context),
             'tiezt'.tr(context: context),
-            'xx黑料xx', // 黑料
+            'heil'.tr(context: context), // 黑料
             'meit'.tr(context: context),
             'dman'.tr(),
             'mh'.tr(context: context),
@@ -106,7 +109,7 @@ class _MineCollectionScreenState extends State<MineCollectionScreen> {
               child: _TieztView(type: _TieztType.community),
             ),
             const KeepAliveWrapper(
-              child: _PlaceholderView(placeholderText: 'xx黑料xx'),
+              child: _BlackView(),
             ),
             const KeepAliveWrapper(
               child: _YellowPictureView(),
@@ -130,8 +133,8 @@ class _MineCollectionScreenState extends State<MineCollectionScreen> {
             const KeepAliveWrapper(
               child: _ASMRView(),
             ),
-            KeepAliveWrapper(
-              child: _PlaceholderView(placeholderText: 'yuep'.tr(context: context)),
+            const KeepAliveWrapper(
+              child: _DateView(),
             ),
             const KeepAliveWrapper(
               child: _ChatView(),
@@ -191,10 +194,12 @@ class _VideoViewState extends State<_VideoView> {
 enum _TieztType {
   community,
   bit;
+  // date;
 
   int get id => switch (this) {
         _TieztType.community => 14,
         _TieztType.bit => 19,
+        // _TieztType.date => 10,
       };
 }
 
@@ -659,3 +664,84 @@ class _ChatViewState extends State<_ChatView> {
     );
   }
 }
+
+//黑料
+class _BlackView extends StatefulWidget {
+  const _BlackView();
+
+  @override
+  State<_BlackView> createState() => _BlackViewState();
+}
+
+class _BlackViewState extends State<_BlackView> {
+  late final blackDomain = context.read<BlackDomain>();
+
+  Future<List<BlackListItemModel>?> _getData({
+    required int page,
+    required int pageSize,
+  }) async {
+    final result = await blackDomain.getBlackCollectList(
+      page: page,
+      limit: pageSize,
+    );
+
+    return result.data;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MyListView.list(
+      contentPadding: 15.w,
+      itemBuilder: (context, item, index) => BlackItemWidget(
+        item: item,
+        itemWidth: (ScreenUtil().screenWidth - MyTheme.pagePadding * 2),
+      ),
+      onFetchingMore: (currentPage, pageSize) => _getData(
+        page: currentPage,
+        pageSize: pageSize,
+      ),
+    );
+  }
+}
+
+//约炮
+class _DateView extends StatefulWidget {
+  const _DateView();
+
+
+  @override
+  State<_DateView> createState() => _DateViewState();
+}
+
+class _DateViewState extends State<_DateView> {
+late final userDomain = context.read<UserDomain>();
+  String lastIx = '';
+
+  Future<List<PostModel>> _getData({
+    required int page,
+    required int pageSize,
+  }) async {
+    final result = await userDomain.getUserFavor(
+      page: page,
+      limit: pageSize,
+      type: 10,
+      lastIx: page == 1 ? '' : lastIx,
+    ) as Result<MineTieztListModel>;
+    lastIx = result.data?.lastIx ?? '';
+
+    return result.data!.list!;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MyListView.list(
+      contentPadding: 15.w,
+      itemBuilder: (context, item, index) => PostCard.community(data: item),
+      onFetchingMore: (currentPage, pageSize) => _getData(
+        page: currentPage,
+        pageSize: pageSize,
+      ),
+    );
+  }
+}
+
