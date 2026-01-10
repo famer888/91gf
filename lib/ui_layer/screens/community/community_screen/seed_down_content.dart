@@ -34,7 +34,6 @@ class _SeedDwonContentViewState extends State<SeedDwonContentView> {
 
   late final List<FaceNavigatorModel> _topics = _homeConfig.config.seedTopNav;
 
-
   List<TipModel> tips = [];
 
   bool isInit = false;
@@ -48,7 +47,6 @@ class _SeedDwonContentViewState extends State<SeedDwonContentView> {
     super.initState();
 
     currentId = _topics.first.id; //默认拿第一个标签的ID去获取广告和公告数据
-
   }
 
   Future<List<PostModel>?> _getData({
@@ -73,7 +71,6 @@ class _SeedDwonContentViewState extends State<SeedDwonContentView> {
     }
 
     if (result.status == 1) {
-
       if (result.data?.banners case final data? when data.isNotEmpty) {
         _bannersNotifier.value = data;
       }
@@ -116,23 +113,21 @@ class _SeedDwonContentViewState extends State<SeedDwonContentView> {
           tabBarPadding: EdgeInsets.symmetric(vertical: 6.w),
           tabBarHeight: 32.w,
           isScrollable: true,
-          titles:
-          isInit ? [for (final title in _titles) title.title] : [],
+          titles: isInit ? _titles.map((e) => e.title).toList() : [],
           views: [
             for (final NavigatorModel nav in _titles)
               MyListView.list(
-                key: UniqueKey(),//这样做为了每次点击标签时都可以直接刷新数据
+                key: UniqueKey(),
+                //这样做为了每次点击标签时都可以直接刷新数据
                 contentPadding: 15.w,
-                padding:
-                EdgeInsets.only(top: 5.w, bottom: MyTheme.pagePadding),
-                itemBuilder: (context, item, index) => PostCard.bit(
-                  data: item,
-                ),
+                padding: EdgeInsets.only(top: 5.w, bottom: MyTheme.pagePadding),
+                itemBuilder: (context, item, index) => PostCard.bit(data: item),
                 onFetchingMore: (currentPage, pageSize) => _getData(
-                    id: currentId,
-                    page: currentPage,
-                    pageSize: pageSize,
-                    sort: nav.type),
+                  id: currentId,
+                  page: currentPage,
+                  pageSize: pageSize,
+                  sort: nav.type,
+                ),
               )
           ],
         ),
@@ -149,6 +144,7 @@ class _Header extends StatelessWidget {
     required this.currentId,
     required this.topicTapCall,
   });
+
   final ValueNotifier<List<BannerModel>> bannersNotifier;
   final ValueNotifier<List<FaceNavigatorModel>> topicsNotifier;
   final List<TipModel> tips;

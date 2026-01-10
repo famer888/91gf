@@ -86,6 +86,10 @@ _$FeedAdModelImpl _$$FeedAdModelImplFromJson(Map<String, dynamic> json) =>
       (json['report_id'] as num).toInt(),
       (json['report_type'] as num).toInt(),
       json['sub_title'] as String?,
+      (json['ad_type'] as num?)?.toInt(),
+      json['ad_slot_name'] as String?,
+      json['advertise_code'] as String?,
+      json['advertise_location_code'] as String?,
       $type: json['feed_type'] as String?,
     );
 
@@ -118,5 +122,9 @@ Map<String, dynamic> _$$FeedAdModelImplToJson(_$FeedAdModelImpl instance) =>
       'report_id': instance.reportId,
       'report_type': instance.reportType,
       'sub_title': instance.subTitle,
+      'ad_type': instance.adType,
+      'ad_slot_name': instance.adSlotName,
+      'advertise_code': instance.advertiseCode,
+      'advertise_location_code': instance.advertiseLocationCode,
       'feed_type': instance.$type,
     };

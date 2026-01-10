@@ -68,21 +68,21 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
     final openLive = homeConfigNotifier.config.openLive == 1 ? true : false;
 
     final titles = <String>[
-      'shp'.tr(context: context), 
-      'dsp'.tr(context: context), 
-      'tiezt'.tr(context: context), 
-      'heil'.tr(context: context), // 黑料 
-      'meit'.tr(context: context), 
-      'dman'.tr(context: context), 
-      'mh'.tr(context: context), 
-      'xs'.tr(context: context), 
-      'hyou'.tr(context: context), 
-      if (openLive) 'zhib'.tr(context: context), 
-      'ASMR', 
-      'yuep'.tr(context: context), 
-      'luol'.tr(context: context), 
+      'shp'.tr(context: context),
+      'dsp'.tr(context: context),
+      'tiezt'.tr(context: context),
+      'heil'.tr(context: context),
+      'meit'.tr(context: context),
+      'dman'.tr(),
+      'mh'.tr(context: context),
+      'xs'.tr(context: context),
+      'hyou'.tr(),
+      if (openLive) 'zhib'.tr(context: context),
+      'ASMR',
+      'yuep'.tr(context: context),
+      'luol'.tr(context: context),
       'zhoz'.tr(context: context),
-      '查档', //查档
+      'chad'.tr(context: context),
     ];
 
     final views = <Widget>[
@@ -136,9 +136,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
 
     return ScreenBackground(
       child: Scaffold(
-        appBar: MyAppBar(
-          title: 'ssjg'.tr(context: context),
-        ),
+        appBar: MyAppBar(title: 'ssjg'.tr(context: context)),
         body: TabBarWithView.line(
           indicatorType: IndicatorType.curve,
           tabBarPadding: EdgeInsets.symmetric(
@@ -171,8 +169,7 @@ class _VideoViewState extends State<_VideoView> {
     required int page,
     required int pageSize,
   }) async {
-    final result = await mvDomain.videoSearch(
-        page: page, limit: pageSize, word: widget.word);
+    final result = await mvDomain.videoSearch(page: page, limit: pageSize, word: widget.word);
 
     return result.data!;
   }
@@ -180,8 +177,7 @@ class _VideoViewState extends State<_VideoView> {
   @override
   Widget build(BuildContext context) {
     return MyListView.grid(
-      padding:
-          EdgeInsets.symmetric(horizontal: MyTheme.pagePadding, vertical: 8.w),
+      padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding, vertical: 8.w),
       childAspectRatio: FeedCard.aspectRatio,
       crossAxisSpacing: 8.w,
       itemBuilder: (_, item, __) => VideoCard(data: item),
@@ -286,16 +282,14 @@ class _LiveVideoViewState extends State<_LiveVideoView> {
     required int page,
     required int pageSize,
   }) async {
-    final result = await _domain.getLiveSearch(
-        page: page, limit: pageSize, word: widget.word);
+    final result = await _domain.getLiveSearch(page: page, limit: pageSize, word: widget.word);
     return result.data;
   }
 
   @override
   Widget build(BuildContext context) {
     return MyListView.grid(
-      padding:
-          EdgeInsets.symmetric(horizontal: MyTheme.pagePadding, vertical: 8.w),
+      padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding, vertical: 8.w),
       childAspectRatio: UILayerConst.videoRatio,
       crossAxisSpacing: 8.w,
       itemBuilder: (_, item, __) => LiveVideoCard(data: item),
@@ -405,8 +399,7 @@ class _VlogVideoViewState extends State<_VlogVideoView> {
     _page = page;
     _limit = pageSize;
 
-    final result = await _domain.vlogSearchList(
-        word: widget.word, page: page, limit: pageSize);
+    final result = await _domain.vlogSearchList(word: widget.word, page: page, limit: pageSize);
     if (result.isValid) {
       List<VlogModel> tp = List.from(result.data ?? []);
       if (page == 1) {
@@ -459,18 +452,19 @@ class _CartoonView extends StatefulWidget {
   const _CartoonView({required this.word});
 
   final String word;
+
   @override
   State<_CartoonView> createState() => _CartoonViewState();
 }
 
 class _CartoonViewState extends State<_CartoonView> {
   late final _domain = context.read<CartoonDomain>();
+
   Future<List<CartoonModel>?> _getData({
     required int page,
     required int pageSize,
   }) async {
-    final result = await _domain.cartoonSearchList(
-        word: widget.word, page: page, limit: pageSize);
+    final result = await _domain.cartoonSearchList(word: widget.word, page: page, limit: pageSize);
     if (result.isValid) {
       List<CartoonModel> tp = List.from(result.data ?? []);
       return tp;
@@ -482,8 +476,7 @@ class _CartoonViewState extends State<_CartoonView> {
   @override
   Widget build(BuildContext context) {
     return MyListView.grid(
-      padding:
-          EdgeInsets.symmetric(horizontal: MyTheme.pagePadding, vertical: 8.w),
+      padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding, vertical: 8.w),
       childAspectRatio: CartoonVideoCard.aspectRatio,
       crossAxisSpacing: 8.w,
       itemBuilder: (context, item, index) => CartoonVideoCard(data: item),
@@ -499,18 +492,19 @@ class _GameView extends StatefulWidget {
   const _GameView({required this.word});
 
   final String word;
+
   @override
   State<_GameView> createState() => _GameViewState();
 }
 
 class _GameViewState extends State<_GameView> {
   late final _domain = context.read<GameDomain>();
+
   Future<List<GameModel>?> _getData({
     required int page,
     required int pageSize,
   }) async {
-    final result = await _domain.gameSearchList(
-        word: widget.word, page: page, limit: pageSize);
+    final result = await _domain.gameSearchList(word: widget.word, page: page, limit: pageSize);
     if (result.isValid) {
       List<GameModel> tp = List.from(result.data ?? []);
       return tp;
@@ -522,8 +516,7 @@ class _GameViewState extends State<_GameView> {
   @override
   Widget build(BuildContext context) {
     return MyListView.grid(
-      padding:
-          EdgeInsets.symmetric(horizontal: MyTheme.pagePadding, vertical: 8.w),
+      padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding, vertical: 8.w),
       childAspectRatio: GameCard.aspectRatio,
       crossAxisSpacing: 8.w,
       itemBuilder: (context, item, index) => GameCard(data: item),
@@ -534,6 +527,7 @@ class _GameViewState extends State<_GameView> {
     );
   }
 }
+
 //约炮
 class _DateView extends StatefulWidget {
   const _DateView({required this.word});
@@ -613,6 +607,7 @@ class _ChaDangViewState extends State<_ChaDangView> {
     );
   }
 }
+
 //美图
 class _YellowPictureView extends StatefulWidget {
   const _YellowPictureView({required this.word});
@@ -651,6 +646,7 @@ class _YellowPictureViewState extends State<_YellowPictureView> {
     );
   }
 }
+
 //漫画
 class _ComicView extends StatefulWidget {
   const _ComicView({required this.word});
@@ -689,6 +685,7 @@ class _ComicViewState extends State<_ComicView> {
     );
   }
 }
+
 //小说
 class _NovelView extends StatefulWidget {
   const _NovelView({required this.word});
@@ -696,7 +693,7 @@ class _NovelView extends StatefulWidget {
   final String word;
 
   @override
-    State<_NovelView> createState() => _NovelViewState();
+  State<_NovelView> createState() => _NovelViewState();
 }
 
 class _NovelViewState extends State<_NovelView> {
@@ -727,6 +724,7 @@ class _NovelViewState extends State<_NovelView> {
     );
   }
 }
+
 //裸聊
 class _ChatView extends StatefulWidget {
   const _ChatView({required this.word});
@@ -734,7 +732,7 @@ class _ChatView extends StatefulWidget {
   final String word;
 
   @override
-    State<_ChatView> createState() => _ChatViewState();
+  State<_ChatView> createState() => _ChatViewState();
 }
 
 class _ChatViewState extends State<_ChatView> {
@@ -765,40 +763,39 @@ class _ChatViewState extends State<_ChatView> {
     );
   }
 }
-//黑料
+
 class _BlackView extends StatefulWidget {
   const _BlackView({required this.word});
 
   final String word;
 
   @override
-    State<_BlackView> createState() => _BlackViewState();
+  State<_BlackView> createState() => _BlackViewState();
 }
 
 class _BlackViewState extends State<_BlackView> {
-  late final blackDomain = context.read<BlackDomain>();
+  late final _screenUtils = ScreenUtil();
+  late final _blackDomain = context.read<BlackDomain>();
 
-  Future<List<BlackListItemModel>> _getData({
-    required int page,
-    required int pageSize,
-  }) async {
-    final result = await blackDomain.getBlackSearchList(
-      page: page,
-      limit: pageSize,
-      word: widget.word,
-    );
-
-    return result.data!;
+  Future<List<BlackListItemModel>?> _searchData({int page = 1, int limit = 15}) async {
+    final result = await _blackDomain.getBlackSearch(word: widget.word, page: page, limit: limit);
+    if (result.status == 1) {
+      if (result.data?.list case final data? when data.isNotEmpty) {
+        return data;
+      }
+    }
+    return null;
   }
 
   @override
   Widget build(BuildContext context) {
-    return MyListView.list(
-      contentPadding: 15.w,
-      itemBuilder: (context, item, index) => BlackItemWidget(item: item, itemWidth: (ScreenUtil().screenWidth - MyTheme.pagePadding * 2)),
-      onFetchingMore: (currentPage, pageSize) => _getData(
-        page: currentPage,
-        pageSize: pageSize,
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+      child: MyListView.list(
+        contentPadding: 15.w,
+        padding: EdgeInsets.only(top: 5.w, bottom: MyTheme.pagePadding),
+        itemBuilder: (context, item, index) => BlackItemWidget(item: item, itemWidth: (_screenUtils.screenWidth - MyTheme.pagePadding * 2)),
+        onFetchingMore: (currentPage, pageSize) => _searchData(page: currentPage, limit: pageSize),
       ),
     );
   }

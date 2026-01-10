@@ -104,14 +104,14 @@ class PostCard extends StatelessWidget {
             CardMediaView(medias: medias),
           if (data.topic case final topics)
             CardHashTag(
-            id: '${topics.id}',
-            name: topics.name,
+            id: '${topics?.id}',
+            name: topics?.name ?? '',
             tapAct: () {
               if (_type == _Type.seed) {
 
               }
               else {
-                CommunityTagDetailRoute('${topics.id}').push(context);
+                CommunityTagDetailRoute('${topics?.id}').push(context);
               }
             },
           ),

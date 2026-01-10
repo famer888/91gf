@@ -1,6 +1,9 @@
 import 'package:jygf/domain/model/community/community_model.dart';
+import 'package:jygf/domain/model/follow_user.dart';
+import 'package:jygf/domain/model/live_model.dart';
 import 'package:jygf/domain/model/post/circle/circle_post_nav_model.dart';
 import 'package:jygf/domain/model/posts_with_banners_model.dart';
+import 'package:jygf/ui_layer/screens/file_search/model/check_file_model.dart';
 
 import '../../enum.dart';
 import '../../model/community_nav_model.dart';
@@ -16,6 +19,15 @@ import '../../type_def.dart';
 
 abstract class CommunityDomain {
 
+  /// 获取通知
+  AsyncResult<List<TipModel>> getNoticeList();
+
+  /// 获取用户关注列表
+  AsyncResult<List<FollowUser>> getFollowUserList();
+
+  /// 获取话题关注列表
+  AsyncResult<List<TopicModel>> getFollowTopicList();
+
   /// 分类Tab
   AsyncResult<List<CommunityCategoryTabModel>> getCategoryTabList();
 
@@ -28,7 +40,7 @@ abstract class CommunityDomain {
   });
 
   /// 查档获取帖子列表
-  AsyncResult getCheckFileList();
+  AsyncResult<CheckFileModel> getCheckFileList({required int page, required int limit, required String sort});
 
   /// 话题列表
   AsyncResult<TopicsWithBannersModel> postList({

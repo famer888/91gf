@@ -7,11 +7,27 @@ class CommunityService extends BaseService {
   @override
   final service = 'community';
 
+  /// 通知
+  AsyncJson getNoticeList() => post('/list_notice');
+
   /// 查档获取帖子列表
-  AsyncJson getCheckFileList() => post('/list_check_file');
+  AsyncJson getCheckFileList({required int page, required int limit, required String sort})
+  => post('/list_check_file', data: {
+    'page': page,
+    'limit': limit,
+    'sort': sort,
+  });
+
+  /// 获取关注用户列表
+  AsyncJson getFollowUserList() =>
+      post('/loadFollowMember');
+
+  /// 获取话题关注列表
+  AsyncJson getFollowTopicList() =>
+      post('/loadFollowTopics');
 
   /// 获取Tab分类列表
-  AsyncJson getCategoryTabList() => post('/category');
+  AsyncJson getCategoryTabList() => post('/category', data: {});
 
   /// 社区排序列表
   AsyncJson communitySortList({

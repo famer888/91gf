@@ -90,10 +90,7 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
             return Padding(
               padding: EdgeInsets.only(bottom: 20.w),
               child: Text(
-                'mtxq'.tr(namedArgs: {
-                  'name': topic?.name ?? '',
-                  'amount': '${config.payAi}'
-                }),
+                'mtxq'.tr(namedArgs: {'name': topic?.name ?? '', 'amount': '${config.payAi}'}),
                 style: MyTheme.red14,
                 maxLines: 3,
               ),
@@ -200,8 +197,7 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
                   InputField(
                     controller: contentController,
                     height: 150.w,
-                    hintText:
-                        "[${'xutie'.tr(context: context)}]${'runr'.tr(context: context)}",
+                    hintText: "[${'xutie'.tr(context: context)}]${'runr'.tr(context: context)}",
                   ),
                   SizedBox(height: 20.w),
                   ...topic?.isAi == 2
@@ -284,14 +280,9 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
                                       ),
                                       SizedBox(width: 2.w),
                                       Icon(
-                                        isLive
-                                            ? Icons.check_circle
-                                            : Icons.circle_outlined,
+                                        isLive ? Icons.check_circle : Icons.circle_outlined,
                                         size: 16.w,
-                                        color: isLive
-                                            ? const Color.fromRGBO(
-                                                94, 79, 236, 1)
-                                            : const Color(0xffa1a2a9),
+                                        color: isLive ? const Color.fromRGBO(94, 79, 236, 1) : const Color(0xffa1a2a9),
                                       ),
                                     ],
                                   ),
@@ -315,15 +306,8 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
                                         ),
                                       ),
                                       SizedBox(width: 2.w),
-                                      Icon(
-                                          isLive
-                                              ? Icons.circle_outlined
-                                              : Icons.check_circle,
-                                          size: 16.w,
-                                          color: isLive
-                                              ? const Color(0xffa1a2a9)
-                                              : const Color.fromRGBO(
-                                                  94, 79, 236, 1)),
+                                      Icon(isLive ? Icons.circle_outlined : Icons.check_circle,
+                                          size: 16.w, color: isLive ? const Color(0xffa1a2a9) : const Color.fromRGBO(94, 79, 236, 1)),
                                     ],
                                   ),
                                 ),
@@ -338,9 +322,7 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
                             child: Container(
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(3.w),
-                                  border: Border.all(
-                                      color: Colors.white.withOpacity(0.3),
-                                      width: 1.w)),
+                                  border: Border.all(color: Colors.white.withOpacity(0.3), width: 1.w)),
                               child: Row(
                                 children: [
                                   Expanded(
@@ -373,62 +355,45 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
                                         context: context,
                                         barrierDismissible: true,
                                         builder: (context) {
-                                          return StatefulBuilder(builder:
-                                              (context, setDialogState) {
+                                          return StatefulBuilder(builder: (context, setDialogState) {
                                             return Dialog(
-                                              backgroundColor:
-                                                  Colors.transparent,
+                                              backgroundColor: Colors.transparent,
                                               child: Container(
-                                                margin: EdgeInsets.symmetric(
-                                                    horizontal: 40.w),
+                                                margin: EdgeInsets.symmetric(horizontal: 40.w),
                                                 decoration: BoxDecoration(
                                                   color: MyTheme.blackColor49,
-                                                  borderRadius:
-                                                      BorderRadius.all(
+                                                  borderRadius: BorderRadius.all(
                                                     Radius.circular(5.w),
                                                   ),
                                                 ),
                                                 child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
+                                                  mainAxisSize: MainAxisSize.min,
                                                   children: [
                                                     SizedBox(
                                                       height: 50.w,
                                                       child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .end,
+                                                        mainAxisAlignment: MainAxisAlignment.end,
                                                         children: [
                                                           GestureDetector(
-                                                            onTap: () =>
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop(),
+                                                            onTap: () => Navigator.of(context).pop(),
                                                             child: Icon(
                                                               Icons.close,
-                                                              color:
-                                                                  Colors.white,
+                                                              color: Colors.white,
                                                               size: 20.w,
                                                             ),
                                                           ),
                                                           SizedBox(
-                                                            width: MyTheme
-                                                                .pagePadding,
+                                                            width: MyTheme.pagePadding,
                                                           ),
                                                         ],
                                                       ),
                                                     ),
                                                     SizedBox(
                                                       width: double.infinity,
-                                                      height: (1.sw - 80.w) /
-                                                          7 *
-                                                          10,
-                                                      child:
-                                                          Builder(builder: (_) {
-                                                        final videoInfo =
-                                                            VideoData(
-                                                          source240: video[
-                                                              'media_url'],
+                                                      height: (1.sw - 80.w) / 7 * 10,
+                                                      child: Builder(builder: (_) {
+                                                        final videoInfo = VideoData(
+                                                          source240: video['media_url'],
                                                           previewUrl: '',
                                                           title: '',
                                                         );
@@ -448,8 +413,7 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
                                         },
                                       );
                                     },
-                                    child: Text('dwcskk'.tr(context: context),
-                                        style: MyTheme.blue80_14_M),
+                                    child: Text('dwcskk'.tr(context: context), style: MyTheme.blue80_14_M),
                                   ),
                                   SizedBox(width: 10.w),
                                 ],
@@ -494,8 +458,7 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
     final topic = topicNotifier.value;
     List<Map> p = List.from(upList);
     if (topic == null) {
-      MyToast.showText(
-          text: 'q'.tr(context: context) + 'xzht'.tr(context: context));
+      MyToast.showText(text: 'q'.tr(context: context) + 'xzht'.tr(context: context));
       return;
     }
     if (titleController.text.isEmpty) {
@@ -608,9 +571,7 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
       child: Scaffold(
         appBar: MyAppBar(
           title: 'fbtz'.tr(context: context),
-          rightWidget: PostButton(
-            onTap: _send,
-          ),
+          rightWidget: PostButton(onTap: _send),
         ),
         body: GestureDetector(
           behavior: HitTestBehavior.translucent,
@@ -618,20 +579,18 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: MyTheme.pagePadding,
-                vertical: 16.w,
-              ),
+              padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding, vertical: 16.w),
               child: Column(
                 children: [
                   _buildMtxqView(),
                   TopicField(
-                      type: widget.org
-                          ? '2'
-                          : widget.type == CommunityIssueType.video
-                              ? '0'
-                              : '1',
-                      topicNotifier: topicNotifier),
+                    type: widget.org
+                        ? '2'
+                        : widget.type == CommunityIssueType.video
+                            ? '0'
+                            : '1',
+                    topicNotifier: topicNotifier,
+                  ),
                   SizedBox(height: 30.w),
                   InputField(
                     controller: titleController,

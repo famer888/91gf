@@ -25,6 +25,7 @@ class MyTheme {
     static Color primaryColor_09 = const Color.fromRGBO(176, 66, 255, 0.9);
     static Color primaryColor_06 = const Color.fromRGBO(176, 66, 255, 0.6);
     static Color primaryColor_03 = const Color.fromRGBO(176, 66, 255, 0.3);
+    static Color primaryColor_02 = const Color.fromRGBO(176, 66, 255, 0.2);
     static Color primaryColor_01 = const Color.fromRGBO(176, 66, 255, 0.1);
 
 

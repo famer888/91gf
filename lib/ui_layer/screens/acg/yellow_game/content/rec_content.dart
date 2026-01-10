@@ -46,8 +46,7 @@ class _GameRecContentState extends State<GameRecContent> {
     super.dispose();
   }
 
-  Future<List<GameSectionModel>?> _getData(
-      {required int page, required int pageSize}) async {
+  Future<List<GameSectionModel>?> _getData({required int page, required int pageSize}) async {
     final result = await _domain.gameRec(
       id: widget.id,
       page: page,
@@ -61,27 +60,22 @@ class _GameRecContentState extends State<GameRecContent> {
     }
 
     if (result.status == 1) {
-      if (result.data['banner'] case final List data
-          when data.isNotEmpty && _bannersNotifier.value.isEmpty) {
+      if (result.data['banner'] case final List data when data.isNotEmpty && _bannersNotifier.value.isEmpty) {
         final banner = data.map((x) => BannerModel.fromJson(x)).toList();
         _bannersNotifier.value = banner;
       }
 
-      if (result.data['tips'] case final List data
-          when data.isNotEmpty && _tipsNotifier.value.isEmpty) {
+      if (result.data['tips'] case final List data when data.isNotEmpty && _tipsNotifier.value.isEmpty) {
         final tipss = data.map((x) => TipModel.fromJson(x)).toList();
         _tipsNotifier.value = tipss;
       }
 
-      if (result.data['nav'] case final List data
-          when data.isNotEmpty && _partNotifier.value.isEmpty) {
+      if (result.data['nav'] case final List data when data.isNotEmpty && _partNotifier.value.isEmpty) {
         final part = data.map((x) => PartModel.fromJson(x)).toList();
         _partNotifier.value = part;
       }
 
-      return result.data['games']
-          ?.map<GameSectionModel>((x) => GameSectionModel.fromJson(x))
-          .toList();
+      return result.data['games']?.map<GameSectionModel>((x) => GameSectionModel.fromJson(x)).toList();
     } else {
       MyToast.showText(text: result.msg ?? '');
     }
@@ -94,19 +88,19 @@ class _GameRecContentState extends State<GameRecContent> {
   }
 
   Widget cofigContentView() {
-    return Scaffold(body: MyListView.list(
-      header: _Header(
-        bannersNotifier: _bannersNotifier,
-        tipsNotifier: _tipsNotifier,
-        partNotifier: _partNotifier,
+    return Scaffold(
+      body: MyListView.list(
+        header: _Header(
+          bannersNotifier: _bannersNotifier,
+          tipsNotifier: _tipsNotifier,
+          partNotifier: _partNotifier,
+        ),
+        contentPadding: 15.w,
+        padding: EdgeInsets.only(left: MyTheme.pagePadding, right: MyTheme.pagePadding, top: 5.w),
+        itemBuilder: (context, item, index) => GameSectionCard(model: item),
+        onFetchingMore: (currentPage, pageSize) => _getData(page: currentPage, pageSize: pageSize),
       ),
-      contentPadding: 15.w,
-      padding: EdgeInsets.only(
-          left: MyTheme.pagePadding, right: MyTheme.pagePadding, top: 5.w),
-      itemBuilder: (context, item, index) => GameSectionCard(model: item),
-      onFetchingMore: (currentPage, pageSize) =>
-          _getData(page: currentPage, pageSize: pageSize),
-    ));
+    );
   }
 }
 

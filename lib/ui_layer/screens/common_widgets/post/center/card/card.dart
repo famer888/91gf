@@ -1,14 +1,10 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
 
 import '../../../../../../domain/model/tiezt_model.dart';
 import '../../../../../router/routes.dart';
-import '../../../../../utils/common_utils.dart';
 import '../../../../theme.dart';
-import '../../card/media.dart';
 import '../../../my_image.dart';
 
 class PostCenterCard extends StatelessWidget {
@@ -16,19 +12,14 @@ class PostCenterCard extends StatelessWidget {
 
   final TieztModel data;
 
-
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-      decoration: const BoxDecoration(
-        color: Colors.transparent,
-      ),
+      decoration: const BoxDecoration(color: Colors.transparent),
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
-        onTap: data.status == 1
-            ? () => CommunityPostDetailRoute(data.id.toString()).push(context)
-            : null,
+        onTap: data.status == 1 ? () => CommunityPostDetailRoute(data.id.toString()).push(context) : null,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -42,9 +33,7 @@ class PostCenterCard extends StatelessWidget {
               ),
               child: Center(
                 child: MyImage.asset(
-                  data.status == 0
-        ? MyImagePaths.appPostCheck
-        : (data.status == 1 ? MyImagePaths.appPostPass : MyImagePaths.appPostRefuse),
+                  data.status == 0 ? MyImagePaths.appPostCheck : (data.status == 1 ? MyImagePaths.appPostPass : MyImagePaths.appPostRefuse),
                   width: 46.w,
                   height: 36.w,
                   fit: BoxFit.contain,

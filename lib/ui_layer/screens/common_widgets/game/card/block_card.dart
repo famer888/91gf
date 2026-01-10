@@ -1,26 +1,19 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import 'package:jygf/domain/model/cartoon/cartoon_section_model.dart';
-import 'package:jygf/domain/model/cartoon/cartoon_model.dart';
 import 'package:jygf/domain/model/game/game_model.dart';
 import 'package:jygf/domain/model/game/game_section/game_section_model.dart';
-import 'package:jygf/domain/remote_domain/domains/cartoon.dart';
 import 'package:jygf/domain/remote_domain/domains/game.dart';
-import 'package:jygf/ui_layer/screens/common_widgets/cartoon/card/video_card.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/game/card/game_card.dart';
-import 'package:jygf/ui_layer/screens/common_widgets/my_list_view.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
+import 'package:provider/provider.dart';
+
 import '../../../../router/routes.dart';
-import '../../../../../domain/model/feed/feed_model.dart';
-import '../../../../utils/common_utils.dart';
 import '../../../theme.dart';
-import '../../my_image.dart';
 
 class GameBlockCard extends StatefulWidget {
   const GameBlockCard({super.key, required this.data});
+
   final GameSectionGameModel data;
 
   @override
@@ -33,6 +26,8 @@ class _GameBlockCardState extends State<GameBlockCard> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.data.items.isEmpty) return const SizedBox.shrink();
+
     return Column(
       children: [
         Row(
@@ -42,19 +37,16 @@ class _GameBlockCardState extends State<GameBlockCard> {
               width: 4.w,
               height: 17.w,
               decoration: BoxDecoration(
-                  gradient: MyTheme.topToBottomGradient,
-                  borderRadius: BorderRadius.circular(2.w)),
+                gradient: MyTheme.topToBottomGradient,
+                borderRadius: BorderRadius.circular(2.w),
+              ),
             ),
             SizedBox(width: 6.w),
-            Text(
-              widget.data.title,
-              style: MyTheme.white15bold,
-            ),
+            Text(widget.data.title, style: MyTheme.white15bold),
             const Spacer(),
             GestureDetector(
                 onTap: () {
-                  GameMoreRoute(widget.data.value, widget.data.title)
-                      .push(context);
+                  GameMoreRoute(widget.data.value, widget.data.title).push(context);
                   // CommonUtils.openRoute(context, data)
                   // String ss =
                   //     '/gameMore/${widget.data.value}/${widget.data.title}';
@@ -88,8 +80,7 @@ class _GameBlockCardState extends State<GameBlockCard> {
         widget.data.items.isEmpty
             ? Container()
             : Container(
-                padding:
-                    EdgeInsets.only(top: MyTheme.pagePadding, bottom: 10.w),
+                padding: EdgeInsets.only(top: MyTheme.pagePadding, bottom: 10.w),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -98,9 +89,7 @@ class _GameBlockCardState extends State<GameBlockCard> {
                       child: Container(
                         width: 150.w,
                         height: 30.w,
-                        decoration: BoxDecoration(
-                            color: MyTheme.white008Color,
-                            borderRadius: BorderRadius.circular(15.w)),
+                        decoration: BoxDecoration(color: MyTheme.white008Color, borderRadius: BorderRadius.circular(15.w)),
                         alignment: Alignment.center,
                         child: Text(
                           'hyh'.tr(),
@@ -110,16 +99,12 @@ class _GameBlockCardState extends State<GameBlockCard> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        GameMoreRoute(
-                                widget.data.value, widget.data.title)
-                            .push(context);
+                        GameMoreRoute(widget.data.value, widget.data.title).push(context);
                       },
                       child: Container(
                         width: 150.w,
                         height: 30.w,
-                        decoration: BoxDecoration(
-                            color: MyTheme.white008Color,
-                            borderRadius: BorderRadius.circular(15.w)),
+                        decoration: BoxDecoration(color: MyTheme.white008Color, borderRadius: BorderRadius.circular(15.w)),
                         alignment: Alignment.center,
                         child: Text(
                           'ckgd'.tr(),
@@ -141,8 +126,7 @@ class _GameBlockCardState extends State<GameBlockCard> {
     if (limit <= 6) {
       limit = 6;
     }
-    final result = await _domain.gameMore(
-        sort: widget.data.value, page: page, limit: limit);
+    final result = await _domain.gameMore(sort: widget.data.value, page: page, limit: limit);
 
     if (result.status == 1) {
       final tp = result.data ?? [];

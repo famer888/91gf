@@ -42,8 +42,7 @@ class _GameContentState extends State<GameContent> {
     super.dispose();
   }
 
-  Future<List<GameModel>?> _getData(
-      {required String sort, required int page, required int pageSize}) async {
+  Future<List<GameModel>?> _getData({required String sort, required int page, required int pageSize}) async {
     final result = await _domain.gameTheme(
       id: widget.id,
       sort: sort,
@@ -58,21 +57,17 @@ class _GameContentState extends State<GameContent> {
     }
 
     if (result.status == 1) {
-      if (result.data['banner'] case final List data
-          when data.isNotEmpty && _bannersNotifier.value.isEmpty) {
+      if (result.data['banner'] case final List data when data.isNotEmpty && _bannersNotifier.value.isEmpty) {
         final banner = data.map((x) => BannerModel.fromJson(x)).toList();
         _bannersNotifier.value = banner;
       }
 
-      if (result.data['tips'] case final List data
-          when data.isNotEmpty && _tipsNotifier.value.isEmpty) {
+      if (result.data['tips'] case final List data when data.isNotEmpty && _tipsNotifier.value.isEmpty) {
         final tipss = data.map((x) => TipModel.fromJson(x)).toList();
         _tipsNotifier.value = tipss;
       }
 
-      return result.data['games']
-          ?.map<GameModel>((x) => GameModel.fromJson(x))
-          .toList();
+      return result.data['games']?.map<GameModel>((x) => GameModel.fromJson(x)).toList();
     } else {
       MyToast.showText(text: result.msg ?? '');
     }
@@ -107,8 +102,7 @@ class _GameContentState extends State<GameContent> {
               crossAxisCount: 2,
               padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
               itemBuilder: (context, item, index) => GameCard(data: item),
-              onFetchingMore: (currentPage, pageSize) => _getData(
-                  sort: nav.sort ?? '', page: currentPage, pageSize: pageSize),
+              onFetchingMore: (currentPage, pageSize) => _getData(sort: nav.sort ?? '', page: currentPage, pageSize: pageSize),
             )
         ],
       ),

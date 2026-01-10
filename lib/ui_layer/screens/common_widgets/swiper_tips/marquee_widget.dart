@@ -82,6 +82,7 @@ class _MarqueeWidgetState extends State<MarqueeWidget>
       if (_boxWidth <= 0) {
         continue;
       }
+      if (!_controller.hasClients) return;
       _controller.jumpTo(0);
       await _controller.animateTo(_controller.position.maxScrollExtent,
           duration: Duration(

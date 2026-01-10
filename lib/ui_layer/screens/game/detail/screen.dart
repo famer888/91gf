@@ -7,7 +7,6 @@ import 'package:jygf/domain/model/game/game_detail_model.dart';
 import 'package:jygf/domain/remote_domain/domains/game.dart';
 import 'package:jygf/ui_layer/const.dart';
 import 'package:jygf/ui_layer/router/routes.dart';
-import 'package:jygf/ui_layer/screens/common_widgets/member_vip.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/member_vip_img.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_avatar.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
@@ -31,6 +30,7 @@ import 'content.dart';
 
 class GameDetailScreen extends StatefulWidget {
   const GameDetailScreen({super.key, required this.id});
+
   final String id;
 
   @override
@@ -39,6 +39,7 @@ class GameDetailScreen extends StatefulWidget {
 
 class _GameDetailScreenState extends State<GameDetailScreen> {
   GameDetailModel? _detailModel;
+
   @override
   Widget build(BuildContext context) {
     return ScreenBackground(
@@ -60,6 +61,7 @@ class _GameDetailScreenState extends State<GameDetailScreen> {
 
 class _Body extends StatefulWidget {
   const _Body({required this.id, this.whenLoadedInfo});
+
   final String id;
   final Function(GameDetailModel model)? whenLoadedInfo;
 
@@ -143,10 +145,8 @@ class _BodyState extends State<_Body> with WidgetsBindingObserver {
   }
 
   /// 取得评论
-  Future<List<GameCommentListModel>?> getReviewData(
-      {required int currentPage, required int pageSize}) async {
-    final result = await _domain.gameCommentList(
-        id: widget.id, page: currentPage, limit: pageSize);
+  Future<List<GameCommentListModel>?> getReviewData({required int currentPage, required int pageSize}) async {
+    final result = await _domain.gameCommentList(id: widget.id, page: currentPage, limit: pageSize);
 
     if (result.data case final data?) {
       return data;
@@ -206,14 +206,9 @@ class _BodyState extends State<_Body> with WidgetsBindingObserver {
               Expanded(
                 child: MyListView.list(
                   header: GameDetailContentView(fullData: data),
-                  padding: EdgeInsets.only(
-                      left: MyTheme.pagePadding,
-                      right: MyTheme.pagePadding,
-                      bottom: 60.w),
-                  itemBuilder: (context, item, index) =>
-                      CommentTile(data: item),
-                  onFetchingMore: (currentPage, pageSize) =>
-                      _getData(currentPage: currentPage, limit: pageSize),
+                  padding: EdgeInsets.only(left: MyTheme.pagePadding, right: MyTheme.pagePadding, bottom: 60.w),
+                  itemBuilder: (context, item, index) => CommentTile(data: item),
+                  onFetchingMore: (currentPage, pageSize) => _getData(currentPage: currentPage, limit: pageSize),
                 ),
               ),
               CommentInput(
@@ -221,8 +216,7 @@ class _BodyState extends State<_Body> with WidgetsBindingObserver {
                 focusNode: inputFocusNode,
                 hintNotifier: hintNotifier,
                 onSubmitted: () async {
-                  await _sendComment(
-                      target: currentReply, text: textEditingController.text);
+                  await _sendComment(target: currentReply, text: textEditingController.text);
                 },
               ),
             ],
@@ -262,6 +256,7 @@ class _BodyState extends State<_Body> with WidgetsBindingObserver {
 
 class CommentTile extends StatelessWidget {
   const CommentTile({super.key, required this.data});
+
   final GameCommentListModel data;
 
   @override
@@ -320,8 +315,7 @@ class CommentTile extends StatelessWidget {
                     // ),
                     MemberVipImgView(img: member?.vipIcon ?? '', margin: 5.w),
                     Text(
-                      RelativeDateFormat.format(
-                          date: DateTime.parse(data.createdAt ?? '')),
+                      RelativeDateFormat.format(date: DateTime.parse(data.createdAt ?? '')),
                       style: MyTheme.gray163_11,
                     ),
                   ],
@@ -353,17 +347,13 @@ class CommentTile extends StatelessWidget {
                 child: Column(
                   children: [
                     MyImage.asset(
-                      isLike
-                          ? MyImagePaths.appCommReviewH
-                          : MyImagePaths.appCommReviewN,
+                      isLike ? MyImagePaths.appCommReviewH : MyImagePaths.appCommReviewN,
                       width: 20.w,
                       height: 20.w,
                     ),
                     SizedBox(height: 1.w),
                     Text(
-                      CommonUtils.renderFixedNumber(
-                          CommonUtils.renderFixedLikeCount(
-                              data.likeFct ?? 0, data.isLike ?? 0)),
+                      CommonUtils.renderFixedNumber(CommonUtils.renderFixedLikeCount(data.likeFct ?? 0, data.isLike ?? 0)),
                       style: MyTheme.gray203_12,
                     )
                   ],

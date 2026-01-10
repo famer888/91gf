@@ -38,8 +38,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
     final title = keyword.replaceAll('/', '|');
     if (!searchHistory.contains(keyword)) {
-      _homeConfigNotifier.upsertSearchHistory(
-          searchHistory: searchHistory..add(keyword));
+      _homeConfigNotifier.upsertSearchHistory(searchHistory: searchHistory..add(keyword));
     }
     SearchResultRoute(title).push(context);
   }

@@ -40,6 +40,7 @@ import 'package:jygf/domain/model/chat/chat_index_model.dart';
 import 'package:jygf/domain/model/chat/chat_list_model.dart';
 import 'package:jygf/domain/model/comic_model.dart';
 import 'package:jygf/domain/model/community/community_model.dart';
+import 'package:jygf/domain/model/follow_user.dart';
 import 'package:jygf/domain/model/live_model.dart';
 import 'package:jygf/domain/model/live_video_detail_model.dart';
 import 'package:jygf/domain/model/novel_model.dart';
@@ -63,6 +64,7 @@ import 'package:jygf/domain/remote_domain/domains/black_domain.dart';
 import 'package:jygf/report/event_tracking.dart';
 import 'package:jygf/report/ui_layer/report_timing_interceptor.dart';
 import 'package:jygf/ui_layer/screens/black/model/black_model.dart';
+import 'package:jygf/ui_layer/screens/file_search/model/check_file_model.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:universal_html/html.dart' as html;
@@ -260,8 +262,8 @@ abstract class _BaseAppRepo implements AppDomain {
 
   late final _apiDio = Dio(
     BaseOptions(
-      connectTimeout: const Duration(seconds: 5),
-      receiveTimeout: const Duration(seconds: 5),
+      connectTimeout: const Duration(seconds: 15),
+      receiveTimeout: const Duration(seconds: 15),
       contentType: Headers.formUrlEncodedContentType,
     ),
   );

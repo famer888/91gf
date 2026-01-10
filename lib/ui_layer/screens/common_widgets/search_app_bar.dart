@@ -14,8 +14,7 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
     return SafeArea(
       bottom: false,
       child: Container(
-        margin: EdgeInsets.symmetric(
-            horizontal: MyTheme.pagePadding, vertical: 5.w),
+        margin: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding, vertical: 5.w),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -26,16 +25,14 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
                 child: Container(
                   height: 35.w,
                   decoration: ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(17.5.w)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(17.5.w)),
                     color: Colors.white.withOpacity(0.1),
                   ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(width: 12.w),
-                      Image.asset(MyImagePaths.appSearchIcon,
-                          width: 12.w, height: 12.w),
+                      Image.asset(MyImagePaths.appSearchIcon, width: 12.w, height: 12.w),
                       SizedBox(width: 2.w),
                       Container(
                         width: 1.w,
@@ -44,10 +41,7 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
                       ),
                       SizedBox(width: 8.w),
                       Expanded(
-                        child: Text(
-                          'stzdmmhbt'.tr(context: context),
-                          style: MyTheme.gray172_14,
-                        ),
+                        child: Text('stzdmmhbt'.tr(context: context), style: MyTheme.gray172_14),
                       ),
                     ],
                   ),

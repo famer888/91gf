@@ -230,6 +230,10 @@ class _$FeedAdModelImpl implements FeedAdModel {
       this.reportId,
       this.reportType,
       this.subTitle,
+      this.adType,
+      this.adSlotName,
+      this.advertiseCode,
+      this.advertiseLocationCode,
       {final String? $type})
       : $type = $type ?? 'ad';
 
@@ -290,13 +294,21 @@ class _$FeedAdModelImpl implements FeedAdModel {
   final int reportType;
   @override
   final String? subTitle;
+  @override
+  final int? adType;
+  @override
+  final String? adSlotName;
+  @override
+  final String? advertiseCode;
+  @override
+  final String? advertiseLocationCode;
 
   @JsonKey(name: 'feed_type')
   final String $type;
 
   @override
   String toString() {
-    return 'FeedModel.ad(id: $id, title: $title, description: $description, imgUrl: $imgUrl, urlConfig: $urlConfig, position: $position, androidDownUrl: $androidDownUrl, iosDownUrl: $iosDownUrl, type: $type, status: $status, oauthType: $oauthType, mvM3U8: $mvM3U8, channel: $channel, createdAt: $createdAt, router: $router, startAt: $startAt, endAt: $endAt, clicked: $clicked, sort: $sort, urlStr: $urlStr, linkUrl: $linkUrl, url: $url, resourceUrl: $resourceUrl, redirectType: $redirectType, reportId: $reportId, reportType: $reportType, subTitle: $subTitle)';
+    return 'FeedModel.ad(id: $id, title: $title, description: $description, imgUrl: $imgUrl, urlConfig: $urlConfig, position: $position, androidDownUrl: $androidDownUrl, iosDownUrl: $iosDownUrl, type: $type, status: $status, oauthType: $oauthType, mvM3U8: $mvM3U8, channel: $channel, createdAt: $createdAt, router: $router, startAt: $startAt, endAt: $endAt, clicked: $clicked, sort: $sort, urlStr: $urlStr, linkUrl: $linkUrl, url: $url, resourceUrl: $resourceUrl, redirectType: $redirectType, reportId: $reportId, reportType: $reportType, subTitle: $subTitle, adType: $adType, adSlotName: $adSlotName, advertiseCode: $advertiseCode, advertiseLocationCode: $advertiseLocationCode)';
   }
 
   @override
@@ -344,7 +356,11 @@ abstract class FeedAdModel implements FeedModel {
       final int redirectType,
       final int reportId,
       final int reportType,
-      final String? subTitle) = _$FeedAdModelImpl;
+      final String? subTitle,
+      final int? adType,
+      final String? adSlotName,
+      final String? advertiseCode,
+      final String? advertiseLocationCode) = _$FeedAdModelImpl;
 
   factory FeedAdModel.fromJson(Map<String, dynamic> json) =
       _$FeedAdModelImpl.fromJson;
@@ -379,4 +395,8 @@ abstract class FeedAdModel implements FeedModel {
   int get reportId;
   int get reportType;
   String? get subTitle;
+  int? get adType;
+  String? get adSlotName;
+  String? get advertiseCode;
+  String? get advertiseLocationCode;
 }

@@ -4,6 +4,9 @@ import '../../type_def.dart';
 
 abstract class BlackDomain {
 
+  /// 黑料搜索
+  AsyncResult<BlackSearchModel> getBlackSearch({required String word, required int page, required int limit});
+
   /// 获取黑料公告
   AsyncResult<List<TipModel>> getBlackNotices();
 

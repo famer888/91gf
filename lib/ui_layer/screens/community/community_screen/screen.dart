@@ -17,6 +17,7 @@ import 'package:jygf/ui_layer/screens/common_widgets/status/network_error.dart';
 import 'package:jygf/ui_layer/screens/community/community_screen/content.dart';
 import 'package:jygf/ui_layer/screens/community/community_screen/seed_down_content.dart';
 import 'package:jygf/ui_layer/screens/file_search/check_file_screen.dart';
+import 'package:jygf/ui_layer/screens/follow/follow_screen.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:provider/provider.dart';
 
@@ -106,7 +107,10 @@ class _BodyState extends State<_Body> with TickerProviderStateMixin {
         initialIndex: _initialIndex,
         titles: data.map((e) => e.title).toList(),
         views: data.map((e) {
-          if (e.type == 2) {
+          if (e.type == 1) {
+            // 关注
+            return const FollowScreen();
+          } else if (e.type == 2) {
             // 黑料
             return const BlackScreen();
           } else if (e.type == 3) {

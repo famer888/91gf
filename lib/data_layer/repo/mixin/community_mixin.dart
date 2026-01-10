@@ -3,6 +3,29 @@ part of '../repo.dart';
 mixin _Community on _BaseAppRepo implements CommunityDomain {
 
   @override
+  AsyncResult<List<TipModel>> getNoticeList()
+    => _communityService
+        .getNoticeList()
+        .deserializeJsonListBy((e) => e.map(TipModel.fromJson).toList())
+        .guard;
+
+  @override
+  AsyncResult<List<FollowUser>> getFollowUserList() {
+    return _communityService
+        .getFollowUserList()
+        .deserializeJsonListBy((e) => e.map(FollowUser.fromJson).toList())
+        .guard;
+  }
+
+  @override
+  AsyncResult<List<TopicModel>> getFollowTopicList() {
+    return _communityService
+        .getFollowTopicList()
+        .deserializeJsonListBy((e) => e.map(TopicModel.fromJson).toList())
+        .guard;
+  }
+
+  @override
   AsyncResult<List<CommunityCategoryTabModel>> getCategoryTabList() =>
       _communityService
           .getCategoryTabList()
@@ -22,10 +45,10 @@ mixin _Community on _BaseAppRepo implements CommunityDomain {
           .guard;
 
   @override
-  AsyncResult getCheckFileList()
+  AsyncResult<CheckFileModel> getCheckFileList({required int page, required int limit, required String sort})
     => _communityService
-        .getCheckFileList()
-        .deserialize()
+        .getCheckFileList(page: page, limit: limit, sort: sort)
+        .deserializeJsonBy(CheckFileModel.fromJson)
         .guard;
 
   @override

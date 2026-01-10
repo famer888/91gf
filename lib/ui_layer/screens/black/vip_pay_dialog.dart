@@ -5,12 +5,12 @@ import 'package:go_router/go_router.dart';
 import 'package:jygf/domain/enum.dart';
 import 'package:jygf/domain/model/member_model.dart';
 import 'package:jygf/ui_layer/notifiers/user_notifier.dart';
+import 'package:jygf/ui_layer/screens/black/widgets/black_regular_dialog.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
 
 import '../../router/routes.dart';
 import '../common_widgets/dialog/my_dialog.dart';
-import '../common_widgets/dialog/widgets/regular_dialog.dart';
 import '../common_widgets/my_image.dart';
 import '../image_paths.dart';
 import '../theme.dart';
@@ -19,7 +19,7 @@ class VipPayDialog {
   static void showVipDialog(BuildContext context) {
     MyDialog.showDialog(
       context: context,
-      child: RegularDialog(
+      child: BlackRegularDialog(
         leftPadding: 0,
         rightPadding: 0,
         topPadding: 0,
@@ -107,7 +107,7 @@ class VipPayDialog {
     MyDialog.showDialog(
       context: context,
       barrierDismissible: barrierDismissible,
-      child: RegularDialog(
+      child: BlackRegularDialog(
         leftPadding: 0,
         rightPadding: 0,
         topPadding: 0,

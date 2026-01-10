@@ -1,22 +1,19 @@
 import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jygf/domain/model/game/game_detail_model.dart';
 import 'package:jygf/domain/model/game/game_model.dart';
 import 'package:jygf/domain/remote_domain/domains/game.dart';
-import 'package:jygf/domain/result.dart';
-import 'package:jygf/ui_layer/screens/game/detail/like_collect_unlock.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/general_banner.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
+import 'package:jygf/ui_layer/screens/game/detail/like_collect_unlock.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:provider/provider.dart';
-import '../../../notifiers/home_config_notifier.dart';
 
-import '../../../../../domain/domain.dart';
 import '../../.././notifiers/user_notifier.dart';
+import '../../../notifiers/home_config_notifier.dart';
 import '../../../router/routes.dart';
 import '../../../utils/my_toast.dart';
 import '../../common_widgets/post/content/comment_count.dart';
@@ -26,6 +23,7 @@ import '../../theme.dart';
 
 class GameDetailContentView extends StatelessWidget {
   const GameDetailContentView({super.key, required this.fullData});
+
   final GameDetailModel fullData;
 
   @override
@@ -87,8 +85,7 @@ class GameDetailContentView extends StatelessWidget {
               ? const SizedBox.shrink()
               : Padding(
                   padding: EdgeInsets.only(bottom: 5.w),
-                  child: GeneralBannerAppsListWidget(
-                      data: fullData.banner ?? [], aspectRatio: 7 / 2),
+                  child: GeneralBannerAppsListWidget(data: fullData.banner ?? [], aspectRatio: 7 / 2),
                 ),
           _PrevAndNextView(data: fullData),
           Divider(
@@ -147,7 +144,9 @@ class _EndView extends StatelessWidget {
 
 class _TagsView extends StatelessWidget {
   _TagsView({this.tagFullString = ''});
+
   String tagFullString;
+
   @override
   Widget build(BuildContext context) {
     return tagFullString.isEmpty
@@ -157,20 +156,14 @@ class _TagsView extends StatelessWidget {
             child: Wrap(
               spacing: 10.w,
               runSpacing: 10.w,
-              children: tagFullString
-                  .split(',')
-                  .where((element) => element.isNotEmpty)
-                  .toList()
-                  .map((e) {
+              children: tagFullString.split(',').where((element) => element.isNotEmpty).toList().map((e) {
                 return GestureDetector(
                   onTap: () {
                     GameTagRoute(e).push(context);
                   },
                   child: Container(
                     padding: EdgeInsets.all(10.w),
-                    decoration: BoxDecoration(
-                        color: MyTheme.white008Color,
-                        borderRadius: BorderRadius.circular(10.w)),
+                    decoration: BoxDecoration(color: MyTheme.white008Color, borderRadius: BorderRadius.circular(10.w)),
                     child: Text(
                       '#$e',
                       style: MyTheme.white07_10,
@@ -187,7 +180,9 @@ class _PrevAndNextView extends StatelessWidget {
   const _PrevAndNextView({
     required this.data,
   });
+
   final GameDetailModel data;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -205,12 +200,8 @@ class _PrevAndNextView extends StatelessWidget {
                           },
                           child: Container(
                             height: 80.w,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: MyTheme.pagePadding / 2,
-                                vertical: 0),
-                            decoration: BoxDecoration(
-                                color: MyTheme.white008Color,
-                                borderRadius: BorderRadius.circular(10.w)),
+                            padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding / 2, vertical: 0),
+                            decoration: BoxDecoration(color: MyTheme.white008Color, borderRadius: BorderRadius.circular(10.w)),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
@@ -237,9 +228,7 @@ class _PrevAndNextView extends StatelessWidget {
                             ),
                           ),
                         )),
-                  (data.prev != null && data.next != null)
-                      ? SizedBox(width: 10.w)
-                      : const SizedBox.shrink(),
+                  (data.prev != null && data.next != null) ? SizedBox(width: 10.w) : const SizedBox.shrink(),
                   data.next == null
                       ? const SizedBox.shrink()
                       : Expanded(
@@ -249,12 +238,8 @@ class _PrevAndNextView extends StatelessWidget {
                           },
                           child: Container(
                             height: 80.w,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: MyTheme.pagePadding / 2,
-                                vertical: 0),
-                            decoration: BoxDecoration(
-                                color: MyTheme.white008Color,
-                                borderRadius: BorderRadius.circular(10.w)),
+                            padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding / 2, vertical: 0),
+                            decoration: BoxDecoration(color: MyTheme.white008Color, borderRadius: BorderRadius.circular(10.w)),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
@@ -292,6 +277,7 @@ class _PrevAndNextView extends StatelessWidget {
 
 class _SourceArea extends StatefulWidget {
   const _SourceArea({this.data});
+
   final GameDetailInfoModel? data;
 
   @override
@@ -300,15 +286,18 @@ class _SourceArea extends StatefulWidget {
 
 class _SourceAreaState extends State<_SourceArea> {
   bool get showSecret => widget.data?.password?.isNotEmpty == true;
+
   String get secret => widget.data?.password ?? '';
+
   int get coins => widget.data?.coins ?? 0;
+
   List<GameDetailUrlModel> get links => widget.data?.downloadUrls ?? [];
 
-  late ValueNotifier<List<GameDetailUrlModel>> linkNotifier =
-      ValueNotifier(links);
+  late ValueNotifier<List<GameDetailUrlModel>> linkNotifier = ValueNotifier(links);
   late final _domain = context.read<GameDomain>();
   late final _userNotifier = context.read<UserNotifier>();
   late final config = context.read<HomeConfigNotifier>().config;
+
   Future<void> _buyGame() async {
     MyToast.showLoading(text: 'dhz'.tr(context: context));
     final result = await _domain.gameBuy(id: widget.data?.id ?? 0);
@@ -316,9 +305,7 @@ class _SourceAreaState extends State<_SourceArea> {
 
     if (result.status != 0) {
       // widget.data?.payTip = result.data['url'] ?? '';
-      linkNotifier.value = List.from(result.data['url'])
-          .map((e) => GameDetailUrlModel.fromJson(e))
-          .toList();
+      linkNotifier.value = List.from(result.data['url']).map((e) => GameDetailUrlModel.fromJson(e)).toList();
       _userNotifier.setMoney(money: _userNotifier.member.money - coins);
     } else {
       MyToast.showText(text: result.msg ?? '');
@@ -352,25 +339,18 @@ class _SourceAreaState extends State<_SourceArea> {
                       Container(
                         height: 100.w,
                         decoration: DottedDecoration(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(4.w)),
-                            shape: Shape.box,
-                            color: MyTheme.white08Color,
-                            strokeWidth: 1.w),
+                          borderRadius: BorderRadius.all(Radius.circular(4.w)),
+                          shape: Shape.box,
+                          color: MyTheme.white08Color,
+                          strokeWidth: 1.w,
+                        ),
                         alignment: Alignment.center,
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            MyImage.asset(
-                              MyImagePaths.appGameWarning,
-                              width: 15.w,
-                            ),
+                            MyImage.asset(MyImagePaths.appGameWarning, width: 15.w),
                             SizedBox(width: 5.w),
-                            Text(tr('nrycjsck'),
-                                style: TextStyle(
-                                  color: MyTheme.blueColor64,
-                                  fontSize: 14.sp,
-                                )),
+                            Text(tr('nrycjsck'), style: TextStyle(color: MyTheme.blueColor64, fontSize: 14.sp)),
                           ],
                         ),
                       ),
@@ -384,13 +364,10 @@ class _SourceAreaState extends State<_SourceArea> {
                           height: 40.w,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                              gradient: MyTheme.shareButtonGradient,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20.w))),
-                          child: Text(
-                              widget.data?.payTip ??
-                                  'ktvkpyp'.tr(context: context),
-                              style: MyTheme.white14Medium),
+                            gradient: MyTheme.shareButtonGradient,
+                            borderRadius: BorderRadius.all(Radius.circular(20.w)),
+                          ),
+                          child: Text(widget.data?.payTip ?? 'ktvkpyp'.tr(context: context), style: MyTheme.white14Medium),
                         ),
                       ),
                     ],
@@ -399,28 +376,31 @@ class _SourceAreaState extends State<_SourceArea> {
                   return Column(
                     children: [
                       Container(
-                        height: 100.w,
                         decoration: DottedDecoration(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(4.w)),
-                            shape: Shape.box,
-                            color: MyTheme.white08Color,
-                            strokeWidth: 1.w),
-                        alignment: Alignment.center,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            MyImage.asset(
-                              MyImagePaths.appGameWarning,
-                              width: 15.w,
-                            ),
-                            SizedBox(width: 5.w),
-                            Text(tr('nrycjsck'),
-                                style: TextStyle(
-                                  color: MyTheme.blueColor64,
-                                  fontSize: 14.sp,
-                                )),
-                          ],
+                          borderRadius: BorderRadius.all(Radius.circular(4.w)),
+                          shape: Shape.box,
+                          strokeWidth: 0.5.w,
+                          color: MyTheme.primaryColor,
+                        ),
+                        child: Container(
+                          height: 100.w,
+                          decoration: BoxDecoration(
+                            color: MyTheme.primaryColor_01,
+                            borderRadius: BorderRadius.all(Radius.circular(4.w)),
+                          ),
+                          alignment: Alignment.center,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              MyImage.asset(
+                                MyImagePaths.appGameWarning,
+                                width: 15.w,
+                                iconColor: const Color.fromRGBO(255, 46, 0, 1),
+                              ),
+                              SizedBox(width: 5.w),
+                              Text(tr('nrycjsck'), style: TextStyle(color: MyTheme.whiteColor, fontSize: 14.sp)),
+                            ],
+                          ),
                         ),
                       ),
                       SizedBox(height: 10.w),
@@ -431,14 +411,13 @@ class _SourceAreaState extends State<_SourceArea> {
                           height: 40.w,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                              gradient: MyTheme.shareButtonGradient,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20.w))),
+                            gradient: MyTheme.dhButtonGradient,
+                            borderRadius: BorderRadius.all(Radius.circular(20.w)),
+                          ),
                           child: Text(
-                              (widget.data?.payTip ?? '').isNotEmpty
-                                  ? (widget.data?.payTip ?? '')
-                                  : '$coins金币解锁',
-                              style: MyTheme.white14Medium),
+                            (widget.data?.payTip ?? '').isNotEmpty ? (widget.data?.payTip ?? '') : '$coins金币解锁',
+                            style: MyTheme.white14Medium,
+                          ),
                         ),
                       )
                     ],
@@ -446,13 +425,13 @@ class _SourceAreaState extends State<_SourceArea> {
               }
             }
             return Container(
-              padding: EdgeInsets.symmetric(
-                  horizontal: MyTheme.pagePadding, vertical: 20.w),
+              padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding, vertical: 20.w),
               decoration: DottedDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(4.w)),
-                  shape: Shape.box,
-                  color: MyTheme.white08Color,
-                  strokeWidth: 1.w),
+                borderRadius: BorderRadius.all(Radius.circular(4.w)),
+                shape: Shape.box,
+                color: MyTheme.white08Color,
+                strokeWidth: 1.w,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -461,10 +440,8 @@ class _SourceAreaState extends State<_SourceArea> {
                       return GestureDetector(
                         behavior: HitTestBehavior.translucent,
                         onTap: () {
-                          CommonUtils.copyToClipboard(
-                              text: link.archiveUrl ?? '');
-                          MyToast.showText(
-                              text: 'fzcgqxz'.tr(context: context));
+                          CommonUtils.copyToClipboard(text: link.archiveUrl ?? '');
+                          MyToast.showText(text: 'fzcgqxz'.tr(context: context));
                         },
                         child: RichText(
                           text: TextSpan(
@@ -474,19 +451,10 @@ class _SourceAreaState extends State<_SourceArea> {
                               //     style: TextStyle(
                               //         color: Colors.white, fontSize: 14.sp)),
                               TextSpan(
-                                  text: (ensureEndsWithColon(link.label ?? ''))
-                                      .replaceAll(',', '\n'),
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 14.sp)),
-                              TextSpan(
-                                  text: link.archiveUrl?.replaceAll(',', '\n'),
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 14.sp)),
-                              TextSpan(
-                                  text: " [${'dwfz'.tr(context: context)}]",
-                                  style: TextStyle(
-                                      color: MyTheme.blueColor64,
-                                      fontSize: 14.sp)),
+                                  text: (ensureEndsWithColon(link.label ?? '')).replaceAll(',', '\n'),
+                                  style: TextStyle(color: Colors.white, fontSize: 14.sp)),
+                              TextSpan(text: link.archiveUrl?.replaceAll(',', '\n'), style: TextStyle(color: Colors.white, fontSize: 14.sp)),
+                              TextSpan(text: " [${'dwfz'.tr(context: context)}]", style: TextStyle(color: MyTheme.blueColor64, fontSize: 14.sp)),
                             ],
                           ),
                         ),
@@ -503,22 +471,11 @@ class _SourceAreaState extends State<_SourceArea> {
                     child: RichText(
                       text: TextSpan(
                         children: [
+                          TextSpan(text: 'jymm'.tr(context: context), style: TextStyle(color: Colors.white, fontSize: 14.sp)),
                           TextSpan(
-                              text: 'jymm'.tr(context: context),
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 14.sp)),
-                          TextSpan(
-                              text: showSecret
-                                  ? secret
-                                  : 'ptjc'.tr(context: context),
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 14.sp)),
+                              text: showSecret ? secret : 'ptjc'.tr(context: context), style: TextStyle(color: Colors.white, fontSize: 14.sp)),
                           if (showSecret)
-                            TextSpan(
-                                text: " [${'dwfz'.tr(context: context)}]",
-                                style: TextStyle(
-                                    color: MyTheme.blueColor64,
-                                    fontSize: 14.sp)),
+                            TextSpan(text: " [${'dwfz'.tr(context: context)}]", style: TextStyle(color: MyTheme.blueColor64, fontSize: 14.sp)),
                         ],
                       ),
                     ),
@@ -546,6 +503,7 @@ class _SourceAreaState extends State<_SourceArea> {
 
 class _LikeCollectShareArea extends StatefulWidget {
   const _LikeCollectShareArea({required this.data});
+
   final GameDetailInfoModel data;
 
   @override
@@ -629,14 +587,8 @@ class _LikeCollectShareAreaState extends State<_LikeCollectShareArea> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              GameLikeButton(
-                  isLiked: widget.data.isLike == 1,
-                  likeNum: widget.data.likeFct ?? 0,
-                  onTap: _changeLike),
-              GameCollectButton(
-                  isCollected: widget.data.isFavorite == 1,
-                  collectNum: widget.data.favoriteFct ?? 0,
-                  onTap: _changeCollect),
+              GameLikeButton(isLiked: widget.data.isLike == 1, likeNum: widget.data.likeFct ?? 0, onTap: _changeLike),
+              GameCollectButton(isCollected: widget.data.isFavorite == 1, collectNum: widget.data.favoriteFct ?? 0, onTap: _changeCollect),
               GameUnlockButton(
                 data: widget.data,
               )
@@ -650,6 +602,7 @@ class _LikeCollectShareAreaState extends State<_LikeCollectShareArea> {
 
 class _RecommendArea extends StatelessWidget {
   _RecommendArea({required this.datas});
+
   List<GameModel> datas;
 
   @override
@@ -708,7 +661,9 @@ class _GameRecoomendCard extends StatelessWidget {
   const _GameRecoomendCard({
     required this.data,
   });
+
   final GameModel data;
+
   // final double imageRatio;
   @override
   Widget build(BuildContext context) {
@@ -740,8 +695,7 @@ class _GameRecoomendCard extends StatelessWidget {
                         alignment: Alignment.bottomLeft,
                         child: Padding(
                           padding: EdgeInsets.only(right: 4.w),
-                          child: Text(data.title ?? '',
-                              style: MyTheme.white12medium),
+                          child: Text(data.title ?? '', style: MyTheme.white12medium),
                         ),
                       ),
                       SizedBox(

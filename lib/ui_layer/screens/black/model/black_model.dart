@@ -1,6 +1,23 @@
 import 'package:jygf/domain/model/banner_model.dart';
 import 'package:jygf/domain/model/home_data_model.dart';
 
+class BlackSearchModel {
+  final List<BlackListItemModel> list;
+  final String lastIx;
+
+  BlackSearchModel({
+    required this.list,
+    required this.lastIx,
+  });
+
+  factory BlackSearchModel.fromJson(Map<String, dynamic> json) {
+    return BlackSearchModel(
+      list: json['list'] != null ? List<BlackListItemModel>.from(json['list'].map((app) => BlackListItemModel.fromJson(app))) : [],
+      lastIx: json['last_ix'] ?? '',
+    );
+  }
+}
+
 class BlackClassModel {
   final List<BlackModel> list;
   final String lastIx;
@@ -643,5 +660,5 @@ class BlackPostLikeModel {
       msg: json['msg'],
     );
   }
-
 }
+

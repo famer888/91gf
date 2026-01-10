@@ -8,6 +8,10 @@ class BlackService extends BaseService {
   @override
   final service = 'contents';
 
+  /// 黑料搜索
+  AsyncJson getBlackSearch({required String word, required int page, required int limit}) =>
+      post('/search', data: {'word': word, 'page': page, 'limit': limit});
+
   /// 获取黑料公告
   AsyncJson getBlackNotices() => post('/list_notice');
 
@@ -19,8 +23,8 @@ class BlackService extends BaseService {
   /// @param mid 分类id 必传 0表示全部
   /// @param page 页码 选传
   /// @param limit 每页数量 选传
-  AsyncJson getBlackList({String apiListUrl = '/list_contents', required int mid, required int page, required int limit})
-    => post(apiListUrl, data: {
+  AsyncJson getBlackList({String apiListUrl = '/list_contents', required int mid, required int page, required int limit}) =>
+      post(apiListUrl, data: {
         'mid': mid,
         'page': page,
         'limit': limit,
@@ -29,8 +33,7 @@ class BlackService extends BaseService {
   /// 黑料详情
   /// @param id 黑料id 必传
   /// @param token 登录token 选传
-  AsyncJson getBlackDetail({required int id, String token = ''})
-  => post('/detail_content', data: {
+  AsyncJson getBlackDetail({required int id, String token = ''}) => post('/detail_content', data: {
         'id': id,
         'token': token,
       });

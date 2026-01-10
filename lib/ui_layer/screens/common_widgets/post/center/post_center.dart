@@ -46,8 +46,7 @@ class _PostCenterState extends State<PostCenter> {
           padding: EdgeInsets.zero,
           header: widget.header,
           itemBuilder: (context, item, index) => PostCenterCard(data: item),
-          onFetchingMore: (currentPage, pageSize) =>
-              getData(currentPage: currentPage, limit: pageSize),
+          onFetchingMore: (currentPage, pageSize) => getData(currentPage: currentPage, limit: pageSize),
         ),
       ),
     );

@@ -36,25 +36,24 @@ class MediaModel {
 
   factory MediaModel.fromJson(Map<String, dynamic> json) {
     return MediaModel(
-        id: json['id'],
-        mediaUrl: json['media_url'] ?? '',
-        cover: json['cover'] ?? '',
-        thumbWidth: json['thumb_width'] ?? 0,
-        thumbHeight: json['thumb_height'] ?? 0,
-        pid: json['pid'],
-        aff: json['aff'].toString(),
-        type: switch (json['type']) {
-          2 => MyMediaType.video,
-          _ => MyMediaType.image
-        },
-        createdAt: json['created_at'],
-        status: json['status'],
-        duration: json['duration'],
-        updatedAt: json['updated_at'],
-        relateType: json['relate_type'],
-        aiId: json['ai_id'],
-        unlockCoins: json['unlock_coins']);
+      id: json['id'],
+      mediaUrl: json['media_url'] ?? '',
+      cover: json['cover'] ?? '',
+      thumbWidth: json['thumb_width'] ?? 0,
+      thumbHeight: json['thumb_height'] ?? 0,
+      pid: json['pid'],
+      aff: json['aff'].toString(),
+      type: switch (json['type']) { 2 => MyMediaType.video, _ => MyMediaType.image },
+      createdAt: json['created_at'],
+      status: json['status'],
+      duration: json['duration'],
+      updatedAt: json['updated_at'],
+      relateType: json['relate_type'],
+      aiId: json['ai_id'],
+      unlockCoins: json['unlock_coins'],
+    );
   }
+
   Map<String, dynamic> toJson() => {
         'id': id,
         'media_url': mediaUrl,
