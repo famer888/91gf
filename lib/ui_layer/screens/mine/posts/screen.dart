@@ -138,8 +138,8 @@ class _MinePostScreenState extends State<MinePostScreen> with TickerProviderStat
           },
           body: TabBarView(controller: tabController, children: const [
              PostCenter(type: 1),
-             PostCenter(type: 2),
              PostCenter(type: 3),
+             PostCenter(type: 2),
           ]),
         ),
       ),

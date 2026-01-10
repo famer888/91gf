@@ -36,6 +36,7 @@ class _MineDownloadScreenState extends State<MineDownloadScreen> {
   List<Map> _allDownTasks = [];
   List<Map> _videoTasks = [];
   List<Map> _voiceTasks = [];
+  List<Map> _cartoonTasks = [];
 
   @override
   void initState() {
@@ -53,6 +54,9 @@ class _MineDownloadScreenState extends State<MineDownloadScreen> {
     // 筛选出音频下载任务
     _voiceTasks =
         _allDownTasks.where((task) => task['contentType'] == 2).toList();
+    // 筛选出漫画下载任务
+    _cartoonTasks =
+        _allDownTasks.where((task) => task['contentType'] == 3).toList();
 
     for (var element in _videoTasks) {
       element.choosed = false;
@@ -60,7 +64,9 @@ class _MineDownloadScreenState extends State<MineDownloadScreen> {
     for (var element in _voiceTasks) {
       element.choosed = false;
     }
-
+    for (var element in _cartoonTasks) {
+      element.choosed = false;
+    }
     setState(() {});
   }
 
@@ -98,7 +104,9 @@ class _MineDownloadScreenState extends State<MineDownloadScreen> {
     // 筛选出音频下载任务
     _voiceTasks =
         _allDownTasks.where((task) => task['contentType'] == 2).toList();
-
+    // 筛选出漫画下载任务
+    _cartoonTasks =
+        _allDownTasks.where((task) => task['contentType'] == 3).toList();
     videoDownloadCache.upsertDownloadVideoTasks(tasks: _allDownTasks);
     setState(() {});
   }
@@ -209,11 +217,11 @@ class _MineDownloadScreenState extends State<MineDownloadScreen> {
           children: [
             Expanded(
               child: TabBarWithView.line(
+                indicatorType: IndicatorType.curve,
                 tabBarPadding: EdgeInsets.symmetric(
                   vertical: 0.w,
                   horizontal: MyTheme.pagePadding,
                 ),
-                labelStyle: MyTheme.jellyCyan_15,
                 unselectedLabelStyle: TextStyle(
                   color: const Color.fromRGBO(255, 255, 255, 1),
                   fontSize: 15.sp,
@@ -221,12 +229,17 @@ class _MineDownloadScreenState extends State<MineDownloadScreen> {
                   decoration: TextDecoration.none,
                 ),
                 tabBarHeight: 40.w,
-                isScrollable: false,
-                titles: ['shp'.tr(context: context), 'ASMR'],
+                titles: ['shp'.tr(context: context), 'dman'.tr(context: context), 'ASMR'],
                 views: [
                   KeepAliveWrapper(
                     child: _VideoView(
                       videoTasks: _videoTasks,
+                      isEditNotifier: isEditNotifier,
+                    ),
+                  ),
+                  KeepAliveWrapper(
+                    child: _VideoView(
+                      videoTasks: _cartoonTasks,
                       isEditNotifier: isEditNotifier,
                     ),
                   ),

@@ -15,7 +15,7 @@ class PostCenterCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+      margin: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding,vertical: 5.w),
       decoration: const BoxDecoration(color: Colors.transparent),
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
