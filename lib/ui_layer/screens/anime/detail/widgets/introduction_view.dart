@@ -216,7 +216,7 @@ class _CartoonIntroductionViewState extends State<CartoonIntroductionView> {
                               'title': videoInfo.title,
                               'thumbCover': videoInfo.cover,
                               'tags': [], // tags.join('/'),
-                              'contentType': 1,
+                              'contentType': 3,//contentType: 1:视频 2:音频 3:动漫
                               'downloading': false,
                               'isWaiting': true
                             };

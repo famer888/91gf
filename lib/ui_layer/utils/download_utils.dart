@@ -15,6 +15,7 @@ import 'my_toast.dart';
 
 Dio dio = Dio();
 
+//contentType: 1:视频 2:音频 3:动漫
 class DownloadUtil {
   DownloadUtil({required this.cache});
   final VideoDownloadCacheDomain cache;
