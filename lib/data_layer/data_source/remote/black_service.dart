@@ -71,4 +71,11 @@ class BlackService extends BaseService {
         'limit': limit,
         'tag': tag,
       });
+
+  /// 黑料搜索列表
+  AsyncJson getBlackSearchList({required String word, required int page, required int limit}) => post('/search', data: {
+        'word': word,
+        'page': page,
+        'limit': limit,
+      });
 }

@@ -17,6 +17,7 @@ import 'package:jygf/domain/model/vlog_model.dart';
 import 'package:jygf/domain/model/voice_model.dart';
 import 'package:jygf/domain/remote_domain/domains/album.dart';
 import 'package:jygf/domain/remote_domain/domains/asmr.dart';
+import 'package:jygf/domain/remote_domain/domains/black_domain.dart';
 import 'package:jygf/domain/remote_domain/domains/cartoon.dart';
 import 'package:jygf/domain/remote_domain/domains/comic.dart';
 import 'package:jygf/domain/remote_domain/domains/game.dart';
@@ -28,6 +29,8 @@ import 'package:jygf/ui_layer/router/routes.dart';
 import 'package:jygf/ui_layer/screens/acg/comic/card/comic_item_card.dart';
 import 'package:jygf/ui_layer/screens/acg/novel/card/novel_item_card.dart';
 import 'package:jygf/ui_layer/screens/asmr/card/voice_gird_card.dart';
+import 'package:jygf/ui_layer/screens/black/model/black_model.dart';
+import 'package:jygf/ui_layer/screens/black/widgets/black_item_widget.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/cartoon/card/video_card.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/chat/list_card.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/feed/card/video_card.dart';
@@ -68,12 +71,12 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
       'shp'.tr(context: context), 
       'dsp'.tr(context: context), 
       'tiezt'.tr(context: context), 
-      'xx黑料xx', // 黑料 
+      'heil'.tr(context: context), // 黑料 
       'meit'.tr(context: context), 
-      'dman'.tr(), 
+      'dman'.tr(context: context), 
       'mh'.tr(context: context), 
       'xs'.tr(context: context), 
-      'hyou'.tr(), 
+      'hyou'.tr(context: context), 
       if (openLive) 'zhib'.tr(context: context), 
       'ASMR', 
       'yuep'.tr(context: context), 
@@ -93,7 +96,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
         child: _TieztView(word: widget.title),
       ),
       KeepAliveWrapper(
-        child: _PlaceholderView(placeholderText: 'xx黑料xx'),
+        child: _BlackView(word: widget.title),
       ),
       KeepAliveWrapper(
         child: _YellowPictureView(word: widget.title),
@@ -136,12 +139,13 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
         appBar: MyAppBar(
           title: 'ssjg'.tr(context: context),
         ),
-        body: TabBarWithView.fillColor(
+        body: TabBarWithView.line(
+          indicatorType: IndicatorType.curve,
           tabBarPadding: EdgeInsets.symmetric(
             vertical: 6.w,
             horizontal: MyTheme.pagePadding,
           ),
-          tabBarHeight: 32.w,
+          tabBarHeight: 40.w,
           isScrollable: true,
           titles: titles,
           views: views,
@@ -761,24 +765,40 @@ class _ChatViewState extends State<_ChatView> {
     );
   }
 }
+//黑料
+class _BlackView extends StatefulWidget {
+  const _BlackView({required this.word});
 
-class _PlaceholderView extends StatelessWidget {
-  const _PlaceholderView({required this.placeholderText});
+  final String word;
 
-  final String placeholderText;
+  @override
+    State<_BlackView> createState() => _BlackViewState();
+}
+
+class _BlackViewState extends State<_BlackView> {
+  late final blackDomain = context.read<BlackDomain>();
+
+  Future<List<BlackListItemModel>> _getData({
+    required int page,
+    required int pageSize,
+  }) async {
+    final result = await blackDomain.getBlackSearchList(
+      page: page,
+      limit: pageSize,
+      word: widget.word,
+    );
+
+    return result.data!;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.all(20.w),
-        child: Text(
-          placeholderText,
-          style: TextStyle(
-            fontSize: 16.sp,
-            color: MyTheme.white25506Color,
-          ),
-        ),
+    return MyListView.list(
+      contentPadding: 15.w,
+      itemBuilder: (context, item, index) => BlackItemWidget(item: item, itemWidth: (ScreenUtil().screenWidth - MyTheme.pagePadding * 2)),
+      onFetchingMore: (currentPage, pageSize) => _getData(
+        page: currentPage,
+        pageSize: pageSize,
       ),
     );
   }

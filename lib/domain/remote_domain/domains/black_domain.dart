@@ -48,4 +48,6 @@ abstract class BlackDomain {
   /// 黑料标签列表
   AsyncResult<BlackLabelListModel> getBlackLabelList({required int page, required int limit, required String tag});
 
+  /// 黑料搜索列表
+  AsyncResult<List<BlackListItemModel>> getBlackSearchList({required String word, required int page, required int limit});
 }
