@@ -93,4 +93,20 @@ mixin _Black on _BaseAppRepo implements BlackDomain {
       .getBlackSearchList(word: word, page: page, limit: limit)
       .deserializeJsonListBy((e) => e.map(BlackListItemModel.fromJson).toList())
       .guard;
+
+  /// 黑料收藏列表
+  @override
+  AsyncResult<List<BlackListItemModel>> getBlackCollectList({required int page, required int limit})
+    => _blackService
+      .getBlackCollectList(page: page, limit: limit)
+      .deserializeJsonListBy((e) => e.map(BlackListItemModel.fromJson).toList())
+      .guard;
+
+  /// 黑料购买列表
+  @override
+  AsyncResult<List<BlackListItemModel>> getBlackBuyList({required int page, required int limit})
+    => _blackService
+      .getBlackBuyList(page: page, limit: limit)
+      .deserializeJsonListBy((e) => e.map(BlackListItemModel.fromJson).toList())
+      .guard;
 }

@@ -7,22 +7,19 @@ import 'package:jygf/domain/model/album_model.dart';
 import 'package:jygf/domain/model/cartoon/cartoon_model.dart';
 import 'package:jygf/domain/model/chat/chat_list_model.dart';
 import 'package:jygf/domain/model/collection_model.dart';
-import 'package:jygf/domain/model/comic_model.dart';
 import 'package:jygf/domain/model/game/game_model.dart';
 import 'package:jygf/domain/model/live_model.dart';
-import 'package:jygf/domain/model/novel_model.dart';
 import 'package:jygf/domain/model/post_model.dart';
 import 'package:jygf/domain/model/vlog_model.dart';
 import 'package:jygf/domain/model/voice_model.dart';
 import 'package:jygf/domain/remote_domain/domains/album.dart';
 import 'package:jygf/domain/remote_domain/domains/asmr.dart';
+import 'package:jygf/domain/remote_domain/domains/black_domain.dart';
 import 'package:jygf/domain/remote_domain/domains/cartoon.dart';
 import 'package:jygf/domain/remote_domain/domains/chat.dart';
-import 'package:jygf/domain/remote_domain/domains/comic.dart';
 import 'package:jygf/domain/remote_domain/domains/community.dart';
 import 'package:jygf/domain/remote_domain/domains/game.dart';
 import 'package:jygf/domain/remote_domain/domains/live.dart';
-import 'package:jygf/domain/remote_domain/domains/novel.dart';
 import 'package:jygf/domain/remote_domain/domains/seed.dart';
 import 'package:jygf/domain/remote_domain/domains/user.dart';
 import 'package:jygf/domain/remote_domain/domains/vlog.dart';
@@ -30,9 +27,9 @@ import 'package:jygf/domain/result.dart';
 import 'package:jygf/ui_layer/const.dart';
 import 'package:jygf/ui_layer/notifiers/home_config_notifier.dart';
 import 'package:jygf/ui_layer/router/routes.dart';
-import 'package:jygf/ui_layer/screens/acg/comic/card/comic_item_card.dart';
-import 'package:jygf/ui_layer/screens/acg/novel/card/novel_item_card.dart';
 import 'package:jygf/ui_layer/screens/asmr/card/voice_gird_card.dart';
+import 'package:jygf/ui_layer/screens/black/model/black_model.dart';
+import 'package:jygf/ui_layer/screens/black/widgets/black_item_widget.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/cartoon/card/video_card.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/chat/list_card.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/game/card/game_card.dart';
@@ -68,7 +65,7 @@ class _MineBuyScreenState extends State<MineBuyScreen> {
       'shp'.tr(context: context),
       'dsp'.tr(context: context),
       'tiezt'.tr(context: context),
-      'xx黑料xx', // 黑料
+      'heil'.tr(context: context), // 黑料
       'meit'.tr(context: context),
       'dman'.tr(),
       'hyou'.tr(),
@@ -90,7 +87,7 @@ class _MineBuyScreenState extends State<MineBuyScreen> {
         child: _TieztView(type: _TieztType.community),
       ),
       const KeepAliveWrapper(
-        child: _PlaceholderView(placeholderText: 'xx黑料xx'),
+        child: _BlackView(),
       ),
       const KeepAliveWrapper(
         child: _YellowPictureView(),
@@ -544,6 +541,45 @@ class _ChatViewState extends State<_ChatView> {
     return MyListView.list(
       contentPadding: 15.w,
       itemBuilder: (context, item, index) => ChatListCard(data: item),
+      onFetchingMore: (currentPage, pageSize) => _getData(
+        page: currentPage,
+        pageSize: pageSize,
+      ),
+    );
+  }
+}
+
+//黑料
+class _BlackView extends StatefulWidget {
+  const _BlackView();
+
+  @override
+  State<_BlackView> createState() => _BlackViewState();
+}
+
+class _BlackViewState extends State<_BlackView> {
+  late final blackDomain = context.read<BlackDomain>();
+
+  Future<List<BlackListItemModel>?> _getData({
+    required int page,
+    required int pageSize,
+  }) async {
+    final result = await blackDomain.getBlackBuyList(
+      page: page,
+      limit: pageSize,
+    );
+
+    return result.data;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MyListView.list(
+      contentPadding: 15.w,
+      itemBuilder: (context, item, index) => BlackItemWidget(
+        item: item,
+        itemWidth: (ScreenUtil().screenWidth - MyTheme.pagePadding * 2),
+      ),
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,
         pageSize: pageSize,

@@ -50,4 +50,10 @@ abstract class BlackDomain {
 
   /// 黑料搜索列表
   AsyncResult<List<BlackListItemModel>> getBlackSearchList({required String word, required int page, required int limit});
+
+  /// 黑料收藏列表
+  AsyncResult<List<BlackListItemModel>> getBlackCollectList({required int page, required int limit});
+
+  /// 黑料购买列表
+  AsyncResult<List<BlackListItemModel>> getBlackBuyList({required int page, required int limit});
 }
