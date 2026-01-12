@@ -128,7 +128,7 @@ class _MineBuyScreenState extends State<MineBuyScreen> {
             overflow: TextOverflow.visible,
             decoration: TextDecoration.none,
           ),
-          tabBarHeight: 40.w,
+          // tabBarHeight: 40.w,
           // isScrollable: false,
           titles: titles,
           views: views,

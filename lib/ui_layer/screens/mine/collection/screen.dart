@@ -80,7 +80,7 @@ class _MineCollectionScreenState extends State<MineCollectionScreen> {
             overflow: TextOverflow.visible,
             decoration: TextDecoration.none,
           ),
-          tabBarHeight: 40.w,
+          // tabBarHeight: 40.w,
           isScrollable: true,
           titles: [
             'shp'.tr(context: context),

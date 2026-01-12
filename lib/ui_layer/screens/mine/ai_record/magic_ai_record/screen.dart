@@ -29,7 +29,7 @@ class _MineMagicRecordScreenState extends State<MineMagicRecordScreen> {
     return TabBarWithView.line(
       indicatorType: IndicatorType.curve,
       unselectedLabelStyle: MyTheme.white25508_16_M,
-      tabBarHeight: 40.w,
+      // tabBarHeight: 40.w,
       isScrollable: true,
       titles: [
         'pdz'.tr(context: context),

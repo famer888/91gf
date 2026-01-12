@@ -26,7 +26,7 @@ class _MineNovelRecordScreenState extends State<MineNovelRecordScreen> {
     return TabBarWithView.line(
       indicatorType: IndicatorType.curve,
       unselectedLabelStyle: MyTheme.white25508_16_M,
-      tabBarHeight: 40.w,
+      // tabBarHeight: 40.w,
       isScrollable: false,
       titles: [
         'pdz'.tr(context: context),

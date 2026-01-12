@@ -50,7 +50,7 @@ class _YellowPictureScreenState extends State<YellowPictureScreen> {
     return TabBarWithView.line(
       indicatorType: IndicatorType.curve,
         tabBarPadding: EdgeInsets.only(left: 5.w, right: 5.w, bottom: 5.w),
-        tabBarHeight: 35.w,
+        // tabBarHeight: 35.w,
         // labelStyle: MyTheme.white08_15,
         unselectedLabelStyle: MyTheme.white25508_16_M,
         titles: titles.map((e) => e.name).toList(),

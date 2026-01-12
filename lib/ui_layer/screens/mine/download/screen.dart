@@ -228,7 +228,7 @@ class _MineDownloadScreenState extends State<MineDownloadScreen> {
                   overflow: TextOverflow.visible,
                   decoration: TextDecoration.none,
                 ),
-                tabBarHeight: 40.w,
+                // tabBarHeight: 40.w,
                 titles: ['shp'.tr(context: context), 'dman'.tr(context: context), 'ASMR'],
                 views: [
                   KeepAliveWrapper(

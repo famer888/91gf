@@ -28,7 +28,7 @@ class _CartoonRankContentState extends State<CartoonRankContent> {
       child: Scaffold(
         appBar: MyAppBar(title: 'bd'.tr(context: context)),
         body: TabBarWithView.line(
-          tabBarHeight: 42.w,
+          // tabBarHeight: 42.w,
           isCenter: true,
           titles: _titles.map((model) => model.title ?? '').toList(),
           views: _titles.map((model) {

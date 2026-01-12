@@ -140,7 +140,7 @@ class _BodyState extends State<_Body> {
             horizontal: MyTheme.pagePadding),
         labelStyle: MyTheme.color93_163_247_16medium,
         unselectedLabelStyle: MyTheme.color141_144_154_16medium,
-        tabBarHeight: 38.w,
+        // tabBarHeight: 38.w,
         isScrollable: false,
         titles: [
           'khy'.tr(context: context),

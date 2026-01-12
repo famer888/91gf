@@ -56,7 +56,7 @@ class _MineWelfareScreenState extends State<MineWelfareScreen> {
                     overflow: TextOverflow.visible,
                     decoration: TextDecoration.none,
                   ),
-                  tabBarHeight: 41.w,
+                  // tabBarHeight: 41.w,
                   isScrollable: false,
                 ),
               ),

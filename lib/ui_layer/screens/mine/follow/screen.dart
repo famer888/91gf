@@ -49,7 +49,7 @@ class _MineFollowingScreenState extends State<MineFollowingScreen> {
             overflow: TextOverflow.visible,
             decoration: TextDecoration.none,
           ),
-          tabBarHeight: 40.w,
+          // tabBarHeight: 40.w,
           isScrollable: false,
           titles: [
             'yhu'.tr(context: context),

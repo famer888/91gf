@@ -74,7 +74,7 @@ class _ChatScreenState extends State<ChatScreen> {
           ],
           body: TabBarWithView.line(
             indicatorType: IndicatorType.curve,
-            tabBarHeight: 35.w,
+            // tabBarHeight: 40.w,
             tabBarPadding: EdgeInsets.fromLTRB(MyTheme.pagePadding, 5.w,
                 MyTheme.pagePadding, 0),
             // labelPadding: EdgeInsets.only(right: 19.w),

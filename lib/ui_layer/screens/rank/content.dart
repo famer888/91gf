@@ -59,7 +59,7 @@ class _RankContentScreenState extends State<RankContentScreen> {
           overflow: TextOverflow.visible,
           decoration: TextDecoration.none,
         ),
-        tabBarHeight: 40.w,
+        // tabBarHeight: 40.w,
         isScrollable: true,
         titles: _titles.map((model) => model.title ?? '').toList(),
         views: _titles.map((model) {
