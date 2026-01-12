@@ -107,7 +107,7 @@ class _CommunityTagDetailScreenState extends State<CommunityTagDetailScreen> {
             body: Padding(
               padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
               child: TabBarWithView.fillColor(
-                tabBarPadding: EdgeInsets.symmetric(vertical: 6.w),
+                tabBarPadding: EdgeInsets.symmetric(vertical: 3.w),
                 tabBarHeight: 32.w,
                 borderRadius: 5.w,
                 titles: [for (final title in _titles) title.title],
