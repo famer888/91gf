@@ -97,7 +97,7 @@ class _CircleCommunityContentViewState
           ),
         ),
       ],
-      body: widget.id == 100 || widget.id == 68
+      body: widget.id == 100 || widget.id == 83
           ? MyListView.list(
               contentPadding: 20.w,
               padding: EdgeInsets.symmetric(vertical: 12.5.w),

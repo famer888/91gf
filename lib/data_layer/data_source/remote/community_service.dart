@@ -150,10 +150,12 @@ class CommunityService extends BaseService {
   AsyncJson communityTopics({
     required int page,
     required int limit,
+    required int type,
   }) =>
       post('/topics', data: {
         'page': page,
         'limit': limit,
+        'request_type': type,
       });
 
   /// 他人帖子

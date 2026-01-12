@@ -157,9 +157,10 @@ mixin _Community on _BaseAppRepo implements CommunityDomain {
   AsyncResult<List<TopicModel>> communityTopics({
     required int page,
     required int limit,
+    required int type,
   }) =>
       _communityService
-          .communityTopics(page: page, limit: limit)
+          .communityTopics(page: page, limit: limit, type: type)
           .deserializeJsonListBy((e) => e.map(TopicModel.fromJson).toList())
           .guard;
 

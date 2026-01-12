@@ -110,6 +110,7 @@ abstract class CommunityDomain {
   AsyncResult<List<TopicModel>> communityTopics({
     required int page,
     required int limit,
+    required int type,
   });
 
   /// 他人帖子

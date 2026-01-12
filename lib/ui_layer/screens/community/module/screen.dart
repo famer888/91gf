@@ -17,10 +17,11 @@ import '../../theme.dart';
 
 class CommunityModuleScreen extends StatefulWidget {
   const CommunityModuleScreen(
-      {super.key, required this.id, required this.type});
+      {super.key, required this.id,  this.topicType = 1});
 
   final int id;
-  final String type;
+  // final String type;
+  final int topicType;
 
   @override
   State<CommunityModuleScreen> createState() => _CommunityModuleScreenState();
@@ -33,9 +34,9 @@ class _CommunityModuleScreenState extends State<CommunityModuleScreen> {
   Future<List<TopicModel>?> _getData(
       {required int page, required int limit}) async {
     try {
-      final result = await (widget.type == '2'
+      final result = await (widget.topicType == 3
           ? _originalDomain.originalTopics(page: page, limit: limit)
-          : _communityDomain.communityTopics(page: page, limit: limit));
+          : _communityDomain.communityTopics(page: page, limit: limit, type: widget.topicType));
 
       if (result.status == 1) {
         return result.data;
@@ -51,12 +52,12 @@ class _CommunityModuleScreenState extends State<CommunityModuleScreen> {
     return ScreenBackground(
         child: Scaffold(
       appBar: MyAppBar(
-        title: (widget.type == 'fish' ? 'xzcpht' : 'xzht').tr(context: context),
+        title: (widget.topicType == 3 ? 'xzcpht' : 'xzht').tr(context: context),
         showDiver: true,
       ),
       body: MyListView.list(
         itemBuilder: (context, item, index) {
-          if (widget.type == '1' && item.isAi == 1) {
+          if (widget.topicType == 1 && item.isAi == 1) {
             return const SizedBox.shrink();
           }
           return CommunityModuleItem(

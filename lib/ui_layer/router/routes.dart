@@ -684,16 +684,16 @@ class CommunityIssueRoute extends GoRouteData {
 
   const CommunityIssueRoute({
     required this.type,
-    required this.org,
+    required this.topicType,
   });
 
   final CommunityIssueType type;
-  final bool org;
+  final CommunityIssueTopicType topicType;
 
   @override
   Page<void> buildPage(BuildContext context, GoRouterState state) {
     return CommonUtils.buildSlideTransitionPage(
-        state: state, child: CommunityIssueScreen(type: type, org: org));
+        state: state, child: CommunityIssueScreen(type: type, topicType: topicType));
   }
 }
 
@@ -704,15 +704,15 @@ class CommunityModuleRoute extends GoRouteData {
 
   const CommunityModuleRoute({
     required this.id,
-    required this.type,
+    required this.topicType,
   });
   final int id;
-  final String type;
+  final int topicType;
 
   @override
   Page<void> buildPage(BuildContext context, GoRouterState state) {
     return CommonUtils.buildSlideTransitionPage(
-        state: state, child: CommunityModuleScreen(id: id, type: type));
+        state: state, child: CommunityModuleScreen(id: id, topicType: topicType));
   }
 }
 

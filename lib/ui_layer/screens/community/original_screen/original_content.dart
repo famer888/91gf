@@ -549,7 +549,7 @@ class _NormalViewState extends State<_NormalView> {
                       behavior: HitTestBehavior.translucent,
                       onTap: () {
                         context.pop();
-                        CommunityIssueRoute(type: issue.type, org: true).push(context);
+                        CommunityIssueRoute(type: issue.type, topicType: CommunityIssueTopicType.original).push(context);
                       },
                       child: Column(
                         children: [

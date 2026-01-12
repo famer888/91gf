@@ -97,7 +97,7 @@ class _CircleCommunityScreenState extends State<CircleCommunityScreen> {
                           behavior: HitTestBehavior.translucent,
                           onTap: () {
                             context.pop();
-                            CommunityIssueRoute(type: issue.type, org: false).push(context);
+                            CommunityIssueRoute(type: issue.type, topicType: CommunityIssueTopicType.date).push(context);
                           },
                           child: Column(
                             children: [

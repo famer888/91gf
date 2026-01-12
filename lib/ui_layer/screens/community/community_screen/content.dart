@@ -203,7 +203,7 @@ class _CommunityContentViewState extends State<CommunityContentView> with Ticker
                           behavior: HitTestBehavior.translucent,
                           onTap: () {
                             context.pop();
-                            CommunityIssueRoute(type: issue.type, org: false).push(context);
+                            CommunityIssueRoute(type: issue.type, topicType: CommunityIssueTopicType.community).push(context);
                           },
                           child: Column(
                             children: [

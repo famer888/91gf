@@ -40,16 +40,32 @@ enum CommunityIssueType {
   /// 图文
   imageAndText,
 }
+enum CommunityIssueTopicType {
+  /// 社区
+  community,
+
+  /// 约会
+  date,
+  
+  /// 原创
+  original;
+
+  int get type => switch (this) {
+    CommunityIssueTopicType.community => 1,
+    CommunityIssueTopicType.date => 2,
+    CommunityIssueTopicType.original => 3,
+  };
+}
 
 class CommunityIssueScreen extends StatefulWidget {
   const CommunityIssueScreen({
     super.key,
     required this.type,
-    required this.org,
+    this.topicType = CommunityIssueTopicType.community,
   });
 
   final CommunityIssueType type;
-  final bool org;
+  final CommunityIssueTopicType topicType;
 
   @override
   State<CommunityIssueScreen> createState() => _CommunityIssueScreenState();
@@ -584,11 +600,12 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
                 children: [
                   _buildMtxqView(),
                   TopicField(
-                    type: widget.org
-                        ? '2'
-                        : widget.type == CommunityIssueType.video
-                            ? '0'
-                            : '1',
+                    // type: widget.topicType.type == '3'
+                    //     ? '3'
+                    //     : widget.type == CommunityIssueType.video
+                    //         ? '0'
+                    //         : '1',
+                    type: widget.topicType.type,
                     topicNotifier: topicNotifier,
                   ),
                   SizedBox(height: 30.w),

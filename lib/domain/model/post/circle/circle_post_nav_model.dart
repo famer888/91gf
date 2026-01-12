@@ -12,6 +12,6 @@ class CirclePostNavModel {
       CirclePostNavModel(
         id: json['id'],
         name: json['name'],
-        mask: json['mask'],
+        mask: json['mask'] ?? 0,
       );
 }

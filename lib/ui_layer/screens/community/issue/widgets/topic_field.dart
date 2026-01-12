@@ -16,7 +16,7 @@ class TopicField extends StatelessWidget {
     required this.topicNotifier,
   });
 
-  final String type;
+  final int type;
   final ValueNotifier<TopicModel?> topicNotifier;
 
   @override
@@ -26,7 +26,7 @@ class TopicField extends StatelessWidget {
       builder: (_, topic, __) => GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () async {
-          if (await CommunityModuleRoute(id: topic?.id ?? 0, type: type).push(context) case final TopicModel topic) {
+          if (await CommunityModuleRoute(id: topic?.id ?? 0, topicType: type).push(context) case final TopicModel topic) {
             topicNotifier.value = topic;
           }
         },

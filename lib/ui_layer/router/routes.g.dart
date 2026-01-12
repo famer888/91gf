@@ -962,7 +962,7 @@ extension $RechargeRecordRouteExtension on RechargeRecordRoute {
 }
 
 RouteBase get $communityIssueRoute => GoRouteData.$route(
-      path: '/communityIssue/:type/:org',
+      path: '/communityIssue/:type/:topicType',
       parentNavigatorKey: CommunityIssueRoute.$parentNavigatorKey,
       factory: $CommunityIssueRouteExtension._fromState,
     );
@@ -972,11 +972,12 @@ extension $CommunityIssueRouteExtension on CommunityIssueRoute {
       CommunityIssueRoute(
         type: _$CommunityIssueTypeEnumMap
             ._$fromName(state.pathParameters['type']!),
-        org: _$boolConverter(state.pathParameters['org']!),
+        topicType: _$CommunityIssueTopicTypeEnumMap
+            ._$fromName(state.pathParameters['topicType']!),
       );
 
   String get location => GoRouteData.$location(
-        '/communityIssue/${Uri.encodeComponent(_$CommunityIssueTypeEnumMap[type]!)}/${Uri.encodeComponent(org.toString())}',
+        '/communityIssue/${Uri.encodeComponent(_$CommunityIssueTypeEnumMap[type]!)}/${Uri.encodeComponent(_$CommunityIssueTopicTypeEnumMap[topicType]!)}',
       );
 
   void go(BuildContext context) => context.go(location);
@@ -995,16 +996,11 @@ const _$CommunityIssueTypeEnumMap = {
   CommunityIssueType.imageAndText: 'image-and-text',
 };
 
-bool _$boolConverter(String value) {
-  switch (value) {
-    case 'true':
-      return true;
-    case 'false':
-      return false;
-    default:
-      throw UnsupportedError('Cannot convert "$value" into a bool.');
-  }
-}
+const _$CommunityIssueTopicTypeEnumMap = {
+  CommunityIssueTopicType.community: 'community',
+  CommunityIssueTopicType.date: 'date',
+  CommunityIssueTopicType.original: 'original',
+};
 
 extension<T extends Enum> on Map<T, String> {
   T _$fromName(String value) =>
@@ -1021,14 +1017,14 @@ extension $CommunityModuleRouteExtension on CommunityModuleRoute {
   static CommunityModuleRoute _fromState(GoRouterState state) =>
       CommunityModuleRoute(
         id: int.parse(state.uri.queryParameters['id']!),
-        type: state.uri.queryParameters['type']!,
+        topicType: int.parse(state.uri.queryParameters['topic-type']!),
       );
 
   String get location => GoRouteData.$location(
         '/communityModule',
         queryParams: {
           'id': id.toString(),
-          'type': type,
+          'topic-type': topicType.toString(),
         },
       );
 
@@ -1283,6 +1279,17 @@ extension $MineWithdrawalRouteExtension on MineWithdrawalRoute {
       context.pushReplacement(location);
 
   void replace(BuildContext context) => context.replace(location);
+}
+
+bool _$boolConverter(String value) {
+  switch (value) {
+    case 'true':
+      return true;
+    case 'false':
+      return false;
+    default:
+      throw UnsupportedError('Cannot convert "$value" into a bool.');
+  }
 }
 
 RouteBase get $mineWithdrawalRecordRoute => GoRouteData.$route(
