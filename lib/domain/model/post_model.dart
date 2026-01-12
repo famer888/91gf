@@ -70,7 +70,7 @@ class PostModel {
         likeNum: json['like_num'] ?? 0,
         commentNum: json['comment_num'] ?? 0,
         viewNum: json['view_num'] ?? 0,
-        topic: TopicModel.fromJson(json['topic']),
+        topic: json['topic'] != null ? TopicModel.fromJson(json['topic']) : null,
         medias: json['medias'] != null ? List.from(json['medias'].map((e) => MediaModel.fromJson(e))) : null,
         isBest: json['is_best'] ?? 0,
         user: json['user'] != null ? UserModel.fromJson(json['user'] as Map<String, dynamic>) : null,

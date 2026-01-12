@@ -1,9 +1,10 @@
 import 'package:jygf/domain/model/community/community_model.dart';
-import 'package:jygf/domain/model/follow_user.dart';
 import 'package:jygf/domain/model/live_model.dart';
 import 'package:jygf/domain/model/post/circle/circle_post_nav_model.dart';
 import 'package:jygf/domain/model/posts_with_banners_model.dart';
 import 'package:jygf/ui_layer/screens/file_search/model/check_file_model.dart';
+import 'package:jygf/ui_layer/screens/follow/model/follow_member_model.dart';
+import 'package:jygf/ui_layer/screens/follow/model/follow_topic_model.dart';
 
 import '../../enum.dart';
 import '../../model/community_nav_model.dart';
@@ -23,10 +24,10 @@ abstract class CommunityDomain {
   AsyncResult<List<TipModel>> getNoticeList();
 
   /// 获取用户关注列表
-  AsyncResult<List<FollowUser>> getFollowUserList();
+  AsyncResult<FollowMemberModel> getFollowUserList();
 
   /// 获取话题关注列表
-  AsyncResult<List<TopicModel>> getFollowTopicList();
+  AsyncResult<FollowTopicModel> getFollowTopicList();
 
   /// 分类Tab
   AsyncResult<List<CommunityCategoryTabModel>> getCategoryTabList();

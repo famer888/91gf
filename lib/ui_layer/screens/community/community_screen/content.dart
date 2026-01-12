@@ -114,7 +114,7 @@ class _CommunityContentViewState extends State<CommunityContentView> with Ticker
             child: TabBarWithView.fillColor(
               initialIndex: _initialIndex,
               tabController: tabController,
-              tabBarPadding: EdgeInsets.symmetric(vertical: 6.w),
+              tabBarPadding: EdgeInsets.symmetric(vertical: 3.w),
               tabBarHeight: 32.w,
               borderRadius: 5.w,
               isScrollable: true,
@@ -124,7 +124,7 @@ class _CommunityContentViewState extends State<CommunityContentView> with Ticker
                   MyListView.list(
                     contentPadding: 15.w,
                     padding: EdgeInsets.only(top: 5.w, bottom: MyTheme.pagePadding),
-                    itemBuilder: (context, item, index) => PostCard.community(data: item),
+                    itemBuilder: (context, item, index) => PostCard.community(data: item, backgroundColor: const Color.fromRGBO(0, 0, 0, 0),),
                     onFetchingMore: (currentPage, pageSize) => _getData(page: currentPage, pageSize: pageSize, sort: nav.type),
                   )
               ],

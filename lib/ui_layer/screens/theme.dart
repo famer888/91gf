@@ -49,6 +49,11 @@ class MyTheme {
     end: Alignment.centerRight,
   );
 
+  static const gradient_follow_colors = [
+    Color.fromRGBO(251, 246, 255, 1),
+    Color.fromRGBO(219, 157, 85, 1),
+  ];
+
   static const gradient_90_135_colors = [
     Color.fromRGBO(118, 90, 232, 1),
     Color.fromRGBO(90, 135, 232, 1),

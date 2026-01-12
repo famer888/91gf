@@ -48,6 +48,8 @@ class TabBarWithView extends StatefulWidget {
     this.borderRadius,
     this.isStack = false,
     this.indexChangeCall,
+    this.gradientColors,
+    this.tabBarBottomWidget,
     this.indicatorType = IndicatorType.line,
   })  : type = TabBarType.line,
         selectedImgs = null,
@@ -66,6 +68,7 @@ class TabBarWithView extends StatefulWidget {
     this.isCenter = false,
     this.isScrollable = false,
     this.tabBarRightWidget,
+    this.tabBarBottomWidget,
     this.labelStyle,
     this.unselectedLabelStyle,
     this.tabController,
@@ -74,6 +77,7 @@ class TabBarWithView extends StatefulWidget {
     this.initialIndex = 0,
     this.isStack = false,
     this.indexChangeCall,
+    this.gradientColors,
   })  : type = TabBarType.fillColor,
         selectedImgs = null,
         unselectedImgs = null,
@@ -102,6 +106,8 @@ class TabBarWithView extends StatefulWidget {
     this.initialIndex = 0,
     this.isStack = false,
     this.indexChangeCall,
+    this.tabBarBottomWidget,
+    this.gradientColors,
   })  : type = TabBarType.image,
         tabBarRightWidget = null,
         indicatorType = IndicatorType.line;
@@ -123,6 +129,7 @@ class TabBarWithView extends StatefulWidget {
 
   final double? tabBarHeight;
   final Widget? tabBarRightWidget;
+  final Widget? tabBarBottomWidget;
   final TextStyle? labelStyle;
   final double? borderRadius;
   final TextStyle? unselectedLabelStyle;
@@ -131,8 +138,8 @@ class TabBarWithView extends StatefulWidget {
   final double labelPadding;
   final bool isStack; // 是colume上下分布 还是stack那样把标题重叠在上面
   final Function(int)? indexChangeCall;
-  final IndicatorType indicatorType; 
-
+  final IndicatorType indicatorType;
+  final List<Color>? gradientColors;
 
   @override
   State<TabBarWithView> createState() => _TabBarWithViewState();
@@ -155,7 +162,6 @@ class _TabBarWithViewState extends State<TabBarWithView> with SingleTickerProvid
     _tabController.animation?.addListener(_handleTabAnimation);
 
     indexChangeNotifier = ValueNotifier(_tabController.index);
-
   }
 
   @override
@@ -180,7 +186,7 @@ class _TabBarWithViewState extends State<TabBarWithView> with SingleTickerProvid
         _doPrecache(MyImagePaths.appIndicatorCurve);
       }
     }
-    
+
     // TabBarType.image 类型预加载
     if (widget.type == TabBarType.image && widget.selectedImgs != null) {
       for (var img in widget.selectedImgs!) {
@@ -273,8 +279,7 @@ class _TabBarWithViewState extends State<TabBarWithView> with SingleTickerProvid
         TabBarType.fillColor => Tab(
             height: MyTheme.navbarHegiht,
             child: Padding(
-              padding:
-                  EdgeInsets.symmetric(horizontal: widget.tabInterMargin.w),
+              padding: EdgeInsets.symmetric(horizontal: widget.tabInterMargin.w),
               child: Text(
                 title,
               ),
@@ -284,8 +289,7 @@ class _TabBarWithViewState extends State<TabBarWithView> with SingleTickerProvid
             ? Tab(
                 height: MyTheme.navbarHegiht,
                 child: ShaderMask(
-                  shaderCallback: (bounds) =>
-                      MyTheme.gradient_90_114.createShader(bounds),
+                  shaderCallback: (bounds) => MyTheme.gradient_90_114.createShader(bounds),
                   blendMode: BlendMode.srcIn,
                   child: Text(
                     title,
@@ -297,9 +301,7 @@ class _TabBarWithViewState extends State<TabBarWithView> with SingleTickerProvid
                 height: MyTheme.navbarHegiht,
                 child: Text(
                   title,
-                  style: isSelected
-                      ? (widget.labelStyle ?? MyTheme.jellyCyan_17)
-                      : (widget.unselectedLabelStyle ?? MyTheme.white08_15),
+                  style: isSelected ? (widget.labelStyle ?? MyTheme.jellyCyan_17) : (widget.unselectedLabelStyle ?? MyTheme.white08_15),
                 ),
               ),
       };
@@ -311,11 +313,11 @@ class _TabBarWithViewState extends State<TabBarWithView> with SingleTickerProvid
         labelStyle: widget.labelStyle,
         unselectedLabelStyle: widget.unselectedLabelStyle,
         indicatorType: widget.indicatorType,
+        gradientColors: widget.gradientColors,
       ),
     TabBarType.fillColor => MyTabBarTheme.fillColor(
-        tabAlignment: widget.isScrollable 
-            ? (widget.isCenter ? TabAlignment.center : TabAlignment.start)
-            : (widget.isCenter ? TabAlignment.center : null),
+        tabAlignment:
+            widget.isScrollable ? (widget.isCenter ? TabAlignment.center : TabAlignment.start) : (widget.isCenter ? TabAlignment.center : null),
         labelStyle: widget.labelStyle,
         borderRadius: widget.borderRadius,
         unselectedLabelStyle: widget.unselectedLabelStyle,
@@ -323,6 +325,7 @@ class _TabBarWithViewState extends State<TabBarWithView> with SingleTickerProvid
     TabBarType.image => MyTabBarTheme.line(
         labelStyle: widget.labelStyle,
         unselectedLabelStyle: widget.unselectedLabelStyle,
+        gradientColors: widget.gradientColors,
       ).copyWith(indicator: const BoxDecoration(color: Colors.transparent)),
   };
 
@@ -396,56 +399,58 @@ class _TabBarWithViewState extends State<TabBarWithView> with SingleTickerProvid
       //     ),
       //   ),
       // );
-      return Padding(
-        padding: widget.tabBarPadding ?? EdgeInsets.zero,
-        child: SizedBox(
-          height: widget.tabBarHeight ?? MyTheme.navbarHegiht,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Theme(
-                  data: Theme.of(context).copyWith(tabBarTheme: tabBarTheme),
-                  child: RepaintBoundary(
-                    child: ScrollConfiguration(
-                        behavior: ScrollConfiguration.of(context).copyWith(
-                          scrollbars: false,
-                        ),
-                        child: ValueListenableBuilder(
-                            valueListenable: indexChangeNotifier,
-                            builder: (context, selectedIndex, child) {
-                              final bool effectiveIsScrollable =
-                                  widget.isCenter ? true : widget.isScrollable;
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            height: widget.tabBarHeight ?? MyTheme.navbarHegiht,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Theme(
+                    data: Theme.of(context).copyWith(tabBarTheme: tabBarTheme),
+                    child: RepaintBoundary(
+                      child: ScrollConfiguration(
+                          behavior: ScrollConfiguration.of(context).copyWith(
+                            scrollbars: false,
+                          ),
+                          child: ValueListenableBuilder(
+                              valueListenable: indexChangeNotifier,
+                              builder: (context, selectedIndex, child) {
+                                final bool effectiveIsScrollable = widget.isCenter ? true : widget.isScrollable;
 
-                              return TabBar(
-                                physics: const BouncingScrollPhysics(),
-                                isScrollable: effectiveIsScrollable,
-                                padding: EdgeInsets.symmetric(vertical: 2.w),
-                                controller: _tabController,
-                                tabs: tabs,
-                                indicatorColor: Colors.transparent,
-                                dividerColor: Colors.transparent,
-                                overlayColor: WidgetStateProperty.all(Colors.transparent),
-                                tabAlignment: effectiveIsScrollable
-                                    ? (widget.isCenter ? TabAlignment.center : TabAlignment.start)
-                                    : (widget.isCenter ? TabAlignment.center : TabAlignment.fill),
-                                // labelPadding: widget.type == TabBarType.line
-                                //     ? EdgeInsets.symmetric(
-                                //         horizontal: widget.labelPadding / 4)
-                                //     : EdgeInsets.symmetric(
-                                //         horizontal: widget.labelPadding),
-                                // tabAlignment: widget.isCenter
-                                //     ? TabAlignment.center
-                                //     : TabAlignment.start,
-                              );
-                            })),
+                                return TabBar(
+                                  physics: const BouncingScrollPhysics(),
+                                  isScrollable: effectiveIsScrollable,
+                                  padding: widget.tabBarPadding ?? EdgeInsets.symmetric(vertical: 2.w),
+                                  controller: _tabController,
+                                  tabs: tabs,
+                                  indicatorColor: Colors.transparent,
+                                  dividerColor: Colors.transparent,
+                                  overlayColor: WidgetStateProperty.all(Colors.transparent),
+                                  tabAlignment: effectiveIsScrollable
+                                      ? (widget.isCenter ? TabAlignment.center : TabAlignment.start)
+                                      : (widget.isCenter ? TabAlignment.center : TabAlignment.fill),
+                                  // labelPadding: widget.type == TabBarType.line
+                                  //     ? EdgeInsets.symmetric(
+                                  //         horizontal: widget.labelPadding / 4)
+                                  //     : EdgeInsets.symmetric(
+                                  //         horizontal: widget.labelPadding),
+                                  // tabAlignment: widget.isCenter
+                                  //     ? TabAlignment.center
+                                  //     : TabAlignment.start,
+                                );
+                              })),
+                    ),
                   ),
                 ),
-              ),
-              if (widget.tabBarRightWidget case final view?) view,
-            ],
+                if (widget.tabBarRightWidget case final view?) view,
+              ],
+            ),
           ),
-        ),
+          if (widget.tabBarBottomWidget case final view?) view,
+        ],
       );
     } else {
       return const SizedBox.shrink();
@@ -541,11 +546,12 @@ class MyTabBarTheme extends TabBarTheme {
   factory MyTabBarTheme.line({
     TextStyle? labelStyle,
     TextStyle? unselectedLabelStyle,
+    List<Color>? gradientColors,
     IndicatorType indicatorType = IndicatorType.line,
   }) {
     // web下统一使用默认类型
     final effectiveIndicatorType = kIsWeb ? IndicatorType.line : indicatorType;
-    
+
     return MyTabBarTheme(
       labelStyle: labelStyle ?? MyTheme.jellyCyan_17,
       labelPadding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
@@ -559,6 +565,7 @@ class MyTabBarTheme extends TabBarTheme {
       indicatorSize: TabBarIndicatorSize.label,
       indicator: LineIndicator(
         indicatorType: effectiveIndicatorType,
+        gradientColors: gradientColors,
       ),
       indicatorColor: Colors.transparent,
       overlayColor: WidgetStateProperty.resolveWith<Color>(
@@ -596,27 +603,30 @@ class MyTabBarTheme extends TabBarTheme {
 class LineIndicator extends Decoration {
   const LineIndicator({
     this.indicatorType = IndicatorType.line,
+    this.gradientColors,
   });
 
   final IndicatorType indicatorType;
+  final List<Color>? gradientColors;
 
   @override
   BoxPainter createBoxPainter([VoidCallback? onChanged]) {
-    return _LinePainter(this, onChanged)..init();
+    return _LinePainter(this, gradientColors, onChanged)..init();
   }
 }
 
 class _LinePainter extends BoxPainter {
   _LinePainter(
     this.decoration,
+    this.gradientColors,
     super.onChanged,
   );
 
+  final List<Color>? gradientColors;
   final LineIndicator decoration;
   ui.Image? _cachedImage;
   ImageStream? _imageStream;
   ImageStreamListener? _listener;
-
 
   void init() {
     if (decoration.indicatorType != IndicatorType.line) {
@@ -635,7 +645,6 @@ class _LinePainter extends BoxPainter {
 
   void _loadImage() {
     if (_cachedImage != null) return;
-
 
     String imagePath;
     switch (decoration.indicatorType) {
@@ -706,7 +715,7 @@ class _LinePainter extends BoxPainter {
 
           final rect = Rect.fromLTWH(
             offset.dx + (size.width - w) / 2,
-            size.height - h -4,
+            size.height - h - 4,
             w,
             h,
           );
@@ -735,7 +744,7 @@ class _LinePainter extends BoxPainter {
           start,
           end,
           Paint()
-            ..shader = ui.Gradient.linear(start, end, MyTheme.gradient_90_114_colors)
+            ..shader = ui.Gradient.linear(start, end, gradientColors ?? MyTheme.gradient_90_114_colors)
             ..strokeWidth = 4.w
             ..strokeCap = StrokeCap.round,
         );

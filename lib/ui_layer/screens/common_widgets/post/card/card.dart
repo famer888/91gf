@@ -20,21 +20,24 @@ class PostCard extends StatelessWidget {
   const PostCard.bit({
     super.key,
     required this.data,
+    this.backgroundColor,
   }) : _type = CommunityType.bit;
 
   const PostCard.community({
     super.key,
     required this.data,
+    this.backgroundColor,
   }) : _type = CommunityType.community;
 
   final PostModel data;
+  final Color? backgroundColor;
   final CommunityType _type;
 
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.03),
+        color: backgroundColor ?? Colors.white.withOpacity(0.03),
         borderRadius: BorderRadius.all(Radius.circular(10.w)),
       ),
       child: GestureDetector(
