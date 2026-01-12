@@ -13,6 +13,7 @@ class InputField extends StatelessWidget {
     this.inputFormatter,
     this.onChanged,
     this.showBoarder = true,
+    this.backgroundDecoration,
   });
 
   final TextEditingController controller;
@@ -21,6 +22,7 @@ class InputField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatter;
   final ValueChanged<String>? onChanged;
   final bool showBoarder;
+  final BoxDecoration? backgroundDecoration;
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +30,10 @@ class InputField extends StatelessWidget {
       height: height,
       decoration: showBoarder
           ? BoxDecoration(
-              border:
-                  Border.all(color: Colors.white.withOpacity(0.3), width: 1.w),
+              border: Border.all(color: Colors.white.withOpacity(0.3), width: 1.w),
               borderRadius: BorderRadius.all(Radius.circular(5.w)),
             )
-          : null,
+          : backgroundDecoration,
       child: TextField(
         inputFormatters: inputFormatter,
         style: MyTheme.white15,

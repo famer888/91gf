@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../notifiers/home_config_notifier.dart';
@@ -15,16 +16,22 @@ class ImagePickerGrid extends StatefulWidget {
     required this.upList,
     required this.picLimit,
   });
+
   final List<Map> upList;
   final int picLimit;
+
   @override
   State<ImagePickerGrid> createState() => _ImagePickerGridState();
 }
 
 class _ImagePickerGridState extends State<ImagePickerGrid> {
+  late final _screenUtils = ScreenUtil();
   late final homeConfigNotifier = context.read<HomeConfigNotifier>();
+
   List<Map> get upList => widget.upList;
+
   int get picLimit => widget.picLimit;
+
   Future<void> imagePickerAssets() async {
     if (await CommonUtils.pickImage() case final xFile?) {
       MyToast.showLoading(text: 'scz'.tr());
@@ -49,6 +56,8 @@ class _ImagePickerGridState extends State<ImagePickerGrid> {
       MyToast.closeAllLoading();
     }
   }
+
+  double get _itemWidth => (_screenUtils.screenWidth - 10.w * 2 - MyTheme.pagePadding * 2) / 3;
 
   @override
   Widget build(BuildContext context) {
@@ -76,11 +85,7 @@ class _ImagePickerGridState extends State<ImagePickerGrid> {
                   child: GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () => setState(() => upList.remove(uploadData)),
-                    child: MyImage.asset(
-                      MyImagePaths.appIssueCancelIcon,
-                      width: 18.w,
-                      height: 18.w,
-                    ),
+                    child: MyImage.asset(MyImagePaths.appIssueCancelIcon, width: 18.w, height: 18.w),
                   ),
                 )
               ],
@@ -90,10 +95,33 @@ class _ImagePickerGridState extends State<ImagePickerGrid> {
               children: [
                 GestureDetector(
                   onTap: imagePickerAssets,
-                  child: const MyImage.asset(MyImagePaths.appIssueAdd),
+                  child: Container(
+                    width: _itemWidth,
+                    height: _itemWidth,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: const Color.fromRGBO(41, 28, 50, 0.8),
+                      borderRadius: BorderRadius.all(Radius.circular(5.w)),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        MyImage.asset(MyImagePaths.appIssueAddIcon, width: 20.w, height: 20.w),
+                        SizedBox(height: 10.w),
+                        Text(
+                          'sctp'.tr(),
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: const Color.fromRGBO(255, 255, 255, 0.5),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // const MyImage.asset(MyImagePaths.appIssueAdd),
                 ),
               ],
-            )
+            ),
         ]);
   }
 }

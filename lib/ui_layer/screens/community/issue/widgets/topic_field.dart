@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:jygf/ui_layer/screens/common_widgets/gradient_border_container.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/gradient_border_box.dart';
 
 import '../../../../../domain/model/topic_model.dart';
 import '../../../../router/routes.dart';
@@ -30,16 +30,25 @@ class TopicField extends StatelessWidget {
             topicNotifier.value = topic;
           }
         },
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 10.w),
-          height: 50.w,
-          decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(4.w))),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('#${topic == null ? 'xzht'.tr(context: context) : topic.name}', style: MyTheme.gray143_15),
-              MyImage.asset(MyImagePaths.appIssueArrow, width: 6.w, height: 10.w)
-            ],
+        child: GradientBorder(
+          radius: 8.w,
+          borderWidth: 0.8.w,
+          gradient: MyTheme.dhButtonGradient,
+          child: SizedBox(
+            height: 50.w,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '#${topic == null ? 'xzht'.tr(context: context) : topic.name}',
+                    style: MyTheme.gray143_15,
+                  ),
+                  MyImage.asset(MyImagePaths.appIssueArrow, width: 8.w, height: 10.w, iconColor: MyTheme.whiteColor),
+                ],
+              ),
+            ),
           ),
         ),
       ),

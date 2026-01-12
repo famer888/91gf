@@ -116,7 +116,7 @@ class _CommunityTagDetailScreenState extends State<CommunityTagDetailScreen> {
                     MyListView.list(
                       contentPadding: 15.w,
                       padding: EdgeInsets.only(top: 5.w, bottom: MyTheme.pagePadding),
-                      itemBuilder: (context, item, index) => PostCard.community(data: item),
+                      itemBuilder: (context, item, index) => PostCard.community(data: item, backgroundColor: const Color.fromRGBO(0, 0, 0, 0),),
                       onFetchingMore: (currentPage, pageSize) => _getData(page: currentPage, pageSize: pageSize, cate: nav.type),
                     )
                 ],

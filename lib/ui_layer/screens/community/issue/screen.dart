@@ -40,21 +40,22 @@ enum CommunityIssueType {
   /// 图文
   imageAndText,
 }
+
 enum CommunityIssueTopicType {
   /// 社区
   community,
 
   /// 约会
   date,
-  
+
   /// 原创
   original;
 
   int get type => switch (this) {
-    CommunityIssueTopicType.community => 1,
-    CommunityIssueTopicType.date => 2,
-    CommunityIssueTopicType.original => 3,
-  };
+        CommunityIssueTopicType.community => 1,
+        CommunityIssueTopicType.date => 2,
+        CommunityIssueTopicType.original => 3,
+      };
 }
 
 class CommunityIssueScreen extends StatefulWidget {
@@ -74,6 +75,7 @@ class CommunityIssueScreen extends StatefulWidget {
 class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
   CommunityIssueType get type => widget.type;
 
+  final ValueNotifier<bool> _publishAvAvailableNotifier = ValueNotifier(false);
   late final config = context.read<HomeConfigNotifier>().config;
   late final userNotifier = context.read<UserNotifier>();
   late final domain = context.read<CommunityDomain>();
@@ -129,12 +131,22 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
                             controller: contactController,
                             height: 42.w,
                             hintText: 'srlxfs'.tr(context: context),
+                            showBoarder: false,
+                            backgroundDecoration: BoxDecoration(
+                              color: const Color.fromRGBO(41, 28, 50, 0.8),
+                              borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                            ),
                           ),
                           SizedBox(height: 20.w),
                           InputField(
                             controller: coinController,
                             height: 42.w,
                             hintText: 'szjsjg'.tr(context: context),
+                            showBoarder: false,
+                            backgroundDecoration: BoxDecoration(
+                              color: const Color.fromRGBO(41, 28, 50, 0.8),
+                              borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                            ),
                             inputFormatter: [
                               FilteringTextInputFormatter(
                                 RegExp('[0-9]'),
@@ -166,6 +178,11 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
                     controller: contentController,
                     height: 150.w,
                     hintText: 'runr'.tr(context: context),
+                    showBoarder: false,
+                    backgroundDecoration: BoxDecoration(
+                      color: const Color.fromRGBO(41, 28, 50, 0.8),
+                      borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                    ),
                   ),
                   SizedBox(height: 15.w),
                   ...topic?.isAi == 2
@@ -174,12 +191,22 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
                             controller: contactController,
                             height: 42.w,
                             hintText: 'srlxfs'.tr(context: context),
+                            showBoarder: false,
+                            backgroundDecoration: BoxDecoration(
+                              color: const Color.fromRGBO(41, 28, 50, 0.8),
+                              borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                            ),
                           ),
                           SizedBox(height: 20.w),
                           InputField(
                             controller: coinController,
                             height: 42.w,
                             hintText: 'szjsjg'.tr(context: context),
+                            showBoarder: false,
+                            backgroundDecoration: BoxDecoration(
+                              color: const Color.fromRGBO(41, 28, 50, 0.8),
+                              borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                            ),
                             inputFormatter: [
                               FilteringTextInputFormatter(
                                 RegExp('[0-9]'),
@@ -213,6 +240,11 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
                   InputField(
                     controller: contentController,
                     height: 150.w,
+                    showBoarder: false,
+                    backgroundDecoration: BoxDecoration(
+                      color: const Color.fromRGBO(41, 28, 50, 0.8),
+                      borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                    ),
                     hintText: "[${'xutie'.tr(context: context)}]${'runr'.tr(context: context)}",
                   ),
                   SizedBox(height: 20.w),
@@ -222,12 +254,22 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
                             controller: contactController,
                             height: 42.w,
                             hintText: 'srlxfs'.tr(context: context),
+                            showBoarder: false,
+                            backgroundDecoration: BoxDecoration(
+                              color: const Color.fromRGBO(41, 28, 50, 0.8),
+                              borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                            ),
                           ),
                           SizedBox(height: 20.w),
                           InputField(
                             controller: coinController,
                             height: 42.w,
                             hintText: 'szjsjg'.tr(context: context),
+                            showBoarder: false,
+                            backgroundDecoration: BoxDecoration(
+                              color: const Color.fromRGBO(41, 28, 50, 0.8),
+                              borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                            ),
                             inputFormatter: [
                               FilteringTextInputFormatter(
                                 RegExp('[0-9]'),
@@ -242,6 +284,11 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
                             controller: coinController,
                             height: 42.w,
                             hintText: 'szspjg'.tr(context: context),
+                            showBoarder: false,
+                            backgroundDecoration: BoxDecoration(
+                              color: const Color.fromRGBO(41, 28, 50, 0.8),
+                              borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                            ),
                             inputFormatter: [
                               FilteringTextInputFormatter(
                                 RegExp('[0-9]'),
@@ -322,8 +369,11 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
                                         ),
                                       ),
                                       SizedBox(width: 2.w),
-                                      Icon(isLive ? Icons.circle_outlined : Icons.check_circle,
-                                          size: 16.w, color: isLive ? const Color(0xffa1a2a9) : const Color.fromRGBO(94, 79, 236, 1)),
+                                      Icon(
+                                        isLive ? Icons.circle_outlined : Icons.check_circle,
+                                        size: 16.w,
+                                        color: isLive ? const Color(0xffa1a2a9) : const Color.fromRGBO(94, 79, 236, 1),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -342,24 +392,29 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
                               child: Row(
                                 children: [
                                   Expanded(
-                                      child: InputField(
-                                    hintText: 'srzbdz'.tr(context: context),
-                                    controller: TextEditingController(),
-                                    showBoarder: false,
-                                    height: 42.w,
-                                    onChanged: (value) {
-                                      if (value.isEmpty) {
-                                        video.clear();
-                                      } else {
-                                        video.addAll({
-                                          'media_url': value.trim(),
-                                          'thumb_width': 1600,
-                                          'thumb_height': 900,
-                                          'type': 1,
-                                        });
-                                      }
-                                    },
-                                  )),
+                                    child: InputField(
+                                      hintText: 'srzbdz'.tr(context: context),
+                                      controller: TextEditingController(),
+                                      showBoarder: false,
+                                      backgroundDecoration: BoxDecoration(
+                                        color: const Color.fromRGBO(41, 28, 50, 0.8),
+                                        borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                                      ),
+                                      height: 42.w,
+                                      onChanged: (value) {
+                                        if (value.isEmpty) {
+                                          video.clear();
+                                        } else {
+                                          video.addAll({
+                                            'media_url': value.trim(),
+                                            'thumb_width': 1600,
+                                            'thumb_height': 900,
+                                            'type': 1,
+                                          });
+                                        }
+                                      },
+                                    ),
+                                  ),
                                   SizedBox(width: 10.w),
                                   GestureDetector(
                                     behavior: HitTestBehavior.translucent,
@@ -582,12 +637,46 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
   }
 
   @override
+  void initState() {
+    titleController.addListener(() {
+      if (topicNotifier.value != null && titleController.text.isNotEmpty) {
+        _publishAvAvailableNotifier.value = true;
+      } else {
+        _publishAvAvailableNotifier.value = false;
+      }
+    });
+    topicNotifier.addListener(() {
+      if (topicNotifier.value != null && titleController.text.isNotEmpty) {
+        _publishAvAvailableNotifier.value = true;
+      } else {
+        _publishAvAvailableNotifier.value = false;
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _publishAvAvailableNotifier.dispose();
+    isOpenNotifier.dispose();
+    topicNotifier.dispose();
+    titleController.dispose();
+    contentController.dispose();
+    coinController.dispose();
+    contactController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ScreenBackground(
       child: Scaffold(
         appBar: MyAppBar(
           title: 'fbtz'.tr(context: context),
-          rightWidget: PostButton(onTap: _send),
+          rightWidget: PostButton(
+            onTap: _send,
+            publishAvAvailableNotifier: _publishAvAvailableNotifier,
+          ),
         ),
         body: GestureDetector(
           behavior: HitTestBehavior.translucent,
@@ -613,6 +702,11 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
                     controller: titleController,
                     height: 42.w,
                     hintText: 'tbtxx'.tr(context: context),
+                    showBoarder: false,
+                    backgroundDecoration: BoxDecoration(
+                      color: const Color.fromRGBO(41, 28, 50, 0.8),
+                      borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                    ),
                   ),
                   SizedBox(height: 20.w),
                   _buildContent(),

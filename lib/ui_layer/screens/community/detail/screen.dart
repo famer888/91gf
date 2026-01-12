@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/post/card/card.dart';
+import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:provider/provider.dart';
 import '../../../../domain/api_validator.dart';
 import '../../../../domain/domain.dart';
@@ -102,7 +103,7 @@ class _CommunityPostDetailScreenState extends State<CommunityPostDetailScreen> w
     });
 
     final result = await _domain.communityTopicDetail(id: widget.id);
-
+    CommonUtils.log('话题详情页的结果:${result.status}');
     setState(() {
       if (result.data case final data?) {
         _asyncValue = AsyncData(data);
@@ -189,83 +190,88 @@ class _CommunityPostDetailScreenState extends State<CommunityPostDetailScreen> w
   @override
   Widget build(BuildContext context) {
     return _asyncValue.maybeWhen(
-        data: (data) {
-          return ScreenBackground(
-            child: Scaffold(
-              appBar: MyAppBar(
-                leftWidget: GestureDetector(
-                  onTap: () {
-                    FocusManager.instance.primaryFocus?.unfocus();
-                    context.pop();
-                  },
-                  child: SizedBox(
-                    height: double.infinity,
-                    child: MyImage.asset(MyImagePaths.appBackIcon, width: 20.w, height: 20.w, fit: BoxFit.contain),
-                  ),
-                ),
-                // _AvatarWithNickName(user: data.user),
-                title: 'tiezixq'.tr(),
-                // rightWidget: Selector<UserNotifier, bool>(
-                //   selector: (_, notifier) => notifier.userFollowingStatus.contains('${data.user?.aff}'),
-                //   builder: (_, isFollowed, __) => FollowButton(
-                //     isFollowed: isFollowed,
-                //     onTap: () => context.read<UserNotifier>().changeUserFollow('${data.user?.aff}'),
-                //   ),
-                // ),
-              ),
-              body: GestureDetector(
+      data: (data) {
+        return ScreenBackground(
+          child: Scaffold(
+            appBar: MyAppBar(
+              leftWidget: GestureDetector(
                 onTap: () {
-                  unfocus();
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  context.pop();
                 },
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: MyListView.list(
-                        header: CommunityDetailContentView(data: data),
-                        padding: EdgeInsets.symmetric(
-                          vertical: 5.w,
-                          horizontal: MyTheme.pagePadding,
-                        ),
-                        itemBuilder: (context, item, index) {
-                          return PostCommentView(
-                            type: CommunityType.community,
-                            commentData: item,
-                            onReply: () {
-                              currentReply = item;
-                              hintNotifier.value = '${'hf'.tr()}@${item.user?.nickname ?? ""}';
-                              inputFocusNode.requestFocus();
-                            },
-                            onMoreCommentTap: () => _showMoreReview(item),
-                            changeLike: () => _changeCommentLike('${item.id}'),
-                          );
-                        },
-                        onFetchingMore: (currentPage, pageSize) => getReviewData(currentPage: currentPage, pageSize: pageSize),
-                      ),
-                    ),
-                    CommentInput(
-                      controller: textEditingController,
-                      focusNode: inputFocusNode,
-                      hintNotifier: hintNotifier,
-                      onSubmitted: () async {
-                        await _sendComment(target: currentReply, text: textEditingController.text);
-                      },
-                    ),
-                  ],
+                child: SizedBox(
+                  height: double.infinity,
+                  child: MyImage.asset(MyImagePaths.appBackIcon, width: 20.w, height: 20.w, fit: BoxFit.contain),
                 ),
               ),
+              // _AvatarWithNickName(user: data.user),
+              title: 'tiezixq'.tr(),
+              // rightWidget: Selector<UserNotifier, bool>(
+              //   selector: (_, notifier) => notifier.userFollowingStatus.contains('${data.user?.aff}'),
+              //   builder: (_, isFollowed, __) => FollowButton(
+              //     isFollowed: isFollowed,
+              //     onTap: () => context.read<UserNotifier>().changeUserFollow('${data.user?.aff}'),
+              //   ),
+              // ),
             ),
-          );
-        },
-        error: (error, __) => NetworkErrorView(
-              text: error is String? ? error : null,
-              onTap: _init,
-            ),
-        orElse: () => const ScreenBackground(
-              child: Scaffold(
-                appBar: MyAppBar(),
-                body: LoadingView(),
+            body: GestureDetector(
+              onTap: () {
+                unfocus();
+              },
+              child: Column(
+                children: [
+                  Expanded(
+                    child: MyListView.list(
+                      header: CommunityDetailContentView(data: data),
+                      padding: EdgeInsets.symmetric(
+                        vertical: 5.w,
+                        horizontal: MyTheme.pagePadding,
+                      ),
+                      itemBuilder: (context, item, index) {
+                        return PostCommentView(
+                          type: CommunityType.community,
+                          commentData: item,
+                          onReply: () {
+                            currentReply = item;
+                            hintNotifier.value = '${'hf'.tr()}@${item.user?.nickname ?? ""}';
+                            inputFocusNode.requestFocus();
+                          },
+                          onMoreCommentTap: () => _showMoreReview(item),
+                          changeLike: () => _changeCommentLike('${item.id}'),
+                        );
+                      },
+                      onFetchingMore: (currentPage, pageSize) => getReviewData(currentPage: currentPage, pageSize: pageSize),
+                    ),
+                  ),
+                  CommentInput(
+                    controller: textEditingController,
+                    focusNode: inputFocusNode,
+                    hintNotifier: hintNotifier,
+                    onSubmitted: () async {
+                      await _sendComment(target: currentReply, text: textEditingController.text);
+                    },
+                  ),
+                ],
               ),
-            ));
+            ),
+          ),
+        );
+      },
+      error: (error, __) {
+        return NetworkErrorView(
+          text: error is String? ? error : null,
+          onTap: _init,
+        );
+      },
+      orElse: () {
+        return const ScreenBackground(
+          child: Scaffold(
+            appBar: MyAppBar(),
+            body: LoadingView(),
+          ),
+        );
+      },
+    );
   }
 }
 

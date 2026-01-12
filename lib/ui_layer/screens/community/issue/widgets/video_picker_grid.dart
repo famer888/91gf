@@ -6,6 +6,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
@@ -17,6 +18,7 @@ import '../../../image_paths.dart';
 
 class VideoPickerGrid extends StatefulWidget {
   const VideoPickerGrid({super.key, required this.video, required this.upList});
+
   final List<Map> upList;
   final Map video;
 
@@ -25,6 +27,7 @@ class VideoPickerGrid extends StatefulWidget {
 }
 
 class _VideoPickerGridState extends State<VideoPickerGrid> {
+  late final _screenUtils = ScreenUtil();
   late final homeConfigNotifier = context.read<HomeConfigNotifier>();
   Uint8List? coverData;
 
@@ -77,10 +80,7 @@ class _VideoPickerGridState extends State<VideoPickerGrid> {
               'thumb_height': cover?['thumb_height'] ?? 0,
             });
           } else {
-            MyToast.showText(
-                text: data?['cover']?['code'] != 1
-                    ? data?['cover']?['msg'] ?? data?['video']?['message']
-                    : 'r2scsb'.tr());
+            MyToast.showText(text: data?['cover']?['code'] != 1 ? data?['cover']?['msg'] ?? data?['video']?['message'] : 'r2scsb'.tr());
 
             WidgetsBinding.instance.addPostFrameCallback((_) {
               setState(() {
@@ -102,6 +102,8 @@ class _VideoPickerGridState extends State<VideoPickerGrid> {
     );
   }
 
+  double get _itemWidth => (_screenUtils.screenWidth - 10.w * 2 - MyTheme.pagePadding * 2) / 3;
+
   @override
   Widget build(BuildContext context) {
     return GridView.count(
@@ -116,17 +118,8 @@ class _VideoPickerGridState extends State<VideoPickerGrid> {
             ? Stack(
                 fit: StackFit.expand,
                 children: [
-                  Image.memory(
-                    coverData!,
-                    fit: BoxFit.cover,
-                  ),
-                  Center(
-                    child: MyImage.asset(
-                      MyImagePaths.appVPlayN,
-                      width: 30.w,
-                      height: 30.w,
-                    ),
-                  ),
+                  Image.memory(coverData!, fit: BoxFit.cover),
+                  Center(child: MyImage.asset(MyImagePaths.appVPlayN, width: 30.w, height: 30.w)),
                   Positioned(
                     top: 0,
                     right: 0,
@@ -137,18 +130,37 @@ class _VideoPickerGridState extends State<VideoPickerGrid> {
                         widget.video.clear();
                         coverData = null;
                       }),
-                      child: MyImage.asset(
-                        MyImagePaths.appIssueCancelIcon,
-                        width: 18.w,
-                        height: 18.w,
-                      ),
+                      child: MyImage.asset(MyImagePaths.appIssueCancelIcon, width: 18.w, height: 18.w),
                     ),
                   )
                 ],
               )
             : GestureDetector(
                 onTap: _videoPickerAssets,
-                child: const MyImage.asset(MyImagePaths.appIssueAdd),
+                child: Container(
+                  width: _itemWidth,
+                  height: _itemWidth,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: const Color.fromRGBO(41, 28, 50, 0.8),
+                    borderRadius: BorderRadius.all(Radius.circular(5.w)),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      MyImage.asset(MyImagePaths.appIssueAddIcon, width: 20.w, height: 20.w),
+                      SizedBox(height: 10.w),
+                      Text(
+                        'scsp'.tr(),
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: const Color.fromRGBO(255, 255, 255, 0.5),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // const MyImage.asset(MyImagePaths.appIssueAdd),
               ),
       ],
     );

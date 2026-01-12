@@ -217,6 +217,7 @@ class MyImagePaths {  static const appZfConN = './assets/images/app_zf_con_n.png
   static const appPlaceholder = './assets/images/app_placeholder.png';
   static const appShare25 = './assets/images/app_share_25.png';
   static const appAsmrPause = './assets/images/app_asmr_pause.png';
+  static const appIssueAddIcon = './assets/images/app_issue_add_icon.png';
   static const app2024SqGz = './assets/images/app_2024_sq_gz.png';
   static const appTabHomeS1 = './assets/images/app_tab_home_s1.png';
   static const appAsmrPlay = './assets/images/app_asmr_play.png';

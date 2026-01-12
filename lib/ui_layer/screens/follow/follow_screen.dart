@@ -10,6 +10,7 @@ import 'package:jygf/domain/model/post_model.dart';
 import 'package:jygf/domain/model/topic_model.dart';
 import 'package:jygf/domain/remote_domain/domains/community.dart';
 import 'package:jygf/domain/type_def.dart';
+import 'package:jygf/ui_layer/router/routes.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/follow_button.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/general_banner.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_avatar.dart';
@@ -225,7 +226,9 @@ class _TopicItemState extends State<_TopicItem> {
   Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
-      onTap: () {},
+      onTap: () {
+        CommunityTagDetailRoute('${widget.data.id}').push(context);
+      },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -234,11 +237,7 @@ class _TopicItemState extends State<_TopicItem> {
           Row(
             children: [
               SizedBox(width: MyTheme.pagePadding),
-              GestureDetector(
-                behavior: HitTestBehavior.translucent,
-                onTap: () {},
-                child: MyAvatar(thumb: widget.data.thumb, size: 40.w),
-              ),
+              MyAvatar(thumb: widget.data.thumb, size: 40.w),
               SizedBox(width: 8.w),
               Column(
                 mainAxisSize: MainAxisSize.min,

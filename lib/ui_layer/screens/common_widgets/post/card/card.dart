@@ -49,7 +49,7 @@ class PostCard extends StatelessWidget {
         child: Stack(
           children: [
             Padding(
-              padding: EdgeInsets.all(MyTheme.pagePadding),
+              padding: EdgeInsets.only(top: MyTheme.pagePadding, bottom: 7.w),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -63,7 +63,8 @@ class PostCard extends StatelessWidget {
                     ),
                   CardContentView(isBest: data.isBest == 1, title: data.title),
                   if (data.medias case final medias? when medias.isNotEmpty) CardMediaView(medias: medias),
-                  Divider(color: Colors.white.withOpacity(0.04), height: 18.w),
+                  // Divider(color: Colors.white.withOpacity(0.04), height: 18.w),
+                  SizedBox(height: 10.w),
                   CardCountView(
                     viewCount: _type == CommunityType.community ? data.viewNum : data.viewCt ?? 0,
                     commentCount: _type == CommunityType.community ? data.commentNum : data.commentCt ?? 0,
