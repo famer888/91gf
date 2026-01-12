@@ -42,6 +42,7 @@ import 'package:jygf/ui_layer/screens/common_widgets/my_list_view.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_tab_bar.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/post/card/card.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/screen_background.dart';
+import 'package:jygf/ui_layer/screens/file_search/widget/check_file_item.dart';
 import 'package:jygf/ui_layer/screens/live_video/live_card/live_video_card.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/screens/vlog/card/vlog_card.dart';
@@ -599,7 +600,7 @@ class _ChaDangViewState extends State<_ChaDangView> {
   Widget build(BuildContext context) {
     return MyListView.list(
       contentPadding: 15.w,
-      itemBuilder: (context, item, index) => PostCard.community(data: item),
+      itemBuilder: (context, item, index) => CheckFileItem(item: item, itemWidth: (ScreenUtil().screenWidth - MyTheme.pagePadding * 2)),
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,
         pageSize: pageSize,

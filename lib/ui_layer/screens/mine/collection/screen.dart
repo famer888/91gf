@@ -33,6 +33,7 @@ import 'package:jygf/ui_layer/screens/common_widgets/chat/list_card.dart';
 import 'package:jygf/ui_layer/screens/black/model/black_model.dart';
 import 'package:jygf/ui_layer/screens/black/widgets/black_item_widget.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/game/card/game_card.dart';
+import 'package:jygf/ui_layer/screens/file_search/widget/check_file_item.dart';
 import 'package:jygf/ui_layer/screens/vlog/card/vlog_card.dart';
 import 'package:jygf/ui_layer/screens/yellow_picture/card/yellow_picture_item_card.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
@@ -85,7 +86,7 @@ class _MineCollectionScreenState extends State<MineCollectionScreen> {
             'shp'.tr(context: context),
             'dsp'.tr(context: context),
             'tiezt'.tr(context: context),
-            'heil'.tr(context: context), // 黑料
+            'heil'.tr(context: context),
             'meit'.tr(context: context),
             'dman'.tr(),
             'mh'.tr(context: context),
@@ -96,7 +97,7 @@ class _MineCollectionScreenState extends State<MineCollectionScreen> {
             'yuep'.tr(context: context),
             'luol'.tr(context: context),
             'zhoz'.tr(context: context),
-            '查档', //查档
+            'chad'.tr(context: context),
           ],
           views: [
             const KeepAliveWrapper(
@@ -143,7 +144,7 @@ class _MineCollectionScreenState extends State<MineCollectionScreen> {
               child: _ZhozView(),
             ),
             const KeepAliveWrapper(
-              child: _PlaceholderView(placeholderText: '查档'),
+              child: _ChaDangView(),
             ),
           ],
         ),
@@ -459,28 +460,6 @@ class _GameViewState extends State<_GameView> {
   }
 }
 
-class _PlaceholderView extends StatelessWidget {
-  const _PlaceholderView({required this.placeholderText});
-
-  final String placeholderText;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.all(20.w),
-        child: Text(
-          placeholderText,
-          style: TextStyle(
-            fontSize: 16.sp,
-            color: MyTheme.white25506Color,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class _YellowPictureView extends StatefulWidget {
   const _YellowPictureView();
 
@@ -744,4 +723,45 @@ late final userDomain = context.read<UserDomain>();
     );
   }
 }
+
+//查档
+class _ChaDangView extends StatefulWidget {
+  const _ChaDangView();
+
+  @override
+  State<_ChaDangView> createState() => _ChaDangViewState();
+}
+
+class _ChaDangViewState extends State<_ChaDangView> {
+  late final userDomain = context.read<UserDomain>();
+  String lastIx = '';
+
+  Future<List<PostModel>> _getData({
+    required int page,
+    required int pageSize,
+  }) async {
+    final result = await userDomain.getUserFavor(
+      page: page,
+      limit: pageSize,
+      type: 25,//后端约定
+      lastIx: page == 1 ? '' : lastIx,
+    ) as Result<MineTieztListModel>;
+    lastIx = result.data?.lastIx ?? '';
+
+    return result.data!.list!;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MyListView.list(
+      contentPadding: 15.w,
+      itemBuilder: (context, item, index) => CheckFileItem(item: item, itemWidth: (ScreenUtil().screenWidth - MyTheme.pagePadding * 2)),
+      onFetchingMore: (currentPage, pageSize) => _getData(
+        page: currentPage,
+        pageSize: pageSize,
+      ),
+    );
+  }
+}
+
 
