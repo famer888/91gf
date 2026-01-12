@@ -23,6 +23,7 @@ import 'package:jygf/domain/remote_domain/domains/comic.dart';
 import 'package:jygf/domain/remote_domain/domains/game.dart';
 import 'package:jygf/domain/remote_domain/domains/live.dart';
 import 'package:jygf/domain/remote_domain/domains/novel.dart';
+import 'package:jygf/report/ui_layer/report_search_click.dart';
 import 'package:jygf/ui_layer/const.dart';
 import 'package:jygf/ui_layer/notifiers/home_config_notifier.dart';
 import 'package:jygf/ui_layer/router/routes.dart';
@@ -181,7 +182,14 @@ class _VideoViewState extends State<_VideoView> {
       padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding, vertical: 8.w),
       childAspectRatio: FeedCard.aspectRatio,
       crossAxisSpacing: 8.w,
-      itemBuilder: (_, item, __) => VideoCard(data: item),
+      itemBuilder: (_, item, index) => VideoCard(data: item).withSearchReport({
+        "event": "keyword_click",
+        "keyword": widget.word,
+        "click_item_id": item.id,
+        "click_item_type_key": "video",
+        "click_item_type_name": "视频",
+        "click_ position": index,
+      }),
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,
         pageSize: pageSize,
@@ -220,7 +228,14 @@ class _TieztViewState extends State<_TieztView> {
   Widget build(BuildContext context) {
     return MyListView.list(
       contentPadding: 15.w,
-      itemBuilder: (context, item, index) => PostCard.community(data: item),
+      itemBuilder: (context, item, index) => PostCard.community(data: item).withSearchReport({
+        "event": "keyword_click",
+        "keyword": widget.word,
+        "click_item_id": item.id,
+        "click_item_type_key": "tiezi",
+        "click_item_type_name": "贴子",
+        "click_ position": index,
+      }),
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,
         pageSize: pageSize,
@@ -258,7 +273,14 @@ class _ZhozViewState extends State<_ZhozView> {
   Widget build(BuildContext context) {
     return MyListView.list(
       contentPadding: 15.w,
-      itemBuilder: (context, item, index) => PostCard.bit(data: item),
+      itemBuilder: (context, item, index) => PostCard.bit(data: item).withSearchReport({
+        "event": "keyword_click",
+        "keyword": widget.word,
+        "click_item_id": item.id,
+        "click_item_type_key": "zhoz",
+        "click_item_type_name": "种子",
+        "click_ position": index,
+      }),
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,
         pageSize: pageSize,
@@ -293,7 +315,14 @@ class _LiveVideoViewState extends State<_LiveVideoView> {
       padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding, vertical: 8.w),
       childAspectRatio: UILayerConst.videoRatio,
       crossAxisSpacing: 8.w,
-      itemBuilder: (_, item, __) => LiveVideoCard(data: item),
+      itemBuilder: (_, item, index) => LiveVideoCard(data: item).withSearchReport({
+        "event": "keyword_click",
+        "keyword": widget.word,
+        "click_item_id": item.id,
+        "click_item_type_key": "live",
+        "click_item_type_name": "直播",
+        "click_ position": index,
+      }),
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,
         pageSize: pageSize,
@@ -330,7 +359,14 @@ class _ASMRViewState extends State<_ASMRView> {
   Widget build(BuildContext context) {
     return MyListView.grid(
       contentPadding: 15.w,
-      itemBuilder: (context, item, index) => VoiceGirdCard(data: item),
+      itemBuilder: (context, item, index) => VoiceGirdCard(data: item).withSearchReport({
+        "event": "keyword_click",
+        "keyword": widget.word,
+        "click_item_id": item.id,
+        "click_item_type_key": "asmr",
+        "click_item_type_name": "ASMR",
+        "click_ position": index,
+      }),
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,
         pageSize: pageSize,
@@ -368,7 +404,14 @@ class _TorrentViewState extends State<_TorrentView> {
   Widget build(BuildContext context) {
     return MyListView.list(
       contentPadding: 15.w,
-      itemBuilder: (context, item, index) => PostCard.bit(data: item),
+      itemBuilder: (context, item, index) => PostCard.bit(data: item).withSearchReport({
+        "event": "keyword_click",
+        "keyword": widget.word,
+        "click_item_id": item.id,
+        "click_item_type_key": "torrent",
+        "click_item_type_name": "种子",
+        "click_ position": index,
+      }),
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,
         pageSize: pageSize,
@@ -440,7 +483,14 @@ class _VlogVideoViewState extends State<_VlogVideoView> {
               //广告类型
               CommonUtils.openRoute(context, item.toJson());
             }
-          }),
+          }).withSearchReport({
+        "event": "keyword_click",
+        "keyword": widget.word,
+        "click_item_id": item.id,
+        "click_item_type_key": "vlog",
+        "click_item_type_name": "短视频",
+        "click_ position": index,
+      }),
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,
         pageSize: pageSize,
@@ -480,7 +530,14 @@ class _CartoonViewState extends State<_CartoonView> {
       padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding, vertical: 8.w),
       childAspectRatio: CartoonVideoCard.aspectRatio,
       crossAxisSpacing: 8.w,
-      itemBuilder: (context, item, index) => CartoonVideoCard(data: item),
+      itemBuilder: (context, item, index) => CartoonVideoCard(data: item).withSearchReport({
+        "event": "keyword_click",
+        "keyword": widget.word,
+        "click_item_id": item.id,
+        "click_item_type_key": "cartoon",
+        "click_item_type_name": "动漫",
+        "click_ position": index,
+      }),
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,
         pageSize: pageSize,
@@ -520,7 +577,14 @@ class _GameViewState extends State<_GameView> {
       padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding, vertical: 8.w),
       childAspectRatio: GameCard.aspectRatio,
       crossAxisSpacing: 8.w,
-      itemBuilder: (context, item, index) => GameCard(data: item),
+      itemBuilder: (context, item, index) => GameCard(data: item).withSearchReport({
+        "event": "keyword_click",
+        "keyword": widget.word,
+        "click_item_id": item.id,
+        "click_item_type_key": "game",
+        "click_item_type_name": "黄游",
+        "click_ position": index,
+      }),
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,
         pageSize: pageSize,
@@ -560,7 +624,14 @@ class _DateViewState extends State<_DateView> {
   Widget build(BuildContext context) {
     return MyListView.list(
       contentPadding: 15.w,
-      itemBuilder: (context, item, index) => PostCard.community(data: item),
+      itemBuilder: (context, item, index) => PostCard.community(data: item).withSearchReport({
+        "event": "keyword_click",
+        "keyword": widget.word,
+        "click_item_id": item.id,
+        "click_item_type_key": "date",
+        "click_item_type_name": "约炮",
+        "click_ position": index,
+      }),
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,
         pageSize: pageSize,
@@ -600,7 +671,14 @@ class _ChaDangViewState extends State<_ChaDangView> {
   Widget build(BuildContext context) {
     return MyListView.list(
       contentPadding: 15.w,
-      itemBuilder: (context, item, index) => CheckFileItem(item: item, itemWidth: (ScreenUtil().screenWidth - MyTheme.pagePadding * 2)),
+      itemBuilder: (context, item, index) => CheckFileItem(item: item, itemWidth: (ScreenUtil().screenWidth - MyTheme.pagePadding * 2)).withSearchReport({
+        "event": "keyword_click",
+        "keyword": widget.word,
+        "click_item_id": item.id,
+        "click_item_type_key": "check_file",
+        "click_item_type_name": "查档",
+        "click_ position": index,
+      }),
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,
         pageSize: pageSize,
@@ -639,7 +717,14 @@ class _YellowPictureViewState extends State<_YellowPictureView> {
   Widget build(BuildContext context) {
     return MyListView.list(
       contentPadding: 15.w,
-      itemBuilder: (context, item, index) => YellowPictureItemCard(data: item),
+      itemBuilder: (context, item, index) => YellowPictureItemCard(data: item).withSearchReport({
+        "event": "keyword_click",
+        "keyword": widget.word,
+        "click_item_id": item.id,
+        "click_item_type_key": "yellow_picture",
+        "click_item_type_name": "美图",
+        "click_ position": index,
+      }),
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,
         pageSize: pageSize,
@@ -678,7 +763,14 @@ class _ComicViewState extends State<_ComicView> {
   Widget build(BuildContext context) {
     return MyListView.list(
       contentPadding: 15.w,
-      itemBuilder: (context, item, index) => ComicItemCard(data: item),
+      itemBuilder: (context, item, index) => ComicItemCard(data: item).withSearchReport({
+        "event": "keyword_click",
+        "keyword": widget.word,
+        "click_item_id": item.id,
+        "click_item_type_key": "comic",
+        "click_item_type_name": "漫画",
+        "click_ position": index,
+      }),
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,
         pageSize: pageSize,
@@ -717,7 +809,14 @@ class _NovelViewState extends State<_NovelView> {
   Widget build(BuildContext context) {
     return MyListView.list(
       contentPadding: 15.w,
-      itemBuilder: (context, item, index) => NovelItemCard(data: item),
+      itemBuilder: (context, item, index) => NovelItemCard(data: item).withSearchReport({
+        "event": "keyword_click",
+        "keyword": widget.word,
+        "click_item_id": item.id,
+        "click_item_type_key": "novel",
+        "click_item_type_name": "小说",
+        "click_ position": index,
+      }),
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,
         pageSize: pageSize,
@@ -756,7 +855,14 @@ class _ChatViewState extends State<_ChatView> {
   Widget build(BuildContext context) {
     return MyListView.list(
       contentPadding: 15.w,
-      itemBuilder: (context, item, index) => ChatListCard(data: item),
+      itemBuilder: (context, item, index) => ChatListCard(data: item).withSearchReport({
+        "event": "keyword_click",
+        "keyword": widget.word,
+        "click_item_id": item.id,
+        "click_item_type_key": "chat",
+        "click_item_type_name": "裸聊",
+        "click_ position": index,
+      }),
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,
         pageSize: pageSize,
@@ -795,9 +901,25 @@ class _BlackViewState extends State<_BlackView> {
       child: MyListView.list(
         contentPadding: 15.w,
         padding: EdgeInsets.only(top: 5.w, bottom: MyTheme.pagePadding),
-        itemBuilder: (context, item, index) => BlackItemWidget(item: item, itemWidth: (_screenUtils.screenWidth - MyTheme.pagePadding * 2)),
+        itemBuilder: (context, item, index) => BlackItemWidget(item: item, itemWidth: (_screenUtils.screenWidth - MyTheme.pagePadding * 2)).withSearchReport({
+        "event": "keyword_click",
+        "keyword": widget.word,
+        "click_item_id": item.id,
+        "click_item_type_key": "black",
+        "click_item_type_name": "黑料",
+        "click_ position": index,
+      }),
         onFetchingMore: (currentPage, pageSize) => _searchData(page: currentPage, limit: pageSize),
       ),
+    );
+  }
+}
+
+extension EventClick on Widget {
+  Widget withSearchReport(Map data) {
+    return ReportSearchClick(
+      child: this,
+      data: data
     );
   }
 }
