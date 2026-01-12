@@ -96,6 +96,8 @@ class VideoData {
     this.userAction,
     this.seriesId,
     this.secondTitle,
+    this.videoTypeId,
+    this.videoTypeName,
   });
 
   int? id;
@@ -167,6 +169,11 @@ class VideoData {
   final int? seriesId;
 
   int? isSpeed;
+
+
+  final int? videoTypeId;
+  final String? videoTypeName;
+
   factory VideoData.fromJson(Map json) => VideoData(
       secondTitle: json['second_title'] ?? '',
       id: json['id'],
@@ -237,7 +244,9 @@ class VideoData {
           ? 0
           : double.parse(json['discount'].toString()),
       favorites: json['favorites'] ?? 0,
-      seriesId: json['series_id'] ?? 0);
+      seriesId: json['series_id'] ?? 0,
+      videoTypeId: json['video_type_id'] ?? 0,
+      videoTypeName: json['video_type_name'] ?? '');
 
   Map<String, dynamic> toJson() => {
         'second_title': secondTitle ?? '',
@@ -306,6 +315,8 @@ class VideoData {
         'discount_coins': discountCoins ?? 0,
         'discount': discount ?? 0,
         'favorites': favorites,
-        'series_id': seriesId ?? 0
+        'series_id': seriesId ?? 0,
+        'video_type_id': videoTypeId ?? 0,
+        'video_type_name': videoTypeName ?? '',
       };
 }

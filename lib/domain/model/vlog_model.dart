@@ -41,6 +41,9 @@ class VlogModel {
   final int? reportId;
   final int? reportType;
 
+  final int? videoTypeId;
+  final String? videoTypeName;
+
   VlogModel({
     this.id,
     this.title,
@@ -78,48 +81,51 @@ class VlogModel {
     this.redirectType,
     this.reportType,
     this.reportId,
+    this.videoTypeId,
+    this.videoTypeName,
   });
 
   factory VlogModel.fromJson(Map<String, dynamic> json) => VlogModel(
-        id: json['id'],
-        title: json['title'],
-        aff: json['aff'],
-        coverVertical: json['cover_vertical'],
-        coverHorizontal: json['cover_horizontal'],
-        tags: json['tags'],
-        isFree: json['isfree'],
-        coins: json['coins'],
-        playCt: json['play_ct'],
-        countComment: json['count_comment'],
-        countLike: json['count_like'],
-        isLike: json['is_like'],
-        favorites: json['favorites'],
-        isFavorite: json['is_favorite'],
-        duration: json['duration'],
-        source_240: json['source_240'],
-        mvType: json['mv_type'],
-        sourceOriginStr: json['source_origin_str'],
-        tagList: json['tag_list'],
-        isPay: json['is_pay'],
-        discount: json['discount'],
-        discountCoins: json['discount_coins'],
-        isPackage: json['is_package'],
-        previewUrl: json['preview_url'],
-        member: json['member'] != null
-            ? UserModel.fromJson(json['member'] as Map<String, dynamic>)
-            : null,
-        description: json['description'],
-        imgUrl: json['img_url'],
-        type: json['type'],
-        router: json['router'],
-        urlStr: json['url_str'],
-        linkUrl: json['link_url'],
-        url: json['url'],
-        resourceUrl: json['resource_url'],
-        redirectType: json['redirect_type'],
-        reportId: json['report_id'],
-        reportType: json['report_type'],
-      );
+      id: json['id'],
+      title: json['title'],
+      aff: json['aff'],
+      coverVertical: json['cover_vertical'],
+      coverHorizontal: json['cover_horizontal'],
+      tags: json['tags'],
+      isFree: json['isfree'],
+      coins: json['coins'],
+      playCt: json['play_ct'],
+      countComment: json['count_comment'],
+      countLike: json['count_like'],
+      isLike: json['is_like'],
+      favorites: json['favorites'],
+      isFavorite: json['is_favorite'],
+      duration: json['duration'],
+      source_240: json['source_240'],
+      mvType: json['mv_type'],
+      sourceOriginStr: json['source_origin_str'],
+      tagList: json['tag_list'],
+      isPay: json['is_pay'],
+      discount: json['discount'],
+      discountCoins: json['discount_coins'],
+      isPackage: json['is_package'],
+      previewUrl: json['preview_url'],
+      member: json['member'] != null
+          ? UserModel.fromJson(json['member'] as Map<String, dynamic>)
+          : null,
+      description: json['description'],
+      imgUrl: json['img_url'],
+      type: json['type'],
+      router: json['router'],
+      urlStr: json['url_str'],
+      linkUrl: json['link_url'],
+      url: json['url'],
+      resourceUrl: json['resource_url'],
+      redirectType: json['redirect_type'],
+      reportId: json['report_id'],
+      reportType: json['report_type'],
+      videoTypeId: json['video_type_id'] ?? 0,
+      videoTypeName: json['video_type_name'] ?? '');
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -157,6 +163,8 @@ class VlogModel {
         'redirect_type': redirectType,
         'report_id': reportId,
         'report_type': reportType,
+        'video_type_id': videoTypeId ?? 0,
+        'video_type_name': videoTypeName ?? '',
       };
 }
 

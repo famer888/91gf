@@ -121,14 +121,6 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
   }
 
   Future<void> _appStartCheck() async {
-    // 本地调试 / 非 Release 环境下，直接跳过开屏弹窗广告和推荐/公告弹窗
-    // （即 Debug / Profile 模式都会跳过，只在正式 Release 包中展示）
-    if (!kReleaseMode) {
-      // 保留必要的本地调试初始化（如缓存处理），但不弹广告
-      cache.clearImageCacheIfNeed();
-      if (!kIsWeb) _initDownloadStatus();
-      return;
-    }
 
     // 打开的时候就清除一下缓存
     cache.clearImageCacheIfNeed();

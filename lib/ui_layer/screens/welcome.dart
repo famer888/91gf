@@ -119,12 +119,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     await _getClipboardText(); //config之前先获取trace_id
 
     if (await homeConfigNotifier.init() && mounted) {
-      // if (welcomeStartScreenAds?.isNotEmpty ?? false) {
-      //   setState(() {
-      //     showAd = true;
-      //   });
-      //   return;
-      // }
+      if (welcomeStartScreenAds?.isNotEmpty ?? false) {
+        setState(() {
+          showAd = true;
+        });
+        return;
+      }
       const HomeRoute().go(context);
     } else if (showTip) {
       MyToast.showText(text: 'wfljqsz'.tr(context: context));

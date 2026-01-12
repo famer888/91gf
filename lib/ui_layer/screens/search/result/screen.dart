@@ -144,7 +144,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
             vertical: 6.w,
             horizontal: MyTheme.pagePadding,
           ),
-          tabBarHeight: 40.w,
+          // tabBarHeight: 40.w,
           isScrollable: true,
           titles: titles,
           views: views,

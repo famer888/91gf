@@ -302,7 +302,7 @@ extension $MineRouteExtension on MineRoute {
 }
 
 RouteBase get $liveBroadcastRoute => GoRouteData.$route(
-      path: '/liveVideo',
+      path: '/live',
       parentNavigatorKey: LiveBroadcastRoute.$parentNavigatorKey,
       factory: $LiveBroadcastRouteExtension._fromState,
     );
@@ -312,7 +312,7 @@ extension $LiveBroadcastRouteExtension on LiveBroadcastRoute {
       const LiveBroadcastRoute();
 
   String get location => GoRouteData.$location(
-        '/liveVideo',
+        '/live',
       );
 
   void go(BuildContext context) => context.go(location);

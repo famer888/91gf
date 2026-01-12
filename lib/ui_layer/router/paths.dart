@@ -212,7 +212,7 @@ class AppRouterPaths {
   static const videoDetail = '/videoDetail';
 
   /// 直播
-  static const live = '/liveVideo';
+  static const live = '/live';
 
   /// 直播详情页
   static const livesDetail = '/livesDetail';
