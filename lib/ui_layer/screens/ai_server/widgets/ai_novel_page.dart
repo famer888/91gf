@@ -76,12 +76,19 @@ class _AiNovelPageState extends State<AiNovelPage> {
       child: Scaffold(
         appBar: MyAppBar(
           title: 'xscz'.tr(),
-          rightWidget: TextButton(
-            onPressed: () {
-              const MineAIRecordRoute(index: 4).push(context);
-            },
-            child: Center(
-              child: Text('wdai'.tr(), style: MyTheme.white255_13),
+          rightWidget: Align(
+            alignment: Alignment.centerRight,
+            child: ReportGestureDetector(
+              onTap: () {
+                const MineAIRecordRoute(index: 4).push(context);
+              },
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.w),
+                child: Text(
+                  'wdai'.tr(),
+                  style: MyTheme.white255_13.copyWith(height: 1.0),
+                ),
+              ),
             ),
           ),
         ),

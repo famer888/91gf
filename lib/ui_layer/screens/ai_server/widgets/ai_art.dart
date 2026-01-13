@@ -66,14 +66,18 @@ class _AIArtScreenState extends State<AIArtScreen>
       child: Scaffold(
         appBar: MyAppBar(
           title: 'AI绘画',
-          rightWidget: TextButton(
-            onPressed: () {
-              const MineAIRecordRoute(index: 7).push(context);
-            },
-            child: Center(
-              child: Text(
-                'wdai'.tr(),
-                style: MyTheme.white255_13,
+          rightWidget: Align(
+            alignment: Alignment.centerRight,
+            child: ReportGestureDetector(
+              onTap: () {
+                const MineAIRecordRoute(index: 7).push(context);
+              },
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.w),
+                child: Text(
+                  'wdai'.tr(),
+                  style: MyTheme.white255_13.copyWith(height: 1.0),
+                ),
               ),
             ),
           ),
@@ -83,6 +87,7 @@ class _AIArtScreenState extends State<AIArtScreen>
           children: [
             Expanded(
               child: TabBarWithView.line(
+                indicatorType: IndicatorType.curve,
                 isCenter: true,
                 tabController: tabController,
                 titles: _tabs.map((tab) => tab['title'] as String).toList(),
@@ -100,7 +105,7 @@ class _AIArtScreenState extends State<AIArtScreen>
                     ),
                   ),
                 ],
-                labelStyle: MyTheme.blue80_16,
+                // labelStyle: MyTheme.blue80_16,
                 unselectedLabelStyle: MyTheme.white16medium,
               ),
             ),

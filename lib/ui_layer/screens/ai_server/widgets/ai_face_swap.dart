@@ -23,7 +23,8 @@ import '../../common_widgets/my_image.dart';
 import '../../common_widgets/my_list_view.dart';
 import '../../image_paths.dart';
 import '../../theme.dart';
-import 'package:jygf/report/ui_layer/report_gesture_detector.dart';import 'package:jygf/report/ui_layer/report_general_banner.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+import 'package:jygf/report/ui_layer/report_general_banner.dart';
 
 
 
@@ -422,14 +423,18 @@ class _AIFaceSwapState extends State<AIFaceSwap> {
       child: Scaffold(
           appBar: MyAppBar(
             title: 'AI换脸',
-            rightWidget: TextButton(
-              onPressed: () {
-                const MineAIRecordRoute(index: 3).push(context);
-              },
-              child: Center(
-                child: Text(
-                  'wdai'.tr(),
-                  style: MyTheme.white255_13,
+            rightWidget: Align(
+              alignment: Alignment.centerRight,
+              child: ReportGestureDetector(
+                onTap: () {
+                  const MineAIRecordRoute(index: 3).push(context);
+                },
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.w),
+                  child: Text(
+                    'wdai'.tr(),
+                    style: MyTheme.white255_13.copyWith(height: 1.0),
+                  ),
                 ),
               ),
             ),

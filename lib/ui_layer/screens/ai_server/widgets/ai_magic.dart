@@ -11,7 +11,9 @@ import 'package:provider/provider.dart';
 import '../../../../domain/model/banner_model.dart';
 import '../../../utils/my_toast.dart';
 import '../../common_widgets/my_list_view.dart';
-import '../../theme.dart';import 'package:jygf/report/ui_layer/report_general_banner.dart';
+import '../../theme.dart';
+import 'package:jygf/report/ui_layer/report_general_banner.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
 
 
 
@@ -62,14 +64,18 @@ class _AIMagicState extends State<AIMagic> {
         child: Scaffold(
           appBar: MyAppBar(
             title: 'AI魔法',
-            rightWidget: TextButton(
-              onPressed: () {
-                const MineAIRecordRoute(index: 0).push(context);
-              },
-              child: Center(
-                child: Text(
-                  'wdai'.tr(),
-                  style: MyTheme.white255_13,
+            rightWidget: Align(
+              alignment: Alignment.centerRight,
+              child: ReportGestureDetector(
+                onTap: () {
+                  const MineAIRecordRoute(index: 0).push(context);
+                },
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.w),
+                  child: Text(
+                    'wdai'.tr(),
+                    style: MyTheme.white255_13.copyWith(height: 1.0),
+                  ),
                 ),
               ),
             ),

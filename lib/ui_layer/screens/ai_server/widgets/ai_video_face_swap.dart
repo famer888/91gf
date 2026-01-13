@@ -25,7 +25,8 @@ import '../../image_paths.dart';
 import '../../theme.dart';
 import '../../../../domain/model/media_model.dart';
 import '../../../../domain/enum.dart';
-import 'package:jygf/report/ui_layer/report_gesture_detector.dart';import 'package:jygf/report/ui_layer/report_general_banner.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+import 'package:jygf/report/ui_layer/report_general_banner.dart';
 
 
 
@@ -496,14 +497,18 @@ class _AiVideoFaceSwapState extends State<AiVideoFaceSwap> {
     return Scaffold(
         appBar: MyAppBar(
           title: 'sphl'.tr(),
-          rightWidget: TextButton(
-            onPressed: () {
-              const MineAIRecordRoute(index: 6).push(context);
-            },
-            child: Center(
-              child: Text(
-                'wdai'.tr(),
-                style: MyTheme.white255_13,
+          rightWidget: Align(
+            alignment: Alignment.centerRight,
+            child: ReportGestureDetector(
+              onTap: () {
+                const MineAIRecordRoute(index: 6).push(context);
+              },
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.w),
+                child: Text(
+                  'wdai'.tr(),
+                  style: MyTheme.white255_13.copyWith(height: 1.0),
+                ),
               ),
             ),
           ),
