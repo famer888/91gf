@@ -12,9 +12,8 @@ import 'package:jygf/ui_layer/screens/file_search/widget/check_file_item.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
-import 'package:provider/provider.dart';import 'package:jygf/report/ui_layer/report_general_banner.dart';
-
-
+import 'package:provider/provider.dart';
+import 'package:jygf/report/ui_layer/report_general_banner.dart';
 
 class CheckFileScreen extends StatefulWidget {
   const CheckFileScreen({super.key});
@@ -96,10 +95,10 @@ class _CheckFileScreenState extends State<CheckFileScreen> with TickerProviderSt
         child: TabBarWithView.fillColor(
           initialIndex: _initialIndex,
           tabController: tabController,
-          tabBarPadding: EdgeInsets.symmetric(vertical: 6.w),
-          tabBarHeight: 32.w,
+          tabBarHeight: 26.w,
           borderRadius: 5.w,
           isScrollable: true,
+          tabBarPadding: EdgeInsets.symmetric(vertical: 0.w),
           titles: isInit ? _titles.map((e) => e.title).toList() : [],
           views: [
             for (final NavigatorModel nav in _titles)

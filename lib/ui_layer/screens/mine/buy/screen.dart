@@ -73,7 +73,7 @@ class _MineBuyScreenState extends State<MineBuyScreen> {
       'ASMR',
       'luol'.tr(), 
       'zhoz'.tr(context: context),
-      '查档', //查档
+      'chad'.tr(context: context), //查档
     ];
 
     final views = <Widget>[

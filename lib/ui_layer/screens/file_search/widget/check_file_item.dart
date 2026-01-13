@@ -2,10 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jygf/domain/model/post_model.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+import 'package:jygf/ui_layer/router/routes.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
-import 'package:jygf/ui_layer/utils/my_toast.dart';
-import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
 
 
 class CheckFileItem extends StatelessWidget {
@@ -42,9 +42,7 @@ class CheckFileItem extends StatelessWidget {
     ]);
     return ReportGestureDetector(
       onTap: () {
-        // BlackVisitRecordUtil.updateVisitRecord(context, item);
-        // BlockDetailsRoute(id: item.id).push(context);
-        MyToast.showText(text: '跳转查档详情');
+        CommunityPostDetailRoute('${item.id}').push(context);
       },
       child: current,
     );

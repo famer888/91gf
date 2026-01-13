@@ -26,8 +26,8 @@ class PostLikeButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           MyImage.asset(
-            isLiked ? MyImagePaths.appThumbUpOnIcon : MyImagePaths.appThumbUpOffIcon,
-            iconColor: isLiked ? Color.fromRGBO(12, 2, 23, 1) : MyTheme.whiteColor,
+            isLiked ? MyImagePaths.appThumbUpOffIcon : MyImagePaths.appThumbsIcon,
+            iconColor: isLiked ? MyTheme.primaryColor : MyTheme.whiteColor,
             width: 18.w,
             height: 18.w,
           ),

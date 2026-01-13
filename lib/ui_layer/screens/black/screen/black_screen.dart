@@ -128,8 +128,8 @@ class _BlackScreenState extends State<BlackScreen> with TickerProviderStateMixin
           child: TabBarWithView.fillColor(
             initialIndex: _initialIndex,
             tabController: tabController,
-            tabBarPadding: EdgeInsets.symmetric(vertical: 6.w),
-            tabBarHeight: 32.w,
+            tabBarPadding: EdgeInsets.symmetric(vertical: 0.w),
+            tabBarHeight: 28.w,
             borderRadius: 5.w,
             isScrollable: true,
             titles: isInit ? data.map((e) => e.name).toList() : [],
