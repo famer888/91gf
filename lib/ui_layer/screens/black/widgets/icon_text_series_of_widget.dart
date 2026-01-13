@@ -10,6 +10,8 @@ import 'package:provider/provider.dart';
 import '../../../../domain/remote_domain/domains/black_domain.dart';
 import '../../../utils/common_utils.dart';
 import '../../theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 /// 左图 + 间距 + 统计数字
 class IconTextWidget extends StatelessWidget {
@@ -141,7 +143,7 @@ class CommentIconTextWidget extends StatelessWidget {
   }
 
   Widget _buildGraphCletWidget(BuildContext context) {
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: () {
         callback?.call();
       },
@@ -165,7 +167,7 @@ class CommentIconTextWidget extends StatelessWidget {
       SizedBox(height: 2.w),
       Text(CommonUtils.formatNumber(count), style: MyTheme.white255_13.s12),
     ]);
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: () {
         callback?.call();
       },
@@ -209,7 +211,7 @@ class ShareIconTextWidget extends StatelessWidget {
   }
 
   Widget _buildHorLayoutWidget(BuildContext context) {
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: () {
         const MineShareToUserRoute().push(context);
       },
@@ -226,7 +228,7 @@ class ShareIconTextWidget extends StatelessWidget {
       SizedBox(height: 2.w),
       Text('fx'.tr(context: context), style: MyTheme.white255_13.s12),
     ]);
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: () {
         const MineShareToUserRoute().push(context);
       },
@@ -329,7 +331,7 @@ class _LikeIconTextWidgetState extends State<LikeIconTextWidget> {
   }
 
   Widget _buildHorLikeWidget(BuildContext context) {
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: () => onTap(),
       child: SizedBox(
         height: 30.w,
@@ -343,7 +345,7 @@ class _LikeIconTextWidgetState extends State<LikeIconTextWidget> {
   }
 
   Widget _buildMeetLikeWidget(BuildContext context) {
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: () => onTap(),
       child: SizedBox(
         height: widget.style == 1 ? 30.w : 20.w,
@@ -362,7 +364,7 @@ class _LikeIconTextWidgetState extends State<LikeIconTextWidget> {
       text: likeCount > 0 ? null : 'dz'.tr(context: context),
       count: likeCount > 0 ? likeCount : 'dz'.tr(context: context),
     );
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: () => onTap(),
       child: Container(
         padding: EdgeInsets.all(1.w),
@@ -391,7 +393,7 @@ class _LikeIconTextWidgetState extends State<LikeIconTextWidget> {
       SizedBox(height: 2.w),
       Text(CommonUtils.formatNumber(likeCount), style: MyTheme.white255_13.s12),
     ]);
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: () => onTap(),
       child: Container(margin: EdgeInsets.only(top: 15.w), width: 43.w, child: current),
     );
@@ -494,7 +496,7 @@ class _CletIconTextWidgetState extends State<CletIconTextWidget> {
           style: MyTheme.white07_12.s13),
     ]);
 
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: () => onTap(),
       child: SizedBox(height: 30.w, child: current),
     );
@@ -512,7 +514,7 @@ class _CletIconTextWidgetState extends State<CletIconTextWidget> {
             Text(isCollected ? '已收藏' : '收藏', style: MyTheme.white255_13.s15),
           ],
         );
-        return GestureDetector(
+        return ReportGestureDetector(
           onTap: () => onTap(),
           child: SizedBox(
             height: 30.w,
@@ -536,7 +538,7 @@ class _CletIconTextWidgetState extends State<CletIconTextWidget> {
         //   height: 40.w,
         //   child: current,
         // );
-        return GestureDetector(
+        return ReportGestureDetector(
           onTap: onTap,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -560,7 +562,7 @@ class _CletIconTextWidgetState extends State<CletIconTextWidget> {
       count: collectCount > 0 ? collectCount : null,
     );
 
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: () => onTap(),
       child: Container(
         width: 75.w,
@@ -589,7 +591,7 @@ class _CletIconTextWidgetState extends State<CletIconTextWidget> {
       SizedBox(height: 2.w),
       Text(CommonUtils.formatNumber(collectCount), style: MyTheme.white255_13),
     ]);
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: () => onTap(),
       child: Container(margin: EdgeInsets.only(top: 15.w), width: 43.w, child: current),
     );

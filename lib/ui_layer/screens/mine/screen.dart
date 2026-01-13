@@ -22,6 +22,8 @@ import '../common_widgets/my_list_view.dart';
 import '../common_widgets/screen_background.dart';
 import '../image_paths.dart';
 import '../theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class MineScreen extends StatefulWidget {
   const MineScreen({super.key});
@@ -130,7 +132,7 @@ class _FixedTopArea extends StatelessWidget {
         children: [
           const _SystemNoticeIcon(),
           const SizedBox(width: 20),
-          GestureDetector(
+          ReportGestureDetector(
             onTap: () => const MineSetupRoute().push(context),
             child: const MyImage.asset(
               MyImagePaths.appMineSetting,
@@ -149,7 +151,7 @@ class _SystemNoticeIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: () {
         const MessageCenterRoute().push(context);
       },
@@ -268,7 +270,7 @@ class _HeaderInfo extends StatelessWidget {
                         ),
                       ),
                     if (member.vipUpgrade == 1)
-                      GestureDetector(
+                      ReportGestureDetector(
                         onTap: () => const VipUpgradeRoute().push(context),
                         child: Container(
                           margin: EdgeInsets.only(left: 5.w),
@@ -295,7 +297,7 @@ class _HeaderInfo extends StatelessWidget {
               builder: (context, tokenStatus, child) =>
                   tokenStatus == MyTokenStatus.valid
                       ? const SizedBox.shrink()
-                      : GestureDetector(
+                      : ReportGestureDetector(
                           onTap: () => const LoginRoute().push(context),
                           child: Container(
                             width: 70,
@@ -388,7 +390,7 @@ class _VIPCenterState extends State<_VIPCenter> {
       )];
     return SizedBox(
       height: 150.w,
-      child: GestureDetector(
+      child: ReportGestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () => const VipCenterRoute().push(context),
         child: Stack(
@@ -488,7 +490,7 @@ class _CenterMenu extends StatelessWidget {
                   child: SizedBox(
                     width: 174.w,
                     // height: 124.w,
-                    child: GestureDetector(
+                    child: ReportGestureDetector(
                       behavior: HitTestBehavior.translucent,
                       onTap: () => const CoinRechargeRoute().push(context),
                       child: Stack(
@@ -538,7 +540,7 @@ class _CenterMenu extends StatelessWidget {
             child: SizedBox(
               width: 171.w,
               height: 54.w,
-              child: GestureDetector(
+              child: ReportGestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: () => const MineShareToUserRoute().push(context),
                 child: Stack(
@@ -580,7 +582,7 @@ class _CenterMenu extends StatelessWidget {
             child: SizedBox(
               width: 171.w,
               height: 54.w,
-              child: GestureDetector(
+              child: ReportGestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: () => const MineWelfareRoute().push(context),
                 child: Stack(
@@ -625,7 +627,7 @@ class _AiEntry extends StatelessWidget {
   const _AiEntry();
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ReportGestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () => const AIServerRoute().push(context),
         child:  SizedBox(
@@ -652,7 +654,7 @@ class _CenterMenuCard extends StatelessWidget {
   final String backgroundImg;
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ReportGestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: onTap,
       child: Stack(
@@ -736,7 +738,7 @@ class _FirstMenuCard extends StatelessWidget {
   final String backgroundImg;
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ReportGestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: onTap,
       child: Stack(
@@ -813,7 +815,7 @@ class _SecondMenu extends StatelessWidget {
             for (int i = 0; i < menu.length; i++) ...[
               if (i > 0) SizedBox(width: 10.w),
               Expanded(
-                child: GestureDetector(
+                child: ReportGestureDetector(
                   onTap: menu[i].onTap,
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 12.w, horizontal: 12.w),
@@ -933,7 +935,7 @@ class _MenuButtonGrid extends StatelessWidget {
       ],
     );
     return data.onTap != null
-        ? GestureDetector(onTap: data.onTap, child: content)
+        ? ReportGestureDetector(onTap: data.onTap, child: content)
         : content;
   }
   

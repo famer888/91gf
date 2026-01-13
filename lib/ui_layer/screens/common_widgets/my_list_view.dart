@@ -12,6 +12,8 @@ import '../theme.dart';
 import 'status/empty_data.dart';
 import 'status/loading.dart';
 import 'status/network_error.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 typedef FetchMoreCallback<T> = Future<T> Function(
     int currentPage, int pageSize);
@@ -443,7 +445,7 @@ class DataStatusText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.only(top: 30, bottom: 90),

@@ -38,6 +38,8 @@ import 'package:jygf/ui_layer/const.dart';
 import 'package:jygf/ui_layer/notifiers/home_config_notifier.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/keep_alive_wrapper.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_tab_bar.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class UserCenterScreen extends StatefulWidget {
   const UserCenterScreen({super.key, required this.aff, this.index = 0});
@@ -212,7 +214,7 @@ class _UserCenterScreenState extends State<UserCenterScreen> {
                   const Spacer(),
                   member.uuid == data.uuid
                       ? const SizedBox.shrink()
-                      : GestureDetector(
+                      : ReportGestureDetector(
                           behavior: HitTestBehavior.translucent,
                           onTap: () {
                             if ((member.username ?? '').isEmpty) {
@@ -305,7 +307,7 @@ class _UserCenterScreenState extends State<UserCenterScreen> {
   Widget _contactView(CreatorInfo data) {
     return data.hasContact == 1
         ? (data.contact?.isNotEmpty ?? false)
-            ? GestureDetector(
+            ? ReportGestureDetector(
                 onTap: () {
                   //解锁联系方式
                   if (data.contact?.isNotEmpty ?? false) {
@@ -319,7 +321,7 @@ class _UserCenterScreenState extends State<UserCenterScreen> {
                   child: Text(data.contact ?? '', style: MyTheme.white07_12, maxLines: 10),
                 ),
               )
-            : GestureDetector(
+            : ReportGestureDetector(
                 onTap: () {
                   _buyData(data);
                 },
@@ -531,7 +533,7 @@ class _UserTopicBarWidgetState extends State<UserTopicBarWidget> {
       height: MyTheme.statusHeight + MyTheme.navbarHegiht,
       // color: MyTheme.bgColor.withOpacity(opacity),
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        GestureDetector(
+        ReportGestureDetector(
           child: Container(
             alignment: Alignment.center,
             width: 40.w,

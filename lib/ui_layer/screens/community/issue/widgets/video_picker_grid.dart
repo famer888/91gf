@@ -15,6 +15,8 @@ import '../../../../utils/common_utils.dart';
 import '../../../../utils/my_toast.dart';
 import '../../../common_widgets/my_image.dart';
 import '../../../image_paths.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class VideoPickerGrid extends StatefulWidget {
   const VideoPickerGrid({super.key, required this.video, required this.upList});
@@ -123,7 +125,7 @@ class _VideoPickerGridState extends State<VideoPickerGrid> {
                   Positioned(
                     top: 0,
                     right: 0,
-                    child: GestureDetector(
+                    child: ReportGestureDetector(
                       behavior: HitTestBehavior.translucent,
                       onTap: () => setState(() {
                         widget.upList.removeWhere((el) => el['type'] == 1);
@@ -135,7 +137,7 @@ class _VideoPickerGridState extends State<VideoPickerGrid> {
                   )
                 ],
               )
-            : GestureDetector(
+            : ReportGestureDetector(
                 onTap: _videoPickerAssets,
                 child: Container(
                   width: _itemWidth,

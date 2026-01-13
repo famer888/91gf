@@ -15,6 +15,8 @@ import 'package:jygf/ui_layer/screens/common_widgets/my_avatar.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class SoulGroudListCard extends StatefulWidget {
   const SoulGroudListCard({super.key, required this.data});
@@ -37,7 +39,7 @@ class _SoulGroudListCardState extends State<SoulGroudListCard> {
     }
 
     return Column(children: [
-      GestureDetector(
+      ReportGestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () {
           setState(() {
@@ -96,7 +98,7 @@ class _SoulGroudListCardState extends State<SoulGroudListCard> {
                           ),
                           widget.data.isJoin == 1
                               ? Container()
-                              : GestureDetector(
+                              : ReportGestureDetector(
                                   onTap: () {
                                     //加入聊天
                                     _showAlertVp(isBtnJoin: true);

@@ -16,6 +16,8 @@ import 'package:jygf/ui_layer/screens/common_widgets/video_player/shortv_mv_play
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'widgets/introduction_view.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class CartoonDetailScreen extends StatefulWidget {
   const CartoonDetailScreen({super.key, required this.id});
@@ -72,7 +74,7 @@ class _CartoonDetailScreenState extends State<CartoonDetailScreen> {
         child: Scaffold(
           extendBodyBehindAppBar: true,
           // appBar: const MyAppBar(),
-          floatingActionButton: GestureDetector(
+          floatingActionButton: ReportGestureDetector(
             onTap: () {
               context.pop();
             },

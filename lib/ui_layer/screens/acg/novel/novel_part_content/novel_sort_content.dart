@@ -14,6 +14,8 @@ import 'package:jygf/ui_layer/screens/common_widgets/my_list_view.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/screen_background.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 ///分类界面
 class NovelSortContent extends StatefulWidget {
@@ -89,7 +91,7 @@ class _NovelSortContentState extends State<NovelSortContent> {
                                     itemCount: items.length,
                                     itemBuilder: (context, iIndex) {
                                       BitNavModel item = items[iIndex];
-                                      return GestureDetector(
+                                      return ReportGestureDetector(
                                         behavior: HitTestBehavior.opaque,
                                         onTap: () {
                                           if (_filterTempMap[itemModel.value] ==

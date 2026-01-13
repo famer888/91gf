@@ -6,6 +6,8 @@ import '../../../../../../domain/model/tiezt_model.dart';
 import '../../../../../router/routes.dart';
 import '../../../../theme.dart';
 import '../../../my_image.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class PostCenterCard extends StatelessWidget {
   const PostCenterCard({super.key, required this.data});
@@ -17,7 +19,7 @@ class PostCenterCard extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding,vertical: 5.w),
       decoration: const BoxDecoration(color: Colors.transparent),
-      child: GestureDetector(
+      child: ReportGestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: data.status == 1 ? () => CommunityPostDetailRoute(data.id.toString()).push(context) : null,
         child: Row(
@@ -61,7 +63,7 @@ class PostCenterCard extends StatelessWidget {
       decoration: const BoxDecoration(
         color: Colors.transparent,
       ),
-      child: GestureDetector(
+      child: ReportGestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: data.status == 1
             ? () => CommunityPostDetailRoute(data.id.toString()).push(context)
@@ -143,7 +145,7 @@ class PostCenterCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        GestureDetector(
+                        ReportGestureDetector(
                           behavior: HitTestBehavior.translucent,
                           onTap: () =>
                               CommunityTagDetailRoute('${data.topic?.id}')

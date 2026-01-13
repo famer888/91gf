@@ -13,7 +13,6 @@ import 'package:jygf/ui_layer/screens/black/widgets/comment.dart';
 import 'package:jygf/ui_layer/screens/black/widgets/html_body_widget.dart';
 import 'package:jygf/ui_layer/screens/black/widgets/icon_text_series_of_widget.dart';
 import 'package:jygf/ui_layer/screens/black/widgets/index_key.dart';
-import 'package:jygf/ui_layer/screens/common_widgets/general_banner.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_app_bar.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_list_view.dart';
@@ -26,6 +25,10 @@ import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';import 'package:jygf/report/ui_layer/report_general_banner.dart';
+
+
+
 
 class BlackDetailsScreen extends StatefulWidget {
   final int id;
@@ -198,7 +201,7 @@ class _BlackDetailsScreenState extends State<BlackDetailsScreen> {
         ),
         body: _asyncValue.maybeWhen(
           data: (data) {
-            return GestureDetector(
+            return ReportGestureDetector(
               onTap: () {
                 onDismissFocus();
               },
@@ -262,7 +265,7 @@ class _BlackDetailsScreenState extends State<BlackDetailsScreen> {
         final banner = topAds.map((x) => BannerModel.fromJson(x)).toList();
         return Padding(
           padding: EdgeInsets.only(left: MyTheme.pagePadding, right: MyTheme.pagePadding, top: MyTheme.pagePadding),
-          child: GeneralBannerAppsListWidget(data: banner),
+          child: ReportGeneralAppsListVidget(data: banner),
         );
       }
     } catch (e) {
@@ -279,7 +282,7 @@ class _BlackDetailsScreenState extends State<BlackDetailsScreen> {
       spacing: 10.w,
       runSpacing: 10.w,
       children: cur.tags.split(',').map<Widget>((i) {
-        return GestureDetector(
+        return ReportGestureDetector(
           onTap: () {
             BlockTagListRoute(tag: i).push(context);
           },
@@ -378,7 +381,7 @@ class _BlackDetailsScreenState extends State<BlackDetailsScreen> {
               // _buildViPIconWidget(item.user),
             ]),
             SizedBox(height: 2.w),
-            GestureDetector(
+            ReportGestureDetector(
               onTap: () => isRoot ? onReplyAReview(item) : null,
               child: SizedBox(
                 width: double.infinity,
@@ -421,7 +424,7 @@ class _BlackDetailsScreenState extends State<BlackDetailsScreen> {
       return Row(children: [
         current,
         SizedBox(width: item.createdAt.isEmpty ? 0 : 15.w),
-        GestureDetector(
+        ReportGestureDetector(
           onTap: () => onReplyAReview(item),
           child: Text(
             'hf'.tr(context: context),
@@ -475,7 +478,7 @@ class _BlackDetailsScreenState extends State<BlackDetailsScreen> {
       ),
     ]);
 
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: () {
         if (recommend.needVip) {
           VipPayDialog.showVipDialog(context);
@@ -606,7 +609,7 @@ class _BlackDetailsScreenState extends State<BlackDetailsScreen> {
   }
 
   Widget _buildActionItemWidget(iconName, title, void Function()? onTap) {
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: onTap,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

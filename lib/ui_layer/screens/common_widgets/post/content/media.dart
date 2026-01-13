@@ -20,6 +20,8 @@ import '../../../../utils/common_utils.dart';
 import '../../../image_paths.dart';
 import '../../../theme.dart';
 import '../../my_image.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class PostMediaView extends StatefulWidget {
   final List<MediaModel> medias;
@@ -117,7 +119,7 @@ class _PostMediaViewState extends State<PostMediaView> {
                 child: SizedBox(
                   width: width,
                   height: width / w * h,
-                  child: GestureDetector(
+                  child: ReportGestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () => goPictureView(index),
                     child: MyImage.network(CommonUtils.getThumb(widget.medias[index].toJson()), borderRadius: 5.w, fit: BoxFit.contain),
@@ -136,7 +138,7 @@ class _PostMediaViewState extends State<PostMediaView> {
                   SizedBox(
                     width: 1.sw - MyTheme.pagePadding * 2,
                     height: (1.sw - MyTheme.pagePadding * 2) / 16 * 9,
-                    child: GestureDetector(
+                    child: ReportGestureDetector(
                       behavior: HitTestBehavior.translucent,
                       onTap: () => goPictureView(index),
                       child: Positioned.fill(

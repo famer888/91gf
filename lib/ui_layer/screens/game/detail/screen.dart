@@ -27,6 +27,8 @@ import '../../common_widgets/status/loading.dart';
 import '../../common_widgets/status/network_error.dart';
 import '../../theme.dart';
 import 'content.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class GameDetailScreen extends StatefulWidget {
   const GameDetailScreen({super.key, required this.id});
@@ -195,7 +197,7 @@ class _BodyState extends State<_Body> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return _asyncValue.maybeWhen(
       data: (data) {
-        return GestureDetector(
+        return ReportGestureDetector(
           onTap: () {
             unfocus();
           },
@@ -267,7 +269,7 @@ class CommentTile extends StatelessWidget {
       Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          GestureDetector(
+          ReportGestureDetector(
             onTap: () {
               UserCenterRoute(
                 '${member?.aff}',
@@ -325,7 +327,7 @@ class CommentTile extends StatelessWidget {
           ),
           StatefulBuilder(builder: (_, setState) {
             final isLike = data.isLike == 1;
-            return GestureDetector(
+            return ReportGestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () async {
                 if (data.id case final id?) {

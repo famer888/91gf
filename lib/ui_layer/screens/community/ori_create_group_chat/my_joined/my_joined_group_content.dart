@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:jygf/ui_layer/screens/common_widgets/general_banner.dart';
 import 'package:provider/provider.dart';
 import 'package:jygf/domain/domain.dart';
 import 'package:jygf/domain/model/banner_model.dart';
@@ -15,7 +14,9 @@ import 'package:jygf/ui_layer/screens/common_widgets/my_list_view.dart';
 import 'package:jygf/ui_layer/screens/community/ori_create_group_chat/group_chat/card/soul_groud_list_card.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
-import 'package:jygf/ui_layer/utils/my_toast.dart';
+import 'package:jygf/ui_layer/utils/my_toast.dart';import 'package:jygf/report/ui_layer/report_general_banner.dart';
+
+
 
 class MyJoinedGroupContent extends StatefulWidget {
   const MyJoinedGroupContent({super.key});
@@ -131,7 +132,7 @@ class _Header extends StatelessWidget {
             if (banners.isEmpty) return const SizedBox.shrink();
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-              child: GeneralBannerAppsListWidget(data: banners),
+              child: ReportGeneralAppsListVidget(data: banners),
             );
           },
         ),

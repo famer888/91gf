@@ -17,6 +17,8 @@ import '../../../common_widgets/my_image.dart';
 import '../../../common_widgets/my_list_view.dart';
 import '../../../image_paths.dart';
 import '../../../theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class MineWithdrawalBankListScreen extends StatefulWidget {
   const MineWithdrawalBankListScreen({super.key});
@@ -120,7 +122,7 @@ class _MineWithdrawalBankListScreenState
                 buildTextField('srxm', nameController, TextInputType.text),
               ]),
               SizedBox(height: 40.w),
-              GestureDetector(
+              ReportGestureDetector(
                 onTap: () => _sendAddBankCard(
                   card: cardController.text,
                   name: nameController.text,
@@ -223,7 +225,7 @@ class _MineWithdrawalBankListScreenState
     return Scaffold(
         appBar: MyAppBar(
           title: 'tx'.tr(context: context),
-          rightWidget: GestureDetector(
+          rightWidget: ReportGestureDetector(
             onTap: _showAddBankCardDialog,
             child: Text(
               'tji'.tr(context: context),
@@ -254,7 +256,7 @@ class _MineWithdrawalBankListScreenState
                         ? const SizedBox.shrink()
                         : Padding(
                             padding: EdgeInsets.only(bottom: 20.w),
-                            child: GestureDetector(
+                            child: ReportGestureDetector(
                               onTap: _showAddBankCardDialog,
                               child: Container(
                                 alignment: Alignment.center,
@@ -282,7 +284,7 @@ class _MineWithdrawalBankListScreenState
                         offstage: selectedCard != null ? false : true,
                         child: Padding(
                           padding: EdgeInsets.only(bottom: 20.w),
-                          child: GestureDetector(
+                          child: ReportGestureDetector(
                             onTap: () {
                               context.pop(selectedCardNotifier.value);
                             },
@@ -333,7 +335,7 @@ class _MyBankCardState extends State<MyBankCard> {
           final isSelected = currentCard == widget.card;
           return Padding(
             padding: EdgeInsets.only(top: MyTheme.pagePadding),
-            child: GestureDetector(
+            child: ReportGestureDetector(
                 onTap: () =>
                     widget.selectedBankCardNotifier.value = widget.card,
                 child: Row(
@@ -451,7 +453,7 @@ class _MyBankCardState extends State<MyBankCard> {
                                         ),
                                         Expanded(
                                             child: Center(
-                                          child: GestureDetector(
+                                          child: ReportGestureDetector(
                                             onTap: widget.onDelete,
                                             child: MyImage.asset(
                                               MyImagePaths.appShch,

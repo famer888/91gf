@@ -8,6 +8,8 @@ import 'package:jygf/ui_layer/router/routes.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/follow_button.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_avatar.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class CreativeMasterCard extends StatefulWidget {
   const CreativeMasterCard(
@@ -41,7 +43,7 @@ class _CreativeMasterCardState extends State<CreativeMasterCard> {
 
     return Container(
       child: Column(children: [
-        GestureDetector(
+        ReportGestureDetector(
           behavior: HitTestBehavior.translucent,
           onTap: () {
             UserCenterRoute(

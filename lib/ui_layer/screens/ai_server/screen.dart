@@ -3,12 +3,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jygf/ui_layer/notifiers/home_config_notifier.dart';
 import 'package:jygf/ui_layer/router/paths.dart';
-import 'package:jygf/ui_layer/screens/common_widgets/general_banner.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_app_bar.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/screen_background.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:provider/provider.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';import 'package:jygf/report/ui_layer/report_general_banner.dart';
+
+
+
 
 class AiServerScreen extends StatefulWidget {
   const AiServerScreen({super.key, this.needNavi = true, this.topPadding = 0});
@@ -36,7 +39,7 @@ class _AiServerScreenState extends State<AiServerScreen> {
           child: Column(
             children: [
               SizedBox(height: 10.w),
-              GeneralBannerAppsListWidget(data: banners),
+              ReportGeneralAppsListVidget(data: banners),
               ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -44,7 +47,7 @@ class _AiServerScreenState extends State<AiServerScreen> {
                 itemBuilder: (BuildContext context, int index) {
                   return Padding(
                     padding: EdgeInsets.symmetric(vertical: 10.w),
-                    child: GestureDetector(
+                    child: ReportGestureDetector(
                         onTap: () {
                           //跳转各个ai功能
                           _onTapAiFunction(navs[index].type);

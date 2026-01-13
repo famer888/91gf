@@ -18,6 +18,8 @@ import '../../common_widgets/my_tab_bar.dart';
 import '../../common_widgets/screen_background.dart';
 import '../../common_widgets/status/empty_data.dart';
 import '../../theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class MineDownloadScreen extends StatefulWidget {
   const MineDownloadScreen({super.key});
@@ -134,7 +136,7 @@ class _MineDownloadScreenState extends State<MineDownloadScreen> {
               child: Row(
                 children: [
                   Expanded(
-                      child: GestureDetector(
+                      child: ReportGestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: onTapAll,
                     child: Container(
@@ -172,7 +174,7 @@ class _MineDownloadScreenState extends State<MineDownloadScreen> {
                           },
                         )),
                   )),
-                  GestureDetector(
+                  ReportGestureDetector(
                     onTap: onTapDelete,
                     child: Container(
                       padding: EdgeInsets.symmetric(
@@ -203,7 +205,7 @@ class _MineDownloadScreenState extends State<MineDownloadScreen> {
       child: Scaffold(
         appBar: MyAppBar(
           title: 'wdxz'.tr(context: context),
-          rightWidget: GestureDetector(
+          rightWidget: ReportGestureDetector(
             onTap: () {
               isEditNotifier.value = !isEditNotifier.value;
             },
@@ -301,7 +303,7 @@ class _VideoViewState extends State<_VideoView> {
                     valueListenable: widget.isEditNotifier,
                     builder: (_, isEdit, __) {
                       return isEdit
-                          ? GestureDetector(
+                          ? ReportGestureDetector(
                               behavior: HitTestBehavior.translucent,
                               onTap: () {
                                 data[index].choosed = !data[index].choosed;
@@ -383,7 +385,7 @@ class _VideoCardState extends State<_VideoCard> {
     final thumbHeight = thumbWidth / 7 * 4;
     final thumbUrl = data['thumbCover'];
     final marginBottom = 6.5.w;
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: () {
         final value = progressNotifier.value;
         final progress = value.progress;

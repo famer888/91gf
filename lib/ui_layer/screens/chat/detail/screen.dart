@@ -25,6 +25,8 @@ import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class ChatDetailScreen extends StatefulWidget {
   const ChatDetailScreen({super.key, required this.id});
@@ -181,7 +183,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen>
                                 Swiper(
                                   itemCount: _medias.length,
                                   itemBuilder: (context, index) {
-                                    return GestureDetector(
+                                    return ReportGestureDetector(
                                       onTap: () {
                                         if (_medias[index].mediaType != 1) {
                                           return;
@@ -286,7 +288,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen>
                                           ],
                                         ),
                                         Row(children: [
-                                          GestureDetector(
+                                          ReportGestureDetector(
                                             onTap: () {
                                               const MineShareToUserRoute()
                                                   .push(context);
@@ -309,7 +311,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen>
                                             ),
                                           ),
                                           SizedBox(width: 12.w),
-                                          GestureDetector(
+                                          ReportGestureDetector(
                                             behavior: HitTestBehavior.translucent,
                                             onTap: postCollectData,
                                             child: SizedBox(
@@ -450,7 +452,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen>
                                                     ),
                                                   ),
                                                   WidgetSpan(
-                                                    child: GestureDetector(
+                                                    child: ReportGestureDetector(
                                                       behavior:
                                                       HitTestBehavior.translucent,
                                                       onTap: () {

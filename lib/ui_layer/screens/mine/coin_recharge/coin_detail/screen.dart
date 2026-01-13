@@ -13,6 +13,8 @@ import '../../../common_widgets/my_list_view.dart';
 import '../../../common_widgets/screen_background.dart';
 import '../../../theme.dart';
 import '../../../../utils/my_toast.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class CoinDetailScreen extends StatefulWidget {
   const CoinDetailScreen({super.key});
@@ -63,7 +65,7 @@ class _CoinDetailScreenState extends State<CoinDetailScreen> {
         appBar: MyAppBar(
           title: 'jbmxwa'.tr(context: context),
           showDiver: true,
-          rightWidget: GestureDetector(
+          rightWidget: ReportGestureDetector(
             onTap: () => showFilterNotifier.value = !showFilterNotifier.value,
             child: Text(
               'sx'.tr(context: context),
@@ -103,7 +105,7 @@ class _CoinDetailScreenState extends State<CoinDetailScreen> {
                       children: [
                         for (final filter in filterList)
                           Expanded(
-                            child: GestureDetector(
+                            child: ReportGestureDetector(
                               onTap: () => changeFilterType(sort: filter.type),
                               child: Center(
                                 child: Text(

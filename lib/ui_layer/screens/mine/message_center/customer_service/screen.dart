@@ -23,6 +23,8 @@ import '../../../common_widgets/status/loading.dart';
 import '../../../common_widgets/status/network_error.dart';
 import '../../../image_paths.dart';
 import '../../../theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class MineCustomerServiceScreen extends StatefulWidget {
   const MineCustomerServiceScreen({super.key});
@@ -121,7 +123,7 @@ class _MineCustomerServiceScreenState extends State<MineCustomerServiceScreen> {
       child: Scaffold(
         appBar: MyAppBar(
           title: 'zxkf'.tr(context: context),
-          rightWidget: GestureDetector(
+          rightWidget: ReportGestureDetector(
             onTap: () => const MineHelpRoute().push(context),
             child: Text(
               'cjwti'.tr(context: context),
@@ -175,7 +177,7 @@ class _MineCustomerServiceScreenState extends State<MineCustomerServiceScreen> {
                             SizedBox(
                               width: 17.5.w,
                               height: 17.w,
-                              child: GestureDetector(
+                              child: ReportGestureDetector(
                                 onTap: _imagePickerAssets,
                                 child: MyImage.asset(
                                   MyImagePaths.appCustomerServiceSelectImg,
@@ -206,7 +208,7 @@ class _MineCustomerServiceScreenState extends State<MineCustomerServiceScreen> {
                         ),
                       ),
                       SizedBox(width: 7.w),
-                      GestureDetector(
+                      ReportGestureDetector(
                         onTap: _sendMsg,
                         child: SizedBox(
                           width: 44.w,

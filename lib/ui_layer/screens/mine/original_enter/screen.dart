@@ -10,6 +10,8 @@ import '../../common_widgets/my_image.dart';
 import '../../common_widgets/screen_background.dart';
 import '../../image_paths.dart';
 import '../../theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class OriginalEnterScreen extends StatefulWidget {
   const OriginalEnterScreen({super.key});
@@ -61,7 +63,7 @@ class _OriginalEnterScreenState extends State<OriginalEnterScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        GestureDetector(
+                        ReportGestureDetector(
                           behavior: HitTestBehavior.translucent,
                           onTap: () {
                             CommonUtils.launchUrl(config.potatoGroup);
@@ -78,7 +80,7 @@ class _OriginalEnterScreenState extends State<OriginalEnterScreen> {
                             ],
                           ),
                         ),
-                        GestureDetector(
+                        ReportGestureDetector(
                           behavior: HitTestBehavior.translucent,
                           onTap: () {
                             CommonUtils.launchUrl(config.tgGroup);

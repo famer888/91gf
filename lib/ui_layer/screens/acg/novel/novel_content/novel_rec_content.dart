@@ -15,12 +15,15 @@ import 'package:jygf/ui_layer/router/routes.dart';
 import 'package:jygf/ui_layer/screens/acg/comic/card/comic_ad_card.dart';
 import 'package:jygf/ui_layer/screens/acg/novel/card/novel_item_card.dart';
 import 'package:jygf/ui_layer/screens/acg/novel/card/novel_re_item_card.dart';
-import 'package:jygf/ui_layer/screens/common_widgets/general_banner.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_list_view.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';import 'package:jygf/report/ui_layer/report_general_banner.dart';
+
+
+
 
 class NovelRecContent extends StatefulWidget {
   const NovelRecContent({super.key, required this.id});
@@ -134,7 +137,7 @@ class _Header extends StatelessWidget {
             if (banners.isEmpty) return const SizedBox.shrink();
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-              child: GeneralBannerAppsListWidget(data: banners),
+              child: ReportGeneralAppsListVidget(data: banners),
             );
           },
         ),
@@ -162,7 +165,7 @@ class _Header extends StatelessWidget {
                 ),
                 itemBuilder: (context, index) {
                   final partsItem = parts[index];
-                  return GestureDetector(
+                  return ReportGestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () {
                       //漫画分类，最新，完结，排行榜点击

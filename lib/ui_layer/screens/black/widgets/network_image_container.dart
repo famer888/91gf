@@ -8,6 +8,8 @@ import 'package:jygf/ui_layer/screens/black/http/http_image.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 final Uint8List kTransparentImage = Uint8List.fromList(<int>[
   0x89,
@@ -352,7 +354,7 @@ class _NetworkImageWidgetState extends State<NetworkImageWidget> with SingleTick
       ], color: Colors.transparent),
       child: Image.asset(MyImagePaths.appReplyIcon, width: 35),
     );
-    return GestureDetector(onTap: () => onloadImage(), child: current);
+    return ReportGestureDetector(onTap: () => onloadImage(), child: current);
   }
 
 /////////////////////////////////////////////////////////////

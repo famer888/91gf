@@ -11,6 +11,7 @@ import 'package:jygf/domain/model/nav_model.dart';
 import 'package:jygf/domain/model/navigator_model.dart';
 import 'package:jygf/domain/model/part_nav_model.dart';
 import 'package:jygf/domain/type_def.dart';
+import 'package:jygf/report/ui_layer/report_general_banner.dart';
 import 'package:jygf/ui_layer/notifiers/home_config_notifier.dart';
 import 'package:jygf/ui_layer/router/routes.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/event_bus/event_bus.dart';
@@ -20,10 +21,11 @@ import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
 import 'feed/feed_card.dart';
-import 'general_banner.dart';
 import 'my_list_view.dart';
 import 'my_tab_bar.dart';
 import 'my_image.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class ApiLinkView extends StatefulWidget {
   const ApiLinkView({super.key, required this.linkModel, required this.onLinkNavTap});
@@ -160,7 +162,7 @@ class _HeaderState extends State<_Header> {
 
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-              child: GeneralBannerAppsListWidget(data: banners),
+              child: ReportGeneralAppsListVidget(data: banners), 
             );
 
             // return Column(
@@ -227,7 +229,7 @@ class _HeaderState extends State<_Header> {
                 itemCount: parts.length,
                 itemBuilder: (context, index) {
                   final partsItem = parts[index];
-                  return GestureDetector(
+                  return ReportGestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () {
                       final linkUrl = partsItem.urlStr;
@@ -295,7 +297,7 @@ class _HeaderState extends State<_Header> {
                   ),
                   itemBuilder: (context, index) {
                     final partsItem = parts[index];
-                    return GestureDetector(
+                    return ReportGestureDetector(
                       behavior: HitTestBehavior.translucent,
                       onTap: () {
                         final linkUrl = partsItem.urlStr;
@@ -390,7 +392,7 @@ class _HeaderState extends State<_Header> {
                                  gradient: MyTheme.gradient_90_114_15,
                                 ),
                                 child: Center(
-                                  child: GestureDetector(
+                                  child: ReportGestureDetector(
                                     behavior: HitTestBehavior.translucent,
                                     onTap: () {
                                       final linkUrl = topic.linkUrl;
@@ -474,7 +476,7 @@ class _HeaderState extends State<_Header> {
           ),
           itemBuilder: (context, index) {
             final topic = contentTopics[index];
-            return GestureDetector(
+            return ReportGestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () {
                 final linkUrl = topic.linkUrl;

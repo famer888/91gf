@@ -26,6 +26,8 @@ import '../../../common_widgets/screen_background.dart';
 import '../../../common_widgets/status/loading.dart';
 import '../../../common_widgets/status/network_error.dart';
 import '../../../theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class VipUpgradeScreen extends StatefulWidget {
   const VipUpgradeScreen({super.key});
@@ -180,7 +182,7 @@ class _VipUpgradeScreenState extends State<VipUpgradeScreen> {
       child: Scaffold(
         appBar: MyAppBar(
           title: 'hyzx'.tr(context: context),
-          rightWidget: GestureDetector(
+          rightWidget: ReportGestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () => RechargeRecordRoute(_type.id.toString()).push(context),
             child: Text(
@@ -330,7 +332,7 @@ class _ProductCardArea extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         scrollDirection: Axis.horizontal,
         itemCount: products.length,
-        itemBuilder: (context, index) => GestureDetector(
+        itemBuilder: (context, index) => ReportGestureDetector(
           behavior: HitTestBehavior.translucent,
           onTap: () => selectedNotifier.value = index,
           child: ValueListenableBuilder(
@@ -699,7 +701,7 @@ class _ExpItemState extends State<_ExpItem> {
                   ),
                 ],
               ),
-              GestureDetector(
+              ReportGestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: _sendExpCoverVIP,
                 child: Container(
@@ -776,7 +778,7 @@ class _FixedBuyButtonState extends State<FixedBuyButton> {
                 ),
               ),
               SizedBox(height: 10.w),
-              GestureDetector(
+              ReportGestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: () => const MineCustomerServiceRoute().push(context),
                 child: Text.rich(

@@ -31,6 +31,8 @@ import '../../common_widgets/status/loading.dart';
 import '../../common_widgets/status/network_error.dart';
 import '../../theme.dart';
 import 'content.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class CommunityPostDetailScreen extends StatefulWidget {
   const CommunityPostDetailScreen({super.key, required this.id});
@@ -194,7 +196,7 @@ class _CommunityPostDetailScreenState extends State<CommunityPostDetailScreen> w
         return ScreenBackground(
           child: Scaffold(
             appBar: MyAppBar(
-              leftWidget: GestureDetector(
+              leftWidget: ReportGestureDetector(
                 onTap: () {
                   FocusManager.instance.primaryFocus?.unfocus();
                   context.pop();
@@ -214,7 +216,7 @@ class _CommunityPostDetailScreenState extends State<CommunityPostDetailScreen> w
               //   ),
               // ),
             ),
-            body: GestureDetector(
+            body: ReportGestureDetector(
               onTap: () {
                 unfocus();
               },
@@ -284,7 +286,7 @@ class _AvatarWithNickName extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        GestureDetector(
+        ReportGestureDetector(
           onTap: () {
             FocusManager.instance.primaryFocus?.unfocus();
             context.pop();
@@ -295,7 +297,7 @@ class _AvatarWithNickName extends StatelessWidget {
           ),
         ),
         SizedBox(width: 10.w),
-        GestureDetector(
+        ReportGestureDetector(
           behavior: HitTestBehavior.translucent,
           onTap: () {
             UserCenterRoute('${user?.aff}').push(context);

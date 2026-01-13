@@ -19,6 +19,8 @@ import 'package:jygf/ui_layer/router/routes.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/member_vip_img.dart';
 
 import '../../../../../../domain/api_validator.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class CartoonCommentView extends StatefulWidget {
   const CartoonCommentView({super.key, required this.id});
@@ -76,7 +78,7 @@ class _CartoonCommentViewState extends State<CartoonCommentView> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: () {
         inputFocusNode.unfocus();
       },
@@ -117,7 +119,7 @@ class CommentTile extends StatelessWidget {
       Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          GestureDetector(
+          ReportGestureDetector(
             onTap: () {
               UserCenterRoute(
                 '${member?.aff}',
@@ -178,7 +180,7 @@ class CommentTile extends StatelessWidget {
           ),
           StatefulBuilder(builder: (_, setState) {
             final isLike = data.isLike == 1;
-            return GestureDetector(
+            return ReportGestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () async {
                 if (data.id case final id?) {

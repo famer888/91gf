@@ -26,6 +26,8 @@ import '../../../theme.dart';
 import '../../share_to_user/widgets/jelly_share.dart';
 import '../../share_to_user/widgets/share_tips.dart';
 import '../../widgets/mine_agent_apply.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class AgentView extends StatefulWidget {
   const AgentView({super.key});
@@ -138,7 +140,7 @@ class _AgentViewState extends State<AgentView> {
                             Expanded(
                                 child: Text(taskModel?.list?[index].title ?? '',
                                     style: MyTheme.white13)),
-                            GestureDetector(
+                            ReportGestureDetector(
                               onTap: () {
                                 const MineShareToUserRoute().push(context);
                               },
@@ -354,7 +356,7 @@ class _AgentViewState extends State<AgentView> {
                             left: 0,
                             right: 0,
                             height: 20.w,
-                            child: GestureDetector(
+                            child: ReportGestureDetector(
                               onTap: () => const MineAgentRoute().push(context),
                             ),
                           )
@@ -396,7 +398,7 @@ class _CardButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: onTap,
       child: Container(
         width: 100.w,

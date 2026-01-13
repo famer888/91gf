@@ -14,6 +14,8 @@ import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/download_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class VoicePlayerSheetCard extends StatefulWidget {
   const VoicePlayerSheetCard({super.key, required this.data, required this.complete, this.delete});
@@ -76,7 +78,7 @@ class _VoicePlayerSheetCardState extends State<VoicePlayerSheetCard> {
                         style: MyTheme.gray173_13)
                   ])),
               SizedBox(width: 10.w),
-              GestureDetector(
+              ReportGestureDetector(
                   onTap: () {
                     //更多操作按钮---下载/收藏/删除
                     playerOptional(widget.data);

@@ -5,6 +5,8 @@ import '../../router/routes.dart';
 import '../theme.dart';
 
 import '../image_paths.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
   const SearchAppBar({super.key});
@@ -20,7 +22,7 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              child: GestureDetector(
+              child: ReportGestureDetector(
                 onTap: () => const SearchRoute().push(context),
                 child: Container(
                   height: 35.w,
@@ -49,7 +51,7 @@ class SearchAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
             SizedBox(width: 10.w),
-            GestureDetector(
+            ReportGestureDetector(
               onTap: () {
                 // const MineWelfareRoute(index: 1).push(context);
 

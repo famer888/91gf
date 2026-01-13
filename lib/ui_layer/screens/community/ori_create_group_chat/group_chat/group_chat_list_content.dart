@@ -23,6 +23,8 @@ import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class GroupChatListContent extends StatefulWidget {
   const GroupChatListContent({
@@ -244,7 +246,7 @@ class _GroupChatListContentState extends State<GroupChatListContent>
             body: Column(
               children: [
                 _topMasg != null
-                    ? GestureDetector(
+                    ? ReportGestureDetector(
                         onTap: () {
                           GroupChatTopMsgContentRoute(_topMasg!).push(context);
                         },
@@ -484,7 +486,7 @@ class _GroupChatListContentState extends State<GroupChatListContent>
 
   Widget _bottomView() {
     return widget.data.isJoin == 0
-        ? GestureDetector(
+        ? ReportGestureDetector(
             onTap: () {
               //加入聊天
               _joinSoulGroup(widget.data.id ?? 0);
@@ -534,7 +536,7 @@ class _GroupChatListContentState extends State<GroupChatListContent>
                           SizedBox(
                             width: 17.5.w,
                             height: 17.w,
-                            child: GestureDetector(
+                            child: ReportGestureDetector(
                               onTap: _imagePickerAssets,
                               child: MyImage.asset(
                                 MyImagePaths.appCustomerServiceSelectImg,
@@ -548,7 +550,7 @@ class _GroupChatListContentState extends State<GroupChatListContent>
                     ),
                   ),
                   SizedBox(width: 7.w),
-                  GestureDetector(
+                  ReportGestureDetector(
                     onTap: () {
                       _sendMessage(1, _controllerText.text);
                     },
@@ -634,7 +636,7 @@ class ChatBubble extends StatelessWidget {
                                     child: Text(message.msg ?? '',
                                         maxLines: 1000, style: MyTheme.white14),
                                   )
-                                : GestureDetector(
+                                : ReportGestureDetector(
                                     onTap: () {
                                       //点击图片浏览大图
                                       _goPictureView(
@@ -686,7 +688,7 @@ class ChatBubble extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ClipOval(
-                    child: GestureDetector(
+                    child: ReportGestureDetector(
                       onTap: () {
                         UserCenterRoute('${message.aff}').push(context);
                       },
@@ -720,7 +722,7 @@ class ChatBubble extends StatelessWidget {
                                 child: Text(message.msg ?? '',
                                     maxLines: 1000, style: MyTheme.white14),
                               )
-                            : GestureDetector(
+                            : ReportGestureDetector(
                                 onTap: () {
                                   //点击图片浏览大图
                                   _goPictureView(context, message.msg ?? '');

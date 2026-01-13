@@ -9,6 +9,8 @@ import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class PicturePreview extends StatefulWidget {
   const PicturePreview(
@@ -67,7 +69,7 @@ class _PicturePreviewState extends State<PicturePreview> {
               children: [
                 Stack(
                   children: [
-                    GestureDetector(
+                    ReportGestureDetector(
                       behavior: HitTestBehavior.opaque,
                       onHorizontalDragUpdate: (e) {},
                       onTap: () {
@@ -141,7 +143,7 @@ class _PicturePreviewState extends State<PicturePreview> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  GestureDetector(
+                                  ReportGestureDetector(
                                     behavior: HitTestBehavior.translucent,
                                     child: SizedBox(
                                       height: double.infinity,
@@ -173,7 +175,7 @@ class _PicturePreviewState extends State<PicturePreview> {
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(2.w))),
                                         alignment: Alignment.center,
-                                        child: GestureDetector(
+                                        child: ReportGestureDetector(
                                                 behavior:
                                                     HitTestBehavior.translucent,
                                                 onTap: () {

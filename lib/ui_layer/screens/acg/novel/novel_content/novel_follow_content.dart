@@ -8,6 +8,8 @@ import 'package:jygf/ui_layer/const.dart';
 import 'package:jygf/ui_layer/screens/acg/novel/card/novel_item_card.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_list_view.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 class NovelFollowContent extends StatefulWidget {
   const NovelFollowContent({super.key});
 
@@ -163,7 +165,7 @@ class _FollowNovelViewState extends State<_FollowNovelView> {
 //
 //   @override
 //   Widget build(BuildContext context) {
-//     return GestureDetector(
+//     return ReportGestureDetector(
 //       behavior: HitTestBehavior.translucent,
 //       onTap: () {
 //         // final data = RecNovelModel(
@@ -201,7 +203,7 @@ class _FollowNovelViewState extends State<_FollowNovelView> {
 //                     children: [
 //                       Text('${widget.data.followNum}关注',
 //                           style: MyTheme.white04_11),
-//                       GestureDetector(
+//                       ReportGestureDetector(
 //                         onTap: () async {
 //                           //关注--取消关注小说专题
 //                           final result = await _domain.novelFollowSubject(

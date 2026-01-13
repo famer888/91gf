@@ -24,6 +24,8 @@ import '../../common_widgets/my_image.dart';
 import '../../common_widgets/screen_background.dart';
 import '../../image_paths.dart';
 import '../../theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class MineSetupScreen extends StatefulWidget {
   const MineSetupScreen({super.key});
@@ -156,7 +158,7 @@ class _MineSetupScreenState extends State<MineSetupScreen> {
                 Selector<UserNotifier, Member>(
                     selector: (_, userNotifier) => userNotifier.member,
                     builder: (context, member, child) {
-                      return GestureDetector(
+                      return ReportGestureDetector(
                         onTap: () => showUploadImg(vipLevel: member.vipLevel),
                         child: Column(
                           children: [
@@ -226,7 +228,7 @@ class _MineSetupScreenState extends State<MineSetupScreen> {
                             right: MyTheme.pagePadding,
                             bottom: MyTheme.pagePadding,
                           ),
-                          child: GestureDetector(
+                          child: ReportGestureDetector(
                             onTap: _logOut,
                             child: Container(
                               decoration: BoxDecoration(
@@ -276,7 +278,7 @@ class SetupItem extends StatelessWidget {
   final String? subTitle;
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: () => onTap?.call(),
       behavior: HitTestBehavior.translucent,
       child: Padding(

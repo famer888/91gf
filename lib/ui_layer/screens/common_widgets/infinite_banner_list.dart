@@ -6,6 +6,8 @@ import '../../../domain/model/banner_model.dart';
 import '../../utils/common_utils.dart';
 import '../theme.dart';
 import 'my_image.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class InfiniteBannerList extends StatefulWidget {
   final List<BannerModel> banners;
@@ -99,7 +101,7 @@ class _InfiniteBannerListState extends State<InfiniteBannerList> {
             itemCount: widget.banners.length * 2,
             itemBuilder: (context, index) {
               final banner = widget.banners[index % widget.banners.length];
-              return GestureDetector(
+              return ReportGestureDetector(
                 onTap: () {
                   FocusManager.instance.primaryFocus?.unfocus();
                   CommonUtils.openRoute(context, banner.toJson());

@@ -25,6 +25,8 @@ import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 ///小说阅读界面
 class NovelReaderContent extends StatefulWidget {
@@ -157,7 +159,7 @@ class _NovelReaderContentState extends State<NovelReaderContent>
       body: Stack(
         children: [
           Positioned.fill(
-            child: GestureDetector(
+            child: ReportGestureDetector(
               onTap: () {
                 if (_isShowSetting) {
                   setState(() => _isShowSetting = false);
@@ -314,7 +316,7 @@ class _NovelReaderContentState extends State<NovelReaderContent>
 
   Widget iconButton(
       {String imageName = '', String title = '', Function? func}) {
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: () {
         func?.call();
       },

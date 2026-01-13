@@ -13,6 +13,8 @@ import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/rank/content.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:provider/provider.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class RankScreen extends StatefulWidget {
   const RankScreen({super.key});
@@ -76,7 +78,7 @@ class _RankScreenState extends State<RankScreen> with SingleTickerProviderStateM
                     Positioned(
                       top: 10,
                       left: 10,
-                      child:GestureDetector(child: MyImage.asset(MyImagePaths.appNavBackWN,width: 20.w,height: 20.w,fit: BoxFit.contain,),onTap: () {
+                      child:ReportGestureDetector(child: MyImage.asset(MyImagePaths.appNavBackWN,width: 20.w,height: 20.w,fit: BoxFit.contain,),onTap: () {
                       GoRouter.of(context).pop();
                     },)),],)
                 ),
@@ -96,7 +98,7 @@ class _RankScreenState extends State<RankScreen> with SingleTickerProviderStateM
                           children: List.generate(_titles.length, (index) {
                             final isSelected = _tabController.index == index;
                             return Expanded(
-                              child: GestureDetector(
+                              child: ReportGestureDetector(
                                 behavior: HitTestBehavior.opaque,
                                 onTap: () => _tabController.animateTo(index),
                                 child: Center(

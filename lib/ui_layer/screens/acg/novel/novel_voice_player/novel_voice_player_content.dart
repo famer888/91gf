@@ -21,7 +21,8 @@ import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
-import 'dart:math' as math;
+import 'dart:math' as math;import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class NovelVoicePlayerContent extends StatefulWidget {
   NovelVoicePlayerContent({super.key, this.data});
@@ -213,7 +214,7 @@ class _NovelVoicePlayerContentState extends State<NovelVoicePlayerContent>
           backgroundColor: Colors.transparent,
           appBar: MyAppBar(
             title: widget.data?.title ?? '',
-            rightWidget: GestureDetector(
+            rightWidget: ReportGestureDetector(
               onTap: () {
                 const MineShareToUserRoute().push(context);
               },
@@ -420,7 +421,7 @@ class _NovelVoicePlayerContentState extends State<NovelVoicePlayerContent>
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          GestureDetector(
+                          ReportGestureDetector(
                             child: Container(
                               alignment: Alignment.center,
                               width: 90.w,
@@ -437,7 +438,7 @@ class _NovelVoicePlayerContentState extends State<NovelVoicePlayerContent>
                             },
                           ),
                           SizedBox(width: 60.w),
-                          GestureDetector(
+                          ReportGestureDetector(
                             child: Container(
                               alignment: Alignment.center,
                               width: 90.w,
@@ -499,7 +500,7 @@ class _NovelVoicePlayerContentState extends State<NovelVoicePlayerContent>
 
   Widget _btnItem(
       {required String icon, required String name, Function()? onTap}) {
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: onTap,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -524,7 +525,7 @@ class _NovelVoicePlayerContentState extends State<NovelVoicePlayerContent>
       required double width,
       required double height,
       Function()? onTap}) {
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: onTap,
       child: MyImage.asset(icon, width: width, height: height),
     );

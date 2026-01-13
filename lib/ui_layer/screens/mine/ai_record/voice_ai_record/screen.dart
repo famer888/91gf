@@ -13,6 +13,8 @@ import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class VoiceAIRecordScreen extends StatefulWidget {
   const VoiceAIRecordScreen({super.key});
@@ -226,7 +228,7 @@ class _VoiceAIRecordCardState extends State<VoiceAIRecordCard> {
                 style: MyTheme.white06_12,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis)),
-        // GestureDetector(
+        // ReportGestureDetector(
         //     behavior: HitTestBehavior.translucent,
         //     onTap: () {
         //       MyToast.showText(text: '暂不支持下载');
@@ -250,7 +252,7 @@ class _VoiceAIRecordCardState extends State<VoiceAIRecordCard> {
             borderRadius: BorderRadius.circular(22.w)),
         padding: EdgeInsets.symmetric(horizontal: 10.w),
         child: Row(children: [
-          GestureDetector(
+          ReportGestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: _initAndToggle,
             child: Icon(_isPlaying ? Icons.pause : Icons.play_arrow,
@@ -278,7 +280,7 @@ class _VoiceAIRecordCardState extends State<VoiceAIRecordCard> {
             },
           )),
           SizedBox(width: 8.w),
-          GestureDetector(
+          ReportGestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: _deleteRecord,
             child: Text('删除', style: MyTheme.white12),

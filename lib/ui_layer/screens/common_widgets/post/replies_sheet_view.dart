@@ -12,6 +12,8 @@ import '../my_image.dart';
 import '../my_list_view.dart';
 import 'comment.dart';
 import 'comment_input.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 typedef CommentsAsyncGetter = AsyncResult<List<ReviewData>> Function(int, int);
 typedef LikeAsyncSetter = Future<bool> Function(String id);
@@ -72,7 +74,7 @@ class _RepliesSheetViewState extends State<RepliesSheetView> {
             topRight: Radius.circular(20.w),
           ),
         ),
-        child: GestureDetector(
+        child: ReportGestureDetector(
           behavior: HitTestBehavior.translucent,
           onTap: () {
             inputFocusNode.unfocus();
@@ -86,7 +88,7 @@ class _RepliesSheetViewState extends State<RepliesSheetView> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    GestureDetector(
+                    ReportGestureDetector(
                       onTap: () {
                         context.pop();
                       },
@@ -105,7 +107,7 @@ class _RepliesSheetViewState extends State<RepliesSheetView> {
                 ),
               ),
               Expanded(
-                child: GestureDetector(
+                child: ReportGestureDetector(
                   child: MyListView.list(
                     itemBuilder: (context, item, index) => SheetReplyView(
                       commentData: item,

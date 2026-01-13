@@ -11,6 +11,8 @@ import '../../../utils/my_toast.dart';
 import '../../common_widgets/my_app_bar.dart';
 import '../../common_widgets/screen_background.dart';
 import '../../theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class MineFillCodeScreen extends StatefulWidget {
   const MineFillCodeScreen({super.key, required this.title});
@@ -94,7 +96,7 @@ class _MineFillCodeScreenState extends State<MineFillCodeScreen> {
         appBar: MyAppBar(
           title: widget.title,
         ),
-        body: GestureDetector(
+        body: ReportGestureDetector(
           behavior: HitTestBehavior.translucent,
           onTap: () {
             focusNode.unfocus();
@@ -156,7 +158,7 @@ class _MineFillCodeScreenState extends State<MineFillCodeScreen> {
                       ),
                     ),
                     SizedBox(height: 54.w),
-                    GestureDetector(
+                    ReportGestureDetector(
                       onTap: onSubmit,
                       child: Container(
                         height: 40.w,

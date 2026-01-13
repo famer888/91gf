@@ -14,6 +14,8 @@ import '../common_widgets/dialog/my_dialog.dart';
 import '../common_widgets/my_image.dart';
 import '../image_paths.dart';
 import '../theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class VipPayDialog {
   static void showVipDialog(BuildContext context) {
@@ -45,7 +47,7 @@ class VipPayDialog {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        GestureDetector(
+                        ReportGestureDetector(
                           onTap: () {
                             context.pop();
                             const MineShareToUserRoute().push(context);
@@ -60,7 +62,7 @@ class VipPayDialog {
                           ),
                         ),
                         SizedBox(width: 38.w),
-                        GestureDetector(
+                        ReportGestureDetector(
                           onTap: () {
                             context.pop();
                             const VipCenterRoute().push(context);
@@ -80,7 +82,7 @@ class VipPayDialog {
                 ),
                 Align(
                   alignment: Alignment.topRight,
-                  child: GestureDetector(
+                  child: ReportGestureDetector(
                     onTap: () => context.pop(),
                     child: SizedBox(
                       width: 20.w,
@@ -132,7 +134,7 @@ class VipPayDialog {
                       children: [
                         Text('金币余额：${member.money}', style: MyTheme.white255_13.s14.w400),
                         const Spacer(),
-                        GestureDetector(
+                        ReportGestureDetector(
                           onTap: () {
                             context.pop();
                             const CoinRechargeRoute().push(context);
@@ -165,7 +167,7 @@ class VipPayDialog {
                       ],
                     ),
                     SizedBox(height: 40.w),
-                    GestureDetector(
+                    ReportGestureDetector(
                       onTap: () async {
                         // 检查登录
                         final userNotifier = context.read<UserNotifier>();
@@ -193,7 +195,7 @@ class VipPayDialog {
                 ),
                 Align(
                   alignment: Alignment.topRight,
-                  child: GestureDetector(
+                  child: ReportGestureDetector(
                     onTap: () => context.pop(),
                     child: SizedBox(
                       width: 20.w,

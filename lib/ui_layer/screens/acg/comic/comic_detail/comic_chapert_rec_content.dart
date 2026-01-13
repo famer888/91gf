@@ -17,6 +17,8 @@ import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class ComicChapertRecView extends StatefulWidget {
   const ComicChapertRecView({super.key, required this.data, this.favoriteSucsess});
@@ -117,7 +119,7 @@ class _ComicChapertRecViewState
                                 style: MyTheme.white10),
                           ),
                           const Spacer(),
-                          chapters.length > 3 ? GestureDetector(
+                          chapters.length > 3 ? ReportGestureDetector(
                             onTap: () {
                               //更多章节
                               ComicChaptersRoute(widget.data.detail!).push(context);
@@ -167,7 +169,7 @@ class _ComicChapertRecViewState
                                         ? SizedBox(
                                             height: 60.w,
                                             child: Center(
-                                              child: GestureDetector(
+                                              child: ReportGestureDetector(
                                                 onTap: () {
                                                   //查看全部章节
                                                   ComicChaptersRoute(
@@ -283,7 +285,7 @@ class _ComicChapertRecViewState
               ),
             ),
           ),
-          GestureDetector(
+          ReportGestureDetector(
             onTap: () {
               //开始阅读/ 继续阅读
               jumperComicReaderView();
@@ -317,7 +319,7 @@ class _ComicChapertRecViewState
 
   Widget iconButton(
       {String imageName = '', String title = '', Function? func}) {
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: () {
         func?.call();
       },

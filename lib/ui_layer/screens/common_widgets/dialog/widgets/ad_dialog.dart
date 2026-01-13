@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../image_paths.dart';
 import '../../my_image.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class AdDialog extends StatefulWidget {
   const AdDialog(
@@ -35,7 +37,7 @@ class AdDialogState extends State<AdDialog> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            GestureDetector(
+            ReportGestureDetector(
               onTap: () => widget.confirm.call(),
               child: RepaintBoundary(
                 child: Image.network(
@@ -46,7 +48,7 @@ class AdDialogState extends State<AdDialog> {
               ),
             ),
             SizedBox(height: 20.w),
-            GestureDetector(
+            ReportGestureDetector(
               onTap: _handleCancelTap,
               child: SizedBox(
                 child: MyImage.asset(

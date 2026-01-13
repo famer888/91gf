@@ -10,6 +10,8 @@ import 'package:jygf/ui_layer/screens/common_widgets/event_bus/event_bus.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_app_bar.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/screen_background.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 ///漫画全部章节界面
 class ComicChaptersContent extends StatefulWidget {
@@ -58,7 +60,7 @@ class _ComicChaptersContentState extends State<ComicChaptersContent> {
           appBar: MyAppBar(
             rightWidget: Row(
               children: [
-                GestureDetector(
+                ReportGestureDetector(
                   onTap: () {//正序
                     setState(() {
                       chapters = chapters.reversed.toList();
@@ -70,7 +72,7 @@ class _ComicChaptersContentState extends State<ComicChaptersContent> {
                 SizedBox(width: 8.w),
                 Container(width: 0.5, height: 15.w, color: Colors.white.withOpacity(0.4)),
                 SizedBox(width: 6.w),
-                GestureDetector(
+                ReportGestureDetector(
                   onTap: () {//倒序
                     setState(() {
                       chapters = chapters.reversed.toList();

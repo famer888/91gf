@@ -10,6 +10,8 @@ import 'package:provider/provider.dart';
 
 import '../../../../router/routes.dart';
 import '../../../theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class GameBlockCard extends StatefulWidget {
   const GameBlockCard({super.key, required this.data});
@@ -44,7 +46,7 @@ class _GameBlockCardState extends State<GameBlockCard> {
             SizedBox(width: 6.w),
             Text(widget.data.title, style: MyTheme.white15bold),
             const Spacer(),
-            GestureDetector(
+            ReportGestureDetector(
                 onTap: () {
                   GameMoreRoute(widget.data.value, widget.data.title).push(context);
                   // CommonUtils.openRoute(context, data)
@@ -84,7 +86,7 @@ class _GameBlockCardState extends State<GameBlockCard> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    GestureDetector(
+                    ReportGestureDetector(
                       onTap: _getData,
                       child: Container(
                         width: 150.w,
@@ -97,7 +99,7 @@ class _GameBlockCardState extends State<GameBlockCard> {
                         ),
                       ),
                     ),
-                    GestureDetector(
+                    ReportGestureDetector(
                       onTap: () {
                         GameMoreRoute(widget.data.value, widget.data.title).push(context);
                       },

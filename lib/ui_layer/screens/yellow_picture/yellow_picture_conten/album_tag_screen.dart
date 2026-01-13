@@ -17,6 +17,8 @@ import 'package:jygf/ui_layer/screens/common_widgets/my_tab_bar.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/screen_background.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class AlbumTagScreen extends StatefulWidget {
   const AlbumTagScreen({super.key, required this.tag});
@@ -47,7 +49,7 @@ class _AlbumTagScreenState extends State<AlbumTagScreen> {
       child: Scaffold(
         appBar: MyAppBar(
           title: '#${widget.tag}',
-          rightWidget: GestureDetector(
+          rightWidget: ReportGestureDetector(
             onTap: () => const SearchRoute().push(context),
             child: MyImage.asset(MyImagePaths.appSearchIcon,
                 width: 25.w, height: 25.w),

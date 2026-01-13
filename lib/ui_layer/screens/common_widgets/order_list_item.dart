@@ -7,6 +7,8 @@ import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import '../theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 enum OrderListItemType {
   coinRecharge,
@@ -66,7 +68,7 @@ class OrderListItem extends StatelessWidget {
                   '订单编号: ${order.id}',
                   style: MyTheme.gray150_12,
                 ),
-                 GestureDetector(
+                 ReportGestureDetector(
                 onTap: () {
                   CommonUtils.copyToClipboard(
                       text: '${'ddbh'.tr(context: context)}：${order.id}');

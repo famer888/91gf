@@ -15,6 +15,8 @@ import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class AiNovelPage extends StatefulWidget {
   const AiNovelPage({super.key});
@@ -278,7 +280,7 @@ class _AiNovelPageState extends State<AiNovelPage> {
               ),
             ),
             SizedBox(height: 20.w),
-            GestureDetector(
+            ReportGestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () {
                 _submit(context,

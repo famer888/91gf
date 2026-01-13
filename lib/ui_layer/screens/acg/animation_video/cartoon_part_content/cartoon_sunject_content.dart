@@ -15,6 +15,8 @@ import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class CartoonSubjectContent extends StatefulWidget {
   const CartoonSubjectContent({super.key});
@@ -87,7 +89,7 @@ class CartoonSubjectItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ReportGestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
         CartoonMoreRoute('see', '${data.title}').push(context);

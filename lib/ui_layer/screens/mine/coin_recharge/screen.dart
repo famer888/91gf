@@ -17,6 +17,8 @@ import '../../common_widgets/screen_background.dart';
 import '../../common_widgets/status/loading.dart';
 import '../../common_widgets/status/network_error.dart';
 import '../../theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class CoinRechargeScreen extends StatefulWidget {
   const CoinRechargeScreen({super.key});
@@ -63,7 +65,7 @@ class _CoinRechargeScreenState extends State<CoinRechargeScreen> {
         child: Scaffold(
       appBar: MyAppBar(
         title: 'jbcz'.tr(context: context),
-        rightWidget: GestureDetector(
+        rightWidget: ReportGestureDetector(
           onTap: () => RechargeRecordRoute(_type.id.toString()).push(context),
           child: Text(
             'czjl'.tr(context: context),
@@ -163,7 +165,7 @@ class _TopArea extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: Padding(
               padding: EdgeInsets.only(left: 20.w),
-              child: GestureDetector(
+              child: ReportGestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () => const CoinDetailRoute().push(context),
                   child: Container(
@@ -236,7 +238,7 @@ class _ProductArea extends StatelessWidget {
                   childAspectRatio: 94 / 114,
                 ),
                 itemCount: products.length,
-                itemBuilder: (context, index) => GestureDetector(
+                itemBuilder: (context, index) => ReportGestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () => productSelectedNotifier.value = index,
                   child: _CoinItem(

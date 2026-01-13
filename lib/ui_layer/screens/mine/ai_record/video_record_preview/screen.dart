@@ -6,6 +6,8 @@ import 'package:jygf/domain/model/video_detail_model.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/video_player/shortv_mv_player.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class VideoRecordPreviewScreen extends StatefulWidget {
   const VideoRecordPreviewScreen(
@@ -48,7 +50,7 @@ class _VideoRecordPreviewScreenState extends State<VideoRecordPreviewScreen> {
               aspectRatio: 1,
               child: ShortvMvPlayer(info: datas, noBack: true)),
           SizedBox(height: 30.w),
-          GestureDetector(
+          ReportGestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
               _saveVideo(widget.data.video);
@@ -67,7 +69,7 @@ class _VideoRecordPreviewScreenState extends State<VideoRecordPreviewScreen> {
             ),
           ),
           SizedBox(height: 15.w),
-          GestureDetector(
+          ReportGestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
               widget.delTapCall.call();

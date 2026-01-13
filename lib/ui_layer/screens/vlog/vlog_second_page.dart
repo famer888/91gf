@@ -5,6 +5,8 @@ import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/screens/vlog/vlog_play_screen.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class VlogSecondPage extends StatefulWidget {
   const VlogSecondPage({super.key});
@@ -34,7 +36,7 @@ class _VlogSecondPageState extends State<VlogSecondPage> {
           Positioned(
               top: MyTheme.statusHeight,
               left: 2.w,
-              child: GestureDetector(
+              child: ReportGestureDetector(
                 behavior: HitTestBehavior.translucent,
                 child: Container(
                   width: MyTheme.navbarHegiht,

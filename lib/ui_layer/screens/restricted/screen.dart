@@ -13,6 +13,8 @@ import '../common_widgets/screen_background.dart';
 import '../common_widgets/top_navi_view.dart';
 import '../common_widgets/search_app_bar.dart';
 import '../theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class RestrictedScreen extends StatefulWidget {
   const RestrictedScreen({super.key});
@@ -55,7 +57,7 @@ class _BlurView extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        return GestureDetector(
+        return ReportGestureDetector(
           behavior: HitTestBehavior.translucent,
           onTap: () {
             const VipCenterRoute().push(context);

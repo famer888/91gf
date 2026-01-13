@@ -7,6 +7,8 @@ import 'package:jygf/ui_layer/screens/black/widgets/black_widget.dart';
 
 import '../../../utils/common_utils.dart';
 import '../../common_widgets/my_image.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class BlackItemWidget extends StatelessWidget {
   final BlackListItemModel item;
@@ -37,7 +39,7 @@ class BlackItemWidget extends StatelessWidget {
       SizedBox(height: 2.w),
       _buildSubContentWidget(context),
     ]);
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: () {
         // BlackVisitRecordUtil.updateVisitRecord(context, item);
         BlockDetailsRoute(id: item.id).push(context);

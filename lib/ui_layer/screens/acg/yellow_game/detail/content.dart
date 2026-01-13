@@ -8,7 +8,6 @@ import 'package:jygf/domain/model/game/game_model.dart';
 import 'package:jygf/domain/remote_domain/domains/game.dart';
 import 'package:jygf/domain/result.dart';
 import 'package:jygf/ui_layer/screens/acg/yellow_game/detail/like_collect_unlock.dart';
-import 'package:jygf/ui_layer/screens/common_widgets/general_banner.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
@@ -23,6 +22,10 @@ import '../../../common_widgets/post/content/comment_count.dart';
 import '../../../common_widgets/post/content/content.dart';
 import '../../../common_widgets/post/content/media.dart';
 import '../../../theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';import 'package:jygf/report/ui_layer/report_general_banner.dart';
+
+
+
 
 class GameDetailContentView extends StatelessWidget {
   const GameDetailContentView({super.key, required this.fullData});
@@ -83,7 +86,7 @@ class GameDetailContentView extends StatelessWidget {
               ? SizedBox.shrink()
               : Padding(
                   padding: EdgeInsets.only(bottom: 5.w),
-                  child: GeneralBannerAppsListWidget(
+                  child: ReportGeneralAppsListVidget(
                       data: fullData.banner ?? [], aspectRatio: 7 / 2),
                 ),
           _PrevAndNextView(data: fullData),
@@ -153,7 +156,7 @@ class _TagsView extends StatelessWidget {
             child: Wrap(
               spacing: 15.w,
               children: tagFullString.split(',').map((e) {
-                return GestureDetector(
+                return ReportGestureDetector(
                   onTap: () {
                     GameTagRoute(e).push(context);
                   },
@@ -191,7 +194,7 @@ class _PrevAndNextView extends StatelessWidget {
                   data.prev == null
                       ? SizedBox.shrink()
                       : Expanded(
-                          child: GestureDetector(
+                          child: ReportGestureDetector(
                           onTap: () {
                             GameDetailRoute('${data.prev?.id}').push(context);
                           },
@@ -235,7 +238,7 @@ class _PrevAndNextView extends StatelessWidget {
                   data.next == null
                       ? SizedBox.shrink()
                       : Expanded(
-                          child: GestureDetector(
+                          child: ReportGestureDetector(
                           onTap: () {
                             GameDetailRoute('${data.next?.id}').push(context);
                           },
@@ -367,7 +370,7 @@ class _SourceAreaState extends State<_SourceArea> {
                         ),
                       ),
                       SizedBox(height: 10.w),
-                      GestureDetector(
+                      ReportGestureDetector(
                         behavior: HitTestBehavior.translucent,
                         onTap: () {
                           const VipCenterRoute().push(context);
@@ -417,7 +420,7 @@ class _SourceAreaState extends State<_SourceArea> {
                         ),
                       ),
                       SizedBox(height: 10.w),
-                      GestureDetector(
+                      ReportGestureDetector(
                         behavior: HitTestBehavior.translucent,
                         onTap: _buyGame,
                         child: Container(
@@ -449,7 +452,7 @@ class _SourceAreaState extends State<_SourceArea> {
                 children: [
                   Column(
                     children: currentLinks.map((link) {
-                      return GestureDetector(
+                      return ReportGestureDetector(
                         behavior: HitTestBehavior.translucent,
                         onTap: () {
                           CommonUtils.copyToClipboard(
@@ -485,7 +488,7 @@ class _SourceAreaState extends State<_SourceArea> {
                     }).toList(),
                   ),
                   SizedBox(height: 10.w),
-                  GestureDetector(
+                  ReportGestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () {
                       CommonUtils.copyToClipboard(text: secret);
@@ -707,7 +710,7 @@ class _GameRecoomendCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constrains) {
-      return GestureDetector(
+      return ReportGestureDetector(
         onTap: () {
           GameDetailRoute('${data.id}').push(context);
         },

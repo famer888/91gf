@@ -28,6 +28,8 @@ import '../../../common_widgets/status/loading.dart';
 import '../../../common_widgets/status/network_error.dart';
 import '../../../theme.dart';
 import 'content.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class GameDetailScreen extends StatefulWidget {
   const GameDetailScreen({super.key, required this.id});
@@ -195,7 +197,7 @@ class _BodyState extends State<_Body> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return _asyncValue.maybeWhen(
       data: (data) {
-        return GestureDetector(
+        return ReportGestureDetector(
           onTap: () {
             unfocus();
           },
@@ -272,7 +274,7 @@ class _CommentTile extends StatelessWidget {
       Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          GestureDetector(
+          ReportGestureDetector(
             onTap: () {
               // UserCenterRoute(aff: '${user?.aff}', index: 0).push(context);
               UserCenterRoute('${user?.aff}').push(context);
@@ -304,7 +306,7 @@ class _CommentTile extends StatelessWidget {
                           size: 11.w,
                           color: const Color.fromRGBO(247, 208, 93, 1)),
                     if (member.uuid != user?.uuid)
-                      GestureDetector(
+                      ReportGestureDetector(
                         behavior: HitTestBehavior.translucent,
                         onTap: () {
                           if (member.username?.isEmpty == true) {
@@ -378,7 +380,7 @@ class _CommentTile extends StatelessWidget {
           ),
           StatefulBuilder(builder: (_, setState) {
             final isLike = data.isLike == 1;
-            return GestureDetector(
+            return ReportGestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () async {
                 if (data.id case final id?) {

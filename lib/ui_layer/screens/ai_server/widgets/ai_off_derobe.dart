@@ -17,6 +17,8 @@ import 'package:jygf/ui_layer/notifiers/user_notifier.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_list_view.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class AIOffDeRobe extends StatefulWidget {
   const AIOffDeRobe({super.key});
@@ -122,7 +124,7 @@ class _AIOffDeRobeState extends State<AIOffDeRobe> {
               SizedBox(height: 10.w),
               Padding(
                 padding: piaddings,
-                child: GestureDetector(
+                child: ReportGestureDetector(
                   onTap: imagePickerAssets,
                   child: Container(
                     width: double.infinity,
@@ -161,7 +163,7 @@ class _AIOffDeRobeState extends State<AIOffDeRobe> {
                               Positioned(
                                   top: 0,
                                   right: 0,
-                                  child: GestureDetector(
+                                  child: ReportGestureDetector(
                                     onTap: () {
                                       setState(() {
                                         uploadObject = {};
@@ -210,7 +212,7 @@ class _AIOffDeRobeState extends State<AIOffDeRobe> {
               )),
               SizedBox(height: 10.w),
               Center(
-                child: GestureDetector(
+                child: ReportGestureDetector(
                   onTap: onSubmitOffDerobe,
                   child: Container(
                     width: 150.w,

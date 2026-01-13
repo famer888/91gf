@@ -12,6 +12,8 @@ import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class ComicReItemCard extends StatefulWidget {
   const ComicReItemCard({super.key, required this.data});
@@ -41,7 +43,7 @@ class _ComicReItemCardState extends State<ComicReItemCard> {
               widget.data.title ?? '',
               style: MyTheme.white15_M,
             ),
-            GestureDetector(
+            ReportGestureDetector(
               onTap: () {
                 //更多点击
                 MoreComicRoute(widget.data).push(context);
@@ -79,7 +81,7 @@ class _ComicReItemCardState extends State<ComicReItemCard> {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              GestureDetector(
+              ReportGestureDetector(
                 onTap: () {
                   //换一换
                   _getData();
@@ -103,7 +105,7 @@ class _ComicReItemCardState extends State<ComicReItemCard> {
                 ),
               ),
               SizedBox(width: 8.w),
-              GestureDetector(
+              ReportGestureDetector(
                 onTap: () {
                   //查看更多
                   MoreComicRoute(widget.data).push(context);

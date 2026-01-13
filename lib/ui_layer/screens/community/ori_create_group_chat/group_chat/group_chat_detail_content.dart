@@ -18,6 +18,8 @@ import 'package:jygf/ui_layer/screens/common_widgets/status/loading.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class GroupChatDetailContent extends StatefulWidget {
   const GroupChatDetailContent({super.key, required this.id, required this.ms});
@@ -96,7 +98,7 @@ class _GroupChatDetailContentState extends State<GroupChatDetailContent> {
                         return SoulMemberCard(data: partsItem);
                       }),
                   members.length >= 15
-                      ? GestureDetector(
+                      ? ReportGestureDetector(
                           onTap: () {
                             //查看更多成员
                             GroupMembersContentRoute(id: widget.id)
@@ -147,7 +149,7 @@ class _GroupChatDetailContentState extends State<GroupChatDetailContent> {
                       ],
                     ),
                   ),
-                  GestureDetector(
+                  ReportGestureDetector(
                     onTap: () {
                       //清空历史记录
                       _cleanSoulGroupMsg();
@@ -158,7 +160,7 @@ class _GroupChatDetailContentState extends State<GroupChatDetailContent> {
                       child: Text(tr('qkjl'), style: MyTheme.white14),
                     ),
                   ),
-                  GestureDetector(
+                  ReportGestureDetector(
                     onTap: () {
                       //退出此群
                       _outSoulGroup();

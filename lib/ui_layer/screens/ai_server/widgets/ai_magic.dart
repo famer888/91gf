@@ -10,9 +10,10 @@ import 'package:jygf/ui_layer/screens/common_widgets/screen_background.dart';
 import 'package:provider/provider.dart';
 import '../../../../domain/model/banner_model.dart';
 import '../../../utils/my_toast.dart';
-import '../../common_widgets/general_banner.dart';
 import '../../common_widgets/my_list_view.dart';
-import '../../theme.dart';
+import '../../theme.dart';import 'package:jygf/report/ui_layer/report_general_banner.dart';
+
+
 
 class AIMagic extends StatefulWidget {
   const AIMagic({
@@ -106,7 +107,7 @@ class _Header extends StatelessWidget {
             if (banners.isEmpty) return const SizedBox.shrink();
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-              child: GeneralBannerAppsListWidget(data: banners),
+              child: ReportGeneralAppsListVidget(data: banners),
             );
           },
         ),

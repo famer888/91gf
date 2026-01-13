@@ -7,6 +7,8 @@ import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class VoiceListCard extends StatefulWidget {
   const VoiceListCard({super.key, required this.data});
@@ -22,7 +24,7 @@ class _VoiceListCardState extends State<VoiceListCard> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: () {
         VoicePalyerContentRoute(widget.data).push(context);
       },
@@ -126,7 +128,7 @@ class _VoiceListCardState extends State<VoiceListCard> {
                       ])
                 ])),
             SizedBox(width: 10.w),
-            // GestureDetector(
+            // ReportGestureDetector(
             //     onTap: () {
             //       //播放/暂停
             //       playerOptional(widget.data);

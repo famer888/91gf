@@ -6,6 +6,8 @@ import 'package:jygf/domain/model/home_data_model.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class AdCardView extends StatelessWidget {
   const AdCardView({super.key, required this.ad, this.height});
@@ -17,7 +19,7 @@ class AdCardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ReportGestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
         CommonUtils.openRoute(context, ad.toJson());

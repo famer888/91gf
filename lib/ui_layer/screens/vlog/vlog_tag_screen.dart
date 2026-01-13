@@ -17,6 +17,8 @@ import 'package:jygf/ui_layer/screens/common_widgets/my_tab_bar.dart';
 import 'package:jygf/ui_layer/screens/vlog/card/vlog_card.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class VlogTagScreen extends StatefulWidget {
   const VlogTagScreen({super.key, required this.tag});
@@ -49,7 +51,7 @@ class _VlogTagScreenState extends State<VlogTagScreen> {
         child: Scaffold(
           appBar: MyAppBar(
             title: '#${widget.tag}',
-            // rightWidget: GestureDetector(
+            // rightWidget: ReportGestureDetector(
             //   onTap: () => const SearchRoute().push(context),
             //   child: MyImage.asset(MyImagePaths.appSearchWhite,
             //       width: 25.w, height: 25.w),

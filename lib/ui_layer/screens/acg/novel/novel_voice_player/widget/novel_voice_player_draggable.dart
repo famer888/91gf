@@ -10,6 +10,8 @@ import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class NovelVoicePlayerDraggableView extends StatefulWidget {
   const NovelVoicePlayerDraggableView({super.key});
@@ -77,7 +79,7 @@ class _NovelVoicePlayerDraggableViewState
   }
 
   Widget _buildButton() {
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: () {
         // VoicePalyerContentRoute(
         //         VoicePlayerManager.instance.data ?? VoiceModel())
@@ -101,13 +103,13 @@ class _NovelVoicePlayerDraggableViewState
                         size: 25.w,
                         thumb:
                         NovelVoicePlayerManager.instance.data?.smallCover ?? ''),
-                    GestureDetector(
+                    ReportGestureDetector(
                         onTap: () {
                           //播放/暂停
                         },
                         child: MyImage.asset(MyImagePaths.appNovelVoicePause,
                             width: 25.w, height: 25.w)),
-                    GestureDetector(
+                    ReportGestureDetector(
                         onTap: () {
                           //关闭播放器
                           CommonUtils.removeFloatPayer();

@@ -9,6 +9,8 @@ import 'package:jygf/ui_layer/screens/common_widgets/post/card/hash_tag.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/post/card/media.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/post/card/user_view.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 enum _Type {
   seed,
@@ -41,7 +43,7 @@ class PostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final child = GestureDetector(
+    final child = ReportGestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () => switch (_type) {
         _Type.postPublish => () {

@@ -4,6 +4,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class MyDialog {
   static Future<T?> showDialog<T extends Object?>({
@@ -50,7 +52,7 @@ class MyDialog {
       backButtonBehavior: BackButtonBehavior.none,
       wrapToastAnimation: (controller, cancel, child) => Stack(
         children: [
-          GestureDetector(
+          ReportGestureDetector(
             onTap: () {
               cancel(); // 按钮点击关闭弹窗
               backgroundReturn?.call();
@@ -121,7 +123,7 @@ class MyDialog {
                     cancelTxt == null
                         ? Container()
                         : Expanded(
-                            child: GestureDetector(
+                            child: ReportGestureDetector(
                               onTap: () {
                                 cancelFunc();
                                 cancel?.call();
@@ -152,7 +154,7 @@ class MyDialog {
                     confirmTxt == null
                         ? Container()
                         : Expanded(
-                            child: GestureDetector(
+                            child: ReportGestureDetector(
                               onTap: () {
                                 cancelFunc();
                                 confirm?.call();

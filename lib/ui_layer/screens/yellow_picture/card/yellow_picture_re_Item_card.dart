@@ -11,6 +11,8 @@ import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 class YellowPictureReItemCard extends StatefulWidget {
   const YellowPictureReItemCard({super.key, required this.data});
 
@@ -39,7 +41,7 @@ class _YellowPictureReItemCardState extends State<YellowPictureReItemCard> {
               widget.data.title ?? '',
               style: MyTheme.white15_M,
             ),
-            GestureDetector(
+            ReportGestureDetector(
               onTap: () {
                 //更多点击
                 PictureMoreRoute(widget.data).push(context);
@@ -77,7 +79,7 @@ class _YellowPictureReItemCardState extends State<YellowPictureReItemCard> {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              GestureDetector(
+              ReportGestureDetector(
                 onTap: () {
                   //换一换
                   _getData();
@@ -101,7 +103,7 @@ class _YellowPictureReItemCardState extends State<YellowPictureReItemCard> {
                 ),
               ),
               SizedBox(width: 30.w),
-              GestureDetector(
+              ReportGestureDetector(
                 onTap: () {
                   //查看更多
                   PictureMoreRoute(widget.data).push(context);

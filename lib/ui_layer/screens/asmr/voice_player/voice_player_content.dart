@@ -20,6 +20,8 @@ import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class VioicPlayerContentView extends StatefulWidget {
   VioicPlayerContentView({super.key, this.data});
@@ -192,7 +194,7 @@ class _VioicPlayerContentViewState extends State<VioicPlayerContentView>
     return Scaffold(
       appBar: MyAppBar(
         title: widget.data?.title ?? '',
-        rightWidget: GestureDetector(
+        rightWidget: ReportGestureDetector(
           onTap: () {
             const MineShareToUserRoute().push(context);
           },
@@ -420,7 +422,7 @@ class _VioicPlayerContentViewState extends State<VioicPlayerContentView>
 
   Widget _btnItem(
       {required String icon, required String name, Function()? onTap}) {
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: onTap,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -445,7 +447,7 @@ class _VioicPlayerContentViewState extends State<VioicPlayerContentView>
       required double width,
       required double height,
       Function()? onTap}) {
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: onTap,
       child: MyImage.asset(icon, width: width, height: height),
     );

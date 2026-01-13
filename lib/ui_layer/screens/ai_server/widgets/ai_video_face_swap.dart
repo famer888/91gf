@@ -18,7 +18,6 @@ import '../../../../domain/remote_domain/domains/ai.dart';
 import '../../../notifiers/home_config_notifier.dart';
 import '../../../notifiers/user_notifier.dart';
 import '../../../utils/my_toast.dart';
-import '../../common_widgets/general_banner.dart';
 import '../../common_widgets/my_filter_tab_bar.dart';
 import '../../common_widgets/my_image.dart';
 import '../../common_widgets/my_list_view.dart';
@@ -26,6 +25,10 @@ import '../../image_paths.dart';
 import '../../theme.dart';
 import '../../../../domain/model/media_model.dart';
 import '../../../../domain/enum.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';import 'package:jygf/report/ui_layer/report_general_banner.dart';
+
+
+
 
 class AiVideoFaceSwap extends StatefulWidget {
   const AiVideoFaceSwap({
@@ -211,7 +214,7 @@ class _AiVideoFaceSwapState extends State<AiVideoFaceSwap> {
                     ),
                   ),
                   SizedBox(height: 5.w),
-                  GestureDetector(
+                  ReportGestureDetector(
                     onTap: () {
                       final media = MediaModel(
                         mediaUrl: item.m3u8,
@@ -254,7 +257,7 @@ class _AiVideoFaceSwapState extends State<AiVideoFaceSwap> {
                     ],
                   ),
                   SizedBox(height: 10.w),
-                  GestureDetector(
+                  ReportGestureDetector(
                     onTap: () {
                       imagePickerAssets().then((e) {
                         setState(() {});
@@ -301,7 +304,7 @@ class _AiVideoFaceSwapState extends State<AiVideoFaceSwap> {
                                   Positioned(
                                       top: 0,
                                       right: 0,
-                                      child: GestureDetector(
+                                      child: ReportGestureDetector(
                                         onTap: () {
                                           setState(() {
                                             uploadObject = {};
@@ -368,7 +371,7 @@ class _AiVideoFaceSwapState extends State<AiVideoFaceSwap> {
                                   style: MyTheme.nav_active_14);
                             }),
                         const Expanded(child: SizedBox()),
-                        GestureDetector(
+                        ReportGestureDetector(
                           onTap: () async {
                             if (uploadObject.isEmpty) {
                               CommonUtils.showDialog(
@@ -578,7 +581,7 @@ class _Header extends StatelessWidget {
             if (banners.isEmpty) return const SizedBox.shrink();
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-              child: GeneralBannerAppsListWidget(data: banners),
+              child: ReportGeneralAppsListVidget(data: banners),
             );
           },
         ),
@@ -600,7 +603,7 @@ class _Header extends StatelessWidget {
               ),
               itemBuilder: (context, index) {
                 final topic = topics[index];
-                return GestureDetector(
+                return ReportGestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
                     onLinkNavTap(topic);
@@ -645,7 +648,7 @@ class VideoMaterialCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: () => onTap(data),
       child: Column(
         mainAxisSize: MainAxisSize.min,

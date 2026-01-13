@@ -10,6 +10,8 @@ import '../../../theme.dart';
 import 'content.dart';
 import 'count_view.dart';
 import 'media.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 enum CommunityType {
   bit,
@@ -40,7 +42,7 @@ class PostCard extends StatelessWidget {
         color: backgroundColor ?? Colors.white.withOpacity(0.03),
         borderRadius: BorderRadius.all(Radius.circular(10.w)),
       ),
-      child: GestureDetector(
+      child: ReportGestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () => switch (_type) {
           CommunityType.community => CommunityPostDetailRoute('${data.id}').push(context),

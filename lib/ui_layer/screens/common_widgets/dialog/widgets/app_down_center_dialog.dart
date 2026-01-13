@@ -7,6 +7,8 @@ import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:provider/provider.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class AppDownCenterDialog extends StatelessWidget {
   const AppDownCenterDialog({
@@ -21,7 +23,7 @@ class AppDownCenterDialog extends StatelessWidget {
 
     return ColoredBox(
       color: Colors.black38,
-      child: GestureDetector(
+      child: ReportGestureDetector(
         behavior: HitTestBehavior.opaque,
         // onTap: () => cancel.call(),
         child: Center(
@@ -40,7 +42,7 @@ class AppDownCenterDialog extends StatelessWidget {
                   child: const AppDownCenterCard(),
                 ),
                 SizedBox(height: 20.w),
-                GestureDetector(
+                ReportGestureDetector(
                   onTap: () => cancel.call(),
                   child: SizedBox(
                     child: MyImage.asset(
@@ -130,7 +132,7 @@ class _AppDownCenterCardState extends State<AppDownCenterCard> {
               //     ),
               //     itemBuilder: (context, index) {
               //       Notice? model = groupedApps.first[index];
-              //       return GestureDetector(
+              //       return ReportGestureDetector(
               //         behavior: HitTestBehavior.translucent,
               //         onTap: () {
               //           final json = model.toJson() ?? {};
@@ -180,7 +182,7 @@ class _AppDownCenterCardState extends State<AppDownCenterCard> {
                   ),
                   itemBuilder: (context, index) {
                     Notice? model = apps[index];
-                    return GestureDetector(
+                    return ReportGestureDetector(
                       behavior: HitTestBehavior.translucent,
                       onTap: () {
                         final json = model.toJson() ?? {};

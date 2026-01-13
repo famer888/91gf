@@ -6,6 +6,8 @@ import '../../../domain/model/banner_model.dart';
 import '../../utils/common_utils.dart';
 import '../theme.dart';
 import 'my_image.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class BannerCarousel extends StatelessWidget {
   final List<BannerModel> banners;
@@ -31,7 +33,7 @@ class BannerCarousel extends StatelessWidget {
       items: banners.map((banner) {
         return Builder(
           builder: (BuildContext context) {
-            return GestureDetector(
+            return ReportGestureDetector(
               onTap: () {
                 FocusManager.instance.primaryFocus?.unfocus();
                 CommonUtils.openRoute(context, banner.toJson());

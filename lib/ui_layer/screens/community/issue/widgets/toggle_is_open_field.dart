@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class ToggleIsOpenField extends StatelessWidget {
   const ToggleIsOpenField({super.key, required this.isOpenNotifier});
@@ -30,7 +32,7 @@ class ToggleIsOpenField extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: 10.w),
-                GestureDetector(
+                ReportGestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () => isOpenNotifier.value = true,
                   child: Row(
@@ -54,7 +56,7 @@ class ToggleIsOpenField extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: 20.w),
-                GestureDetector(
+                ReportGestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () => isOpenNotifier.value = false,
                   child: Row(

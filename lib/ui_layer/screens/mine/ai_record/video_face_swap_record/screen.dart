@@ -15,6 +15,8 @@ import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class MineVideoFaceSwapRecordScreen extends StatefulWidget {
   const MineVideoFaceSwapRecordScreen({super.key, this.status});
@@ -132,7 +134,7 @@ class _AIVideoFaceSwapRecordCardState
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(6.w),
       ),
-      child: GestureDetector(
+      child: ReportGestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () {
           if (widget.data.status != 2) {
@@ -161,7 +163,7 @@ class _AIVideoFaceSwapRecordCardState
                       children: [
                         Container(
                             margin: EdgeInsets.only(bottom: 13.w),
-                            child: GestureDetector(
+                            child: ReportGestureDetector(
                               behavior: HitTestBehavior.translucent,
                               onTap: () {
                                 _saveVideo(widget.data.faceM3u8 ?? '');
@@ -265,7 +267,7 @@ class _AIVideoFaceSwapRecordCardState
           AspectRatio(
               aspectRatio: 1, child: ShortvMvPlayer(info: datas, noBack: true)),
           SizedBox(height: 30.w),
-          GestureDetector(
+          ReportGestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
               _saveVideo(widget.data.faceM3u8 ?? '');
@@ -284,7 +286,7 @@ class _AIVideoFaceSwapRecordCardState
             ),
           ),
           SizedBox(height: 15.w),
-          GestureDetector(
+          ReportGestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
               _deleteRecord();

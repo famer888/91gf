@@ -9,7 +9,6 @@ import 'package:jygf/domain/remote_domain/domains/live.dart';
 import 'package:jygf/ui_layer/const.dart';
 import 'package:jygf/ui_layer/router/routes.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/general_apps_list_widget.dart';
-import 'package:jygf/ui_layer/screens/common_widgets/general_banner.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_list_view.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
@@ -18,6 +17,10 @@ import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';import 'package:jygf/report/ui_layer/report_general_banner.dart';
+
+
+
 
 class LiveVideoDetailIntroductionView extends StatefulWidget {
   const LiveVideoDetailIntroductionView(
@@ -141,7 +144,7 @@ class _HeaderViewState extends State<_HeaderView> {
                   StatefulBuilder(builder: (_, setState) {
                     final isFavorite = videoInfo.isFavorite == 1;
 
-                    return GestureDetector(
+                    return ReportGestureDetector(
                       onTap: () async {
                         if (videoInfo.id case final id?) {
                           final liveDomain = context.read<LiveDomain>();
@@ -174,7 +177,7 @@ class _HeaderViewState extends State<_HeaderView> {
                     );
                   }),
                   SizedBox(width: 20.w),
-                  GestureDetector(
+                  ReportGestureDetector(
                     onTap: () {
                       const MineShareToUserRoute().push(context);
                     },
@@ -201,7 +204,7 @@ class _HeaderViewState extends State<_HeaderView> {
               //   apps: banners,
               // )
 
-              child: GeneralBannerAppsListWidget(
+              child: ReportGeneralAppsListVidget(
                 data: banners
                     .map((e) => BannerModel.fromJson(e.toJson()))
                     .toList(),

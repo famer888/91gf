@@ -17,6 +17,8 @@ import '../../common_widgets/screen_background.dart';
 import '../../image_paths.dart';
 import 'face_swap_record/screen.dart';
 import 'strip_off_record/screen.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class MineAIRecordScreen extends StatefulWidget {
   const MineAIRecordScreen({super.key, this.index = 0});
@@ -88,7 +90,7 @@ class _MineAIRecordScreenState extends State<MineAIRecordScreen> {
               Positioned(
                 left: 0,
                 top: 0,
-                child: GestureDetector(
+                child: ReportGestureDetector(
                   child: Padding(
                     padding: EdgeInsets.all(12.w),
                     child: MyImage.asset(

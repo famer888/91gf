@@ -8,6 +8,8 @@ import 'package:jygf/ui_layer/screens/common_widgets/event_bus/event_bus.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class DraggableFloatingButton extends StatefulWidget {
   const DraggableFloatingButton({super.key});
@@ -71,7 +73,7 @@ class _DraggableFloatingButtonState extends State<DraggableFloatingButton> {
   }
 
   Widget _buildButton() {
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: () {
         VoicePalyerContentRoute(VoicePlayerManager.instance.data ?? VoiceModel()).push(context);
       },

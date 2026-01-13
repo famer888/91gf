@@ -6,6 +6,8 @@ import 'package:jygf/ui_layer/screens/acg/novel/novel_voice_player/novel_voice_p
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class NovelVoiceAISheet extends StatefulWidget {
   const NovelVoiceAISheet({super.key});
@@ -44,7 +46,7 @@ class _NovelVoiceAISheetState extends State<NovelVoiceAISheet> {
                     width: 42.w,
                   ),
                   Text('aisy'.tr(context: context), style: MyTheme.white_17),
-                  GestureDetector(
+                  ReportGestureDetector(
                     onTap: () => Navigator.pop(context),
                     behavior: HitTestBehavior.translucent,
                     child: Container(

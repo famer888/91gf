@@ -12,6 +12,8 @@ import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class NovelReItemCard extends StatefulWidget {
   const NovelReItemCard({super.key, required this.data});
@@ -41,7 +43,7 @@ class _NovelReItemCardState extends State<NovelReItemCard> {
               widget.data.title ?? '',
               style: MyTheme.white15_M,
             ),
-            GestureDetector(
+            ReportGestureDetector(
               onTap: () {
                 //更多点击
                 MoreNovelRoute(widget.data).push(context);
@@ -79,7 +81,7 @@ class _NovelReItemCardState extends State<NovelReItemCard> {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              GestureDetector(
+              ReportGestureDetector(
                 onTap: () {
                   //换一换
                   _getData();
@@ -103,7 +105,7 @@ class _NovelReItemCardState extends State<NovelReItemCard> {
                 ),
               ),
               SizedBox(width: 8.w),
-              GestureDetector(
+              ReportGestureDetector(
                 onTap: () {
                   //查看更多
                   MoreNovelRoute(widget.data).push(context);

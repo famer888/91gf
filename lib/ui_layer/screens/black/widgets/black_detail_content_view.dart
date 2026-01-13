@@ -22,6 +22,8 @@ import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 typedef GoNewBlackDetailCallback = void Function(int id);
 
@@ -280,7 +282,7 @@ class _BlackDetailContentViewState extends State<BlackDetailContentView> {
     }
 
     if (onTap != null) {
-      child = GestureDetector(onTap: onTap, child: child);
+      child = ReportGestureDetector(onTap: onTap, child: child);
     }
 
     if (margin != null) {

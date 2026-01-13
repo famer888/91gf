@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class NovelReadeSetSheet extends StatefulWidget {
   const NovelReadeSetSheet({super.key, required this.fontSize, required this.bgColorIndex, required this.callback});
@@ -87,7 +89,7 @@ class _NovelReadeSetSheetState extends State<NovelReadeSetSheet> {
             crossAxisSpacing: 10.w,
           ),
           primary: false,
-          itemBuilder: (context, index) => GestureDetector(
+          itemBuilder: (context, index) => ReportGestureDetector(
             onTap: () {
               _bgColorIndex = index;
               setState(() {});

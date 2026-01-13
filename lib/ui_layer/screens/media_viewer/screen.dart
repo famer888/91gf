@@ -19,6 +19,8 @@ import '../common_widgets/my_image.dart';
 import '../common_widgets/video_player/shortv_mv_player.dart';
 import '../image_paths.dart';
 import '../theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class MediaViewerScreen extends StatefulWidget {
   const MediaViewerScreen({super.key, required this.pramas});
@@ -64,7 +66,7 @@ class _MediaViewerScreenState extends State<MediaViewerScreen> {
         children: [
           Stack(
             children: [
-              GestureDetector(
+              ReportGestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onHorizontalDragUpdate: (e) {},
                 onTap: () {
@@ -133,7 +135,7 @@ class _MediaViewerScreenState extends State<MediaViewerScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            GestureDetector(
+                            ReportGestureDetector(
                               behavior: HitTestBehavior.translucent,
                               child: SizedBox(
                                 height: double.infinity,
@@ -204,7 +206,7 @@ class _ShortVPlayerState extends State<ShortVPlayer> {
               ),
               Container(color: Colors.black87),
               Center(
-                child: GestureDetector(
+                child: ReportGestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: _pay,
                   child: Container(

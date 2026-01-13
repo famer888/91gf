@@ -9,7 +9,6 @@ import 'package:jygf/domain/remote_domain/domains/comic.dart';
 import 'package:jygf/ui_layer/router/routes.dart';
 import 'package:jygf/ui_layer/screens/acg/comic/comic_detail/comic_chapert_rec_content.dart';
 import 'package:jygf/ui_layer/screens/acg/comic/comic_detail/comic_comment_content.dart';
-import 'package:jygf/ui_layer/screens/common_widgets/general_banner.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/keep_alive_wrapper.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_app_bar.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
@@ -21,6 +20,10 @@ import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';import 'package:jygf/report/ui_layer/report_general_banner.dart';
+
+
+
 
 ///漫画详情界面
 class ComicDetalScreen extends StatefulWidget {
@@ -75,7 +78,7 @@ class _ComicDetalScreenState extends State<ComicDetalScreen> {
     return ScreenBackground(
       child: Scaffold(
           appBar: MyAppBar(
-            rightWidget: GestureDetector(
+            rightWidget: ReportGestureDetector(
               onTap: () {
                 const MineShareToUserRoute().push(context);
               },
@@ -266,7 +269,7 @@ class _HeaderState extends State<_Header> {
                       maxLines: 1,
                     )
                   ]),
-                  GestureDetector(
+                  ReportGestureDetector(
                     onTap: _changeLike, //点赞
                     child: Row(children: [
                       MyImage.asset(
@@ -283,7 +286,7 @@ class _HeaderState extends State<_Header> {
                       )
                     ]),
                   ),
-                  GestureDetector(
+                  ReportGestureDetector(
                     onTap: _changeFavorite, //收藏
                     child: Row(children: [
                       MyImage.asset(
@@ -304,7 +307,7 @@ class _HeaderState extends State<_Header> {
           ),
           Padding(
             padding: EdgeInsets.only(bottom: 5.w),
-            child: GeneralBannerAppsListWidget(
+            child: ReportGeneralAppsListVidget(
                 data: widget.data.banner ?? [], aspectRatio: 7 / 2),
           ),
         ],

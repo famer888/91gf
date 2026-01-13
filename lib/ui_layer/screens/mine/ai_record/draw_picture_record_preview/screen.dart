@@ -6,6 +6,8 @@ import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class DrawPictureRecordPreviewScreen extends StatefulWidget {
   const DrawPictureRecordPreviewScreen({
@@ -75,7 +77,7 @@ class _DrawPictureRecordPreviewScreenState
             ),
           ),
           SizedBox(height: 30.w),
-          GestureDetector(
+          ReportGestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
               _saveImage(context);
@@ -94,7 +96,7 @@ class _DrawPictureRecordPreviewScreenState
             ),
           ),
           SizedBox(height: 15.w),
-          GestureDetector(
+          ReportGestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
               widget.delTapCall.call();

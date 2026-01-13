@@ -18,6 +18,8 @@ import 'package:jygf/ui_layer/notifiers/user_notifier.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_list_view.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class AIKissPage extends StatefulWidget {
   const AIKissPage({super.key});
@@ -175,7 +177,7 @@ class _AIKissPageState extends State<AIKissPage> {
               )),
               SizedBox(height: 10.w),
               Center(
-                child: GestureDetector(
+                child: ReportGestureDetector(
                   onTap: _onSubmitKiss,
                   child: Container(
                     width: 150.w,
@@ -229,7 +231,7 @@ class _AIKissPageState extends State<AIKissPage> {
 
   Widget _buildUploadTile({required bool isLeft}) {
     final data = isLeft ? leftUpload : rightUpload;
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: () => _pickImage(isLeft: isLeft),
       child: Container(
         height: 250.w,
@@ -261,7 +263,7 @@ class _AIKissPageState extends State<AIKissPage> {
                   Positioned(
                       top: 0,
                       right: 0,
-                      child: GestureDetector(
+                      child: ReportGestureDetector(
                         onTap: () {
                           setState(() {
                             if (isLeft) {

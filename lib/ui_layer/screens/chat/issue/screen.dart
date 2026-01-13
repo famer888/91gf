@@ -21,6 +21,8 @@ import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class ChatIssueScreen extends StatefulWidget {
   const ChatIssueScreen({super.key});
@@ -77,7 +79,7 @@ class _ChatIssueScreenState extends State<ChatIssueScreen> {
                 height: 45.w,
                 child: Row(children: [
                   const Spacer(),
-                  GestureDetector(
+                  ReportGestureDetector(
                     onTap: () {
                       Navigator.of(ctx).pop();
                     },
@@ -93,7 +95,7 @@ class _ChatIssueScreenState extends State<ChatIssueScreen> {
               Wrap(
                 runSpacing: 10.w,
                 spacing: 10.w,
-                children: cates.map((e) => GestureDetector(
+                children: cates.map((e) => ReportGestureDetector(
                   onTap: () {
                     if (seletedCates.contains(e)) {
                       seletedCates.remove(e);
@@ -278,7 +280,7 @@ class _ChatIssueScreenState extends State<ChatIssueScreen> {
     return ScreenBackground(
       child: Scaffold(
         appBar: MyAppBar(title: 'fbll'.tr(context: context)),
-        body: GestureDetector(
+        body: ReportGestureDetector(
           behavior: HitTestBehavior.translucent,
           onTap: () {
             FocusScope.of(context).unfocus();
@@ -393,7 +395,7 @@ class _ChatIssueScreenState extends State<ChatIssueScreen> {
                     ),
                     SizedBox(width: 10.w),
                     Expanded(
-                      child: GestureDetector(
+                      child: ReportGestureDetector(
                         behavior: HitTestBehavior.translucent,
                         onTap: () {
                           showClass(context);
@@ -884,7 +886,7 @@ class _ChatIssueScreenState extends State<ChatIssueScreen> {
                                 Positioned(
                                   top: 0,
                                   right: 0,
-                                  child: GestureDetector(
+                                  child: ReportGestureDetector(
                                     behavior: HitTestBehavior.translucent,
                                     onTap: () {
                                       upList.remove(e);
@@ -903,7 +905,7 @@ class _ChatIssueScreenState extends State<ChatIssueScreen> {
                               ..add(
                                 upList.length == picLimit
                                     ? const SizedBox()
-                                    : GestureDetector(
+                                    : ReportGestureDetector(
                                         onTap: imagePickerAssets,
                                         child: const MyImage.asset(MyImagePaths.appIssueAdd),
                                       ),

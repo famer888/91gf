@@ -16,6 +16,8 @@ import 'package:jygf/ui_layer/screens/live_video/live_detail/introduction_view.d
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 
 
@@ -74,7 +76,7 @@ class _LiveVideoDetailScreenState extends State<LiveVideoDetailScreen> {
         child: Scaffold(
           extendBodyBehindAppBar: true,
           // appBar: const MyAppBar(),
-          floatingActionButton: GestureDetector(
+          floatingActionButton: ReportGestureDetector(
             onTap: () {
               context.pop();
             },

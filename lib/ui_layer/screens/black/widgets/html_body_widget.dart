@@ -14,6 +14,8 @@ import '../../../../domain/model/media_model.dart';
 import '../../../notifiers/user_notifier.dart';
 import '../../../router/routes.dart';
 import '../../../utils/common_utils.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 typedef PayViewCallback = Function(int type);
 
@@ -137,7 +139,7 @@ class _HtmlBodyWidgetState extends State<HtmlBodyWidget> {
     Widget? maskLayer;
     if (widget.blk?.isPay != true) {
       if (getType() == 1) {
-        maskLayer = GestureDetector(
+        maskLayer = ReportGestureDetector(
           onTap: onTap,
           child: Container(
             alignment: Alignment.center,
@@ -149,7 +151,7 @@ class _HtmlBodyWidgetState extends State<HtmlBodyWidget> {
         );
       }
       if (getType() == 2) {
-        maskLayer = GestureDetector(
+        maskLayer = ReportGestureDetector(
           onTap: onTap,
           child: Container(
             alignment: Alignment.center,
@@ -201,7 +203,7 @@ class _HtmlBodyWidgetState extends State<HtmlBodyWidget> {
     Widget? maskLayer;
     if (widget.blk?.isPay != true) {
       if (getType() == 1) {
-        maskLayer = GestureDetector(
+        maskLayer = ReportGestureDetector(
           onTap: onTap,
           child: Row(
             children: [
@@ -217,7 +219,7 @@ class _HtmlBodyWidgetState extends State<HtmlBodyWidget> {
         );
       }
       if (getType() == 2) {
-        maskLayer = GestureDetector(
+        maskLayer = ReportGestureDetector(
           onTap: onTap,
           child: Row(
             children: [
@@ -261,7 +263,7 @@ class _HtmlBodyWidgetState extends State<HtmlBodyWidget> {
         alignment: AlignmentDirectional.center,
         children: [current, maskLayer],
       );
-      current = GestureDetector(
+      current = ReportGestureDetector(
         onTap: onTap,
         child: ClipRect(clipBehavior: Clip.hardEdge, child: current),
       );
@@ -274,7 +276,7 @@ class _HtmlBodyWidgetState extends State<HtmlBodyWidget> {
           Center(child: Image.asset(MyImagePaths.appPostPlay, width: 35.w)),
         ],
       );
-      current = GestureDetector(
+      current = ReportGestureDetector(
         onTap: () {
           List<MediaModel> medias = [MediaModel(mediaUrl: video, cover: image, type: MyMediaType.video, thumbWidth: 375, thumbHeight: 667)];
           MediaViewerRoute({'resources': medias, 'index': 0}).push(context);

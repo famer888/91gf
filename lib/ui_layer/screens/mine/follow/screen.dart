@@ -20,6 +20,8 @@ import '../../common_widgets/my_list_view.dart';
 import '../../common_widgets/my_tab_bar.dart';
 import '../../common_widgets/screen_background.dart';
 import '../../theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class MineFollowingScreen extends StatefulWidget {
   const MineFollowingScreen({super.key});
@@ -106,7 +108,7 @@ class _FollowingUserViewState extends State<FollowingUserView> {
   Widget _buildTile(FollowingUserData data) {
     final aff = '${data.aff}';
     return Column(children: [
-      GestureDetector(
+      ReportGestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () {
           UserCenterRoute(aff).push(context);
@@ -131,7 +133,7 @@ class _FollowingUserViewState extends State<FollowingUserView> {
                 ],
               ),
             ),
-            GestureDetector(
+            ReportGestureDetector(
               onTap: () async {
                 await userNotifier.changeUserFollow(aff);
               },
@@ -216,7 +218,7 @@ class _FollowingTopicState extends State<FollowingTopic> {
       width: w,
       child: Column(
         children: [
-          GestureDetector(
+          ReportGestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
               CommunityTagDetailRoute('${data.id}').push(context);
@@ -264,7 +266,7 @@ class _FollowingTopicState extends State<FollowingTopic> {
           StatefulBuilder(builder: (_, setState) {
             final isFollowing = data.isFollow == 1;
             bool isLoading = false;
-            return GestureDetector(
+            return ReportGestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () async {
                 if (isLoading) return;

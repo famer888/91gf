@@ -20,7 +20,6 @@ import 'package:jygf/ui_layer/router/router.dart';
 import 'package:jygf/ui_layer/router/routes.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/event_bus/event_bus.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/follow_button.dart';
-import 'package:jygf/ui_layer/screens/common_widgets/general_banner.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_avatar.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_list_view.dart';
@@ -32,6 +31,10 @@ import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';import 'package:jygf/report/ui_layer/report_general_banner.dart';
+
+
+
 
 class OriginalCommunityContentView extends StatelessWidget {
   const OriginalCommunityContentView({super.key, required this.data});
@@ -126,7 +129,7 @@ class _FollowViewState extends State<_FollowView> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(tr('wdgz'), style: MyTheme.white14),
-                    GestureDetector(
+                    ReportGestureDetector(
                       behavior: HitTestBehavior.translucent,
                       onTap: () {
                         const MineFollowingRoute().push(context);
@@ -156,7 +159,7 @@ class _FollowViewState extends State<_FollowView> {
                       .map(
                         (e) => Row(
                           children: [
-                            GestureDetector(
+                            ReportGestureDetector(
                               behavior: HitTestBehavior.translucent,
                               onTap: () {
                                 UserCenterRoute('${e.aff}').push(context);
@@ -401,7 +404,7 @@ class _NormalViewState extends State<_NormalView> {
               ),
             ),
             SizedBox(width: 10.w),
-            GestureDetector(
+            ReportGestureDetector(
               onTap: () {
                 eventBus.fire(MyEvent('to-blogger'));
               },
@@ -473,7 +476,7 @@ class _NormalViewState extends State<_NormalView> {
         Positioned(
             bottom: 10.w,
             right: 13.w,
-            child: GestureDetector(
+            child: ReportGestureDetector(
               onTap: _showIssueAlert,
               behavior: HitTestBehavior.translucent,
               child: MyImage.asset(
@@ -545,7 +548,7 @@ class _NormalViewState extends State<_NormalView> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   for (final issue in issues)
-                    GestureDetector(
+                    ReportGestureDetector(
                       behavior: HitTestBehavior.translucent,
                       onTap: () {
                         context.pop();
@@ -598,7 +601,7 @@ class _Header extends StatelessWidget {
             if (banners.isEmpty) return const SizedBox.shrink();
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-              child: GeneralBannerAppsListWidget(data: banners),
+              child: ReportGeneralAppsListVidget(data: banners),
             );
           },
         ),
@@ -633,7 +636,7 @@ class _BloggerCard extends StatelessWidget {
     return Column(
       children: [
         SizedBox(height: 10.w),
-        GestureDetector(
+        ReportGestureDetector(
           behavior: HitTestBehavior.translucent,
           onTap: () {
             UserCenterRoute(aff).push(context);
@@ -707,7 +710,7 @@ class _BloggerAvatarCard extends StatelessWidget {
     return SizedBox(
       width: 45.w,
       // height: 66.w,
-      child: GestureDetector(
+      child: ReportGestureDetector(
           behavior: HitTestBehavior.translucent,
           onTap: () {
             UserCenterRoute(aff).push(context);

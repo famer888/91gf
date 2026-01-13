@@ -15,6 +15,8 @@ import '../../theme.dart';
 import 'widgets/agent_view.dart';
 import 'widgets/app_center_view.dart';
 import 'widgets/tasks_view.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class MineWelfareScreen extends StatefulWidget {
   const MineWelfareScreen({super.key, required this.index});
@@ -63,7 +65,7 @@ class _MineWelfareScreenState extends State<MineWelfareScreen> {
               Positioned(
                 left: 0,
                 top: 0,
-                child: GestureDetector(
+                child: ReportGestureDetector(
                   child: Padding(
                     padding: EdgeInsets.all(12.w),
                     child: MyImage.asset(

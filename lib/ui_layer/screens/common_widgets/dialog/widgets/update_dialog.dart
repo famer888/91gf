@@ -8,6 +8,8 @@ import '../../../../utils/common_utils.dart';
 import '../../../image_paths.dart';
 import '../../../theme.dart';
 import '../../my_image.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class UpdateDialog extends StatelessWidget {
   const UpdateDialog(
@@ -89,7 +91,7 @@ class UpdateDialog extends StatelessWidget {
                                       vertical: MyTheme.pagePadding / 2),
                                   child: Material(
                                     color: Colors.transparent,
-                                    child: GestureDetector(
+                                    child: ReportGestureDetector(
                                       behavior: HitTestBehavior.translucent,
                                       onTap: () =>
                                           CommonUtils.launchUrl(solution),
@@ -123,7 +125,7 @@ class UpdateDialog extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   if (!mustUpdate)
-                                    GestureDetector(
+                                    ReportGestureDetector(
                                       onTap: () {
                                         if (mustUpdate) return;
                                         cancel.call();
@@ -147,7 +149,7 @@ class UpdateDialog extends StatelessWidget {
                                       ),
                                     ),
                                   if (!mustUpdate) const Spacer(),
-                                  GestureDetector(
+                                  ReportGestureDetector(
                                     onTap: () {
                                       if (!mustUpdate) {
                                         cancel.call();
@@ -183,7 +185,7 @@ class UpdateDialog extends StatelessWidget {
                                 ),
                                 child: Material(
                                   color: Colors.transparent,
-                                  child: GestureDetector(
+                                  child: ReportGestureDetector(
                                     onTap: () =>
                                         CommonUtils.launchUrl(officialWebUrl),
                                     child: Center(

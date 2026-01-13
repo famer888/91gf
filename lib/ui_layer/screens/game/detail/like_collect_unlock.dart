@@ -5,6 +5,8 @@ import 'package:jygf/domain/model/game/game_detail_model.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class GameLikeButton extends StatelessWidget {
   const GameLikeButton(
@@ -19,7 +21,7 @@ class GameLikeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ReportGestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
@@ -57,7 +59,7 @@ class GameCollectButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ReportGestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();

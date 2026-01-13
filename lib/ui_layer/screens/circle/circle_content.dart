@@ -9,7 +9,6 @@ import 'package:jygf/domain/remote_domain/domains/community.dart';
 import 'package:jygf/ui_layer/notifiers/home_config_notifier.dart';
 import 'package:jygf/ui_layer/notifiers/user_notifier.dart';
 import 'package:jygf/ui_layer/router/routes.dart';
-import 'package:jygf/ui_layer/screens/common_widgets/general_banner.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_list_view.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_tab_bar.dart';
@@ -17,6 +16,10 @@ import 'package:jygf/ui_layer/screens/circle/circle_post_card.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';import 'package:jygf/report/ui_layer/report_general_banner.dart';
+
+
+
 
 class CircleCommunityContentView extends StatefulWidget {
   const CircleCommunityContentView({super.key, required this.id});
@@ -159,7 +162,7 @@ class _Header extends StatelessWidget {
           if (banners.isEmpty) return const SizedBox.shrink();
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-            child: GeneralBannerAppsListWidget(data: banners),
+            child: ReportGeneralAppsListVidget(data: banners),
           );
         },
       ),
@@ -198,7 +201,7 @@ class _Header extends StatelessWidget {
                         topic.bgThumb,
                         borderRadius: 6.w,
                       ),
-                      GestureDetector(
+                      ReportGestureDetector(
                         behavior: HitTestBehavior.translucent,
                         onTap: () {
                           CommunityTagDetailRoute('${topic.id}')

@@ -19,8 +19,8 @@ import '../theme.dart';
 
 import 'package:universal_html/html.dart' as html;
 import 'package:webview_flutter_android/webview_flutter_android.dart';
-import 'fake_native_widget.dart' if (dart.library.html) 'real_web_widget.dart'
-    as ui;
+import 'fake_native_widget.dart' if (dart.library.html) 'real_web_widget.dart' as ui;
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
 
 class InAppWebViewScreen extends StatefulWidget {
   const InAppWebViewScreen({super.key, required this.url, this.needNav = true});
@@ -73,7 +73,7 @@ class _InAppWebViewScreenState extends State<InAppWebViewScreen> {
                   style: MyTheme.white255_18_B,
                 ),
                 backgroundColor: MyTheme.bgColor,
-                leading: GestureDetector(
+                leading: ReportGestureDetector(
                   onTap: () {
                     context.pop();
                   },

@@ -15,6 +15,8 @@ import '../../common_widgets/screen_background.dart';
 import '../../common_widgets/status/loading.dart';
 import '../../image_paths.dart';
 import '../../theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class MineOfficialGroupScreen extends StatefulWidget {
   const MineOfficialGroupScreen({super.key});
@@ -149,7 +151,7 @@ class AppInfo extends StatelessWidget {
               ))
             ],
           )),
-          GestureDetector(
+          ReportGestureDetector(
             onTap: () {
               CommonUtils.launchUrl(info.url ?? '');
             },

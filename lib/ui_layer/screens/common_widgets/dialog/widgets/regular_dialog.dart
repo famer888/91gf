@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import '../../../image_paths.dart';
 import '../../../theme.dart';
 import '../../my_image.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class RegularDialog extends StatelessWidget {
   const RegularDialog({
@@ -45,7 +47,7 @@ class RegularDialog extends StatelessWidget {
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    GestureDetector(
+                    ReportGestureDetector(
                       onTap: () => context.pop(),
                       child: MyImage.asset(
                         MyImagePaths.appDialogClose,
@@ -89,7 +91,7 @@ class RegularDialog extends StatelessWidget {
                         if (cancelText != null)
                           Expanded(
                               child: Center(
-                                child: GestureDetector(
+                                child: ReportGestureDetector(
                                   onTap: () => cancelOnTap == null
                                       ? context.pop()
                                       : cancelOnTap?.call(),
@@ -114,7 +116,7 @@ class RegularDialog extends StatelessWidget {
                         if (buttonText != null)
                           Expanded(
                               child: Center(
-                                child: GestureDetector(
+                                child: ReportGestureDetector(
                                   onTap: () => confirmOnTap == null
                                       ? context.pop()
                                       : confirmOnTap?.call(),

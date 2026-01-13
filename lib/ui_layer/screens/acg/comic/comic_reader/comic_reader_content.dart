@@ -25,6 +25,8 @@ import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 ///漫画阅读界面
 class ComicReaderContent extends StatefulWidget {
@@ -176,7 +178,7 @@ class _ComicReaderContentState extends State<ComicReaderContent> with RouteAware
                         width: w,
                         height: heightInt.toDouble(),
                         child: Builder(builder: (context) {
-                          Widget ww = GestureDetector(
+                          Widget ww = ReportGestureDetector(
                             child: MyImage.network(e.thumb ?? ''),
                           );
                           return ww;
@@ -307,7 +309,7 @@ class _ComicReaderContentState extends State<ComicReaderContent> with RouteAware
 
   Widget iconButton(
       {String imageName = '', String title = '', Function? func}) {
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: () {
         func?.call();
       },
@@ -428,7 +430,7 @@ class _ComicReaderContentState extends State<ComicReaderContent> with RouteAware
             Text('${_autoScrollSpeed}s', style: MyTheme.white14),
             Row(
               children: [
-                GestureDetector(
+                ReportGestureDetector(
                     onTap: () {
                       if (_autoScrollSpeed > speedMin) {
                         setState(() {
@@ -468,7 +470,7 @@ class _ComicReaderContentState extends State<ComicReaderContent> with RouteAware
                             if (_isAutoScroll) startAutoScroll();
                           },
                         ))),
-                GestureDetector(
+                ReportGestureDetector(
                     onTap: () {
                       if (_autoScrollSpeed < speedMax) {
                         setState(() {
@@ -489,7 +491,7 @@ class _ComicReaderContentState extends State<ComicReaderContent> with RouteAware
           ],
         ),
          Positioned(top: 3.w, right: 0, 
-           child: GestureDetector(
+           child: ReportGestureDetector(
                       onTap: toggleAutoScroll,
                       child: AnimatedContainer(
                         duration: const Duration(milliseconds: 200),

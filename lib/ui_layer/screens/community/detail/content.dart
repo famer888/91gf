@@ -7,7 +7,6 @@ import 'package:jygf/domain/model/user_model.dart';
 import 'package:jygf/ui_layer/notifiers/home_config_notifier.dart';
 import 'package:jygf/ui_layer/notifiers/user_notifier.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/follow_button.dart';
-import 'package:jygf/ui_layer/screens/common_widgets/general_banner.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:provider/provider.dart';
 
@@ -25,6 +24,10 @@ import '../../common_widgets/post/content/like_collect_share_area.dart';
 import '../../common_widgets/post/content/media.dart';
 import '../../common_widgets/post/content/title.dart';
 import '../../theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';import 'package:jygf/report/ui_layer/report_general_banner.dart';
+
+
+
 
 class CommunityDetailContentView extends StatefulWidget {
   const CommunityDetailContentView({super.key, required this.data});
@@ -50,7 +53,7 @@ class _CommunityDetailContentViewState extends State<CommunityDetailContentView>
         children: [
           _AvatarWithNickName(user: widget.data.user, createdAt: widget.data.createdAt ?? ''),
           SizedBox(height: 10.w),
-          if (apps case final List<BannerModel> appAds when appAds.isNotEmpty) GeneralBannerAppsListWidget(data: appAds),
+          if (apps case final List<BannerModel> appAds when appAds.isNotEmpty) ReportGeneralAppsListVidget(data: appAds),
           PostTitleView(topicTitle: widget.data.title, viewCount: widget.data.viewNum, createdAt: widget.data.createdAt),
           PostContentView(content: widget.data.content, textStyle: MyTheme.white07_14),
           SizedBox(height: 10.w),
@@ -117,7 +120,7 @@ class _ContactViewState extends State<_ContactView> {
                     child: Text(tr('nrycjsck'), style: MyTheme.blue80_14_M),
                   ),
                   SizedBox(height: 10.w),
-                  GestureDetector(
+                  ReportGestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: _pay,
                     child: Container(
@@ -137,7 +140,7 @@ class _ContactViewState extends State<_ContactView> {
               )
             : contact.contains('111111')
                 ? const SizedBox.shrink()
-                : GestureDetector(
+                : ReportGestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
                       CommonUtils.copyToClipboard(
@@ -271,7 +274,7 @@ class _AvatarWithNickName extends StatelessWidget {
     return Row(
       children: [
         SizedBox(width: 13.w),
-        GestureDetector(
+        ReportGestureDetector(
           behavior: HitTestBehavior.translucent,
           onTap: () {
             UserCenterRoute('${user?.aff}').push(context);

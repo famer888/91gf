@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 enum _Type {
   highEmphasis,
@@ -130,7 +132,7 @@ class _MyButtonState extends State<MyButton> {
           onPressed: onPressed,
           child: child,
         ),
-      _Type.gradient => GestureDetector(
+      _Type.gradient => ReportGestureDetector(
           onTap: onPressed,
           child: Container(
             padding: padding,

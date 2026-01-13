@@ -41,6 +41,8 @@ import 'common_widgets/pop_scope_wrapper.dart';
 import 'common_widgets/status/loading.dart';
 import 'image_paths.dart';
 import 'theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class BottomNaviBar extends StatefulWidget {
   const BottomNaviBar({
@@ -402,7 +404,7 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
                   kIsWeb && !CommonUtils.isPWA() && !CommonUtils.isIosWkWebView()
                       ? Padding(
                           padding: EdgeInsets.only(bottom: 10.w),
-                          child: GestureDetector(
+                          child: ReportGestureDetector(
                             onTap: () {
                               CommonUtils.downLoadApp(context);
                             },
@@ -527,7 +529,7 @@ class _TopADWidgetState extends State<TopADWidget> {
                     loop: widget.toADs.length > 1,
                     itemBuilder: (BuildContext context, int index) {
                       double w = 80.w;
-                      return GestureDetector(
+                      return ReportGestureDetector(
                         behavior: HitTestBehavior.opaque,
                         onTap: () {
                           CommonUtils.openRoute(context, widget.toADs[index].toJson());
@@ -582,7 +584,7 @@ class _TopADWidgetState extends State<TopADWidget> {
                 top: 0,
                 width: 20.w,
                 height: 20.w,
-                child: GestureDetector(
+                child: ReportGestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
                       setState(() {

@@ -17,6 +17,8 @@ import '../../../utils/my_toast.dart';
 import '../../common_widgets/my_app_bar.dart';
 import '../../common_widgets/screen_background.dart';
 import '../../theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class MineBindEmailScreen extends StatefulWidget {
   const MineBindEmailScreen({super.key, this.isForPop = false});
@@ -134,7 +136,7 @@ class _MineBindEmialScreenState extends State<MineBindEmailScreen> {
             : MyAppBar(
                 title: 'bdyx'.tr(),
               ),
-        body: GestureDetector(
+        body: ReportGestureDetector(
           behavior: HitTestBehavior.translucent,
           onTap: () {
             focusNode.unfocus();
@@ -162,7 +164,7 @@ class _MineBindEmialScreenState extends State<MineBindEmailScreen> {
                           ],
                         ),
                       ),
-                      GestureDetector(
+                      ReportGestureDetector(
                         onTap: () => Navigator.pop(context),
                         child: MyImage.asset(
                           MyImagePaths.appClose,
@@ -269,7 +271,7 @@ class _MineBindEmialScreenState extends State<MineBindEmailScreen> {
                               //           size: 15.w)
                               //       : Container(),
                               // ),
-                              GestureDetector(
+                              ReportGestureDetector(
                                 behavior: HitTestBehavior.translucent,
                                 onTap: () {
                                   if (seconds < 60) return;
@@ -300,7 +302,7 @@ class _MineBindEmialScreenState extends State<MineBindEmailScreen> {
                       ],
                     ),
                     SizedBox(height: 54.w),
-                    GestureDetector(
+                    ReportGestureDetector(
                       onTap: onSubmit,
                       child: Container(
                         height: 40.w,

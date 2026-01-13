@@ -7,6 +7,8 @@ import 'package:jygf/ui_layer/screens/common_widgets/my_app_bar.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class AiNovelDetailPage extends StatefulWidget {
   const AiNovelDetailPage(
@@ -55,7 +57,7 @@ class _AiNovelDetailPageState extends State<AiNovelDetailPage> {
                 Text('${'生成时间:'} ${widget.generateTime}',
                     style: MyTheme.white255_15),
                 const Spacer(),
-                GestureDetector(
+                ReportGestureDetector(
                   onTap: () async {
                     await Clipboard.setData(ClipboardData(text: _content));
                     MyToast.showText(text: '复制成功~');

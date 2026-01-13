@@ -11,6 +11,8 @@ import '../../../common_widgets/my_app_bar.dart';
 import '../../../common_widgets/my_list_view.dart';
 import '../../../common_widgets/screen_background.dart';
 import '../../../theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class SystemMessageScreen extends StatefulWidget {
   const SystemMessageScreen({super.key});
@@ -68,7 +70,7 @@ class NoticeItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(left: 12.5.w, right: 12.5.w, top: 20.w),
-      child: GestureDetector(
+      child: ReportGestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () {
           if (message.type == 1) {

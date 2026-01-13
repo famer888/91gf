@@ -24,6 +24,8 @@ import '../../common_widgets/status/loading.dart';
 import '../../common_widgets/status/network_error.dart';
 import '../../image_paths.dart';
 import '../../theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class MineWithdrawalScreen extends StatefulWidget {
   const MineWithdrawalScreen({super.key, required this.isAgent});
@@ -157,7 +159,7 @@ class _MineWithdrawalScreenState extends State<MineWithdrawalScreen> {
       child: Scaffold(
         appBar: MyAppBar(
           title: (isAgent ? 'dltx' : 'sytx').tr(context: context),
-          rightWidget: GestureDetector(
+          rightWidget: ReportGestureDetector(
             onTap: () => const MineWithdrawalRecordRoute().push(context),
             child: Text(
               'txjl'.tr(context: context),
@@ -168,7 +170,7 @@ class _MineWithdrawalScreenState extends State<MineWithdrawalScreen> {
         body: _asyncValue.maybeWhen(
           error: (_, __) => NetworkErrorView(onTap: _initData),
           orElse: () => const LoadingView(),
-          data: (data) => GestureDetector(
+          data: (data) => ReportGestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
             child: Padding(
@@ -296,7 +298,7 @@ class _MineWithdrawalScreenState extends State<MineWithdrawalScreen> {
                           ],
                         ),
                         SizedBox(height: 25.w),
-                        GestureDetector(
+                        ReportGestureDetector(
                           onTap: () async {
                             if (await const MineWithdrawalBankListRoute()
                                     .push(context)
@@ -362,7 +364,7 @@ class _MineWithdrawalScreenState extends State<MineWithdrawalScreen> {
                     margin: EdgeInsets.only(bottom: 20.w),
                     child: Offstage(
                       offstage: false,
-                      child: GestureDetector(
+                      child: ReportGestureDetector(
                         onTap: () {
                           showWithdrawDialog();
                         },

@@ -20,6 +20,8 @@ import '../../../../common_widgets/my_list_view.dart';
 import '../../../../common_widgets/post/comment_input.dart';
 import '../../../../image_paths.dart';
 import '../../../../theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class CartoonCommentView extends StatefulWidget {
   const CartoonCommentView({super.key, required this.id});
@@ -77,7 +79,7 @@ class _CartoonCommentViewState extends State<CartoonCommentView> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: () {
         inputFocusNode.unfocus();
       },
@@ -120,7 +122,7 @@ class _CommentTile extends StatelessWidget {
       Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          GestureDetector(
+          ReportGestureDetector(
             onTap: () {
               UserCenterRoute('${user?.aff}').push(context);
               // UserCenterRoute(aff: '${user?.aff}', index: 0).push(context);
@@ -152,7 +154,7 @@ class _CommentTile extends StatelessWidget {
                           size: 11.w,
                           color: const Color.fromRGBO(247, 208, 93, 1)),
                     if (member.uuid != user?.uuid)
-                      GestureDetector(
+                      ReportGestureDetector(
                         behavior: HitTestBehavior.translucent,
                         onTap: () {
                           if (member.username?.isEmpty == true) {
@@ -226,7 +228,7 @@ class _CommentTile extends StatelessWidget {
           ),
           StatefulBuilder(builder: (_, setState) {
             final isLike = data.isLike == 1;
-            return GestureDetector(
+            return ReportGestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () async {
                 if (data.id case final id?) {

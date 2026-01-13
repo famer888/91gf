@@ -13,6 +13,8 @@ import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class VoicePlayerSheet extends StatefulWidget {
   const VoicePlayerSheet({super.key, this.complete});
@@ -101,7 +103,7 @@ class _VoicePlayerSheetState extends State<VoicePlayerSheet> {
                     width: 42.w,
                   ),
                   Text('bflb'.tr(context: context), style: MyTheme.white_17),
-                  GestureDetector(
+                  ReportGestureDetector(
                     onTap: () => Navigator.pop(context),
                     behavior: HitTestBehavior.translucent,
                     child: Container(

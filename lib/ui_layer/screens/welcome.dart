@@ -25,6 +25,8 @@ import 'common_widgets/my_image.dart';
 import 'common_widgets/pop_scope_wrapper.dart';
 import 'common_widgets/status/network_error.dart';
 import 'theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -136,7 +138,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             ? Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  GestureDetector(
+                  ReportGestureDetector(
                     onTap: () {
                       isCheckingLine = false;
                       if (mounted) setState(() {});
@@ -150,7 +152,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   ),
                   SizedBox(height: 20.w),
                   if (officialWebUrl?.isNotEmpty == true)
-                    GestureDetector(
+                    ReportGestureDetector(
                       onTap: () {
                         CommonUtils.launchUrl(officialWebUrl!);
                       },
@@ -185,7 +187,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 SizedBox(height: 20.w),
                 Column(
                   children: lines.asMap().keys.map((x) {
-                    return GestureDetector(
+                    return ReportGestureDetector(
                         behavior: HitTestBehavior.translucent,
                         onTap: () {
                           appDomain.setBaseURL(lines[x].toString().trim());
@@ -267,7 +269,7 @@ class _AdViewState extends State<AdView> {
                     .toJson())),
                 context);
 
-            return GestureDetector(
+            return ReportGestureDetector(
               onTap: () {
                 final ad = widget.adModels[index];
                 CommonUtils.openRoute(context, {
@@ -311,7 +313,7 @@ class _AdViewState extends State<AdView> {
         Positioned(
           top: MediaQuery.of(context).padding.top + 10.w,
           right: 15.w,
-          child: GestureDetector(
+          child: ReportGestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
               if (countDownNotifier.value > 0) return;

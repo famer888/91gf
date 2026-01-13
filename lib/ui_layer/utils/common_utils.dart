@@ -43,6 +43,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:universal_html/js_util.dart' as js_util;
 import 'package:utils/utils.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class CommonUtils {
   static setStatusBar({bool isLight = false}) {
@@ -361,7 +363,7 @@ class CommonUtils {
         borderRadius: BorderRadius.circular(borderRadius ?? 0.w), // 圆角半径
         child: BackdropFilter(
           filter: ui.ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          child: GestureDetector(
+          child: ReportGestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
               onTap?.call();
@@ -1198,7 +1200,7 @@ class CommonUtils {
                     : Container(),
                 vflag ? SizedBox(height: 10.w) : Container(),
                 vflag
-                    ? GestureDetector(
+                    ? ReportGestureDetector(
                         behavior: HitTestBehavior.translucent,
                         onTap: () {
                           showAlert?.call();
@@ -1220,7 +1222,7 @@ class CommonUtils {
                   width: 30.w,
                   height: 40.w,
                   child: Stack(children: [
-                    GestureDetector(
+                    ReportGestureDetector(
                       behavior: HitTestBehavior.translucent,
                       onTap: () {
                         enterUserCenter?.call();
@@ -1273,7 +1275,7 @@ class CommonUtils {
                             : Positioned(
                                 bottom: 3.w,
                                 right: 8.w,
-                                child: GestureDetector(
+                                child: ReportGestureDetector(
                                   behavior: HitTestBehavior.translucent,
                                   onTap: () {
                                     follow?.call();
@@ -1286,7 +1288,7 @@ class CommonUtils {
                   ]),
                 ),
                 SizedBox(height: 15.w),
-                GestureDetector(
+                ReportGestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
                     like?.call();
@@ -1313,7 +1315,7 @@ class CommonUtils {
                   ),
                 ),
                 SizedBox(height: 15.w),
-                GestureDetector(
+                ReportGestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
                     comment?.call();
@@ -1332,7 +1334,7 @@ class CommonUtils {
                   ),
                 ),
                 SizedBox(height: 15.w),
-                GestureDetector(
+                ReportGestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
                     collect?.call();
@@ -1361,7 +1363,7 @@ class CommonUtils {
                   ),
                 ),
                 SizedBox(height: 15.w),
-                GestureDetector(
+                ReportGestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () {
                       const MineShareToUserRoute().push(context);
@@ -1378,7 +1380,7 @@ class CommonUtils {
                       ],
                     )),
                 SizedBox(height: 15.w),
-                // GestureDetector(
+                // ReportGestureDetector(
                 //   behavior: HitTestBehavior.translucent,
                 //   onTap: () {
                 //     cleanView?.call();
@@ -1418,7 +1420,7 @@ class CommonUtils {
       double w = constrains.maxWidth;
       return Container(
         padding: EdgeInsets.only(bottom: 20.w),
-        child: GestureDetector(
+        child: ReportGestureDetector(
           onTap: () {
             openRoute(context, data.toJson());
           },

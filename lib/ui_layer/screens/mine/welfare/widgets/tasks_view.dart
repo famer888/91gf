@@ -26,6 +26,8 @@ import '../../../common_widgets/status/loading.dart';
 import '../../../common_widgets/status/network_error.dart';
 import '../../../image_paths.dart';
 import '../../../theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class TaskView extends StatefulWidget {
   const TaskView({super.key, this.needNavi = true});
@@ -205,7 +207,7 @@ class _TaskViewState extends State<TaskView> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  GestureDetector(
+                  ReportGestureDetector(
                     onTap: () {
                       if (data.signStatus == false) {
                         _signUp();
@@ -235,7 +237,7 @@ class _TaskViewState extends State<TaskView> {
                     ),
                   ),
                   SizedBox(width: 20.w),
-                  GestureDetector(
+                  ReportGestureDetector(
                     onTap: () {
                       //兑换VIP
                       const VipCenterRoute(pageIndex: 1).push(context);
@@ -406,7 +408,7 @@ class _MemberView extends StatelessWidget {
                         );
                 },
               ),
-              GestureDetector(
+              ReportGestureDetector(
                 onTap: () => const VipCenterRoute().push(context),
                 child: Container(
                   width: 300.w,
@@ -496,7 +498,7 @@ class _Header extends StatelessWidget {
                       ));
                 },
                 selector: (_, notifier) => notifier.member),
-            GestureDetector(
+            ReportGestureDetector(
               onTap: () async {
                 const VipCenterRoute().push(context);
               },
@@ -587,7 +589,7 @@ class _Tile extends StatelessWidget {
             ),
           ),
           SizedBox(width: 10.w),
-          GestureDetector(
+          ReportGestureDetector(
             onTap: () async {
               if (state == 2) {
                 _tapSignListTask(context);

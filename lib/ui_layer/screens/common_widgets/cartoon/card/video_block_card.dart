@@ -9,6 +9,8 @@ import 'package:jygf/ui_layer/screens/common_widgets/cartoon/card/video_card.dar
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import '../../../../router/routes.dart';
 import '../../../theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class CartoonVideoBlockCard extends StatefulWidget {
   const CartoonVideoBlockCard({super.key, required this.data});
@@ -43,7 +45,7 @@ class _CartoonVideoBlockCardState extends State<CartoonVideoBlockCard> {
               style: MyTheme.white15bold,
             ),
             const Spacer(),
-            GestureDetector(
+            ReportGestureDetector(
                 onTap: () {
                   CartoonMoreRoute(
                           widget.data.value, widget.data.title)
@@ -80,7 +82,7 @@ class _CartoonVideoBlockCardState extends State<CartoonVideoBlockCard> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    GestureDetector(
+                    ReportGestureDetector(
                       onTap: _getData,
                       child: Container(
                         width: 150.w,
@@ -95,7 +97,7 @@ class _CartoonVideoBlockCardState extends State<CartoonVideoBlockCard> {
                         ),
                       ),
                     ),
-                    GestureDetector(
+                    ReportGestureDetector(
                       onTap: () {
                         CartoonMoreRoute(
                                 widget.data.value, widget.data.title)

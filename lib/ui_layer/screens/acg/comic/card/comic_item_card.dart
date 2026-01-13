@@ -8,6 +8,8 @@ import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class ComicItemCard extends StatelessWidget {
   const ComicItemCard({super.key, required this.data});
@@ -18,7 +20,7 @@ class ComicItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ReportGestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
         ComicDetailRoute(data.id.toString() ?? '').push(context);

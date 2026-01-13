@@ -6,6 +6,8 @@ import 'package:jygf/domain/model/cartoon/cartoon_section_model.dart';
 import '../../../../utils/common_utils.dart';
 import '../../../theme.dart';
 import '../../my_image.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class CartoonAdCard extends StatelessWidget {
   const CartoonAdCard({super.key, required this.ad});
@@ -14,7 +16,7 @@ class CartoonAdCard extends StatelessWidget {
   String get imgUrl => CommonUtils.getThumb(ad.toJson());
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ReportGestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
         CommonUtils.openRoute(context, ad.toJson());

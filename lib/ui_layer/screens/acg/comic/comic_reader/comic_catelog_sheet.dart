@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jygf/domain/model/comic_model.dart';
 import 'package:jygf/ui_layer/screens/acg/comic/card/comic_chapter_card.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class ComicCatelogSheet extends StatefulWidget {
   const ComicCatelogSheet({super.key, required this.data, this.onTap});
@@ -49,7 +51,7 @@ class ComicCatelogSheetState extends State<ComicCatelogSheet> {
                 topRight: Radius.circular(10.w),
               ),
             ),
-            child: GestureDetector(
+            child: ReportGestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () {
                 Navigator.pop(context);
@@ -70,7 +72,7 @@ class ComicCatelogSheetState extends State<ComicCatelogSheet> {
                 child: Text('ml'.tr(context: context), style: MyTheme.white16),
               ),
               const Spacer(),
-              GestureDetector(
+              ReportGestureDetector(
                 onTap: () {//正序
                   setState(() {
                     chapters = chapters.reversed.toList();
@@ -82,7 +84,7 @@ class ComicCatelogSheetState extends State<ComicCatelogSheet> {
               SizedBox(width: 8.w),
               Container(width: 0.5, height: 15.w, color: Colors.white.withOpacity(0.4)),
               SizedBox(width: 6.w),
-              GestureDetector(
+              ReportGestureDetector(
                 onTap: () {//倒序
                   setState(() {
                     chapters = chapters.reversed.toList();

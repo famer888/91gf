@@ -5,13 +5,14 @@ import 'package:jygf/domain/model/bit_nav_model.dart';
 import 'package:jygf/domain/model/live_model.dart';
 import 'package:jygf/domain/remote_domain/domains/live.dart';
 import 'package:jygf/ui_layer/const.dart';
-import 'package:jygf/ui_layer/screens/common_widgets/general_banner.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_list_view.dart';
 import 'package:jygf/ui_layer/screens/live_video/live_card/live_video_card.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
-import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';import 'package:jygf/report/ui_layer/report_general_banner.dart';
+
+
 
 class LiveVideoView extends StatefulWidget {
   const LiveVideoView({super.key, required this.nav});
@@ -86,7 +87,7 @@ class _Header extends StatelessWidget {
             if (banners.isEmpty) return const SizedBox.shrink();
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-              child: GeneralBannerAppsListWidget(data: banners),
+              child: ReportGeneralAppsListVidget(data: banners),
             );
           },
         ),

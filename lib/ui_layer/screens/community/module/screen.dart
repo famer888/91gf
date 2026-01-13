@@ -15,6 +15,8 @@ import '../../../utils/my_toast.dart';
 import '../../common_widgets/my_app_bar.dart';
 import '../../common_widgets/my_list_view.dart';
 import '../../theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class CommunityModuleScreen extends StatefulWidget {
   const CommunityModuleScreen({super.key, required this.id, this.topicType = 1});
@@ -81,7 +83,7 @@ class CommunityModuleItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ReportGestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
         context.pop(data);

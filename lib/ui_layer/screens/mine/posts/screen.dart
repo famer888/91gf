@@ -12,6 +12,8 @@ import '../../common_widgets/post/center/post_center.dart';
 import '../../common_widgets/screen_background.dart';
 import '../../image_paths.dart';
 import '../../theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class MinePostScreen extends StatefulWidget {
   const MinePostScreen({super.key});
@@ -66,7 +68,7 @@ class _MinePostScreenState extends State<MinePostScreen> with TickerProviderStat
                       Positioned(
                         top: 30.w,
                         left: 10.w,
-                        child: GestureDetector(
+                        child: ReportGestureDetector(
                           child: MyImage.asset(
                             MyImagePaths.appBackIcon,
                             width: 20.w,
@@ -192,7 +194,7 @@ class _Header extends StatelessWidget {
               const Spacer(),
               Row(
                 children: [
-                  GestureDetector(
+                  ReportGestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () {
                       const MineWithdrawalRoute(false).push(context);
@@ -212,7 +214,7 @@ class _Header extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: 10.w),
-                  GestureDetector(
+                  ReportGestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () {
                       const MineIncomeDetailRoute().push(context);

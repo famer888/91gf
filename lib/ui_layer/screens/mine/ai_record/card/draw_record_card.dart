@@ -10,6 +10,8 @@ import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class AIDrawRecordCard extends StatefulWidget {
   const AIDrawRecordCard(
@@ -49,7 +51,7 @@ class _AIDrawRecordCardState extends State<AIDrawRecordCard> {
                           padding: EdgeInsets.zero,
                           children: List.generate(thumbs.length, (index) {
               final thumb = thumbs[index];
-              return GestureDetector(
+              return ReportGestureDetector(
                 onTap: () => _showSheetView(thumbs, index),
                 child: Container(
                   margin: EdgeInsets.all(2.w),

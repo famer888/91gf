@@ -12,7 +12,6 @@ import 'package:jygf/domain/remote_domain/domains/community.dart';
 import 'package:jygf/domain/type_def.dart';
 import 'package:jygf/ui_layer/router/routes.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/follow_button.dart';
-import 'package:jygf/ui_layer/screens/common_widgets/general_banner.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_avatar.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_list_view.dart';
@@ -23,6 +22,10 @@ import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+import 'package:jygf/report/ui_layer/report_general_banner.dart';
+
+
 
 class FollowScreen extends StatefulWidget {
   const FollowScreen({super.key});
@@ -164,7 +167,7 @@ class _Header extends StatelessWidget {
             if (banners.isEmpty) return const SizedBox.shrink();
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-              child: GeneralBannerAppsListWidget(data: banners),
+              child: ReportGeneralAppsListVidget(data: banners),
             );
           },
         ),
@@ -224,7 +227,7 @@ class _TopicItem extends StatefulWidget {
 class _TopicItemState extends State<_TopicItem> {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ReportGestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
         CommunityTagDetailRoute('${widget.data.id}').push(context);

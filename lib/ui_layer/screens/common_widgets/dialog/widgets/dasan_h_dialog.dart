@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 
 class DanSanHDialog extends StatelessWidget {
@@ -55,7 +57,7 @@ class DanSanHDialog extends StatelessWidget {
                             decoration: TextDecoration.none),
                       ),
                     ),
-                    GestureDetector(
+                    ReportGestureDetector(
                       onTap: () => closeCall?.call(),
                       child: const MyImage.asset(
                         MyImagePaths.appCircleClose,

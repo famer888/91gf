@@ -16,6 +16,8 @@ import '../common_widgets/video_player/shortv_mv_player.dart';
 import '../theme.dart';
 import 'widgets/comment_view.dart';
 import 'widgets/introduction_view.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class VideoDetailScreen extends StatefulWidget {
   const VideoDetailScreen({super.key, required this.id});
@@ -66,7 +68,7 @@ class _VideoDetailScreenState extends State<VideoDetailScreen> {
         child: Scaffold(
           extendBodyBehindAppBar: true,
           // appBar: const MyAppBar(),
-          floatingActionButton: GestureDetector(
+          floatingActionButton: ReportGestureDetector(
             onTap: () {
               context.pop();
             },

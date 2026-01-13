@@ -6,6 +6,8 @@ import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import '../../../../router/routes.dart';
 import '../../../../utils/common_utils.dart';
 import '../../../theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class MagicCard extends StatelessWidget {
   const MagicCard({super.key, required this.data, required this.index});
@@ -37,7 +39,7 @@ class MagicCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ReportGestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
         AIMagicDetailRoute(data).push(context);

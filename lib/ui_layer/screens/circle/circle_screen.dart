@@ -25,6 +25,8 @@ import 'package:jygf/ui_layer/screens/community/issue/screen.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:provider/provider.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 //约炮
 class CircleCommunityScreen extends StatefulWidget {
   const CircleCommunityScreen({super.key});
@@ -93,7 +95,7 @@ class _CircleCommunityScreenState extends State<CircleCommunityScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       for (final issue in issues)
-                        GestureDetector(
+                        ReportGestureDetector(
                           behavior: HitTestBehavior.translucent,
                           onTap: () {
                             context.pop();
@@ -125,7 +127,7 @@ class _CircleCommunityScreenState extends State<CircleCommunityScreen> {
       child:  Scaffold(
         appBar:  MyAppBar(
           title: 'yuep'.tr(),
-           rightWidget:context.read<UserNotifier>().member.vipLevel.isVip() ? GestureDetector(
+           rightWidget:context.read<UserNotifier>().member.vipLevel.isVip() ? ReportGestureDetector(
           onTap: () {
             _showIssueSheet(context);
           },
@@ -231,7 +233,7 @@ class _BlurView extends StatelessWidget {
           return const SizedBox.shrink();
         }
 
-        return GestureDetector(
+        return ReportGestureDetector(
           behavior: HitTestBehavior.translucent,
           onTap: () {
             const VipCenterRoute().push(context);

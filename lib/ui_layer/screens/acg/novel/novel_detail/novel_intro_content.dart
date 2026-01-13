@@ -18,6 +18,8 @@ import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class NovelIntroContent extends StatefulWidget {
   const NovelIntroContent(
@@ -164,7 +166,7 @@ class _NovelIntroContentState extends State<NovelIntroContent> with RouteAware {
                           ),
                           const Spacer(),
                           chapters.length > 3
-                              ? GestureDetector(
+                              ? ReportGestureDetector(
                                   onTap: () {
                                     //更多章节
                                     NovelChaptersRoute(widget.data.detail!)
@@ -216,7 +218,7 @@ class _NovelIntroContentState extends State<NovelIntroContent> with RouteAware {
                                         ? SizedBox(
                                             height: 60.w,
                                             child: Center(
-                                              child: GestureDetector(
+                                              child: ReportGestureDetector(
                                                 onTap: () {
                                                   //查看全部章节
                                                   NovelChaptersRoute(widget.data.detail!)
@@ -328,7 +330,7 @@ class _NovelIntroContentState extends State<NovelIntroContent> with RouteAware {
               ),
             ),
           ),
-          GestureDetector(
+          ReportGestureDetector(
             onTap: () {
               //开始阅读/ 继续阅读
               jumperNovelReaderView();
@@ -365,7 +367,7 @@ class _NovelIntroContentState extends State<NovelIntroContent> with RouteAware {
 
   Widget iconButton(
       {String imageName = '', String title = '', Function? func}) {
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: () {
         func?.call();
       },

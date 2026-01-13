@@ -10,6 +10,8 @@ import 'package:jygf/ui_layer/screens/common_widgets/my_tab_bar.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:provider/provider.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class MineNovelRecordScreen extends StatefulWidget {
   const MineNovelRecordScreen({super.key, this.status});
@@ -139,7 +141,7 @@ class _AINovelRecordCardState extends State<_AINovelRecordCard> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Expanded(
-          child: GestureDetector(
+          child: ReportGestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
               if (!canView) {

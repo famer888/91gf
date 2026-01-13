@@ -18,6 +18,7 @@ import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
 
 class BlackCommentView extends StatelessWidget {
   const BlackCommentView({
@@ -43,7 +44,7 @@ class BlackCommentView extends StatelessWidget {
         SizedBox(height: 15.w),
         _Header(commentData: commentData, changeLike: changeLike),
         SizedBox(height: 10.w),
-        GestureDetector(
+        ReportGestureDetector(
           onTap: () {
             onReply.call();
           },
@@ -124,7 +125,7 @@ class _Header extends StatelessWidget {
       final member = context.read<UserNotifier>().member;
       return Row(
         children: [
-          GestureDetector(
+          ReportGestureDetector(
             onTap: () {
               // UserCenterRoute('${user.aff}').push(context);
             },
@@ -140,7 +141,7 @@ class _Header extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(user.nickname, style: MyTheme.white23_12),
-                    GestureDetector(
+                    ReportGestureDetector(
                       onTap: () {
                         if ((member.username ?? '').isEmpty) {
                           MyToast.showText(text: 'zcyhcz'.tr(context: context));
@@ -268,7 +269,7 @@ class _LikeButtonState extends State<_LikeButton> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: _changeLike,
       child: SizedBox(
         width: 40.w,
@@ -351,7 +352,7 @@ class _RepliesView extends StatelessWidget {
                       maxLines: UILayerConst.maxLine,
                     ),
                     if (index == max - 1 && comments.length > max)
-                      GestureDetector(
+                      ReportGestureDetector(
                         onTap: () {
                           onMoreCommentTap?.call();
                         },

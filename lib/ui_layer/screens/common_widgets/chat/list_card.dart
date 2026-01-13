@@ -7,6 +7,8 @@ import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class ChatListCard extends StatelessWidget {
   const ChatListCard({
@@ -23,7 +25,7 @@ class ChatListCard extends StatelessWidget {
 
     return LayoutBuilder(builder: (context, constrains) {
       double w = constrains.maxWidth;
-      return GestureDetector(
+      return ReportGestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () {
           ChatDetailRoute(data.id ?? 0).push(context);

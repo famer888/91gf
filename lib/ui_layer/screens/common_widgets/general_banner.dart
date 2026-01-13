@@ -7,6 +7,9 @@ import 'package:provider/provider.dart';
 import '../../../domain/model/banner_model.dart';
 import '../../utils/common_utils.dart';
 import 'my_image.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
+
 
 class GeneralBanner extends StatefulWidget {
   const GeneralBanner({
@@ -40,7 +43,7 @@ class _GeneralBannerState extends State<GeneralBanner> {
                     widget.data[(index + 1).clamp(0, length - 1)].toJson())),
                 context);
 
-            return GestureDetector(
+            return ReportGestureDetector(
               onTap: () {
                 FocusManager.instance.primaryFocus?.unfocus();
                 CommonUtils.openRoute(context, widget.data[index].toJson());

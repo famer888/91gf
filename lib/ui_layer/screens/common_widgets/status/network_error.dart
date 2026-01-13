@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../image_paths.dart';
 import '../../theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class NetworkErrorView extends StatelessWidget {
   const NetworkErrorView({
@@ -17,7 +19,7 @@ class NetworkErrorView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: onTap,
       child: Align(
         alignment: Alignment.center,

@@ -8,6 +8,8 @@ import '../../../../utils/common_utils.dart';
 import '../../../image_paths.dart';
 import '../../../theme.dart';
 import '../../my_image.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class CardCountView extends StatelessWidget {
   const CardCountView({
@@ -50,7 +52,7 @@ class CardCountView extends StatelessWidget {
         _item(type == CommunityType.community ? MyImagePaths.appThumbsIcon : MyImagePaths.appBitCollection, likeCount),
         _item(MyImagePaths.appCommentIcon, commentCount),
         if (topic != null)
-          GestureDetector(
+          ReportGestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () => CommunityTagDetailRoute('${topic?.id}').push(context),
             child: Text('#${topic?.name ?? ''}', style: MyTheme.blue96_13_M),

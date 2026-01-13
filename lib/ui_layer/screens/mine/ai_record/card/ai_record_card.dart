@@ -10,6 +10,8 @@ import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 enum AIRecordType {
   StripOff,
@@ -48,7 +50,7 @@ class _AIRecordCardState extends State<AIRecordCard> {
         borderRadius: BorderRadius.circular(6.w),
         // color: MyTheme.white08Color,
       ),
-      child: GestureDetector(
+      child: ReportGestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () {
           if (widget.data.status == 2) {
@@ -89,7 +91,7 @@ class _AIRecordCardState extends State<AIRecordCard> {
                       children: [
                         Container(
                             margin: EdgeInsets.only(bottom: 13.w),
-                            child: GestureDetector(
+                            child: ReportGestureDetector(
                               behavior: HitTestBehavior.translucent,
                               onTap: () {
                                 _saveImage(imgStr);

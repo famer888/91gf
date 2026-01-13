@@ -29,6 +29,8 @@ import 'widgets/post_button.dart';
 import 'widgets/topic_field.dart';
 import 'widgets/upload_hint_text.dart';
 import 'widgets/video_picker_grid.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 enum CommunityIssueType {
   /// 图片
@@ -324,7 +326,7 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
                                   ),
                                 ),
                                 SizedBox(width: 10.w),
-                                GestureDetector(
+                                ReportGestureDetector(
                                   behavior: HitTestBehavior.translucent,
                                   onTap: () {
                                     setState(() {
@@ -351,7 +353,7 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
                                   ),
                                 ),
                                 SizedBox(width: 20.w),
-                                GestureDetector(
+                                ReportGestureDetector(
                                   behavior: HitTestBehavior.translucent,
                                   onTap: () {
                                     setState(() {
@@ -416,7 +418,7 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
                                     ),
                                   ),
                                   SizedBox(width: 10.w),
-                                  GestureDetector(
+                                  ReportGestureDetector(
                                     behavior: HitTestBehavior.translucent,
                                     onTap: () async {
                                       if (video['media_url'] == null) {
@@ -445,7 +447,7 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
                                                       child: Row(
                                                         mainAxisAlignment: MainAxisAlignment.end,
                                                         children: [
-                                                          GestureDetector(
+                                                          ReportGestureDetector(
                                                             onTap: () => Navigator.of(context).pop(),
                                                             child: Icon(
                                                               Icons.close,
@@ -678,7 +680,7 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
             publishAvAvailableNotifier: _publishAvAvailableNotifier,
           ),
         ),
-        body: GestureDetector(
+        body: ReportGestureDetector(
           behavior: HitTestBehavior.translucent,
           onTap: () => FocusScope.of(context).unfocus(),
           child: SingleChildScrollView(

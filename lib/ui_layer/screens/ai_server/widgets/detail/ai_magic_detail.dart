@@ -22,6 +22,8 @@ import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class AIMagicDetail extends StatefulWidget {
   const AIMagicDetail({super.key, required this.data});
@@ -315,7 +317,7 @@ class _SubmitButtonState extends State<SubmitButton> {
     final String buttonText = freeNumber > 0
         ? '免费生成（剩余 $freeNumber 次）'
         : '需消耗 $aiMagicCost 金币【余额 $coins】生成';
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: () => _handleTap(context),
       child: Container(
         width: double.infinity,
@@ -400,7 +402,7 @@ class _AIImagePickerGridState extends State<AIImagePickerGrid> {
                 Positioned(
                   top: 0,
                   right: 0,
-                  child: GestureDetector(
+                  child: ReportGestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () => setState(() => upList.remove(uploadData)),
                     child: MyImage.asset(
@@ -415,7 +417,7 @@ class _AIImagePickerGridState extends State<AIImagePickerGrid> {
           if (upList.length != picLimit)
             Stack(
               children: [
-                GestureDetector(
+                ReportGestureDetector(
                   onTap: imagePickerAssets,
                   child: CommonUtils.dashedBorder(
                     borderRadius: BorderRadius.circular(5.r),

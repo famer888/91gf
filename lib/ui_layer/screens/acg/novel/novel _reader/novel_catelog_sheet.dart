@@ -6,6 +6,8 @@ import 'package:jygf/domain/domain.dart';
 import 'package:jygf/domain/model/novel_model.dart';
 import 'package:jygf/ui_layer/screens/acg/novel/card/novel_chapter_card.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class NovelCatelogSheet extends StatefulWidget {
   const NovelCatelogSheet({super.key, required this.data, this.onTap});
@@ -53,7 +55,7 @@ class _NovelCatelogSheetState extends State<NovelCatelogSheet> {
                 topRight: Radius.circular(10.w),
               ),
             ),
-            child: GestureDetector(
+            child: ReportGestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () {
                 Navigator.pop(context);
@@ -74,7 +76,7 @@ class _NovelCatelogSheetState extends State<NovelCatelogSheet> {
                 child: Text('ml'.tr(context: context), style: MyTheme.white16),
               ),
               const Spacer(),
-              GestureDetector(
+              ReportGestureDetector(
                 onTap: () {//正序
                   if (isDes) {
                     return;
@@ -89,7 +91,7 @@ class _NovelCatelogSheetState extends State<NovelCatelogSheet> {
               SizedBox(width: 8.w),
               Container(width: 0.5, height: 15.w, color: Colors.white.withOpacity(0.4)),
               SizedBox(width: 6.w),
-              GestureDetector(
+              ReportGestureDetector(
                 onTap: () {//倒序
                   if (!isDes) {
                     return;

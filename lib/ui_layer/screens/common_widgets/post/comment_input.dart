@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 import '../../../notifiers/user_notifier.dart';
 import '../../theme.dart';
 import '../my_image.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class CommentInput extends StatelessWidget {
   const CommentInput({
@@ -54,7 +56,7 @@ class CommentInput extends StatelessWidget {
               );
             },
           ),
-          trailing: GestureDetector(
+          trailing: ReportGestureDetector(
             onTap: onSubmitted,
             child: MyImage.asset(MyImagePaths.appCommentSend, width: 32.w, height: 32.w),
           ),

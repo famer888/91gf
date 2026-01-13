@@ -19,6 +19,8 @@ import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class YellowPictureReader extends StatefulWidget {
   const YellowPictureReader({super.key, required this.id});
@@ -75,7 +77,7 @@ class _YellowPictureReaderState extends State<YellowPictureReader> {
     return Scaffold(
         body: Stack(
       children: [
-        Positioned.fill(child: GestureDetector(
+        Positioned.fill(child: ReportGestureDetector(
             onTap: () {
               _changeShowControl();
             },
@@ -102,7 +104,7 @@ class _YellowPictureReaderState extends State<YellowPictureReader> {
                 child: MyAppBar(
                     title: data?.title,
                     // backgroundColor: MyTheme.blackColor07,
-                    rightWidget: GestureDetector(
+                    rightWidget: ReportGestureDetector(
                       child: Image.asset(
                         MyImagePaths.appNavShare,
                         width: 25.w,
@@ -179,7 +181,7 @@ class _YellowPictureReaderState extends State<YellowPictureReader> {
               spacing: 10.w,
               children: tags
                   .map(
-                    (tag) => GestureDetector(
+                    (tag) => ReportGestureDetector(
                       onTap: () {
                         AlbumTagRoute(tag: tag).push(context);
                       },
@@ -216,7 +218,7 @@ class _YellowPictureReaderState extends State<YellowPictureReader> {
                       maxLines: 1,
                     )
                   ]),
-                  GestureDetector(
+                  ReportGestureDetector(
                     onTap: () {
                       //点赞
                       _changeLike();
@@ -236,7 +238,7 @@ class _YellowPictureReaderState extends State<YellowPictureReader> {
                       )
                     ]),
                   ),
-                  GestureDetector(
+                  ReportGestureDetector(
                     onTap: () {
                       //收藏
                       _changeFavorite();
@@ -256,7 +258,7 @@ class _YellowPictureReaderState extends State<YellowPictureReader> {
                       )
                     ]),
                   ),
-                  GestureDetector(
+                  ReportGestureDetector(
                     onTap: () {
                       //评论
                       _showCommentSheet(context: context);
@@ -352,7 +354,7 @@ class _YellowPictureReaderState extends State<YellowPictureReader> {
             // clipBehavior: Clip.hardEdge,
             // decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.w)),
             child: Builder(builder: (context) {
-              Widget ww = GestureDetector(
+              Widget ww = ReportGestureDetector(
                 // onTap: () {
                 //   List<Map> picList =
                 //       List.from(pictures.map((e) => e.toJson()).toList());
@@ -388,7 +390,7 @@ class _YellowPictureReaderState extends State<YellowPictureReader> {
               _changeShowControl();
             })),
         Positioned(
-          child: GestureDetector(
+          child: ReportGestureDetector(
             onTap: buyAlbum,
             child: Center(
               child: FittedBox(

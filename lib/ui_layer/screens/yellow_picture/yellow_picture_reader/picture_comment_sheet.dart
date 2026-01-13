@@ -11,6 +11,8 @@ import 'package:jygf/ui_layer/screens/common_widgets/post/comment_input.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/screens/video_detail/widgets/comment_view.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class PictureCommentSheet extends StatefulWidget {
   const PictureCommentSheet({super.key, this.id = 0, this.onClose});
@@ -82,7 +84,7 @@ class PictureCommentSheetState extends State<PictureCommentSheet> {
                 topRight: Radius.circular(10.w),
               ),
             ),
-            child: GestureDetector(
+            child: ReportGestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () {
                 Navigator.pop(context);
@@ -92,7 +94,7 @@ class PictureCommentSheetState extends State<PictureCommentSheet> {
   }
 
   Widget cofigContentView() {
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: () {
         inputFocusNode.unfocus();
       },

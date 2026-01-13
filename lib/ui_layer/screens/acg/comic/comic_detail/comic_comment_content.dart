@@ -11,6 +11,8 @@ import 'package:jygf/ui_layer/screens/common_widgets/post/comment_input.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/screens/video_detail/widgets/comment_view.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class ComicCommentView extends StatefulWidget {
   const ComicCommentView({super.key, required this.id});
@@ -63,7 +65,7 @@ class _ComicCommentViewState extends State<ComicCommentView> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ReportGestureDetector(
       onTap: () {
         inputFocusNode.unfocus();
       },

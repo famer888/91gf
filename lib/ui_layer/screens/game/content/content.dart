@@ -8,12 +8,13 @@ import 'package:jygf/domain/model/live_model.dart';
 import 'package:jygf/domain/remote_domain/domains/game.dart';
 import 'package:jygf/ui_layer/notifiers/home_config_notifier.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/game/card/game_card.dart';
-import 'package:jygf/ui_layer/screens/common_widgets/general_banner.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_list_view.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_tab_bar.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
-import 'package:jygf/ui_layer/utils/my_toast.dart';
+import 'package:jygf/ui_layer/utils/my_toast.dart';import 'package:jygf/report/ui_layer/report_general_banner.dart';
+
+
 
 class GameContent extends StatefulWidget {
   const GameContent({super.key, required this.id});
@@ -137,7 +138,7 @@ class _Header extends StatelessWidget {
             if (banners.isEmpty) return const SizedBox.shrink();
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-              child: GeneralBannerAppsListWidget(data: banners),
+              child: ReportGeneralAppsListVidget(data: banners),
             );
           },
         ),

@@ -15,6 +15,8 @@ import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 // import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class AiVoicePage extends StatefulWidget {
   const AiVoicePage({super.key});
@@ -101,7 +103,7 @@ class _AiVoicePageState extends State<AiVoicePage> {
               ),
             ),
             SizedBox(height: 20.w),
-            GestureDetector(
+            ReportGestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () => _submit(context,
                   coins: coins,

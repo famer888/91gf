@@ -6,6 +6,8 @@ import 'package:jygf/domain/model/comic_model.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+
 
 class ComicAdCard extends StatelessWidget {
   const ComicAdCard({super.key, required this.data});
@@ -15,7 +17,7 @@ class ComicAdCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ReportGestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
         CommonUtils.openRoute(context, data.toJson());
