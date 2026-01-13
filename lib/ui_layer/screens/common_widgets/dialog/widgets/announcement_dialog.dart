@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/gradient_text.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 
 import '../../../image_paths.dart';
@@ -44,11 +45,12 @@ class AnnouncementDialog extends StatelessWidget {
                     const MyImage.asset(MyImagePaths.appAnnouncementUpBg),
                     Container(
                       margin:
-                          EdgeInsets.only(top: (1.sw - 70.w) / 305 * 117 - 2.w),
+                          EdgeInsets.only(top: (1.sw - 70.w) / 305 * 165 - 2.w),
                       color: const Color(0xFFFCFCFC),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          GradientText('系统公告', gradient: MyTheme.gradient_90_114, style: MyTheme.white255_18_B),
                           SizedBox(height: 10.w),
                           Expanded(
                               child: SingleChildScrollView(
@@ -114,12 +116,12 @@ class AnnouncementDialog extends StatelessWidget {
                   ],
                 ),
               ),
-              Positioned(
-                  top: 30.w,
-                  left: 0,
-                  right: 0,
-                  child: MyImage.asset(MyImagePaths.appAnnouncement,
-                      width: 119.w, height: 29.w))
+              // Positioned(
+              //     top: 30.w,
+              //     left: 0,
+              //     right: 0,
+              //     child: MyImage.asset(MyImagePaths.appAnnouncement,
+              //         width: 119.w, height: 29.w))
             ],
           ),
         )

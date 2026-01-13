@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/gradient_text.dart';
 
 import '../../../../utils/common_utils.dart';
 import '../../../image_paths.dart';
@@ -46,7 +47,7 @@ class UpdateDialog extends StatelessWidget {
                   ),
                 ),
                 margin: EdgeInsets.symmetric(horizontal: 35.w),
-                height: 430.w,
+                height: 450.w,
                 child: Stack(
                   children: [
                     const MyImage.asset(
@@ -54,10 +55,11 @@ class UpdateDialog extends StatelessWidget {
                     ),
                     Container(
                       margin:
-                          EdgeInsets.only(top: (1.sw - 70.w) / 305 * 147 - 2.w),
+                          EdgeInsets.only(top: (1.sw - 70.w) / 305 * 167 - 2.w),
                       color: const Color(0xFFFCFCFC),
                       child: Column(
                         children: [
+                          GradientText('发现新版本', gradient: MyTheme.gradient_90_114, style: MyTheme.white255_18_B),
                           SizedBox(height: 10.w),
                           Expanded(
                               child: SingleChildScrollView(
@@ -203,15 +205,15 @@ class UpdateDialog extends StatelessWidget {
                   ],
                 ),
               ),
-              Positioned(
-                  top: 105.w,
-                  left: 0,
-                  right: 0,
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: MyImage.asset(MyImagePaths.appFxxbbT,
-                        width: 104.w, height: 21.w),
-                  ))
+              // Positioned(
+              //     top: 105.w,
+              //     left: 0,
+              //     right: 0,
+              //     child: Align(
+              //       alignment: Alignment.center,
+              //       child: MyImage.asset(MyImagePaths.appFxxbbT,
+              //           width: 104.w, height: 21.w),
+              //     ))
             ],
           ),
         )),
