@@ -285,7 +285,7 @@ class _TabBarWithViewState extends State<TabBarWithView> with SingleTickerProvid
               ),
             ),
           ),
-        _ => !kIsWeb && isSelected && widget.labelStyle == null
+        _ => isSelected && widget.labelStyle == null
             ? Tab(
                 height: MyTheme.navbarHegiht,
                 child: ShaderMask(

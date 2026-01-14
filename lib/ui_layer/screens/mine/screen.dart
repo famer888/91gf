@@ -463,7 +463,7 @@ class _VIPCenterState extends State<_VIPCenter> {
               ),
             ),
             Align(alignment: Alignment.bottomCenter,child: _MenuButtonGrid(menu: menu, isVipCenter: true)),
-            Positioned(top: 0.5,right: 1.w,child:const MyImage.asset(MyImagePaths.appMineMoreRight,fit: BoxFit.fill)),
+            Positioned(top: 0.5,right: 1.w,child: MyImage.asset(MyImagePaths.appMineMoreRight,height: 20.w,fit: BoxFit.fitHeight)),
           ],
         ),
       ),
