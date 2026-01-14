@@ -367,7 +367,7 @@ class _UserCenterScreenState extends State<UserCenterScreen> {
             ),
             TabBarWithView.fillColor(
               tabBarPadding: EdgeInsets.symmetric(vertical: 16.w, horizontal: 16.w),
-              tabBarHeight: 32.w,
+              tabBarHeight: 60.w,
               borderRadius: 5.w,
               isScrollable: true,
               initialIndex: widget.index ?? 0,
