@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'my_image.dart';
 import '../image_paths.dart';
+import 'gradient_text.dart';
 
 enum TabBarType {
   /// 下滑线
@@ -288,13 +289,10 @@ class _TabBarWithViewState extends State<TabBarWithView> with SingleTickerProvid
         _ => isSelected && widget.labelStyle == null
             ? Tab(
                 height: MyTheme.navbarHegiht,
-                child: ShaderMask(
-                  shaderCallback: (bounds) => MyTheme.gradient_90_114.createShader(bounds),
-                  blendMode: BlendMode.srcIn,
-                  child: Text(
-                    title,
-                    style: MyTheme.jellyCyan_17,
-                  ),
+                child: GradientText(
+                  title,
+                  style: MyTheme.jellyCyan_17,
+                  gradient: MyTheme.gradient_90_114,
                 ),
               )
             : Tab(
