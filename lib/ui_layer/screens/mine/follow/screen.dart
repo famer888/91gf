@@ -44,7 +44,7 @@ class _MineFollowingScreenState extends State<MineFollowingScreen> {
             vertical: 0.w,
             horizontal: MyTheme.pagePadding,
           ),
-          labelStyle: MyTheme.jellyCyan_15,
+          // labelStyle: MyTheme.jellyCyan_15,
           unselectedLabelStyle: TextStyle(
             color: const Color.fromRGBO(255, 255, 255, 1),
             fontSize: 15.sp,
