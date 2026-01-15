@@ -25,7 +25,8 @@ import '../../common_widgets/post/content/like_collect_share_area.dart';
 import '../../common_widgets/post/content/media.dart';
 import '../../common_widgets/post/content/title.dart';
 import '../../theme.dart';
-import 'package:jygf/report/ui_layer/report_gesture_detector.dart';import 'package:jygf/report/ui_layer/report_general_banner.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+import 'package:jygf/report/ui_layer/report_general_banner.dart';
 
 class CheckFileDetailContentView extends StatefulWidget {
   const CheckFileDetailContentView({super.key, required this.data, required this.recommendNotifier});
@@ -60,9 +61,86 @@ class _CheckFileDetailContentViewState extends State<CheckFileDetailContentView>
           _ContactView(data: widget.data),
           _LikeCollectShareArea(data: widget.data),
           Divider(height: 1, thickness: 0.5.w, color: const Color(0xFF2a2a33)),
+          _RecommendWidget(widget.recommendNotifier),
           SizedBox(height: 20.w),
           PostCommentCountView(commentCount: widget.data.commentNum ?? 0),
         ],
+      ),
+    );
+  }
+}
+
+class _RecommendWidget extends StatefulWidget {
+  final ValueNotifier<List<RecommendModel>> recommendNotifier;
+
+  const _RecommendWidget(this.recommendNotifier);
+
+  @override
+  State<_RecommendWidget> createState() => _RecommendWidgetState();
+}
+
+class _RecommendWidgetState extends State<_RecommendWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder(
+        valueListenable: widget.recommendNotifier,
+        builder: (_, recommends, __) {
+          if (recommends.isEmpty) return const SizedBox();
+          return Column(mainAxisSize: MainAxisSize.min, children: [
+            Container(
+              padding: EdgeInsets.fromLTRB(0.w, 12.5.w, 0.w, 0),
+              width: double.infinity,
+              child: Text('xgtj'.tr(context: context), style: MyTheme.white255_13.s15),
+            ),
+            SizedBox(
+              height: 100.w,
+              width: double.infinity,
+              child: GridView.builder(
+                itemCount: recommends.length,
+                padding: EdgeInsets.fromLTRB(0, 10.w, 0, 0),
+                physics: const BouncingScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  childAspectRatio: 90 / (recommends.length <= 2 ? 170 : 150),
+                  crossAxisCount: 1,
+                  mainAxisSpacing: 6.w,
+                ),
+                itemBuilder: (context, index) => _buildItemBuilder(context, recommends[index]),
+              ),
+            ),
+          ]);
+        });
+  }
+
+  Widget _buildItemBuilder(context, RecommendModel recommend) {
+    final medias = recommend.medias;
+
+    Widget current = Stack(
+      fit: StackFit.expand,
+      children: [
+        if (medias != null && medias.isNotEmpty) MyImage.network(medias.first.cover),
+        Container(
+          color: const Color.fromRGBO(0, 0, 0, 0.4),
+          padding: EdgeInsets.symmetric(horizontal: 8.5.w),
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            // Text(recommend.category.isNotEmpty ? recommend.category[0].name : 'hlcg'.tr(context: context), style: MyTheme.white255_13.s14),
+            SizedBox(height: 5.w),
+            Text(recommend.title, style: MyTheme.white255_13.s12, maxLines: 2),
+          ]),
+        ),
+      ],
+    );
+
+    return ReportGestureDetector(
+      onTap: () {
+        context.pop();
+        CheckFileDetailRoute('${recommend.id}').push(context);
+      },
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(5.w),
+        clipBehavior: Clip.hardEdge,
+        child: current,
       ),
     );
   }
@@ -102,9 +180,7 @@ class _ContactViewState extends State<_ContactView> {
     if (data.contact case final contact? when contact.isNotEmpty) {
       final unlockCoins = data.unlockCoins ?? 0;
       return Padding(
-        padding: EdgeInsets.symmetric(
-          vertical: 10.w,
-        ),
+        padding: EdgeInsets.symmetric(vertical: 10.w),
         child: unlockCoins > 0 && contact.contains('***')
             ? Column(
                 children: [
@@ -245,9 +321,9 @@ class _LikeCollectShareAreaState extends State<_LikeCollectShareArea> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding, vertical: 10.w),
+      padding: EdgeInsets.only(top: 10.w, bottom: 15.w),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           PostLikeButton(isLiked: widget.data.isLike == 1, onTap: _changeLike),
           SizedBox(width: 16.w),
