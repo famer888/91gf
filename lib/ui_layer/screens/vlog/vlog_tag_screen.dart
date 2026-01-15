@@ -72,8 +72,9 @@ class _VlogTagScreenState extends State<VlogTagScreen> {
   }
 
   Widget configContentView() {
-    return TabBarWithView.fillColor(
-      tabBarHeight: 32.w,
+    return TabBarWithView.line(
+      indicatorType: IndicatorType.curve,
+      // tabBarHeight: 32.w,
       tabBarPadding: EdgeInsets.all(5.w),
       titles: [for (final title in titles) title.title],
       views: [

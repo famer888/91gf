@@ -81,8 +81,8 @@ class VlogCommentSheetState extends State<VlogCommentSheet> {
             decoration: BoxDecoration(
               color: MyTheme.bgColor,
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20.w),
-                topRight: Radius.circular(20.w),
+                topLeft: Radius.circular(30.w),
+                topRight: Radius.circular(30.w),
               ),
             ),
             child: ReportGestureDetector(
