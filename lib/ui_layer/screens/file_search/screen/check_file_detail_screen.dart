@@ -3,44 +3,43 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jygf/domain/api_validator.dart';
+import 'package:jygf/domain/async_value.dart';
+import 'package:jygf/domain/enum.dart';
+import 'package:jygf/domain/model/review_data_model.dart';
+import 'package:jygf/domain/model/topic_detail_model.dart';
+import 'package:jygf/domain/remote_domain/domains/community.dart';
+import 'package:jygf/domain/type_def.dart';
 import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/my_app_bar.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/my_list_view.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/post/card/card.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/post/comment.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/post/comment_input.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/post/replies_sheet_view.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/screen_background.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/status/loading.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/status/network_error.dart';
+import 'package:jygf/ui_layer/screens/community/detail/content.dart';
+import 'package:jygf/ui_layer/screens/file_search/model/check_detail_model.dart';
+import 'package:jygf/ui_layer/screens/file_search/widget/check_file_content.dart';
+import 'package:jygf/ui_layer/screens/image_paths.dart';
+import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
+import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../domain/api_validator.dart';
-import '../../../../domain/async_value.dart';
-import '../../../../domain/domain.dart';
-import '../../../../domain/enum.dart';
-import '../../../../domain/model/review_data_model.dart';
-import '../../../../domain/model/topic_detail_model.dart';
-import '../../../../domain/model/user_model.dart';
-import '../../../../domain/type_def.dart';
-import '../../../router/routes.dart';
-import '../../../utils/my_toast.dart';
-import '../../common_widgets/my_app_bar.dart';
-import '../../common_widgets/my_image.dart';
-import '../../common_widgets/my_list_view.dart';
-import '../../common_widgets/post/comment.dart';
-import '../../common_widgets/post/comment_input.dart';
-import '../../common_widgets/post/replies_sheet_view.dart';
-import '../../common_widgets/screen_background.dart';
-import '../../common_widgets/status/loading.dart';
-import '../../common_widgets/status/network_error.dart';
-import '../../image_paths.dart';
-import '../../theme.dart';
-import 'content.dart';
-
-class CommunityPostDetailScreen extends StatefulWidget {
-  const CommunityPostDetailScreen({super.key, required this.id});
+class CheckFileDetailScreen extends StatefulWidget {
+  const CheckFileDetailScreen({super.key, required this.id});
 
   final String id;
 
   @override
-  State<CommunityPostDetailScreen> createState() => _CommunityPostDetailScreenState();
+  State<CheckFileDetailScreen> createState() => _CheckFileDetailScreenState();
 }
 
-class _CommunityPostDetailScreenState extends State<CommunityPostDetailScreen> with WidgetsBindingObserver {
+class _CheckFileDetailScreenState extends State<CheckFileDetailScreen> with WidgetsBindingObserver {
   late final _domain = context.read<CommunityDomain>();
 
   AsyncValue<TopicDetail> _asyncValue = const AsyncInit();
@@ -48,25 +47,13 @@ class _CommunityPostDetailScreenState extends State<CommunityPostDetailScreen> w
   /// 文本框控制器
   final textEditingController = TextEditingController();
 
+  ValueNotifier<List<RecommendModel>> _recommendNotifier = ValueNotifier([]);
   /// 文本框焦点
   final inputFocusNode = FocusNode();
 
   final hintNotifier = ValueNotifier('wyddxf'.tr());
 
   ReviewData? currentReply;
-
-  final double _viewBottom = 0;
-
-  @override
-  void didChangeMetrics() {
-    // final newBottom = View.of(context).viewInsets.bottom;
-    // if (newBottom == 0 && newBottom < _viewBottom) {
-    //   unfocus();
-    // }
-    // _viewBottom = newBottom;
-
-    super.didChangeMetrics();
-  }
 
   @override
   void initState() {
@@ -80,6 +67,8 @@ class _CommunityPostDetailScreenState extends State<CommunityPostDetailScreen> w
     WidgetsBinding.instance.removeObserver(this);
     textEditingController.dispose();
     inputFocusNode.dispose();
+    hintNotifier.dispose();
+    _recommendNotifier.dispose();
     super.dispose();
   }
 
@@ -101,10 +90,13 @@ class _CommunityPostDetailScreenState extends State<CommunityPostDetailScreen> w
       _asyncValue = const AsyncLoading();
     });
 
-    final result = await _domain.communityTopicDetail(id: widget.id);
-    CommonUtils.log('话题详情页的结果:${result.status}');
+    final result = await _domain.checkFileDetail(id: widget.id);
+    CommonUtils.log('查档详情页 - ${result.status}');
     setState(() {
-      if (result.data case final data?) {
+      if (result.data?.recommend case final recommends? when recommends.isNotEmpty) {
+        _recommendNotifier.value = recommends;
+      }
+      if (result.data?.post case final data?) {
         _asyncValue = AsyncData(data);
       } else {
         _asyncValue = AsyncError(error: result.msg);
@@ -221,7 +213,7 @@ class _CommunityPostDetailScreenState extends State<CommunityPostDetailScreen> w
                 children: [
                   Expanded(
                     child: MyListView.list(
-                      header: CommunityDetailContentView(data: data),
+                      header: CheckFileDetailContentView(data: data, recommendNotifier: _recommendNotifier),
                       padding: EdgeInsets.symmetric(
                         vertical: 5.w,
                         horizontal: MyTheme.pagePadding,
@@ -263,58 +255,8 @@ class _CommunityPostDetailScreenState extends State<CommunityPostDetailScreen> w
         );
       },
       orElse: () {
-        return const ScreenBackground(
-          child: Scaffold(
-            appBar: MyAppBar(),
-            body: LoadingView(),
-          ),
-        );
+        return const ScreenBackground(child: Scaffold(appBar: MyAppBar(), body: LoadingView()));
       },
-    );
-  }
-}
-
-class _AvatarWithNickName extends StatelessWidget {
-  const _AvatarWithNickName({this.user});
-
-  final UserModel? user;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        ReportGestureDetector(
-          onTap: () {
-            FocusManager.instance.primaryFocus?.unfocus();
-            context.pop();
-          },
-          child: SizedBox(
-            height: double.infinity,
-            child: MyImage.asset(MyImagePaths.appBackIcon, width: 20.w, height: 20.w, fit: BoxFit.contain),
-          ),
-        ),
-        SizedBox(width: 10.w),
-        ReportGestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: () {
-            UserCenterRoute('${user?.aff}').push(context);
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 30.w,
-                width: 30.w,
-                child: MyImage.network(user?.thumb ?? '', borderRadius: 15.w, fit: BoxFit.cover),
-              ),
-              SizedBox(width: 10.w),
-              Text(user?.nickname ?? '', style: MyTheme.white255_15_M),
-              SizedBox(width: 2.w),
-              if (user?.agent == 1) Icon(Icons.verified_sharp, size: 14.w, color: const Color.fromRGBO(247, 208, 93, 1))
-            ],
-          ),
-        ),
-      ],
     );
   }
 }

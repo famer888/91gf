@@ -63,6 +63,7 @@ import 'package:jygf/domain/remote_domain/domains/black_domain.dart';
 import 'package:jygf/report/event_tracking.dart';
 import 'package:jygf/report/ui_layer/report_timing_interceptor.dart';
 import 'package:jygf/ui_layer/screens/black/model/black_model.dart';
+import 'package:jygf/ui_layer/screens/file_search/model/check_detail_model.dart';
 import 'package:jygf/ui_layer/screens/file_search/model/check_file_model.dart';
 import 'package:jygf/ui_layer/screens/follow/model/follow_member_model.dart';
 import 'package:jygf/ui_layer/screens/follow/model/follow_topic_model.dart';

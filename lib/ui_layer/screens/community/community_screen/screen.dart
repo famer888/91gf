@@ -16,7 +16,7 @@ import 'package:jygf/ui_layer/screens/common_widgets/status/loading.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/status/network_error.dart';
 import 'package:jygf/ui_layer/screens/community/community_screen/content.dart';
 import 'package:jygf/ui_layer/screens/community/community_screen/seed_down_content.dart';
-import 'package:jygf/ui_layer/screens/file_search/check_file_screen.dart';
+import 'package:jygf/ui_layer/screens/file_search/screen/check_file_screen.dart';
 import 'package:jygf/ui_layer/screens/follow/follow_screen.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:provider/provider.dart';

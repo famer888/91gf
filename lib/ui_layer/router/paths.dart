@@ -94,6 +94,9 @@ class AppRouterPaths {
   /// 社区帖子详情
   static const communityTieztDetail = '/communityTieztDetail/:id';
 
+  /// 查档帖子详情页
+  static const checkFileTieztDetail = '/checkFileTieztDetail/:id';
+
   /// 社区发布帖子
   static const communityIssue = '/communityIssue/:type/:topicType';
 

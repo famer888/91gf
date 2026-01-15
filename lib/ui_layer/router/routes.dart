@@ -52,6 +52,7 @@ import 'package:jygf/ui_layer/screens/community/ori_create_group_chat/group_chat
 import 'package:jygf/ui_layer/screens/community/ori_create_group_chat/group_chat/group_chat_top_msg_content.dart';
 import 'package:jygf/ui_layer/screens/community/ori_create_group_chat/group_chat/group_members_content.dart';
 import 'package:jygf/ui_layer/screens/community/ori_create_group_chat/screen.dart';
+import 'package:jygf/ui_layer/screens/file_search/screen/check_file_detail_screen.dart';
 import 'package:jygf/ui_layer/screens/game/detail/screen.dart';
 import 'package:jygf/ui_layer/screens/game/more/screen.dart.dart';
 import 'package:jygf/ui_layer/screens/game/nav/screen.dart.dart';
@@ -730,6 +731,23 @@ class CommunityPostDetailRoute extends GoRouteData {
   Page<void> buildPage(BuildContext context, GoRouterState state) {
     return CommonUtils.buildSlideTransitionPage(
         state: state, child: CommunityPostDetailScreen(id: id));
+  }
+}
+
+@TypedGoRoute<CheckFileDetailRoute>(
+    path: AppRouterPaths.checkFileTieztDetail)
+class CheckFileDetailRoute extends GoRouteData {
+  static final GlobalKey<NavigatorState> $parentNavigatorKey =
+      AppRouter.rootNavigatorKey;
+
+  const CheckFileDetailRoute(this.id);
+
+  final String id;
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return CommonUtils.buildSlideTransitionPage(
+        state: state, child: CheckFileDetailScreen(id: id));
   }
 }
 
