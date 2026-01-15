@@ -324,10 +324,9 @@ class _HeaderState extends State<_Header> {
   }
 
   Future<void> _changeFavorite() async {
-    final domain = context.read<UserDomain>();
+    final domain = context.read<NovelDomain>();
 
-    final result =
-        await domain.userFavorite(type: 11, id: widget.data.detail?.id ?? 0);
+    final result = await domain.novelFavorite(id: widget.data.detail?.id ?? 0);
     if (result.status == 1) {
       final oldValue = widget.data.detail?.isFavorite ?? 0;
       final newValue = oldValue == 0 ? 1 : 0;

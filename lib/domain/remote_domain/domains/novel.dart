@@ -109,4 +109,7 @@ abstract class NovelDomain {
     required int page,
     required int limit,
   });
+
+  ///小说收藏
+  AsyncResult novelFavorite({required int id});
 }
