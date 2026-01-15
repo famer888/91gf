@@ -252,12 +252,23 @@ class _HeaderInfo extends StatelessWidget {
                         style: MyTheme.white18bold,
                       ),
                     ),
-                    if (member.vipLevel.isVip())
+                    member.vipLevel.isVip() ?
                       Padding(
                         padding: EdgeInsets.only(left: 5.w),
                         child: MemberVipWidget(
-                          height: 15.w,
-                          vipImage: member.vipImg,
+                            height: 15.w,
+                            vipImage: member.vipImg,
+                          ),
+                        )
+                      : ReportGestureDetector(
+                        onTap: () => const VipCenterRoute().push(context),
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 5.w),
+                          child: MyImage.asset(
+                              MyImagePaths.appMineKthy,
+                              height: 15.w,
+                              fit: BoxFit.fitHeight,
+                            ),
                         ),
                       ),
                     if (member.agent == 1)

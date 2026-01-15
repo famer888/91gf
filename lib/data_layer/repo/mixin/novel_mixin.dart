@@ -227,4 +227,12 @@ mixin _Novel on _BaseAppRepo implements NovelDomain {
           .deserializeJsonListBy(
               (e) => e.map(NovelItemsModel.fromJson).toList())
           .guard;
+
+  @override
+  AsyncResult novelFavorite({required int id}) =>
+      _novelService.novelFavorite(id: id).deserialize().guard;
+
+  @override
+  AsyncResult novelLike({required int id}) =>
+      _novelService.novelLike(id: id).deserialize().guard;
 }

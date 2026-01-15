@@ -420,12 +420,12 @@ class _HeaderState extends State<_Header> {
                               );
                             }),
                       ),
-                isGirlTopic ? Container() : SizedBox(height: 5.w),
+                // isGirlTopic ? Container() : SizedBox(height: 5.w),
                 isGirlTopic
                     ? Container()
                     : Offstage(
                         offstage: widget.topicsNotifier.value.length <= 8 || isShowAllTopics,
-                        child: InkWell(
+                        child: ReportGestureDetector(
                           onTap: () {
                             isShowAllTopics = true;
                             if (mounted) {
@@ -438,8 +438,34 @@ class _HeaderState extends State<_Header> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text('zkckgd'.tr(context: context), style: MyTheme.white08_12),
-                                SizedBox(width: 3.w),
+                                // SizedBox(width: 3.w),
                                 MyImage.asset(MyImagePaths.appDownGray, width: 10.w, height: 10.w)
+                              ],
+                            ),
+                          ),
+                        )),
+                isGirlTopic
+                    ? Container()
+                    : Offstage(
+                        offstage: widget.topicsNotifier.value.length <= 8 || !isShowAllTopics,
+                        child: ReportGestureDetector(
+                          onTap: () {
+                            isShowAllTopics = false;
+                            if (mounted) {
+                              setState(() {});
+                            }
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 10.w),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('shouq'.tr(context: context), style: MyTheme.white08_12),
+                                SizedBox(width: 3.w),
+                                Transform.rotate(
+                                  angle: 3.14159,
+                                  child: MyImage.asset(MyImagePaths.appDownGray, width: 10.w, height: 10.w),
+                                )
                               ],
                             ),
                           ),

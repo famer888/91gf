@@ -197,7 +197,9 @@ mixin _Community on _BaseAppRepo implements CommunityDomain {
   }) =>
       _communityService
           .focusTops(page: page, limit: limit)
-          .deserializeJsonListBy((e) => e.map(TopicModel.fromJson).toList())
+          .deserializeJsonBy((data) => (data['topics'] as List? ?? [])
+              .map((e) => TopicModel.fromJson(e))
+              .toList())
           .guard;
 
   @override

@@ -127,7 +127,7 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
     // 打开的时候就清除一下缓存
     cache.clearImageCacheIfNeed();
     // 处理剪贴板内容
-    _getClipboardText();
+    // _getClipboardText();
 
     /// 弹窗优先级： 更新 -> 广告 -> 推荐APP -> 公告
     _checkUpdateAnnouncement();
@@ -135,24 +135,24 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
     if (!kIsWeb) _initDownloadStatus();
   }
 
-  Future<void> _getClipboardText() async {
-    if (kIsWeb) {
-      final uri = Uri.parse(html.window.location.href.replaceAll('amp;', ''));
-      String aff = uri.queryParameters[BuildConfig.affCodeKey] ?? '';
-      if (aff.isNotEmpty) domain.toInvitation(affCode: aff);
-    } else {
-      final result = await Clipboard.getData(Clipboard.kTextPlain);
-      if (result?.text case final String text when text.isNotEmpty) {
-        try {
-          final params = Uri.splitQueryString(text);
-          String aff = params[BuildConfig.affCodeKey] ?? '';
-          if (aff.isNotEmpty) domain.toInvitation(affCode: aff);
-        } catch (e) {
-          return;
-        }
-      }
-    }
-  }
+  // Future<void> _getClipboardText() async {
+  //   if (kIsWeb) {
+  //     final uri = Uri.parse(html.window.location.href.replaceAll('amp;', ''));
+  //     String aff = uri.queryParameters[BuildConfig.affCodeKey] ?? '';
+  //     if (aff.isNotEmpty) domain.toInvitation(affCode: aff);
+  //   } else {
+  //     final result = await Clipboard.getData(Clipboard.kTextPlain);
+  //     if (result?.text case final String text when text.isNotEmpty) {
+  //       try {
+  //         final params = Uri.splitQueryString(text);
+  //         String aff = params[BuildConfig.affCodeKey] ?? '';
+  //         if (aff.isNotEmpty) domain.toInvitation(affCode: aff);
+  //       } catch (e) {
+  //         return;
+  //       }
+  //     }
+  //   }
+  // }
   
   /// 活动弹窗 带report
   void _showActivityDialogReport() {

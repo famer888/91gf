@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jygf/report/event_tracking.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +18,7 @@ import 'package:jygf/domain/type_def.dart';
 import 'package:jygf/ui_layer/notifiers/user_notifier.dart';
 import 'package:jygf/ui_layer/router/routes.dart';
 import 'package:jygf/ui_layer/screens/asmr/voice_player/voice_player_manager.dart';
-import 'package:jygf/ui_layer/screens/common_widgets/dialog/my_dialog.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/dialog/widgets/regular_dialog.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/video_player/utils/nvideourl_minxin.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
@@ -336,6 +337,10 @@ class _ShortVPlayerState extends State<ShortVPlayer> with NVideoURLMinxin {
   showMoreVideoComment({required BuildContext context, dynamic data}) {
     return showModalBottomSheet(
         backgroundColor: Colors.transparent,
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height * 0.8,
+        ),
+        useRootNavigator: true,
         isScrollControlled: true,
         context: context,
         builder: (BuildContext context) {
@@ -357,55 +362,66 @@ class _ShortVPlayerState extends State<ShortVPlayer> with NVideoURLMinxin {
       return;
     }
     if (widget.info?.isFree == 2) {
-      MyDialog.showAnimationDialog(
-          cancelTxt: 'qx'.tr(context: context),
-          confirmTxt: isInsufficient
+      CommonUtils.showDialog(
+        context: context,
+        builder: (context) => RegularDialog(
+          cancelText: 'qx'.tr(context: context),
+          buttonText: isInsufficient
               ? 'qwcz'.tr(context: context)
               : 'gmgk'.tr(context: context),
-          setContent: () {
-            return Column(
-              children: [
-                Text('gmspkwz'.tr(context: context),
-                    style: MyTheme.black13,
-                    maxLines: 3,
-                    textAlign: TextAlign.center),
-                SizedBox(height: 15.w),
-                Text("$needmoney${'jb'.tr(context: context)}",
-                    style: MyTheme.jellyCyan_15, textAlign: TextAlign.center),
-                SizedBox(height: 15.w),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("${'ktvpzk'.tr(context: context)}：$money",
-                        style: MyTheme.black13),
-                  ],
-                ),
-              ],
-            );
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('gmspkwz'.tr(context: context),
+                  style: MyTheme.white13,
+                  maxLines: 3,
+                  textAlign: TextAlign.center),
+              SizedBox(height: 15.w),
+              Text("$needmoney${'jb'.tr(context: context)}",
+                  style: MyTheme.jellyCyan_15, textAlign: TextAlign.center),
+              SizedBox(height: 15.w),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("${'ktvpzk'.tr(context: context)}：$money",
+                      style: MyTheme.white13),
+                ],
+              ),
+            ],
+          ),
+          cancelOnTap: () {
+            context.pop();
           },
-          confirm: () {
+          confirmOnTap: () {
+            context.pop();
             if (isInsufficient) {
               const CoinRechargeRoute().push(context);
             } else {
               byVideoRes(money - needmoney); //直接购买
             }
-          });
-    } else {
-      MyDialog.showAnimationDialog(
-          cancelTxt: 'fxlvip'.tr(context: context),
-          confirmTxt: 'czvip'.tr(context: context),
-          setContent: () {
-            return Text('gmvkwz'.tr(context: context),
-                style: MyTheme.black13,
-                maxLines: 3,
-                textAlign: TextAlign.center);
           },
-          cancel: () {
+        ),
+      );
+    } else {
+      CommonUtils.showDialog(
+        context: context,
+        builder: (context) => RegularDialog(
+          cancelText: 'fxlvip'.tr(context: context),
+          buttonText: 'czvip'.tr(context: context),
+          content: Text('gmvkwz'.tr(context: context),
+              style: MyTheme.white13,
+              maxLines: 3,
+              textAlign: TextAlign.center),
+          cancelOnTap: () {
+            context.pop();
             const MineShareToUserRoute().push(context);
           },
-          confirm: () {
+          confirmOnTap: () {
+            context.pop();
             const VipCenterRoute().push(context);
-          });
+          },
+        ),
+      );
     }
   }
 
@@ -791,8 +807,8 @@ class _SinkPortraitWidgetState extends State<SinkPortraitWidget> {
           ),
         ),
         _buildProgressWidget(),
-        _buildContentWidget(),
         _buildGestureDetector(),
+        _buildContentWidget(),
       ],
     );
   }

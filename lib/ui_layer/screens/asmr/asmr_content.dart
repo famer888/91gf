@@ -124,7 +124,7 @@ class _ASMRContentViewState extends State<ASMRContentView> {
                       width: 18.w, height: 18.w)),
             ),
             tabBarPadding: EdgeInsets.symmetric(vertical: 6.w),
-            tabBarHeight: 32.w,
+            tabBarHeight: 40.w,
             isScrollable: true,
             titles: isInit ? [for (final title in _sorts) title.title] : [],
             views: [
