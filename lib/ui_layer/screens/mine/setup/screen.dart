@@ -291,6 +291,7 @@ class SetupItem extends StatelessWidget {
               width: 25.w,
               height: 25.w,
             ),
+            SizedBox(width: 5.w),
             Text(
               title,
               style: MyTheme.black64_15_M,

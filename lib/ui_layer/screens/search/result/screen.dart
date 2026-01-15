@@ -70,7 +70,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
     final openLive = homeConfigNotifier.config.openLive == 1 ? true : false;
 
     final titles = <String>[
-      'shp'.tr(context: context),
+      'csp'.tr(context: context),
       'dsp'.tr(context: context),
       'tiezt'.tr(context: context),
       'heil'.tr(context: context),

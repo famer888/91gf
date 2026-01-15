@@ -234,7 +234,7 @@ class _HeaderState extends State<_Header> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(children: [
-                    MyImage.asset(MyImagePaths.appViewIcon,
+                    MyImage.asset(MyImagePaths.appNovelViewCount,
                         width: 20.w, height: 20.w),
                     SizedBox(width: 3.w),
                     Text(
@@ -258,10 +258,11 @@ class _HeaderState extends State<_Header> {
                     child: Row(children: [
                       MyImage.asset(
                           widget.data.detail?.isLike == 1
-                              ? MyImagePaths.appCommReviewH
-                              : MyImagePaths.appCommReviewN,
+                              ? MyImagePaths.appThumbUpOnIcon
+                              : MyImagePaths.appThumbUpOffIcon,
+                          iconColor: widget.data.detail?.isLike == 1 ? MyTheme.primaryColor : null,
                           width: 21.w,
-                          height: 21.w),
+                          height: 21.w,),
                       SizedBox(width: 3.w),
                       Text(
                         '${CommonUtils.renderEnFixedNumber(widget.data.detail?.likeCt ?? 0)}',
@@ -277,6 +278,7 @@ class _HeaderState extends State<_Header> {
                           widget.data.detail?.isFavorite == 1
                               ? MyImagePaths.appCollectOn
                               : MyImagePaths.appCollectOff,
+                          iconColor: widget.data.detail?.isFavorite == 1 ? MyTheme.primaryColor : null,
                           width: 18.w,
                           height: 18.w),
                       SizedBox(width: 3.w),
@@ -302,10 +304,10 @@ class _HeaderState extends State<_Header> {
   }
 
   Future<void> _changeLike() async {
-    final domain = context.read<UserDomain>();
+    final domain = context.read<NovelDomain>();
 
     final result =
-        await domain.userLike(type: 11, id: widget.data.detail?.id ?? 0);
+        await domain.novelLike(id: widget.data.detail?.id ?? 0);
     if (result.status == 1) {
       final oldValue = widget.data.detail?.isLike ?? 0;
       final newValue = oldValue == 0 ? 1 : 0;
