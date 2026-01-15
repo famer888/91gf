@@ -114,7 +114,8 @@ class _NovelIntroContentState extends State<NovelIntroContent> with RouteAware {
                               child: Text(
                                 widget.data.detail?.intro ?? '',
                                 style: MyTheme.white07_14,
-                                maxLines: 100,
+                                maxLines: 5,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                       Builder(builder: (context) {

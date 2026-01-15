@@ -112,4 +112,7 @@ abstract class NovelDomain {
 
   ///小说收藏
   AsyncResult novelFavorite({required int id});
+
+  ///小说点赞
+  AsyncResult novelLike({required int id});
 }

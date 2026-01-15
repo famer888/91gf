@@ -84,4 +84,6 @@ class NovelService extends BaseService {
 
   AsyncJson novelFavorite({required int id}) =>
       post('/favorite', data: {'id': id});
+
+  AsyncJson novelLike({required int id}) => post('/like', data: {'id': id});
 }
