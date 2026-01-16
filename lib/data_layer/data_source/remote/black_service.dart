@@ -83,7 +83,7 @@ class BlackService extends BaseService {
       });
 
   /// 黑料收藏列表
-  AsyncJson getBlackCollectList({required int page, required int limit}) => post('/list_favorite', data: {
+  AsyncJson getBlackCollectList({required int page, required int limit}) => post('/list_my_favorite', data: {
         'page': page,
         'limit': limit,
       });

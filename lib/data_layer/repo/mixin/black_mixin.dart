@@ -78,7 +78,7 @@ mixin _Black on _BaseAppRepo implements BlackDomain {
   AsyncResult<List<BlackListItemModel>> getBlackCollectList({required int page, required int limit})
     => _blackService
       .getBlackCollectList(page: page, limit: limit)
-      .deserializeJsonListBy((e) => e.map(BlackListItemModel.fromJson).toList())
+      .deserializeJsonBy((e) => (e['list'] as List<dynamic>).map((item) => BlackListItemModel.fromJson(item)).toList())
       .guard;
 
   /// 黑料购买列表
@@ -86,6 +86,6 @@ mixin _Black on _BaseAppRepo implements BlackDomain {
   AsyncResult<List<BlackListItemModel>> getBlackBuyList({required int page, required int limit})
     => _blackService
       .getBlackBuyList(page: page, limit: limit)
-      .deserializeJsonListBy((e) => e.map(BlackListItemModel.fromJson).toList())
+      .deserializeJsonBy((e) => (e['list'] as List<dynamic>).map((item) => BlackListItemModel.fromJson(item)).toList())
       .guard;
 }
