@@ -548,21 +548,21 @@ class _BlackDetailsScreenState extends State<BlackDetailsScreen> {
   /// 评论
   Widget _buildBottomActionWidget(BlackDetailModel? data) {
     Widget current = Row(children: [
-      SizedBox(width: 12.w),
-      Container(
-        height: 40.w,
-        alignment: Alignment.centerLeft,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20.w),
-          color: MyTheme.white25501Color,
-        ),
-      ),
+      SizedBox(width: 10.w),
+      // Container(
+      //   height: 40.w,
+      //   alignment: Alignment.centerLeft,
+      //   decoration: BoxDecoration(
+      //     borderRadius: BorderRadius.circular(20.w),
+      //     color: MyTheme.white25501Color,
+      //   ),
+      // ),
       Expanded(
         child: Container(
           height: 40.w,
           alignment: Alignment.centerLeft,
-          margin: EdgeInsets.symmetric(horizontal: 12.5.w),
-          padding: EdgeInsets.symmetric(vertical: 2.5.w),
+          margin: EdgeInsets.symmetric(horizontal: 13.w),
+          padding: EdgeInsets.only(top: 6.w, left: 4.w, right: 4.w, bottom: 5.w),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20.w),
             color: MyTheme.white25501Color,
@@ -573,6 +573,7 @@ class _BlackDetailsScreenState extends State<BlackDetailsScreen> {
             style: MyTheme.white255_13_M.white25508.w500.s15.h1_5,
             maxLines: 10,
             cursorHeight: 23,
+            textAlign: TextAlign.start,
             cursorColor: MyTheme.blueColor63,
             decoration: InputDecoration(
               hintText: replyItemModel != null ? '@${replyItemModel?.user.nickname}' : '善语结善缘，恶言伤人心',
@@ -602,6 +603,7 @@ class _BlackDetailsScreenState extends State<BlackDetailsScreen> {
 
     return Container(
       width: double.infinity,
+      padding: EdgeInsets.only(bottom: 15.w, top: 8.w),
       constraints: BoxConstraints(minHeight: 56.w),
       color: const Color.fromRGBO(22, 22, 34, 1),
       child: current,

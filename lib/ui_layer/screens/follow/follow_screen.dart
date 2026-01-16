@@ -25,8 +25,6 @@ import 'package:provider/provider.dart';
 import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
 import 'package:jygf/report/ui_layer/report_general_banner.dart';
 
-
-
 class FollowScreen extends StatefulWidget {
   const FollowScreen({super.key});
 
@@ -205,11 +203,14 @@ class _UserListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MyListView.list(
-      contentPadding: 15.w,
-      padding: EdgeInsets.only(top: 2.w, bottom: MyTheme.pagePadding),
-      itemBuilder: (context, item, index) => PostCard.community(data: item, backgroundColor: const Color.fromRGBO(0, 0, 0, 0)),
-      onFetchingMore: fetchMoreCallback,
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+      child: MyListView.list(
+        contentPadding: 15.w,
+        padding: EdgeInsets.only(top: 2.w, bottom: MyTheme.pagePadding),
+        itemBuilder: (context, item, index) => PostCard.community(data: item, backgroundColor: const Color.fromRGBO(0, 0, 0, 0)),
+        onFetchingMore: fetchMoreCallback,
+      ),
     );
   }
 }
@@ -313,6 +314,7 @@ class _TopicItemState extends State<_TopicItem> {
 
 class _TopicFollowButton extends StatefulWidget {
   final TopicModel data;
+
   const _TopicFollowButton(this.data);
 
   @override
@@ -348,4 +350,3 @@ class _TopicFollowButtonState extends State<_TopicFollowButton> {
     });
   }
 }
-

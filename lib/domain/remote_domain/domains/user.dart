@@ -23,6 +23,11 @@ abstract class UserDomain {
     String? intro,
   });
 
+  AsyncResult favorites({
+    required int id,
+    required int type,
+  });
+
   /// 填写邀请码
   AsyncResult toInvitation({required String affCode});
 

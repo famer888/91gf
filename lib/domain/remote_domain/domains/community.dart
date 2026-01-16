@@ -68,6 +68,13 @@ abstract class CommunityDomain {
   /// 帖子详情
   AsyncResult<CheckDetailModel> checkFileDetail({required String id});
 
+  /// 约炮列表
+  AsyncResult<List<PostModel>> communityTopicAsk({
+    required String aff,
+    required int page,
+    required int limit,
+  });
+
   /// 社区 一级评论列表
   AsyncResult<List<ReviewData>> communityPostComments({
     required String id,

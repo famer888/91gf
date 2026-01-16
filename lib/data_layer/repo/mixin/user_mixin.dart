@@ -16,6 +16,13 @@ mixin _User on _BaseAppRepo implements UserDomain {
       _userService.communityFollowUser(aff: aff);
 
   @override
+  AsyncResult favorites({
+    required int id,
+    required int type,
+  })  =>
+      _userService.favorites(id: id, type: type).deserialize().guard;
+
+  @override
   AsyncResult updateUserInfo({
     String? nickName,
     String? thumb,

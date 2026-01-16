@@ -89,6 +89,17 @@ mixin _Community on _BaseAppRepo implements CommunityDomain {
           .guard;
 
   @override
+  AsyncResult<List<PostModel>> communityTopicAsk({
+    required String aff,
+    required int page,
+    required int limit,
+  }) =>
+      _communityService
+          .communityTopicAsk(aff: aff, page: page, limit: limit)
+          .deserializeJsonListBy((e) => e.map(PostModel.fromJson).toList())
+          .guard;
+
+  @override
   AsyncResult<CheckDetailModel> checkFileDetail({required String id}) =>
       _communityService
           .checkFileDetail(id: id)
@@ -252,7 +263,7 @@ mixin _Community on _BaseAppRepo implements CommunityDomain {
       _communityService
           .circleSortList(id: id, sort: sort, page: page, limit: limit)
           .deserializeJsonBy(PostsWithBannersModel.fromJson)
-          .guard;   
+          .guard;
 
           @override
   AsyncResult<List<CirclePostNavModel>> reqGetCircleNav({String type = ''}) =>
@@ -260,7 +271,7 @@ mixin _Community on _BaseAppRepo implements CommunityDomain {
           .reqGetCircleNav(type: type)
           .deserializeJsonListBy(
               (e) => e.map(CirclePostNavModel.fromJson).toList())
-          .guard;      
+          .guard;
 
   @override
   AsyncResult<List<TieztModel>> myPosts({

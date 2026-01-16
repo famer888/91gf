@@ -19,6 +19,11 @@ class UserService extends BaseService {
         'aff': aff,
       });
 
+  AsyncJson favorites({required int id, required int type}) => post('/favorites', data: {
+        'id': id,
+        'type': type,
+      });
+
   /// 修改用户头像、昵称、签名
   AsyncJson updateUserInfo({
     String? nickName,

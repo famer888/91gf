@@ -114,6 +114,18 @@ class CommunityService extends BaseService {
         'id': id,
       });
 
+  /// 约炮列表
+  AsyncJson communityTopicAsk({
+    required String aff,
+    required int page,
+    required int limit,
+  }) =>
+      post('/circle_center_post', data: {
+        'aff': aff,
+        'page': page,
+        'limit': limit,
+      });
+
   /// 获取帖子的播放链接
   AsyncJson reqGetPostURL({required int id}) =>
       post('/unlock', data: {'id': id});

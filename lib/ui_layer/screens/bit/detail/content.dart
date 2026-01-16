@@ -240,6 +240,7 @@ class _LikeCollectShareArea extends StatefulWidget {
 
 class _LikeCollectShareAreaState extends State<_LikeCollectShareArea> {
   late final _domain = context.read<SeedDomain>();
+  late final _userDomain = context.read<UserDomain>();
   bool _isChangeLikeLoading = false;
   bool _isChangeCollectLoading = false;
 
@@ -269,7 +270,7 @@ class _LikeCollectShareAreaState extends State<_LikeCollectShareArea> {
     _isChangeCollectLoading = true;
 
     try {
-      final result = await _domain.bitTopicFavorite(id: '${widget.data.id}');
+      final result = await _userDomain.favorites(id: widget.data.id ?? 0, type: 17);
       if (result.status == 1) {
         final oldValue = widget.data.isFavorite ?? 0;
         final newValue = oldValue == 0 ? 1 : 0;

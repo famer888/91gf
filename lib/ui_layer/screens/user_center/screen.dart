@@ -1,14 +1,24 @@
+import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jygf/app_global.dart';
+import 'package:jygf/domain/api_validator.dart';
 import 'package:jygf/domain/model/collection_model.dart';
+import 'package:jygf/domain/model/post_model.dart';
+import 'package:jygf/domain/model/vlog_model.dart';
 import 'package:jygf/domain/type_def.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+import 'package:jygf/ui_layer/const.dart';
+import 'package:jygf/ui_layer/notifiers/home_config_notifier.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/feed/feed_card.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/follow_button.dart';
-import 'package:jygf/ui_layer/screens/common_widgets/gradient_border.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/keep_alive_wrapper.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_list_view.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/my_tab_bar.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/post/card/user_view.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/mine/common_widgets/video_tile.dart';
 import 'package:jygf/ui_layer/screens/vlog/card/vlog_card.dart';
@@ -29,17 +39,6 @@ import '../common_widgets/screen_background.dart';
 import '../common_widgets/status/loading.dart';
 import '../common_widgets/status/network_error.dart';
 import '../theme.dart';
-
-import 'package:dotted_decoration/dotted_decoration.dart';
-import 'package:jygf/app_global.dart';
-import 'package:jygf/domain/api_validator.dart';
-import 'package:jygf/domain/model/vlog_model.dart';
-import 'package:jygf/ui_layer/const.dart';
-import 'package:jygf/ui_layer/notifiers/home_config_notifier.dart';
-import 'package:jygf/ui_layer/screens/common_widgets/keep_alive_wrapper.dart';
-import 'package:jygf/ui_layer/screens/common_widgets/my_tab_bar.dart';
-import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
-
 
 class UserCenterScreen extends StatefulWidget {
   const UserCenterScreen({super.key, required this.aff, this.index = 0});
@@ -375,11 +374,15 @@ class _UserCenterScreenState extends State<UserCenterScreen> {
                 'csp'.tr(context: context),
                 'dsp'.tr(context: context),
                 'tiezt'.tr(context: context),
+                // 'yuep'.tr(context: context),
+                // 'luol'.tr(context: context),
               ],
               views: [
                 KeepAliveWrapper(child: _VideoView(aff: widget.aff)),
                 KeepAliveWrapper(child: _VlogVideoView(aff: widget.aff)),
                 KeepAliveWrapper(child: PostCenter(aff: widget.aff, type: 2)),
+                // KeepAliveWrapper(child: _TopicAskView(aff: widget.aff)),
+                // KeepAliveWrapper(child: PostCenter(aff: widget.aff)),
               ],
             ),
           ],
@@ -556,6 +559,54 @@ class _UserTopicBarWidgetState extends State<UserTopicBarWidget> {
         ),
         Container(),
       ]),
+    );
+  }
+}
+
+class _TopicAskView extends StatefulWidget {
+  const _TopicAskView({required this.aff});
+
+  final String aff;
+
+  @override
+  State<_TopicAskView> createState() => _TopicAskViewState();
+}
+
+class _TopicAskViewState extends State<_TopicAskView> {
+  late final _communityDomain = context.read<CommunityDomain>();
+
+  Future<List<PostModel>?> _getData({
+    required int page,
+    required int pageSize,
+  }) async {
+    final result = await _communityDomain.communityTopicAsk(aff: widget.aff, page: page, limit: pageSize);
+
+    if (result.status == 1) {
+      return result.data;
+    } else {
+      MyToast.showText(text: result.msg ?? '');
+    }
+    return null;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MyListView.list(
+      padding: EdgeInsets.zero,
+      itemBuilder: (context, item, index) => _buildTopicAskItemView(data: item),
+      onFetchingMore: (currentPage, pageSize) => _getData(page: currentPage, pageSize: pageSize),
+    );
+  }
+
+  Widget _buildTopicAskItemView({required PostModel data}) {
+    return Column(
+      children: [
+        if (data.user case final user?)
+          Padding(
+            padding: EdgeInsets.only(bottom: 10.w),
+            child: CardUserView(user: user, createdAt: data.createdAt ?? ''),
+          ),
+      ],
     );
   }
 }
