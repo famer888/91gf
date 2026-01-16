@@ -73,4 +73,8 @@ class ComicService extends BaseService {
       {required int id, required int page, required int limit}) =>
       post('/list_comment', data: {'id': id, 'page': page, 'limit': limit});
 
+  AsyncJson comicLike({required int id}) => post('/like', data: {'id': id});
+
+  AsyncJson comicFavorite({required int id}) => post('/favorite', data: {'id': id});
+
 }

@@ -96,4 +96,9 @@ abstract class ComicDomain {
     required int id,
   });
 
+  ///漫画点赞
+  AsyncResult comicLike({required int id});
+
+  ///漫画收藏
+  AsyncResult comicFavorite({required int id});
 }

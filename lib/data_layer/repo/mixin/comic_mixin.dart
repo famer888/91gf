@@ -193,4 +193,12 @@ mixin _Comic on _BaseAppRepo implements ComicDomain {
           .deserializeJsonListBy(
               (e) => e.map(VideoCommentListModel.fromJson).toList())
           .guard;
+
+  @override
+  AsyncResult comicLike({required int id}) =>
+      _comicService.comicLike(id: id).deserialize().guard;
+
+  @override
+  AsyncResult comicFavorite({required int id}) =>
+      _comicService.comicFavorite(id: id).deserialize().guard;
 }

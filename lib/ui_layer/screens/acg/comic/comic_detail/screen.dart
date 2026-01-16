@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:jygf/domain/async_value.dart';
-import 'package:jygf/domain/domain.dart';
 import 'package:jygf/domain/model/comic_model.dart';
 import 'package:jygf/domain/remote_domain/domains/comic.dart';
 import 'package:jygf/ui_layer/router/routes.dart';
@@ -250,7 +249,7 @@ class _HeaderState extends State<_Header> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(children: [
-                    MyImage.asset(MyImagePaths.appViewIcon,
+                    MyImage.asset(MyImagePaths.appNovelViewCount,
                         width: 20.w, height: 20.w),
                     SizedBox(width: 3.w),
                     Text(
@@ -291,7 +290,7 @@ class _HeaderState extends State<_Header> {
                     child: Row(children: [
                       MyImage.asset(
                           widget.data.detail?.isFavorite == 1
-                              ? MyImagePaths.appCollectOn
+                              ? MyImagePaths.appGameCollectOn
                               : MyImagePaths.appCollectOff,
                           width: 18.w,
                           height: 18.w),
@@ -316,10 +315,10 @@ class _HeaderState extends State<_Header> {
   }
 
   Future<void> _changeLike() async {
-    final domain = context.read<UserDomain>();
+    final domain = context.read<ComicDomain>();
 
     final result =
-        await domain.userLike(type: 3, id: widget.data.detail?.id ?? 0);
+        await domain.comicLike(id: widget.data.detail?.id ?? 0);
     if (result.status == 1) {
       final oldValue = widget.data.detail?.isLike ?? 0;
       final newValue = oldValue == 0 ? 1 : 0;
@@ -340,10 +339,10 @@ class _HeaderState extends State<_Header> {
   }
 
   Future<void> _changeFavorite() async {
-    final domain = context.read<UserDomain>();
+    final domain = context.read<ComicDomain>();
 
     final result =
-        await domain.userFavorite(type: 3, id: widget.data.detail?.id ?? 0);
+        await domain.comicFavorite(id: widget.data.detail?.id ?? 0);
     if (result.status == 1) {
       final oldValue = widget.data.detail?.isFavorite ?? 0;
       final newValue = oldValue == 0 ? 1 : 0;
