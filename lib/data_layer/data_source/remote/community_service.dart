@@ -72,6 +72,14 @@ class CommunityService extends BaseService {
         'id': id,
       });
 
+  /// 查档详情
+  AsyncJson checkFileDetail({
+    required String id,
+  }) =>
+      post('/detail_check_file', data: {
+        'id': id,
+      });
+
   /// 一级评论列表
   AsyncJson communityPostComments({
     required String id,

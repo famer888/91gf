@@ -2,6 +2,7 @@ import 'package:jygf/domain/model/community/community_model.dart';
 import 'package:jygf/domain/model/live_model.dart';
 import 'package:jygf/domain/model/post/circle/circle_post_nav_model.dart';
 import 'package:jygf/domain/model/posts_with_banners_model.dart';
+import 'package:jygf/ui_layer/screens/file_search/model/check_detail_model.dart';
 import 'package:jygf/ui_layer/screens/file_search/model/check_file_model.dart';
 import 'package:jygf/ui_layer/screens/follow/model/follow_member_model.dart';
 import 'package:jygf/ui_layer/screens/follow/model/follow_topic_model.dart';
@@ -63,6 +64,9 @@ abstract class CommunityDomain {
 
   /// 帖子详情
   AsyncResult<TopicDetail> communityTopicDetail({required String id});
+
+  /// 帖子详情
+  AsyncResult<CheckDetailModel> checkFileDetail({required String id});
 
   /// 社区 一级评论列表
   AsyncResult<List<ReviewData>> communityPostComments({

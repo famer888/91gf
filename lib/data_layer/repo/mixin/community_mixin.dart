@@ -89,6 +89,13 @@ mixin _Community on _BaseAppRepo implements CommunityDomain {
           .guard;
 
   @override
+  AsyncResult<CheckDetailModel> checkFileDetail({required String id}) =>
+      _communityService
+          .checkFileDetail(id: id)
+          .deserializeJsonBy(CheckDetailModel.fromJson)
+          .guard;
+
+  @override
   AsyncResult<List<ReviewData>> communityPostComments(
           {required String id, required int page, required int limit}) =>
       _communityService

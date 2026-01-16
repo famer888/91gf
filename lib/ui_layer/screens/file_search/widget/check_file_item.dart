@@ -42,7 +42,7 @@ class CheckFileItem extends StatelessWidget {
     ]);
     return ReportGestureDetector(
       onTap: () {
-        CommunityPostDetailRoute('${item.id}').push(context);
+        CheckFileDetailRoute('${item.id}').push(context);
       },
       child: current,
     );

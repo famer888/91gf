@@ -13,10 +13,8 @@ import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
-import 'package:jygf/report/ui_layer/report_gesture_detector.dart';import 'package:jygf/report/ui_layer/report_general_banner.dart';
-
-
-
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+import 'package:jygf/report/ui_layer/report_general_banner.dart';
 
 class SeedDwonContentView extends StatefulWidget {
   const SeedDwonContentView({super.key});
@@ -113,9 +111,12 @@ class _SeedDwonContentViewState extends State<SeedDwonContentView> {
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
         child: TabBarWithView.fillColor(
-          tabBarPadding: EdgeInsets.symmetric(vertical: 0.w),
-          tabBarHeight: 28.w,
+          // initialIndex: _initialIndex,
+          // tabController: tabController,
+          tabBarHeight: 26.w,
+          borderRadius: 5.w,
           isScrollable: true,
+          tabBarPadding: EdgeInsets.symmetric(vertical: 0.w),
           titles: isInit ? _titles.map((e) => e.title).toList() : [],
           views: [
             for (final NavigatorModel nav in _titles)
@@ -124,7 +125,10 @@ class _SeedDwonContentViewState extends State<SeedDwonContentView> {
                 //这样做为了每次点击标签时都可以直接刷新数据
                 contentPadding: 15.w,
                 padding: EdgeInsets.only(top: 5.w, bottom: MyTheme.pagePadding),
-                itemBuilder: (context, item, index) => PostCard.bit(data: item),
+                itemBuilder: (context, item, index) => PostCard.bit(
+                  data: item,
+                  backgroundColor: Colors.transparent,
+                ),
                 onFetchingMore: (currentPage, pageSize) => _getData(
                   id: currentId,
                   page: currentPage,
@@ -179,7 +183,7 @@ class _Header extends StatelessWidget {
           builder: (context, topics, child) {
             if (topics.isEmpty) return const SizedBox.shrink();
             return Padding(
-              padding: EdgeInsets.only(bottom: 5.w),
+              padding: EdgeInsets.only(bottom: 15.w),
               child: GridView.builder(
                 shrinkWrap: true,
                 addAutomaticKeepAlives: false,
@@ -196,9 +200,7 @@ class _Header extends StatelessWidget {
                   final topic = topics[index];
                   return DecoratedBox(
                       decoration: ShapeDecoration(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6.w),
-                        ),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.w)),
                         color: Colors.white.withOpacity(0.1),
                       ),
                       child: ReportGestureDetector(
@@ -208,13 +210,17 @@ class _Header extends StatelessWidget {
                         child: Container(
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            color: const Color.fromRGBO(27, 28, 43, 1),
+                            gradient: topic.id == currentId
+                                ? MyTheme.dhButtonGradient
+                                : LinearGradient(
+                                    colors: [
+                                      MyTheme.primaryColor_01,
+                                      MyTheme.primaryColor_01,
+                                    ],
+                                  ),
                             borderRadius: BorderRadius.all(Radius.circular(2.w)),
                           ),
-                          child: Text(
-                            topics[index].name,
-                            style: topic.id == currentId ? MyTheme.jellyCyan_13 : MyTheme.white13,
-                          ),
+                          child: Text(topics[index].name, style: MyTheme.white13),
                         ),
                       ));
                 },

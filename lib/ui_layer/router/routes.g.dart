@@ -37,6 +37,7 @@ List<RouteBase> get $appRoutes => [
       $communityIssueRoute,
       $communityModuleRoute,
       $communityPostDetailRoute,
+      $checkFileDetailRoute,
       $loginRoute,
       $mineSetupRoute,
       $mineShareToUserRoute,
@@ -1052,6 +1053,32 @@ extension $CommunityPostDetailRouteExtension on CommunityPostDetailRoute {
 
   String get location => GoRouteData.$location(
         '/communityTieztDetail/${Uri.encodeComponent(id)}',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $checkFileDetailRoute => GoRouteData.$route(
+      path: '/checkFileTieztDetail/:id',
+      parentNavigatorKey: CheckFileDetailRoute.$parentNavigatorKey,
+      factory: $CheckFileDetailRouteExtension._fromState,
+    );
+
+extension $CheckFileDetailRouteExtension on CheckFileDetailRoute {
+  static CheckFileDetailRoute _fromState(GoRouterState state) =>
+      CheckFileDetailRoute(
+        state.pathParameters['id']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/checkFileTieztDetail/${Uri.encodeComponent(id)}',
       );
 
   void go(BuildContext context) => context.go(location);

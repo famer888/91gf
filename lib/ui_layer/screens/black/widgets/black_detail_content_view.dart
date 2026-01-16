@@ -124,8 +124,9 @@ class _BlackDetailContentViewState extends State<BlackDetailContentView> {
     );
     return buildContainerWidget(
       height: 40.w,
-      margin: EdgeInsets.symmetric(vertical: 2.5.w),
-      padding: EdgeInsets.symmetric(horizontal: 12.5.w),
+      alignment: Alignment.center,
+      margin: EdgeInsets.only(top: 10.w),
+      padding: EdgeInsets.symmetric(horizontal: 0.w),
       width: double.infinity,
       child: current,
     );
