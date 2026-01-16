@@ -715,8 +715,11 @@ class _YellowPictureViewState extends State<_YellowPictureView> {
 
   @override
   Widget build(BuildContext context) {
-    return MyListView.list(
-      contentPadding: 15.w,
+    return MyListView.grid(
+      childAspectRatio: UILayerConst.pictureRatio,
+      contentPadding: 10.w,
+      crossAxisCount: 3,
+      padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
       itemBuilder: (context, item, index) => YellowPictureItemCard(data: item).withSearchReport({
         "event": "keyword_click",
         "keyword": widget.word,
