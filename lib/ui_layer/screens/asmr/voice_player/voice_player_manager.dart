@@ -306,8 +306,7 @@ class VoicePlayerManager {
                 bool sufficient = member.money >= (data?.coins ?? 0);
                 if (sufficient) {
                   //用户余额足够直接购买
-                  buyVoice(model);
-                  context.pop();
+                  buyVoice(model, popDialog: true);
                 } else {
                   //弹窗提示余额不足，去充值
                   context.pop(); //隐藏弹窗
@@ -348,7 +347,7 @@ class VoicePlayerManager {
     );
   }
 
-  Future<void> buyVoice(VoiceModel model) async {
+  Future<void> buyVoice(VoiceModel model, {bool popDialog = false}) async {
 
     MyToast.showLoading(text: 'gmdd'.tr(context: context));
 
@@ -363,8 +362,8 @@ class VoicePlayerManager {
 
       WidgetsBinding.instance.addPostFrameCallback((_) {
         VoicePlayerManager.instance.initVideoPlayer(model, context!);
-        VoicePlayerManager.instance.showFloatPayer();
-        context!.pop(); //隐藏弹窗
+        // VoicePlayerManager.instance.showFloatPayer();
+        if (popDialog) context!.pop(); //隐藏弹窗
       });
       MyToast.closeAllLoading();
     } else if (res.msg case final msg?) {

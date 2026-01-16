@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:jygf/app_global.dart';
 import 'package:jygf/crypto.dart';
 import 'package:jygf/domain/api_validator.dart';
 import 'package:jygf/domain/domain.dart';
@@ -17,7 +16,7 @@ import 'package:jygf/ui_layer/router/approute_observer.dart';
 import 'package:jygf/ui_layer/router/routes.dart';
 import 'package:jygf/ui_layer/screens/acg/novel/novel%20_reader/novel_catelog_sheet.dart';
 import 'package:jygf/ui_layer/screens/acg/novel/novel%20_reader/novel_reade_set_sheet.dart';
-import 'package:jygf/ui_layer/screens/common_widgets/dialog/my_dialog.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/dialog/widgets/regular_dialog.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/event_bus/event_bus.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_app_bar.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
@@ -344,65 +343,75 @@ class _NovelReaderContentState extends State<NovelReaderContent>
     int needmoney = currentChapter?.coins ?? 0;
     bool isInsufficient = money < needmoney;
     if (currentChapter?.type == 2) {
-      MyDialog.showAnimationDialog(
-          cancelTxt: 'qx'.tr(context: context),
-          confirmTxt: isInsufficient
+      CommonUtils.showDialog(
+        context: context,
+        builder: (context) => RegularDialog(
+          title: 'wxts'.tr(context: context),
+          cancelText: 'qx'.tr(context: context),
+          buttonText: isInsufficient
               ? 'qwcz'.tr(context: context)
               : 'gmgk'.tr(context: context),
-          setContent: () {
-            return Column(
-              children: [
-                Text(
-                    'dqxshfjb'
-                        .tr(context: context)
-                        .replaceAll('a', '$needmoney'),
-                    style: MyTheme.black15,
-                    maxLines: 10,
-                    textAlign: TextAlign.center),
-                SizedBox(height: 15.w),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("${'ktvpzk'.tr(context: context)}：$money",
-                        style: MyTheme.black15, textAlign: TextAlign.center),
-                  ],
-                ),
-              ],
-            );
-          },
-          confirm: () {
+          content: Column(
+            children: [
+              Text(
+                  'dqxshfjb'
+                      .tr(context: context)
+                      .replaceAll('a', '$needmoney'),
+                  style: MyTheme.white15,
+                  maxLines: 10,
+                  textAlign: TextAlign.center),
+              SizedBox(height: 15.w),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("${'ktvpzk'.tr(context: context)}：$money",
+                      style: MyTheme.white15, textAlign: TextAlign.center),
+                ],
+              ),
+            ],
+          ),
+          confirmOnTap: () {
+            Navigator.pop(context, true);
             if (isInsufficient) {
               const CoinRechargeRoute().replace(context);
             } else {
               byVideoRes(money - needmoney); //直接购买
             }
           },
-          cancel: () {
-            context.pop();
+          cancelOnTap: () {
+          context.pop();
           },
-          backgroundReturn: () {
-            context.pop();
-          });
+        ),
+        onBarrierDismiss: () {
+          context.pop();
+        },
+      );
     } else {
-      MyDialog.showAnimationDialog(
-          cancelTxt: 'fxlvip'.tr(context: context),
-          confirmTxt: 'czvip'.tr(context: context),
-          setContent: () {
-            return Text(
-                currentChapter?.payTip ?? 'novelviptip'.tr(context: context),
-                style: MyTheme.black15,
-                maxLines: 10,
-                textAlign: TextAlign.center);
-          },
-          cancel: () {
+      CommonUtils.showDialog(
+        context: context,
+        builder: (context) => RegularDialog(
+
+          title: 'wxts'.tr(context: context),
+          cancelText: 'fxlvip'.tr(context: context),
+          buttonText: 'czvip'.tr(context: context),
+          content: Text(
+              currentChapter?.payTip ?? 'ktvpckxq'.tr(context: context),
+              style: MyTheme.white15,
+              maxLines: 10,
+              textAlign: TextAlign.center),
+          cancelOnTap: () {
+            Navigator.pop(context, true);
             const MineShareToUserRoute().replace(context);
           },
-          backgroundReturn: () {
-            context.pop();
-          },
-          confirm: () {
+          confirmOnTap: () {
+            Navigator.pop(context, true);
             const VipCenterRoute().replace(context);
-          });
+          },
+        ),
+        onBarrierDismiss: () {
+          context.pop();
+        },
+      );
     }
   }
 

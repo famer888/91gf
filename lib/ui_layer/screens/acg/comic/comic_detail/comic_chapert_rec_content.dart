@@ -273,7 +273,7 @@ class _ComicChapertRecViewState
                       children: [
                         iconButton(
                             imageName: widget.data.detail?.isFavorite == 1 ?
-                            MyImagePaths.appThumbUpOnIcon : MyImagePaths.appThumbsIcon,
+                            MyImagePaths.appGameCollectOn : MyImagePaths.appGameCollectOff,
                             title: 'sc'.tr(context: context),
                             func: () {
                               _changeFavorite();

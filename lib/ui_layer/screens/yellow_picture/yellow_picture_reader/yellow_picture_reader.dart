@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/dialog/widgets/regular_dialog.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/gradient_text.dart';
 import 'package:provider/provider.dart';
@@ -435,7 +436,8 @@ class _YellowPictureReaderState extends State<YellowPictureReader> {
             if (isInsufficient) {
               const CoinRechargeRoute().push(context);
             } else {
-              byVideoRes(money - needmoney); //直接购买
+              byVideoRes(money - needmoney);
+              context.pop();
             }
           },
         ),
@@ -450,6 +452,9 @@ class _YellowPictureReaderState extends State<YellowPictureReader> {
           buttonText: 'czvip'.tr(context: context),
           confirmOnTap: () {
             const VipCenterRoute().push(context);
+          },
+          cancelOnTap: () {
+            const MineShareToUserRoute().push(context);
           },
         ),
       );

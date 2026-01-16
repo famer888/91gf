@@ -119,7 +119,7 @@ class _CoinsDialogState extends State<CoinsDialog> {
     bool sufficient = member.money >= (widget.data.coins ?? 0);
     if (sufficient) {
       //用户余额足够直接购买
-      VoicePlayerManager.instance.buyVoice(widget.data);
+      VoicePlayerManager.instance.buyVoice(widget.data, popDialog: true);
       return;
     } else {
       //弹窗提示余额不足，去充值

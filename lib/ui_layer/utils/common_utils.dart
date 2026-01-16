@@ -67,13 +67,17 @@ class CommonUtils {
     required BuildContext context,
     required WidgetBuilder builder,
     bool barrierDismissible = true,
+    VoidCallback? onBarrierDismiss,
   }) async {
-    await showGeneralDialog(
+    final result = await showGeneralDialog<bool>(
       barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
       context: context,
       barrierDismissible: barrierDismissible,
       pageBuilder: (pageBuilderContext, __, ___) => builder(pageBuilderContext),
     );
+    if (result == null && onBarrierDismiss != null) {
+      onBarrierDismiss();
+    }
   }
 
   static const _isDebug = !(bool.fromEnvironment('dart.vm.product'));
