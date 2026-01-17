@@ -43,7 +43,7 @@ class _MineFaceSwapRecordScreenState extends State<MineFaceSwapRecordScreen> {
       indicatorType: IndicatorType.curve,
       unselectedLabelStyle: MyTheme.white25508_16_M,
       // tabBarHeight: 40.w,
-      isScrollable: false,
+      // isScrollable: false,
       titles: [
         'pdz'.tr(context: context),
         'clz'.tr(context: context),
