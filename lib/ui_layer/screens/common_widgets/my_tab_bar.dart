@@ -401,7 +401,8 @@ class _TabBarWithViewState extends State<TabBarWithView> with SingleTickerProvid
         mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(
-            height: widget.tabBarHeight ?? MyTheme.navbarHegiht,
+            height: widget.tabBarHeight ??
+                (MyTheme.navbarHegiht + (widget.tabBarPadding?.resolve(Directionality.of(context)).vertical ?? 0)),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
