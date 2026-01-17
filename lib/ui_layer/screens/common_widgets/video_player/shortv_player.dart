@@ -99,6 +99,10 @@ class _ShortVPlayerState extends State<ShortVPlayer> with NVideoURLMinxin {
         onVideoEnd: () {
           isDone = true;
           if (mounted) setState(() {});
+          // 预览视频播放完成后直接弹出购买弹窗
+          if (isPreview && mounted) {
+            showAlertVp();
+          }
         });
 
     flickManager?.flickVideoManager?.videoPlayerController
