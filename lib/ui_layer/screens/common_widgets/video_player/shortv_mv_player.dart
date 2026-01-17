@@ -410,7 +410,21 @@ class _ShortvMvPlayerState extends State<ShortvMvPlayer> with NVideoURLMinxin {
     if (res.isValid) {
       userNotifier.setMoney(money: money);
       widget.info.source240 = res.data['url'];
-      initURL();
+      if (flickManager != null) {
+        final newVideoUrl = widget.info.source240!;
+        final newController = await initController(
+            source240: newVideoUrl, isLocal: widget.isLocal);
+        if (newController != null) {
+          flickManager!.handleChangeVideo(newController);
+          isPreview = false;
+          if (mounted) {
+            flickManager!.flickControlManager?.autoResume();
+            setState(() {});
+          }
+        }
+      } else {
+        initURL();
+      }
     } else {
       MyToast.showText(text: res.msg ?? '');
     }
