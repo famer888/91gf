@@ -1028,58 +1028,27 @@ class CommonUtils {
     var vflag = false;
     if (data.source_240.toString().isEmpty) {
       if (user.vipLevel < 1 && data.isFree == 1) {
-        //需要VIP
-        // dgt = SizedBox(
-        //     height: 22.5.w,
-        //     child: Row(
-        //       mainAxisAlignment: MainAxisAlignment.start,
-        //       children: [
-        //         // MyImage.asset(
-        //         //   MyImagePaths.appVlogVipbg,
-        //         //   width: 160.w,
-        //         //   height: 30.w,
-        //         //   fit: BoxFit.fill,
-        //         // ),
-        //       ],
-        //     ));
-
-        // 创建一个TextPainter对象
-        TextPainter textPainter = TextPainter(
-          textDirection: ui.TextDirection.ltr,
-        );
-        String tempStr = "${data.coins ?? 0}${'jbgm'.tr(context: context)}";
-        // 设置文本样式
-        textPainter.text = TextSpan(
-          text: tempStr,
-          style: MyTheme.black13_11,
-        );
-        // 布局文本
-        textPainter.layout();
-        // 获取文本宽度
-        double textWidth = textPainter.size.width;
-
         dgt = ClipRRect(
           borderRadius: BorderRadius.circular(5.0.w),
           child: Container(
+            height: 20.0.w,
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
             decoration: BoxDecoration(
               gradient: MyTheme.gradient_90_118,
               borderRadius: BorderRadius.circular(5.w),
             ),
-            child: SizedBox(
-              height: 20.0.w,
-              width: textWidth.w,
-              child: Center(
-                child: DefaultTextStyle(
-                  textAlign: TextAlign.center,
-                  style: MyTheme.white11,
-                  child: Text.rich(
-                    TextSpan(
-                      children: [
-                        TextSpan(
-                          text: 'czvip'.tr(context: context),
-                        ),
-                      ],
-                    ),
+            child: Center(
+              widthFactor: 1.0,
+              child: DefaultTextStyle(
+                textAlign: TextAlign.center,
+                style: MyTheme.white11,
+                child: Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: 'czvip'.tr(context: context),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -1088,46 +1057,30 @@ class CommonUtils {
         );
         vflag = true;
       } else if (data.isFree == 2) {
-        // 创建一个TextPainter对象
-        TextPainter textPainter = TextPainter(
-          textDirection: ui.TextDirection.ltr,
-        );
-        String tempStr = "${data.coins ?? 0}${'jbgm'.tr(context: context)}";
-        // 设置文本样式
-        textPainter.text = TextSpan(
-          text: tempStr,
-          style: MyTheme.black13_11,
-        );
-        // 布局文本
-        textPainter.layout();
-        // 获取文本宽度
-        double textWidth = textPainter.size.width;
-
         dgt = ClipRRect(
           borderRadius: BorderRadius.circular(5.w),
           child: Container(
+            height: 20.0.w,
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
             decoration: BoxDecoration(
               gradient: MyTheme.gradient_90_114,
               borderRadius: BorderRadius.circular(5.w),
             ),
-            child: SizedBox(
-              height: 20.0.w,
-              width: textWidth.w,
-              child: Center(
-                child: DefaultTextStyle(
-                  textAlign: TextAlign.center,
-                  style: MyTheme.white11,
-                  child: Text.rich(
-                    TextSpan(
-                      children: [
-                        TextSpan(
-                          text: "${data.coins ?? 0}",
-                        ),
-                        TextSpan(
-                          text: 'jbgm'.tr(context: context),
-                        ),
-                      ],
-                    ),
+            child: Center(
+              widthFactor: 1.0,
+              child: DefaultTextStyle(
+                textAlign: TextAlign.center,
+                style: MyTheme.white11,
+                child: Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "${data.coins ?? 0}",
+                      ),
+                      TextSpan(
+                        text: 'jbgm'.tr(context: context),
+                      ),
+                    ],
                   ),
                 ),
               ),

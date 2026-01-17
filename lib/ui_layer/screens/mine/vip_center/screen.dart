@@ -140,7 +140,7 @@ class _BodyState extends State<_Body> {
         tabBarPadding: EdgeInsets.symmetric(
             vertical: 5.w,
             horizontal: MyTheme.pagePadding),
-        labelStyle: MyTheme.color93_163_247_16medium,
+        // labelStyle: MyTheme.color93_163_247_16medium,
         unselectedLabelStyle: MyTheme.color141_144_154_16medium,
         // tabBarHeight: 38.w,
         isScrollable: false,
@@ -1003,7 +1003,7 @@ class _ExpItemState extends State<_ExpItem> {
                                     style: TextStyle(
                                         color: const Color.fromRGBO(
                                             255, 255, 255, 1),
-                                        fontSize: 12.sp,
+                                        fontSize: 10.sp,
                                         fontWeight: FontWeight.w500,
                                         overflow: TextOverflow.ellipsis),
                                     maxLines: 1,

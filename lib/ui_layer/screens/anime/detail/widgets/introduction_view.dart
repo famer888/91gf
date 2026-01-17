@@ -145,7 +145,7 @@ class _CartoonIntroductionViewState extends State<CartoonIntroductionView> {
                         },
                         child: _btnItem(
                           icon: isFavorites
-                              ? MyImagePaths.appCollectOn
+                              ? MyImagePaths.appGameCollectOn
                               : MyImagePaths.appCollectOff,
                           name: CommonUtils.renderFixedNumber(
                               videoInfo.favoriteFakeCount),
