@@ -68,7 +68,6 @@ class _ACGScreenState extends State<ACGScreen> with TickerProviderStateMixin {
               imageHeight: 28.w,
               // labelStyle: MyTheme.white16bold,
               // unselectedLabelStyle: MyTheme.white08_15,
-              tabBarHeight: MyTheme.navbarHegiht,
               tabBarPadding: EdgeInsets.only(
                   top: MyTheme.statusHeight,
                   left: MyTheme.pagePadding
