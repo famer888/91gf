@@ -98,14 +98,35 @@ class _SourceAreaState extends State<_SourceArea> {
     }
   }
 
+  int getType() {
+    if (widget.data?.type == 1) {
+      if ((_userNotifier.member.vipSeedPrivilege ?? 0) > 0) {
+        return 0;
+      } else {
+        // vip
+        return 1;
+      }
+    } else if (widget.data?.type == 2) {
+      if ((_userNotifier.member.coinsSeedPrivilege ?? 0) > 0) {
+        return 0;
+      } else {
+        // 金币
+        return 2;
+      }
+    } else {
+      // 免费
+      return 0;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final data = widget.data;
     return ValueListenableBuilder(
       valueListenable: linkNotifier,
       builder: (context, currentLink, child) {
         if (currentLink.isEmpty) {
-          switch (widget.data?.type ?? 0) {
+          final type = getType();
+          switch (type) {
             case 1:
               return Column(
                 children: [

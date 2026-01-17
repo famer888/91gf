@@ -131,8 +131,8 @@ mixin _Community on _BaseAppRepo implements CommunityDomain {
           .guard;
 
   @override
-  AsyncJson reqGetPostURL({required int id}) =>
-      _communityService.reqGetPostURL(id: id);
+  AsyncJson reqGetPostURL({required int id, required int requestType}) =>
+      _communityService.reqGetPostURL(id: id, requestType: requestType);
 
   @override
   AsyncResult communityTopicFavorite({required String id, required int type, required int requestType}) =>
@@ -192,6 +192,18 @@ mixin _Community on _BaseAppRepo implements CommunityDomain {
       _communityService
           .peerCenterPost(aff: aff, page: page, limit: limit, lastIx: lastIx)
           .deserializeJsonListBy((e) => e.map(TieztModel.fromJson).toList())
+          .guard;
+
+  @override
+  AsyncResult<List<PostModel>> peerCenterPost1({
+    required String aff,
+    required int page,
+    required int limit,
+    String lastIx = '',
+  }) =>
+      _communityService
+          .peerCenterPost1(aff: aff, page: page, limit: limit, lastIx: lastIx)
+          .deserializeJsonListBy((e) => e.map(PostModel.fromJson).toList())
           .guard;
 
   @override

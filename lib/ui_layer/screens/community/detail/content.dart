@@ -83,7 +83,7 @@ class _ContactViewState extends State<_ContactView> {
 
   Future<void> _pay() async {
     MyToast.showLoading();
-    final result = await _domain.reqGetPostURL(id: widget.data.id ?? 0);
+    final result = await _domain.reqGetPostURL(id: widget.data.id ?? 0, requestType: 1);
     MyToast.closeAllLoading();
     if (result.isValid) {
       if (mounted) {

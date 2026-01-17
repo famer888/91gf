@@ -317,7 +317,7 @@ class _BlackDetailsScreenState extends State<BlackDetailsScreen> {
         LikeIconTextWidget(
           indexKey: IndexKey.black,
           params: {'id': item.id},
-          urlPath: '/api/contents/like',
+          urlPath: '/api/user/likes',
           likeNum: item.likeNum,
           isLiked: item.isLike,
           valueCallback: (isLike) {
@@ -588,7 +588,7 @@ class _BlackDetailsScreenState extends State<BlackDetailsScreen> {
       CletIconTextWidget(
         indexKey: IndexKey.black,
         style: 3,
-        urlPath: '/api/contents/favorite',
+        urlPath: '/api/user/favorites',
         params: {'id': data?.cur?.id},
         isFavorited: data?.cur?.isFavorite ?? false,
         valueCallback: (isCollected) {

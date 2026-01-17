@@ -127,8 +127,8 @@ class CommunityService extends BaseService {
       });
 
   /// 获取帖子的播放链接
-  AsyncJson reqGetPostURL({required int id}) =>
-      post('/unlock', data: {'id': id});
+  AsyncJson reqGetPostURL({required int id, required int requestType}) =>
+      post('/unlock', data: {'id': id, 'request_type': requestType});
 
   /// 帖子收藏/取消收藏
   AsyncJson communityTopicFavorite({required String id, required int type, required int requestType}) =>
@@ -180,6 +180,19 @@ class CommunityService extends BaseService {
 
   /// 他人帖子
   AsyncJson peerCenterPost({
+    required String aff,
+    required int page,
+    required int limit,
+    String lastIx = '',
+  }) =>
+      post('/peer_center_post', data: {
+        'aff': aff,
+        'page': page,
+        'limit': limit,
+        'last_ix': lastIx,
+      });
+
+  AsyncJson peerCenterPost1({
     required String aff,
     required int page,
     required int limit,

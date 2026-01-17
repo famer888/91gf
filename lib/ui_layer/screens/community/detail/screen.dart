@@ -102,14 +102,15 @@ class _CommunityPostDetailScreenState extends State<CommunityPostDetailScreen> w
     });
 
     final result = await _domain.communityTopicDetail(id: widget.id);
-    CommonUtils.log('话题详情页的结果:${result.status}');
-    setState(() {
-      if (result.data case final data?) {
-        _asyncValue = AsyncData(data);
-      } else {
-        _asyncValue = AsyncError(error: result.msg);
-      }
-    });
+    if (mounted) {
+      setState(() {
+        if (result.data case final data?) {
+          _asyncValue = AsyncData(data);
+        } else {
+          _asyncValue = AsyncError(error: result.msg);
+        }
+      });
+    }
   }
 
   /// 取得评论

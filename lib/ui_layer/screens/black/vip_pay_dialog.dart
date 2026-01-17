@@ -2,19 +2,15 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:jygf/domain/enum.dart';
 import 'package:jygf/domain/model/member_model.dart';
-import 'package:jygf/ui_layer/notifiers/user_notifier.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
 import 'package:jygf/ui_layer/screens/black/widgets/black_regular_dialog.dart';
-import 'package:jygf/ui_layer/utils/my_toast.dart';
-import 'package:provider/provider.dart';
 
 import '../../router/routes.dart';
 import '../common_widgets/dialog/my_dialog.dart';
 import '../common_widgets/my_image.dart';
 import '../image_paths.dart';
 import '../theme.dart';
-import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
 
 
 class VipPayDialog {
@@ -30,7 +26,7 @@ class VipPayDialog {
           padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 20.w, bottom: 15.w),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(4.w)),
-            image: DecorationImage(image: AssetImage(MyImagePaths.appMineRuleBg), fit: BoxFit.fill),
+            image: const DecorationImage(image: AssetImage(MyImagePaths.appMineRuleBg), fit: BoxFit.fill),
           ),
           child: DefaultTextStyle(
             style: MyTheme.gray102_13,
@@ -169,17 +165,6 @@ class VipPayDialog {
                     SizedBox(height: 40.w),
                     ReportGestureDetector(
                       onTap: () async {
-                        // 检查登录
-                        final userNotifier = context.read<UserNotifier>();
-                        if (userNotifier.tokenStatus != MyTokenStatus.valid) {
-                          await const LoginRoute().push(context);
-                          if (userNotifier.tokenStatus == MyTokenStatus.valid) {
-                            onPay.call();
-                          } else {
-                            MyToast.showText(text: '请先登录！');
-                          }
-                          return;
-                        }
                         onPay.call();
                       },
                       child: Container(

@@ -5,19 +5,27 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jygf/app_global.dart';
 import 'package:jygf/domain/api_validator.dart';
+import 'package:jygf/domain/enum.dart';
+import 'package:jygf/domain/model/chat/chat_list_model.dart';
 import 'package:jygf/domain/model/collection_model.dart';
+import 'package:jygf/domain/model/media_model.dart';
 import 'package:jygf/domain/model/post_model.dart';
 import 'package:jygf/domain/model/vlog_model.dart';
+import 'package:jygf/domain/remote_domain/domains/chat.dart';
 import 'package:jygf/domain/type_def.dart';
 import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
 import 'package:jygf/ui_layer/const.dart';
 import 'package:jygf/ui_layer/notifiers/home_config_notifier.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/chat/card.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/feed/feed_card.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/follow_button.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/keep_alive_wrapper.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_list_view.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_tab_bar.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/post/card/card.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/post/card/content.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/post/card/count_view.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/post/card/user_view.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/mine/common_widgets/video_tile.dart';
@@ -34,7 +42,6 @@ import '../../utils/common_utils.dart';
 import '../../utils/my_toast.dart';
 import '../common_widgets/member_vip.dart';
 import '../common_widgets/my_avatar.dart';
-import '../common_widgets/post/center/post_center.dart';
 import '../common_widgets/screen_background.dart';
 import '../common_widgets/status/loading.dart';
 import '../common_widgets/status/network_error.dart';
@@ -374,19 +381,62 @@ class _UserCenterScreenState extends State<UserCenterScreen> {
                 'csp'.tr(context: context),
                 'dsp'.tr(context: context),
                 'tiezt'.tr(context: context),
-                // 'yuep'.tr(context: context),
-                // 'luol'.tr(context: context),
+                'yuep'.tr(context: context),
+                'luol'.tr(context: context),
               ],
               views: [
                 KeepAliveWrapper(child: _VideoView(aff: widget.aff)),
                 KeepAliveWrapper(child: _VlogVideoView(aff: widget.aff)),
-                KeepAliveWrapper(child: PostCenter(aff: widget.aff, type: 2)),
-                // KeepAliveWrapper(child: _TopicAskView(aff: widget.aff)),
-                // KeepAliveWrapper(child: PostCenter(aff: widget.aff)),
+                KeepAliveWrapper(child: _PostCenter(aff: widget.aff)),
+                KeepAliveWrapper(child: _TopicAskView(aff: widget.aff)),
+                KeepAliveWrapper(child: _StripChatView(aff: widget.aff)),
               ],
             ),
           ],
         ));
+  }
+}
+
+class _PostCenter extends StatefulWidget {
+  const _PostCenter({required this.aff});
+
+  final String? aff;
+
+  @override
+  State<_PostCenter> createState() => _PostCenterState();
+}
+
+class _PostCenterState extends State<_PostCenter> {
+  late final _domain = context.read<CommunityDomain>();
+
+  Future<List<PostModel>?> _getData({
+    required int page,
+    required int pageSize,
+  }) async {
+    if (widget.aff == null || widget.aff!.isEmpty) return null;
+
+    final result = await _domain.peerCenterPost1(aff: widget.aff!, page: page, limit: pageSize);
+    if (result.isValid) {
+      return result.data;
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MyListView.list(
+      contentPadding: 15.w,
+      padding: EdgeInsets.only(top: 5.w, bottom: MyTheme.pagePadding, left: MyTheme.pagePadding, right: MyTheme.pagePadding),
+      itemBuilder: (context, item, index) => PostCard.community(
+        data: item,
+        backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
+      ),
+      onFetchingMore: (currentPage, pageSize) => _getData(
+        page: currentPage,
+        pageSize: pageSize,
+      ),
+    );
   }
 }
 
@@ -598,7 +648,7 @@ class _TopicAskViewState extends State<_TopicAskView> {
     );
   }
 
-  Widget _buildTopicAskItemView({required PostModel data}) {
+  Widget _buildTopicAskItemView({required PostModel data, CommunityType type = CommunityType.community}) {
     return Column(
       children: [
         if (data.user case final user?)
@@ -606,7 +656,307 @@ class _TopicAskViewState extends State<_TopicAskView> {
             padding: EdgeInsets.only(bottom: 10.w),
             child: CardUserView(user: user, createdAt: data.createdAt ?? ''),
           ),
+        CardContentView(isBest: data.isBest == 1, title: data.title, maxLines: 3),
+        SizedBox(height: 10.w),
+        if (data.medias case final medias? when medias.isNotEmpty) _buildMediasWidget(medias),
+        SizedBox(height: 10.w),
+        CardCountView(
+          viewCount: type == CommunityType.community ? data.viewNum : data.viewCt ?? 0,
+          commentCount: type == CommunityType.community ? data.commentNum : data.commentCt ?? 0,
+          likeCount: type == CommunityType.community ? data.likeNum : data.favoriteCt ?? 0,
+          topic: type == CommunityType.community ? data.topic : null,
+          type: type,
+        ),
       ],
     );
   }
+
+  Widget _buildMediasWidget(List<MediaModel>? medias) {
+    if (medias == null || medias.isEmpty) return const SizedBox.shrink();
+
+    if (medias.length < 2) {
+      final firstMedia = medias[0];
+      final coverUrl = firstMedia.cover;
+      final isVideo = firstMedia.type == MyMediaType.video;
+      return Stack(
+        children: [
+          Positioned.fill(
+            child: MyImage.network(
+              coverUrl,
+              borderRadius: 5.w,
+              fit: BoxFit.cover,
+              backgroundColor: MyTheme.imageBgColor,
+            ),
+          ),
+          if (isVideo) Center(child: MyImage.asset(MyImagePaths.appVPlayN, width: 30.w, height: 30.w)),
+        ],
+      );
+    } else if (medias.length >= 2 && medias.length < 3) {
+      final firstMedia = medias[0];
+      final firstCoverUrl = firstMedia.cover;
+      final firstIsVideo = firstMedia.type == MyMediaType.video;
+
+      final secondMedia = medias[1];
+      final secondCoverUrl = secondMedia.cover;
+      final secondIsVideo = secondMedia.type == MyMediaType.video;
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Stack(
+            children: [
+              Positioned.fill(
+                child: MyImage.network(
+                  firstCoverUrl,
+                  borderRadius: 5.w,
+                  fit: BoxFit.cover,
+                  backgroundColor: MyTheme.imageBgColor,
+                ),
+              ),
+              if (firstIsVideo) Center(child: MyImage.asset(MyImagePaths.appVPlayN, width: 30.w, height: 30.w)),
+            ],
+          ),
+          Stack(
+            children: [
+              Positioned.fill(
+                child: MyImage.network(
+                  secondCoverUrl,
+                  borderRadius: 5.w,
+                  fit: BoxFit.cover,
+                  backgroundColor: MyTheme.imageBgColor,
+                ),
+              ),
+              if (secondIsVideo) Center(child: MyImage.asset(MyImagePaths.appVPlayN, width: 30.w, height: 30.w)),
+            ],
+          )
+        ],
+      );
+    } else {
+      final firstMedia = medias[0];
+      final coverUrl = firstMedia.cover;
+      final isVideo = firstMedia.type == MyMediaType.video;
+
+      final secondMedia = medias[1];
+      final secondCoverUrl = secondMedia.cover;
+      final secondIsVideo = secondMedia.type == MyMediaType.video;
+
+      final thirdMedia = medias[2];
+      final thirdCoverUrl = thirdMedia.cover;
+      final thirdIsVideo = thirdMedia.type == MyMediaType.video;
+      final showLastMediaCount = medias.length > 3;
+
+      return Row(
+        children: [
+          Expanded(
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: MyImage.network(
+                    coverUrl,
+                    borderRadius: 5.w,
+                    fit: BoxFit.cover,
+                    backgroundColor: MyTheme.imageBgColor,
+                  ),
+                ),
+                if (isVideo) Center(child: MyImage.asset(MyImagePaths.appVPlayN, width: 30.w, height: 30.w)),
+              ],
+            ),
+          ),
+          SizedBox(width: 5.w),
+          Column(
+            children: [
+              Stack(
+                children: [
+                  Positioned.fill(
+                    child: MyImage.network(
+                      secondCoverUrl,
+                      borderRadius: 5.w,
+                      fit: BoxFit.cover,
+                      backgroundColor: MyTheme.imageBgColor,
+                    ),
+                  ),
+                  if (secondIsVideo) Center(child: MyImage.asset(MyImagePaths.appVPlayN, width: 30.w, height: 30.w)),
+                ],
+              ),
+              SizedBox(height: 5.w),
+              Stack(
+                children: [
+                  Positioned.fill(
+                    child: MyImage.network(
+                      thirdCoverUrl,
+                      borderRadius: 5.w,
+                      fit: BoxFit.cover,
+                      backgroundColor: MyTheme.imageBgColor,
+                    ),
+                  ),
+                  if (thirdIsVideo) Center(child: MyImage.asset(MyImagePaths.appVPlayN, width: 30.w, height: 30.w)),
+                  if (showLastMediaCount)
+                    Positioned(
+                      right: 6.w,
+                      bottom: 6.w,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: const Color.fromRGBO(0, 0, 0, 0.5),
+                          borderRadius: BorderRadius.all(Radius.circular(2.w)),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 5.w),
+                          child: Text('+${medias.length - 3}', style: MyTheme.white255_12),
+                        ),
+                      ),
+                    )
+                ],
+              ),
+            ],
+          ),
+        ],
+      );
+    }
+  }
+}
+
+class _StripChatView extends StatefulWidget {
+  const _StripChatView({required this.aff});
+
+  final String aff;
+
+  @override
+  State<_StripChatView> createState() => _StripChatViewState();
+}
+
+class _StripChatViewState extends State<_StripChatView> {
+  late final _chatDomain = context.read<ChatDomain>();
+
+  Future<List<ChatListModel>?> _getData({
+    required int page,
+    required int pageSize,
+  }) async {
+    final result = await _chatDomain.chatPeerList(aff: int.parse(widget.aff), page: page, limit: pageSize);
+
+    if (result.status == 1) {
+      return result.data;
+    } else {
+      MyToast.showText(text: result.msg ?? '');
+    }
+    return null;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MyListView.grid(
+      padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding, vertical: 8.w),
+      childAspectRatio: UILayerConst.vlogVideoRatio,
+      crossAxisSpacing: 10.w,
+      itemBuilder: (_, item, index) => ChatCard(data: item),
+      onFetchingMore: (currentPage, pageSize) => _getData(page: currentPage, pageSize: pageSize),
+    );
+  }
+
+  // Widget _buildStripChatCard(ChatListModel data) {
+  //   return data.map(
+  //     chat: (chat) => _buildChatWidget(chat),
+  //     ad: (ad) => _buildAdWidget(ad),
+  //   );
+  // }
+  //
+  // Widget _buildChatWidget(ChatListChatModel data) {
+  //   return ReportGestureDetector(
+  //     behavior: HitTestBehavior.translucent,
+  //     onTap: () {},
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       mainAxisSize: MainAxisSize.min,
+  //       children: [
+  //         AspectRatio(
+  //           aspectRatio: 170 / 210,
+  //           child: Stack(
+  //             // fit: StackFit.expand,
+  //             children: [
+  //               Positioned.fill(
+  //                 child: MyImage.network(
+  //                   data.coverVertical ?? '',
+  //                   fit: BoxFit.cover,
+  //                   backgroundColor: MyTheme.imageBgColor,
+  //                   borderRadius: 5.w,
+  //                 ),
+  //               ),
+  //               // data.isFree == 0 || data.mvType == 2
+  //               data.isFree == 0
+  //                   ? Container()
+  //                   : Align(
+  //                       alignment: Alignment.topLeft,
+  //                       child: Container(
+  //                           padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 2.w),
+  //                           decoration: BoxDecoration(
+  //                               gradient: data.isFree == 2 ? MyTheme.gradient_90_114 : MyTheme.gradient_90_118,
+  //                               borderRadius: BorderRadius.only(topLeft: Radius.circular(5.w), bottomRight: Radius.circular(5.w))),
+  //                           child: Text(
+  //                             data.isFree == 2 ? 'jb'.tr() : 'VIP',
+  //                             style: MyTheme.white10,
+  //                           ))),
+  //               Positioned(
+  //                   bottom: 0.w,
+  //                   left: 0.w,
+  //                   right: 0.w,
+  //                   child: Container(
+  //                     height: 30.w,
+  //                     decoration: BoxDecoration(
+  //                         borderRadius: BorderRadius.all(Radius.circular(5.w)),
+  //                         gradient: const LinearGradient(
+  //                           colors: [
+  //                             Color.fromRGBO(0, 0, 0, 0.6),
+  //                             Color.fromRGBO(0, 0, 0, 0),
+  //                           ],
+  //                           begin: Alignment.bottomCenter,
+  //                           end: Alignment.topCenter,
+  //                         )),
+  //                   )),
+  //               Positioned(
+  //                 bottom: 3.w,
+  //                 left: 3.w,
+  //                 right: 5.w,
+  //                 child: Column(
+  //                   mainAxisAlignment: MainAxisAlignment.start,
+  //                   crossAxisAlignment: CrossAxisAlignment.start,
+  //                   children: [
+  //                     Row(
+  //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                       children: [
+  //                         Row(
+  //                           children: [
+  //                             MyImage.asset(
+  //                               MyImagePaths.appAsmrPlay,
+  //                               height: 10.w,
+  //                               width: 10.w,
+  //                             ),
+  //                             SizedBox(width: 3.w),
+  //                             Text(
+  //                               '${CommonUtils.renderFixedNumber(data.playCt ?? 0)}次播放',
+  //                               style: MyTheme.white10,
+  //                             ),
+  //                           ],
+  //                         ),
+  //                         Text(
+  //                           RelativeDateFormat.getHMTime(time: data.duration),
+  //                           style: MyTheme.white10,
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //         SizedBox(height: 5.w),
+  //         Text(
+  //           data.title ?? '',
+  //           style: MyTheme.white244_12,
+  //           maxLines: 2,
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+  //
+  // Widget _buildAdWidget(ChatListAdModel data) {}
 }

@@ -182,7 +182,7 @@ class _ShortVPlayerState extends State<ShortVPlayer> {
   /// 社区 - 点击商家联系方式/解锁商家联系方式
   Future<void> _pay() async {
     MyToast.showLoading();
-    final result = await _domain.reqGetPostURL(id: widget.data.pid ?? 0);
+    final result = await _domain.reqGetPostURL(id: widget.data.pid ?? 0, requestType: 1);
     MyToast.closeAllLoading();
     if (result.isValid) {
       if (mounted) {

@@ -56,7 +56,7 @@ class _PostMediaViewState extends State<PostMediaView> {
               actionCallback: () {
                 // 取第一个元素解锁
                 final data = videoMedias.first;
-                _pay(data, index);
+                _pay(data, index, widget.unlockCoins);
               },
             ),
           ),
@@ -68,16 +68,17 @@ class _PostMediaViewState extends State<PostMediaView> {
     }
   }
 
-  Future<void> _pay(MediaModel data, int index) async {
-    CommonUtils.log('当前的媒体数据:${widget.medias}');
+  Future<void> _pay(MediaModel data, int index, int unlockCoins) async {
     MyToast.showLoading();
-    final result = await _domain.reqGetPostURL(id: data.pid ?? 0);
+    final result = await _domain.reqGetPostURL(id: data.pid ?? 0, requestType: 1);
     MyToast.closeAllLoading();
     if (result.isValid) {
       if (mounted) {
         setState(() {
           data.mediaUrl = result.data['url'] ?? '';
         });
+        final currentMoney = context.read<UserNotifier>().member.money - unlockCoins;
+        context.read<UserNotifier>().setMoney(money: currentMoney);
         MediaViewerRoute({'resources': widget.medias, 'index': index}).push(context);
       }
     } else {
@@ -148,12 +149,13 @@ class _PostMediaViewState extends State<PostMediaView> {
                             children: [
                               // 图片在最底层
                               Positioned.fill(child: MyImage.network(media.cover, borderRadius: 5.w, fit: BoxFit.cover)),
-                              Positioned.fill(
-                                child: BackdropFilter(
-                                  filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
-                                  child: Container(color: const Color.fromRGBO(176, 66, 255, 0.15)),
+                              if (widget.unlockCoins > 0 && widget.medias[index].mediaUrl.isEmpty)
+                                Positioned.fill(
+                                  child: BackdropFilter(
+                                    filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+                                    child: Container(color: const Color.fromRGBO(176, 66, 255, 0.15)),
+                                  ),
                                 ),
-                              ),
                               const Center(child: MyImage.asset(MyImagePaths.appVPlayN, width: 40, height: 40))
                             ],
                           ),

@@ -94,7 +94,7 @@ abstract class CommunityDomain {
       {required MyLikeType type, required String id});
 
   /// 获取帖子的播放链接
-  AsyncJson reqGetPostURL({required int id});
+  AsyncJson reqGetPostURL({required int id, required int requestType});
 
   /// 帖子收藏/取消收藏
   AsyncResult communityTopicFavorite({required String id, required int type, required int requestType});
@@ -127,6 +127,13 @@ abstract class CommunityDomain {
 
   /// 他人帖子
   AsyncResult<List<TieztModel>> peerCenterPost({
+    required String aff,
+    required int page,
+    required int limit,
+    String lastIx = '',
+  });
+
+  AsyncResult<List<PostModel>> peerCenterPost1({
     required String aff,
     required int page,
     required int limit,

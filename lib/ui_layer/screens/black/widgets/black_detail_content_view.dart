@@ -2,9 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:jygf/domain/model/banner_model.dart';
 import 'package:jygf/domain/model/home_data_model.dart';
 import 'package:jygf/domain/remote_domain/domains/black_domain.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
 import 'package:jygf/ui_layer/notifiers/home_config_notifier.dart';
 import 'package:jygf/ui_layer/notifiers/user_notifier.dart';
 import 'package:jygf/ui_layer/router/routes.dart';
@@ -19,10 +19,8 @@ import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/post/content/comment_count.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/post/content/like_collect_share_area.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
-import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
-import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
 
 
 typedef GoNewBlackDetailCallback = void Function(int id);
@@ -107,7 +105,7 @@ class _BlackDetailContentViewState extends State<BlackDetailContentView> {
         LikeIconTextWidget(
           indexKey: IndexKey.black,
           params: {'id': item.id},
-          urlPath: '/api/contents/like',
+          urlPath: '/api/user/likes',
           likeNum: item.likeNum,
           isLiked: item.isLike,
           valueCallback: (isLike) {
@@ -156,7 +154,10 @@ class _BlackDetailContentViewState extends State<BlackDetailContentView> {
               if (result.status == 1) {
                 MyToast.showText(text: result.msg ?? '');
                 widget.data.cur?.isPay = true;
+
                 if (context.mounted) {
+                  final currentMoney = member.money - widget.data.cur!.coins;
+                  context.read<UserNotifier>().setMoney(money: currentMoney);
                   context.pop();
                 }
                 setState(() {});
