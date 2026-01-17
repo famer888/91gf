@@ -302,7 +302,7 @@ class _LikeCollectShareAreaState extends State<_LikeCollectShareArea> {
     _isChangeCollectLoading = true;
 
     try {
-      final result = await _domain.communityTopicFavorite(id: '${widget.data.id}', type: 14, requestType: 1);
+      final result = await _domain.communityTopicFavorite(id: '${widget.data.id}', type: 14, requestType: 2);
       if (result.status == 1) {
         final oldValue = widget.data.isFavorite ?? 0;
         final newValue = oldValue == 0 ? 1 : 0;

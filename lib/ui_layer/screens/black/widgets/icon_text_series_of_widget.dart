@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jygf/ui_layer/router/routes.dart';
 import 'package:jygf/ui_layer/screens/black/widgets/index_key.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
@@ -35,7 +36,7 @@ class IconTextWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(mainAxisSize: MainAxisSize.min, children: [
-      SizedBox(width: width ?? 25.w, height: height, child: Image.asset(iconName)),
+      SizedBox(width: width ?? 25.w, height: height, child: MyImage.asset(iconName, )),
       SizedBox(width: spacing),
       Text(count != null ? CommonUtils.formatNumber(count) : '$text', style: MyTheme.white08_12),
     ]);
@@ -304,30 +305,7 @@ class _LikeIconTextWidgetState extends State<LikeIconTextWidget> {
 
   @override
   Widget build(BuildContext context) {
-    switch (widget.indexKey) {
-      case IndexKey.chat:
-      case IndexKey.post:
-      case IndexKey.seed:
-      case IndexKey.game:
-      case IndexKey.novel:
-      case IndexKey.long:
-      case IndexKey.video:
-      case IndexKey.live:
-      case IndexKey.black:
-        return _buildHorLikeWidget(context);
-      case IndexKey.date:
-        if (widget.style == 1) {
-          return _buildHorLikeWidget(context);
-        } else {
-          return _buildMeetLikeWidget(context);
-        }
-      case IndexKey.graph:
-        return _buildGraphLikeWidget(context);
-      case IndexKey.short:
-        return _buildVerTiktokWidget();
-      default:
-        return const SizedBox();
-    }
+    return _buildVerTiktokWidget();
   }
 
   Widget _buildHorLikeWidget(BuildContext context) {
@@ -336,7 +314,7 @@ class _LikeIconTextWidgetState extends State<LikeIconTextWidget> {
       child: SizedBox(
         height: 30.w,
         child: IconTextWidget(
-          iconName: isLiked ? MyImagePaths.appLike251 : MyImagePaths.appLike250,
+          iconName: isLiked ? MyImagePaths.appThumbUpOffIcon : MyImagePaths.appThumbsIcon,
           text: likeCount > 0 ? null : 'dz'.tr(context: context),
           count: likeCount > 0 ? likeCount : null,
         ),
@@ -350,7 +328,7 @@ class _LikeIconTextWidgetState extends State<LikeIconTextWidget> {
       child: SizedBox(
         height: widget.style == 1 ? 30.w : 20.w,
         child: IconTextWidget(
-          iconName: isLiked ? MyImagePaths.appLike251 : MyImagePaths.appLike250,
+          iconName: isLiked ? MyImagePaths.appThumbUpOffIcon : MyImagePaths.appThumbsIcon,
           text: likeCount > 0 ? null : 'dz'.tr(context: context),
           count: likeCount > 0 ? likeCount : null,
         ),
@@ -360,7 +338,7 @@ class _LikeIconTextWidgetState extends State<LikeIconTextWidget> {
 
   Widget _buildGraphLikeWidget(BuildContext context) {
     Widget current = IconTextWidget(
-      iconName: isLiked ? MyImagePaths.appLike251 : MyImagePaths.appLike250,
+      iconName: isLiked ? MyImagePaths.appThumbUpOffIcon : MyImagePaths.appThumbsIcon,
       text: likeCount > 0 ? null : 'dz'.tr(context: context),
       count: likeCount > 0 ? likeCount : 'dz'.tr(context: context),
     );
@@ -387,7 +365,7 @@ class _LikeIconTextWidgetState extends State<LikeIconTextWidget> {
   }
 
   Widget _buildVerTiktokWidget() {
-    var iconName = isLiked ? MyImagePaths.appLike352 : MyImagePaths.appLike351;
+    var iconName = isLiked ? MyImagePaths.appThumbUpOffIcon : MyImagePaths.appThumbsIcon;
     Widget current = Column(children: [
       SizedBox(height: 36.w, width: 36.w, child: Image.asset(iconName)),
       SizedBox(height: 2.w),
@@ -467,28 +445,21 @@ class _CletIconTextWidgetState extends State<CletIconTextWidget> {
     if (widget.style == 3) {
       return _buildBotLayoutWidget();
     }
-    // style == 0 -> item
-    switch (widget.indexKey) {
-      case IndexKey.chat:
-      case IndexKey.date:
-      case IndexKey.game:
-      case IndexKey.novel:
-      case IndexKey.long:
-      case IndexKey.video:
-      case IndexKey.live:
-        return _buildHorLayoutWidget();
-      case IndexKey.graph:
-        return _buildGraphCletWidget(context);
-      case IndexKey.short:
-        return _buildVerTiktokWidget();
-      default:
-        return const SizedBox();
-    }
+    String iconName = isCollected ? MyImagePaths.appCollectOn : MyImagePaths.appCollectOff;
+    Widget current = Column(children: [
+      SizedBox(height: 25.w, width: 25.w, child: MyImage.asset(iconName, iconColor: isCollected ? MyTheme.primaryColor : MyTheme.whiteColor)),
+      SizedBox(height: 2.w),
+      Text(CommonUtils.formatNumber(collectCount), style: MyTheme.white255_13),
+    ]);
+    return ReportGestureDetector(
+      onTap: () => onTap(),
+      child: Container(margin: EdgeInsets.only(top: 15.w), width: 43.w, child: current),
+    );
   }
 
   Widget _buildHorLayoutWidget() {
     Widget current = const SizedBox();
-    var iconName = isCollected ? MyImagePaths.appClet251 : MyImagePaths.appClet250;
+    var iconName = isCollected ? MyImagePaths.appCollectOn : MyImagePaths.appCollectOff;
     current = Row(mainAxisSize: MainAxisSize.min, children: [
       SizedBox(height: 25.w, width: 25.w, child: Image.asset(iconName)),
       // SizedBox(width: 3.5.w),
@@ -503,7 +474,7 @@ class _CletIconTextWidgetState extends State<CletIconTextWidget> {
   }
 
   Widget _buildBotLayoutWidget() {
-    String iconName = isCollected ? MyImagePaths.appClet251 : MyImagePaths.appClet250;
+    var iconName = isCollected ? MyImagePaths.appCollectOn : MyImagePaths.appCollectOff;
     switch (widget.indexKey) {
       case IndexKey.novel:
         Widget current = Row(
@@ -557,7 +528,7 @@ class _CletIconTextWidgetState extends State<CletIconTextWidget> {
   Widget _buildGraphCletWidget(BuildContext context) {
     Widget current = IconTextWidget(
       width: 25.w,
-      iconName: isCollected ? MyImagePaths.appClet251 : MyImagePaths.appClet250,
+      iconName: isCollected ? MyImagePaths.appCollectOn : MyImagePaths.appCollectOff,
       text: collectCount > 0 ? null : 'sc'.tr(context: context),
       count: collectCount > 0 ? collectCount : null,
     );
@@ -585,9 +556,9 @@ class _CletIconTextWidgetState extends State<CletIconTextWidget> {
   }
 
   Widget _buildVerTiktokWidget() {
-    String iconName = isCollected ? MyImagePaths.appClet352 : MyImagePaths.appClet351;
+    String iconName = isCollected ? MyImagePaths.appCollectOn : MyImagePaths.appCollectOff;
     Widget current = Column(children: [
-      SizedBox(height: 36.w, width: 36.w, child: Image.asset(iconName)),
+      SizedBox(height: 25.w, width: 25.w, child: MyImage.asset(iconName, iconColor: isCollected ? MyTheme.primaryColor : MyTheme.whiteColor)),
       SizedBox(height: 2.w),
       Text(CommonUtils.formatNumber(collectCount), style: MyTheme.white255_13),
     ]);
