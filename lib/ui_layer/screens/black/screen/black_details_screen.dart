@@ -584,7 +584,7 @@ class _BlackDetailsScreenState extends State<BlackDetailsScreen> {
           ),
         ),
       ),
-      SizedBox(width: 5.w),
+      SizedBox(width: 1.w),
       CletIconTextWidget(
         indexKey: IndexKey.black,
         style: 3,
@@ -596,7 +596,7 @@ class _BlackDetailsScreenState extends State<BlackDetailsScreen> {
           data?.cur?.favoriteNum += isCollected ? 1 : -1;
         },
       ),
-      SizedBox(width: 5.w),
+      SizedBox(width: 8.w),
       _buildActionItemWidget(MyImagePaths.appCustomSend, 'fasong'.tr(context: context), onSendMessage),
       SizedBox(width: 12.w),
     ]);
@@ -616,8 +616,8 @@ class _BlackDetailsScreenState extends State<BlackDetailsScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          SizedBox(height: 5.w),
-          SizedBox(height: 19.w, width: 19.w, child: Image.asset(iconName)),
+          SizedBox(height: 3.w),
+          SizedBox(height: 20.w, width: 20.w, child: Image.asset(iconName)),
           SizedBox(height: 6.w),
           Text(title, style: MyTheme.white255_13.s12.white),
         ],

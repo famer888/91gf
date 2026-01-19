@@ -13,7 +13,6 @@ import '../../../utils/common_utils.dart';
 import '../../theme.dart';
 import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
 
-
 /// 左图 + 间距 + 统计数字
 class IconTextWidget extends StatelessWidget {
   final String iconName;
@@ -36,7 +35,12 @@ class IconTextWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(mainAxisSize: MainAxisSize.min, children: [
-      SizedBox(width: width ?? 25.w, height: height, child: MyImage.asset(iconName, )),
+      SizedBox(
+          width: width ?? 25.w,
+          height: height,
+          child: MyImage.asset(
+            iconName,
+          )),
       SizedBox(width: spacing),
       Text(count != null ? CommonUtils.formatNumber(count) : '$text', style: MyTheme.white08_12),
     ]);
@@ -365,15 +369,14 @@ class _LikeIconTextWidgetState extends State<LikeIconTextWidget> {
   }
 
   Widget _buildVerTiktokWidget() {
-    var iconName = isLiked ? MyImagePaths.appThumbUpOffIcon : MyImagePaths.appThumbsIcon;
-    Widget current = Column(children: [
-      SizedBox(height: 36.w, width: 36.w, child: Image.asset(iconName)),
-      SizedBox(height: 2.w),
-      Text(CommonUtils.formatNumber(likeCount), style: MyTheme.white255_13.s12),
-    ]);
+    final iconName = isLiked ? MyImagePaths.appThumbUpOffIcon : MyImagePaths.appThumbsIcon;
     return ReportGestureDetector(
       onTap: () => onTap(),
-      child: Container(margin: EdgeInsets.only(top: 15.w), width: 43.w, child: current),
+      child: Row(mainAxisSize: MainAxisSize.min, children: [
+        SizedBox(width: 18.w, height: 18.w, child: MyImage.asset(iconName, iconColor: isLiked ? MyTheme.primaryColor : MyTheme.whiteColor)),
+        SizedBox(width: 3.w),
+        Text(CommonUtils.formatNumber(likeCount), style: MyTheme.white255_13.s12),
+      ]),
     );
   }
 }
@@ -443,17 +446,29 @@ class _CletIconTextWidgetState extends State<CletIconTextWidget> {
   Widget build(BuildContext context) {
     // 底部
     if (widget.style == 3) {
-      return _buildBotLayoutWidget();
+      final iconName = isCollected ? MyImagePaths.appCollectOn : MyImagePaths.appCollectOff;
+      return ReportGestureDetector(
+        onTap: () => onTap(),
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          SizedBox(height: 3.w),
+          SizedBox(
+            width: 20.w,
+            height: 20.w,
+            child: MyImage.asset(iconName, iconColor: isCollected ? MyTheme.primaryColor : MyTheme.whiteColor),
+          ),
+          SizedBox(height: 6.w),
+          Text(isCollected ? '已收藏' : '未收藏', style: MyTheme.white255_13.s12),
+        ]),
+      );
     }
-    String iconName = isCollected ? MyImagePaths.appCollectOn : MyImagePaths.appCollectOff;
-    Widget current = Column(children: [
-      SizedBox(height: 25.w, width: 25.w, child: MyImage.asset(iconName, iconColor: isCollected ? MyTheme.primaryColor : MyTheme.whiteColor)),
-      SizedBox(height: 2.w),
-      Text(CommonUtils.formatNumber(collectCount), style: MyTheme.white255_13),
-    ]);
+    final iconName = isCollected ? MyImagePaths.appCollectOn : MyImagePaths.appCollectOff;
     return ReportGestureDetector(
       onTap: () => onTap(),
-      child: Container(margin: EdgeInsets.only(top: 15.w), width: 43.w, child: current),
+      child: Row(mainAxisSize: MainAxisSize.min, children: [
+        SizedBox(width: 18.w, height: 18.w, child: MyImage.asset(iconName, iconColor: isCollected ? MyTheme.primaryColor : MyTheme.whiteColor)),
+        SizedBox(width: 3.w),
+        Text(CommonUtils.formatNumber(collectCount), style: MyTheme.white255_13.s12),
+      ]),
     );
   }
 
@@ -480,17 +495,15 @@ class _CletIconTextWidgetState extends State<CletIconTextWidget> {
         Widget current = Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SizedBox(height: 30.w, width: 30.w, child: Image.asset(iconName)),
+            SizedBox(
+                height: 20.w, width: 20.w, child: MyImage.asset(iconName, iconColor: isCollected ? MyTheme.primaryColor : MyTheme.whiteColor)),
             SizedBox(width: 5.w),
             Text(isCollected ? '已收藏' : '收藏', style: MyTheme.white255_13.s15),
           ],
         );
         return ReportGestureDetector(
           onTap: () => onTap(),
-          child: SizedBox(
-            height: 30.w,
-            child: current,
-          ),
+          child: SizedBox(height: 30.w, child: current),
         );
       case IndexKey.post:
       case IndexKey.seed:
