@@ -353,10 +353,10 @@ class _ComicChapertRecViewState
   }
 
   Future<void> _changeFavorite() async {
-    final domain = context.read<UserDomain>();
+    final domain = context.read<ComicDomain>();
 
     final result =
-    await domain.userFavorite(type: 3, id: widget.data.detail?.id ?? 0);
+    await domain.comicFavorite(id: widget.data.detail?.id ?? 0);
     if (result.status == 1) {
       final oldValue = widget.data.detail?.isFavorite ?? 0;
       final newValue = oldValue == 0 ? 1 : 0;
