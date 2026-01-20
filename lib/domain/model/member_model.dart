@@ -112,6 +112,7 @@ class Member {
     this.vipHlPrivilege,
     this.coinsSeedPrivilege,
     this.vipSeedPrivilege,
+    this.chatPrivilege,
   });
 
   final int? isFollow;
@@ -218,6 +219,7 @@ class Member {
   final int? vipHlPrivilege;
   final int? coinsSeedPrivilege;
   final int? vipSeedPrivilege;
+  final int? chatPrivilege;
 
   factory Member.fromJson(Map<String, dynamic> json) => Member(
         postCount: json['post_count'] ?? 0,
@@ -327,6 +329,7 @@ class Member {
         vipHlPrivilege: json['vip_hl_privilege'] ?? 0,
         coinsSeedPrivilege: json['coins_seed_privilege'] ?? 0,
         vipSeedPrivilege: json['vip_seed_privilege'] ?? 0,
+        chatPrivilege: json['chat_privilege'] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -433,6 +436,7 @@ class Member {
         'vip_hl_privilege': vipHlPrivilege,
         'coins_seed_privilege': coinsSeedPrivilege,
         'vip_seed_privilege': vipSeedPrivilege,
+        'chat_privilege': chatPrivilege,
       };
 
   Member copyWith({
@@ -537,6 +541,7 @@ class Member {
     int? vipAppPrivilege,
     int? coinsHlPrivilege,
     int? vipHlPrivilege,
+    int? chatPrivilege,
   }) =>
       Member(
         isFollow: isFollow ?? this.isFollow,
@@ -640,6 +645,7 @@ class Member {
         vipAppPrivilege: vipAppPrivilege ?? this.vipAppPrivilege,
         coinsHlPrivilege: coinsHlPrivilege ?? this.coinsHlPrivilege,
         vipHlPrivilege: vipHlPrivilege ?? this.vipHlPrivilege,
+        chatPrivilege: chatPrivilege ?? this.chatPrivilege,
       );
 }
 

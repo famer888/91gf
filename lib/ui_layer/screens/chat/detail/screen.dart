@@ -163,6 +163,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen>
 
   @override
   Widget build(BuildContext context) {
+    final member = _userNotifier.member;
     return ScreenBackground(
       child: Stack(children: [
         Scaffold(
@@ -371,8 +372,8 @@ class _ChatDetailScreenState extends State<ChatDetailScreen>
                                     ),
                                   ),
                                   SizedBox(height: 15.w),
-                                  '${data.contact}'.isEmpty
-                                      ?   Column(children: [
+                                 // '${data.contact}'.isEmpty
+                                     member.chatPrivilege != 1 ? Column(children: [
                                           CommonUtils.dashedBorder(
                                             color: MyTheme.primaryColor,
                                             borderRadius: BorderRadius.circular(8.w),

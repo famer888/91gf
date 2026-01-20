@@ -564,8 +564,10 @@ class _ComicViewState extends State<_ComicView> {
 
   @override
   Widget build(BuildContext context) {
-    return MyListView.list(
-      contentPadding: 15.w,
+    return MyListView.grid(
+      childAspectRatio: UILayerConst.comicRatio,
+      crossAxisCount: 3,
+      padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
       itemBuilder: (context, item, index) => ComicItemCard(data: item),
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,
