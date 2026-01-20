@@ -100,8 +100,8 @@ class _CircleCommunityContentViewState
           ),
         ),
       ],
-      body: widget.id == 100 || widget.id == 83
-          ? MyListView.list(
+      // body: widget.id == 100 || widget.id == 83 ? 
+     body: MyListView.list(
               contentPadding: 20.w,
               padding: EdgeInsets.symmetric(vertical: 12.5.w),
               itemBuilder: (context, item, index) => PostCard(
@@ -110,36 +110,36 @@ class _CircleCommunityContentViewState
               onFetchingMore: (currentPage, pageSize) =>
                   _getData(page: currentPage, pageSize: pageSize, sort: ''),
             )
-          : TabBarWithView.fillColor(
-              tabBarPadding: EdgeInsets.symmetric(vertical: 6.w),
-              tabBarHeight: 32.w,
-              isScrollable: true,
-              labelPadding: 0.w,
-              titles: isInit ? [for (final title in _titles) title.title] : [],
-              views: [
-                for (final NavigatorModel nav in _titles)
-                  MyListView.list(
-                    contentPadding: 20.w,
-                    padding: EdgeInsets.symmetric(vertical: MyTheme.pagePadding),
-                    itemBuilder: (context, item, index) {
-                      if (nav.type == 'rank' && index < 3) {
-                        return PostCard(
-                          data: item,
-                          rank: index,
-                        );
-                      }
+          // : TabBarWithView.fillColor(
+          //     tabBarPadding: EdgeInsets.symmetric(vertical: 6.w),
+          //     tabBarHeight: 32.w,
+          //     isScrollable: true,
+          //     labelPadding: 0.w,
+          //     titles: isInit ? [for (final title in _titles) title.title] : [],
+          //     views: [
+          //       for (final NavigatorModel nav in _titles)
+          //         MyListView.list(
+          //           contentPadding: 20.w,
+          //           padding: EdgeInsets.symmetric(vertical: MyTheme.pagePadding),
+          //           itemBuilder: (context, item, index) {
+          //             if (nav.type == 'rank' && index < 3) {
+          //               return PostCard(
+          //                 data: item,
+          //                 rank: index,
+          //               );
+          //             }
 
-                      return PostCard(
-                        data: item,
-                      );
-                    },
-                    onFetchingMore: (currentPage, pageSize) => _getData(
-                      page: currentPage,
-                      pageSize: pageSize,
-                      sort: nav.type),
-                  )
-              ],
-            ),
+          //             return PostCard(
+          //               data: item,
+          //             );
+          //           },
+          //           onFetchingMore: (currentPage, pageSize) => _getData(
+          //             page: currentPage,
+          //             pageSize: pageSize,
+          //             sort: nav.type),
+          //         )
+          //     ],
+          //   ),
     );
   }
 }

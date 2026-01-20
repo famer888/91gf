@@ -49,11 +49,11 @@ class _BlurView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Selector<UserNotifier, String>(
-      selector: (_, userNotifier) => userNotifier.member.vipStr,
-      builder: (context, vipStr, child) {
+    return Selector<UserNotifier, int?>(
+      selector: (_, userNotifier) => userNotifier.member.awPrivilege,
+      builder: (context, awPrivilege, child) {
         final config = context.read<HomeConfigNotifier>().config;
-        if (config.vipLevelStr.contains(vipStr)) {
+        if (awPrivilege == 1) {
           return const SizedBox.shrink();
         }
 
