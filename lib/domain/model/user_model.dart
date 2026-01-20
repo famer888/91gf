@@ -77,6 +77,7 @@ class UserModel {
   final String? vipImg;
   final int? workCt;
   final int? fansCt;
+  final int? chatPrivilege;
 
   UserModel({
     this.workCt,
@@ -157,6 +158,7 @@ class UserModel {
     this.vipStr,
     this.vipIcon,
     this.vipImg,
+    this.chatPrivilege,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -242,5 +244,6 @@ class UserModel {
         vipStr: json['vip_str'],
         vipIcon: json['vip_icon'] ?? '',
         vipImg: json['vip_img'] ?? '',
+        chatPrivilege: json['chat_privilege'],
       );
 }
