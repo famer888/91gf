@@ -1,18 +1,17 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
-import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../domain/model/member_model.dart';
 import '../../../notifiers/user_notifier.dart';
 import '../../../router/routes.dart';
+import '../../common_widgets/my_app_bar.dart';
 import '../../common_widgets/post/center/post_center.dart';
 import '../../common_widgets/screen_background.dart';
 import '../../image_paths.dart';
 import '../../theme.dart';
-import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
 
 
 class MinePostScreen extends StatefulWidget {
@@ -45,9 +44,8 @@ class _MinePostScreenState extends State<MinePostScreen> with TickerProviderStat
     return ScreenBackground(
       needBgImg: false,
       child: Scaffold(
-        // appBar: MyAppBar(
-        //   title: 'fbdtz'.tr(context: context),
-        // ),
+        extendBodyBehindAppBar: true,
+        appBar: const MyAppBar(),
         body: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return [
@@ -60,28 +58,13 @@ class _MinePostScreenState extends State<MinePostScreen> with TickerProviderStat
                       image: AssetImage(
                         MyImagePaths.appPostCenterBg,
                       ),
-                      fit: BoxFit.contain,
+                      fit: BoxFit.cover,
+                      alignment: Alignment.topCenter,
                     ),
                   ),
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        top: 30.w,
-                        left: 10.w,
-                        child: ReportGestureDetector(
-                          child: MyImage.asset(
-                            MyImagePaths.appBackIcon,
-                            width: 20.w,
-                            height: 20.w,
-                          ),
-                          onTap: () => context.pop(),
-                        ),
-                      ),
-                     const Align(
-                        alignment: Alignment.bottomCenter,
-                        child:  _Header(),
-                      ),
-                    ],
+                  child: const Align(
+                    alignment: Alignment.bottomCenter,
+                    child: _Header(),
                   ),
                 ),
               ),
