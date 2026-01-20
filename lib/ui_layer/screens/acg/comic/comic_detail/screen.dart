@@ -273,8 +273,9 @@ class _HeaderState extends State<_Header> {
                     child: Row(children: [
                       MyImage.asset(
                           widget.data.detail?.isLike == 1
-                              ? MyImagePaths.appCommReviewH
-                              : MyImagePaths.appCommReviewN,
+                              ? MyImagePaths.appThumbUpOnIcon
+                              : MyImagePaths.appThumbUpOffIcon,
+                          iconColor: widget.data.detail?.isLike == 1 ? MyTheme.primaryColor : null,
                           width: 21.w,
                           height: 21.w),
                       SizedBox(width: 3.w),
@@ -292,6 +293,7 @@ class _HeaderState extends State<_Header> {
                           widget.data.detail?.isFavorite == 1
                               ? MyImagePaths.appGameCollectOn
                               : MyImagePaths.appCollectOff,
+                          iconColor: widget.data.detail?.isFavorite == 1 ? MyTheme.primaryColor : null,
                           width: 18.w,
                           height: 18.w),
                       SizedBox(width: 3.w),

@@ -276,7 +276,7 @@ class _HeaderState extends State<_Header> {
                     child: Row(children: [
                       MyImage.asset(
                           widget.data.detail?.isFavorite == 1
-                              ? MyImagePaths.appCollectOn
+                              ? MyImagePaths.appGameCollectOn
                               : MyImagePaths.appCollectOff,
                           iconColor: widget.data.detail?.isFavorite == 1 ? MyTheme.primaryColor : null,
                           width: 18.w,
