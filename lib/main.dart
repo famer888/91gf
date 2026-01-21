@@ -81,6 +81,7 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
+        Provider<AppRepo>(lazy: false, create: (_) => appRepo),
         Provider<AppDomain>(lazy: false, create: (_) => appRepo),
         Provider<CacheDomain>(lazy: false, create: (_) => appRepo.cache),
         Provider<HomeDomain>(lazy: false, create: (_) => appRepo),

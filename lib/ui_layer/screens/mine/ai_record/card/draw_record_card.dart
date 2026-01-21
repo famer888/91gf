@@ -102,7 +102,20 @@ class _AIDrawRecordCardState extends State<AIDrawRecordCard> {
                     )
                   ]),
             ),
-          ))
+          )),
+          if ((widget.data.status ?? 0) <= 1)
+            Positioned(
+              left: 0,
+              right: 0,
+              top: 0,
+              bottom: 40.w,
+              child: Center(
+                child: Text(
+                  widget.data.status == 0 ? '排队中' : '处理中',
+                  style: MyTheme.white08_15,
+                ),
+              ),
+            )
         ],
       ),
     );
