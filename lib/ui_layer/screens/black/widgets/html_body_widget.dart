@@ -36,11 +36,9 @@ class _HtmlBodyWidgetState extends State<HtmlBodyWidget> {
 
   int getType() {
     if (widget.blk?.type == 1) {
-      // vip
       if ((_userNotifier.member.vipHlPrivilege ?? 0) > 0) {
        return 0;
       } else {
-        // 金币
         return 1;
       }
     } else if (widget.blk?.type == 2) {

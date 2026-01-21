@@ -620,10 +620,11 @@ class CommonUtils {
           } else if (path == 'gamesortpage' || path == 'gameNav') {
             // paramsStr += '/${Uri.decodeComponent('${data['title']}')}';
             path = 'gameNav';
-            paramsStr += '/${data['title']}';
+            // paramsStr += '/${data['title']}';
           }
 
-          context.push('/$path$paramsStr');
+          final realPath = '/$path$paramsStr';
+          context.push(realPath);
         }
       } else {
         launchUrl(data['url_str'].trim());
