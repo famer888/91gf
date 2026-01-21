@@ -127,39 +127,39 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ...topic?.isAi == 2
-                      ? [
-                          InputField(
-                            controller: contactController,
-                            height: 42.w,
-                            hintText: 'srlxfs'.tr(context: context),
-                            showBoarder: false,
-                            backgroundDecoration: BoxDecoration(
-                              color: const Color.fromRGBO(41, 28, 50, 0.8),
-                              borderRadius: BorderRadius.all(Radius.circular(6.w)),
-                            ),
-                          ),
-                          SizedBox(height: 20.w),
-                          InputField(
-                            controller: coinController,
-                            height: 42.w,
-                            hintText: 'szjsjg'.tr(context: context),
-                            showBoarder: false,
-                            backgroundDecoration: BoxDecoration(
-                              color: const Color.fromRGBO(41, 28, 50, 0.8),
-                              borderRadius: BorderRadius.all(Radius.circular(6.w)),
-                            ),
-                            inputFormatter: [
-                              FilteringTextInputFormatter(
-                                RegExp('[0-9]'),
-                                allow: true,
-                              ),
-                              LengthLimitingTextInputFormatter(3),
-                            ],
-                          ),
-                          SizedBox(height: 20.w),
-                        ]
-                      : [Container()],
+                  if (topic?.isAi == 2 || widget.topicType == CommunityIssueTopicType.date) ...[
+                    InputField(
+                      controller: contactController,
+                      height: 42.w,
+                      hintText: 'srlxfs'.tr(context: context),
+                      showBoarder: false,
+                      backgroundDecoration: BoxDecoration(
+                        color: const Color.fromRGBO(41, 28, 50, 0.8),
+                        borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                      ),
+                    ),
+                    SizedBox(height: 20.w),
+                  ],
+                  if (topic?.isAi == 2 && widget.topicType != CommunityIssueTopicType.date) ...[
+                    InputField(
+                      controller: coinController,
+                      height: 42.w,
+                      hintText: 'szjsjg'.tr(context: context),
+                      showBoarder: false,
+                      backgroundDecoration: BoxDecoration(
+                        color: const Color.fromRGBO(41, 28, 50, 0.8),
+                        borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                      ),
+                      inputFormatter: [
+                        FilteringTextInputFormatter(
+                          RegExp('[0-9]'),
+                          allow: true,
+                        ),
+                        LengthLimitingTextInputFormatter(3),
+                      ],
+                    ),
+                    SizedBox(height: 20.w),
+                  ],
                   UploadHintText(
                     title: 'sctp'.tr(context: context),
                     text: 'zdjzbkb'.tr(context: context),
@@ -187,39 +187,39 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
                     ),
                   ),
                   SizedBox(height: 15.w),
-                  ...topic?.isAi == 2
-                      ? [
-                          InputField(
-                            controller: contactController,
-                            height: 42.w,
-                            hintText: 'srlxfs'.tr(context: context),
-                            showBoarder: false,
-                            backgroundDecoration: BoxDecoration(
-                              color: const Color.fromRGBO(41, 28, 50, 0.8),
-                              borderRadius: BorderRadius.all(Radius.circular(6.w)),
-                            ),
-                          ),
-                          SizedBox(height: 20.w),
-                          InputField(
-                            controller: coinController,
-                            height: 42.w,
-                            hintText: 'szjsjg'.tr(context: context),
-                            showBoarder: false,
-                            backgroundDecoration: BoxDecoration(
-                              color: const Color.fromRGBO(41, 28, 50, 0.8),
-                              borderRadius: BorderRadius.all(Radius.circular(6.w)),
-                            ),
-                            inputFormatter: [
-                              FilteringTextInputFormatter(
-                                RegExp('[0-9]'),
-                                allow: true,
-                              ),
-                              LengthLimitingTextInputFormatter(3),
-                            ],
-                          ),
-                          SizedBox(height: 20.w),
-                        ]
-                      : [Container()],
+                  if (topic?.isAi == 2 || widget.topicType == CommunityIssueTopicType.date) ...[
+                    InputField(
+                      controller: contactController,
+                      height: 42.w,
+                      hintText: 'srlxfs'.tr(context: context),
+                      showBoarder: false,
+                      backgroundDecoration: BoxDecoration(
+                        color: const Color.fromRGBO(41, 28, 50, 0.8),
+                        borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                      ),
+                    ),
+                    SizedBox(height: 20.w),
+                  ],
+                  if (topic?.isAi == 2 && widget.topicType != CommunityIssueTopicType.date) ...[
+                    InputField(
+                      controller: coinController,
+                      height: 42.w,
+                      hintText: 'szjsjg'.tr(context: context),
+                      showBoarder: false,
+                      backgroundDecoration: BoxDecoration(
+                        color: const Color.fromRGBO(41, 28, 50, 0.8),
+                        borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                      ),
+                      inputFormatter: [
+                        FilteringTextInputFormatter(
+                          RegExp('[0-9]'),
+                          allow: true,
+                        ),
+                        LengthLimitingTextInputFormatter(3),
+                      ],
+                    ),
+                    SizedBox(height: 20.w),
+                  ],
                   UploadHintText(
                     title: 'sctp'.tr(context: context),
                     text: 'zdjzbkb'.tr(context: context),
@@ -250,56 +250,37 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
                     hintText: "[${'xutie'.tr(context: context)}]${'runr'.tr(context: context)}",
                   ),
                   SizedBox(height: 20.w),
-                  ...topic?.isAi == 2
-                      ? [
-                          InputField(
-                            controller: contactController,
-                            height: 42.w,
-                            hintText: 'srlxfs'.tr(context: context),
-                            showBoarder: false,
-                            backgroundDecoration: BoxDecoration(
-                              color: const Color.fromRGBO(41, 28, 50, 0.8),
-                              borderRadius: BorderRadius.all(Radius.circular(6.w)),
-                            ),
-                          ),
-                          SizedBox(height: 20.w),
-                          InputField(
-                            controller: coinController,
-                            height: 42.w,
-                            hintText: 'szjsjg'.tr(context: context),
-                            showBoarder: false,
-                            backgroundDecoration: BoxDecoration(
-                              color: const Color.fromRGBO(41, 28, 50, 0.8),
-                              borderRadius: BorderRadius.all(Radius.circular(6.w)),
-                            ),
-                            inputFormatter: [
-                              FilteringTextInputFormatter(
-                                RegExp('[0-9]'),
-                                allow: true,
-                              ),
-                              LengthLimitingTextInputFormatter(3),
-                            ],
-                          ),
-                        ]
-                      : [
-                          InputField(
-                            controller: coinController,
-                            height: 42.w,
-                            hintText: 'szspjg'.tr(context: context),
-                            showBoarder: false,
-                            backgroundDecoration: BoxDecoration(
-                              color: const Color.fromRGBO(41, 28, 50, 0.8),
-                              borderRadius: BorderRadius.all(Radius.circular(6.w)),
-                            ),
-                            inputFormatter: [
-                              FilteringTextInputFormatter(
-                                RegExp('[0-9]'),
-                                allow: true,
-                              ),
-                              LengthLimitingTextInputFormatter(3),
-                            ],
-                          ),
-                        ],
+                  if (topic?.isAi == 2 || widget.topicType == CommunityIssueTopicType.date) ...[
+                    InputField(
+                      controller: contactController,
+                      height: 42.w,
+                      hintText: 'srlxfs'.tr(context: context),
+                      showBoarder: false,
+                      backgroundDecoration: BoxDecoration(
+                        color: const Color.fromRGBO(41, 28, 50, 0.8),
+                        borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                      ),
+                    ),
+                    SizedBox(height: 20.w),
+                  ],
+                  if (widget.topicType != CommunityIssueTopicType.date)
+                    InputField(
+                      controller: coinController,
+                      height: 42.w,
+                      hintText: topic?.isAi == 2 ? 'szjsjg'.tr(context: context) : 'szspjg'.tr(context: context),
+                      showBoarder: false,
+                      backgroundDecoration: BoxDecoration(
+                        color: const Color.fromRGBO(41, 28, 50, 0.8),
+                        borderRadius: BorderRadius.all(Radius.circular(6.w)),
+                      ),
+                      inputFormatter: [
+                        FilteringTextInputFormatter(
+                          RegExp('[0-9]'),
+                          allow: true,
+                        ),
+                        LengthLimitingTextInputFormatter(3),
+                      ],
+                    ),
                   if (topic?.isLive == 1)
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -539,7 +520,7 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
       return;
     }
     if (type == CommunityIssueType.image) {
-      if (topic.isAi == 2 && contactController.text.isEmpty) {
+      if ((topic.isAi == 2 || widget.topicType == CommunityIssueTopicType.date) && contactController.text.isEmpty) {
         MyToast.showText(text: 'qsrlxfs'.tr(context: context));
         return;
       }
@@ -549,7 +530,7 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
       }
     }
     if (type == CommunityIssueType.video) {
-      if (topic.isAi == 2 && contactController.text.isEmpty) {
+      if ((topic.isAi == 2 || widget.topicType == CommunityIssueTopicType.date) && contactController.text.isEmpty) {
         MyToast.showText(text: 'qsrlxfs'.tr(context: context));
         return;
       }
@@ -576,7 +557,7 @@ class _CommunityIssueScreenState extends State<CommunityIssueScreen> {
         MyToast.showText(text: 'qsnrxx'.tr(context: context));
         return;
       }
-      if (topic.isAi == 2 && contactController.text.isEmpty) {
+      if ((topic.isAi == 2 || widget.topicType == CommunityIssueTopicType.date) && contactController.text.isEmpty) {
         MyToast.showText(text: 'qsrlxfs'.tr(context: context));
         return;
       }

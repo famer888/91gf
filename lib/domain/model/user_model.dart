@@ -78,7 +78,8 @@ class UserModel {
   final int? workCt;
   final int? fansCt;
   final int? chatPrivilege;
-
+  final int? awPrivilege;
+  
   UserModel({
     this.workCt,
     this.fansCt,
@@ -159,6 +160,7 @@ class UserModel {
     this.vipIcon,
     this.vipImg,
     this.chatPrivilege,
+    this.awPrivilege,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -245,5 +247,6 @@ class UserModel {
         vipIcon: json['vip_icon'] ?? '',
         vipImg: json['vip_img'] ?? '',
         chatPrivilege: json['chat_privilege'],
+        awPrivilege: json['aw_privilege'],
       );
 }
