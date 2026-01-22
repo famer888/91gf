@@ -136,29 +136,35 @@ class _PostMediaViewState extends State<PostMediaView> {
                           style: TextStyle(color: MyTheme.cyanColor00edfd, fontSize: 14.sp))
                       : Text("${'shp'.tr(context: context)}:", style: TextStyle(color: Colors.white70, fontSize: 14.sp)),
                   SizedBox(height: 5.w),
-                  SizedBox(
-                    width: 1.sw - MyTheme.pagePadding * 2,
-                    height: (1.sw - MyTheme.pagePadding * 2) / 16 * 9,
-                    child: ReportGestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () => goPictureView(index),
-                      child: Positioned.fill(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(5.w)),
-                          child: Stack(
-                            children: [
-                              // 图片在最底层
-                              Positioned.fill(child: MyImage.network(media.cover, borderRadius: 5.w, fit: BoxFit.cover)),
-                              if (widget.unlockCoins > 0 && widget.medias[index].mediaUrl.isEmpty)
-                                Positioned.fill(
-                                  child: BackdropFilter(
-                                    filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
-                                    child: Container(color: const Color.fromRGBO(176, 66, 255, 0.15)),
-                                  ),
+                  ReportGestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () => goPictureView(index),
+                    child: SizedBox(
+                      width: 1.sw - MyTheme.pagePadding * 2,
+                      height: (1.sw - MyTheme.pagePadding * 2) / 16 * 9,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(5.w)),
+                        child: Stack(
+                          children: [
+                            // // 图片在最底层
+                            Positioned.fill(
+                                child: MyImage.network(media.cover,
+                                    borderRadius: 5.w, fit: BoxFit.cover)),
+                            if (widget.unlockCoins > 0 &&
+                                widget.medias[index].mediaUrl.isEmpty)
+                              ClipRRect(
+                                child: BackdropFilter(
+                                  filter:
+                                      ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+                                  child: Container(
+                                      color: const Color.fromRGBO(
+                                          176, 66, 255, 0.15)),
                                 ),
-                              const Center(child: MyImage.asset(MyImagePaths.appVPlayN, width: 40, height: 40))
-                            ],
-                          ),
+                              ),
+                            const Center(
+                                child: MyImage.asset(MyImagePaths.appVPlayN,
+                                    width: 40, height: 40))
+                          ],
                         ),
                       ),
                     ),
