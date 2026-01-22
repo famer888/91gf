@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jygf/report/ui_layer/report_general_banner.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../domain/async_value.dart';
@@ -8,7 +9,6 @@ import '../../../../../domain/domain.dart';
 import '../../../../../domain/model/app_center_model.dart';
 import '../../../../utils/common_utils.dart';
 import '../../../../utils/my_toast.dart';
-import '../../../common_widgets/general_banner.dart';
 import '../../../common_widgets/my_image.dart';
 import '../../../common_widgets/my_list_view.dart';
 import '../../../common_widgets/status/loading.dart';
@@ -79,7 +79,7 @@ class _AppCenterViewState extends State<AppCenterView> {
                 ? const SizedBox.shrink()
                 : Padding(
                     padding: EdgeInsets.only(bottom: 10.w),
-                    child: GeneralBanner(data: banner),
+                    child: ReportGeneralAppsListVidget(data: banner),
                   ),
             recommend.isEmpty
                 ? const SizedBox.shrink()
