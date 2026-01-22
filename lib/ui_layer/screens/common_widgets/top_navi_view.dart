@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jygf/domain/model/home_data_model.dart';
 import 'package:jygf/ui_layer/notifiers/home_config_notifier.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/keep_alive_wrapper.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
+import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/webview/screen.dart';
 import 'package:provider/provider.dart';
 
@@ -83,7 +86,8 @@ class _TopNaviViewState extends State<TopNaviView>
   @override
   Widget build(BuildContext context) {
     return _asyncValue.maybeWhen(
-      data: (data) => TabBarWithView.line(
+      data: (data) => TabBarWithView.icon(
+        icon: MyImage.asset(MyImagePaths.appTabIcon,height: 20.w,fit: BoxFit.contain,),
         tabController: _tabController,
         initialIndex: _initialIndex,
         titles: data.map((e) => e.name).toList(),

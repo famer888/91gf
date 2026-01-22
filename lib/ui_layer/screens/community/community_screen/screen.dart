@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jygf/domain/async_value.dart';
 import 'package:jygf/domain/model/community/community_model.dart';
 import 'package:jygf/domain/model/navigator_model.dart';
@@ -9,6 +10,7 @@ import 'package:jygf/ui_layer/notifiers/home_config_notifier.dart';
 import 'package:jygf/ui_layer/screens/acg/yellow_game/screen.dart';
 import 'package:jygf/ui_layer/screens/black/screen/black_screen.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/event_bus/event_bus.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_tab_bar.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/screen_background.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/search_app_bar.dart';
@@ -18,6 +20,7 @@ import 'package:jygf/ui_layer/screens/community/community_screen/content.dart';
 import 'package:jygf/ui_layer/screens/community/community_screen/seed_down_content.dart';
 import 'package:jygf/ui_layer/screens/file_search/screen/check_file_screen.dart';
 import 'package:jygf/ui_layer/screens/follow/follow_screen.dart';
+import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:provider/provider.dart';
 
@@ -102,7 +105,8 @@ class _BodyState extends State<_Body> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return _asyncValue.maybeWhen(
-      data: (data) => TabBarWithView.line(
+      data: (data) => TabBarWithView.icon(
+        icon: MyImage.asset(MyImagePaths.appTabIcon,height: 20.w,fit: BoxFit.contain,),
         tabController: tabController,
         initialIndex: _initialIndex,
         titles: data.map((e) => e.title).toList(),

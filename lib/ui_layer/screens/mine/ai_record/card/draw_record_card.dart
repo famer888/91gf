@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jygf/domain/api_validator.dart';
 import 'package:jygf/domain/model/ai/ai_draw_record_model.dart';
 import 'package:jygf/domain/remote_domain/domains/aidraw.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/gradient_text.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/mine/ai_record/draw_picture_record_preview/screen.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
@@ -110,9 +111,10 @@ class _AIDrawRecordCardState extends State<AIDrawRecordCard> {
               top: 0,
               bottom: 40.w,
               child: Center(
-                child: Text(
+                child: GradientText(
                   widget.data.status == 0 ? '排队中' : '处理中',
-                  style: MyTheme.white08_15,
+                  gradient: MyTheme.gradient_90_114,
+                  style: MyTheme.white15,
                 ),
               ),
             )

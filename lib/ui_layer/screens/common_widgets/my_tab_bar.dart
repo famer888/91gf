@@ -18,6 +18,9 @@ enum TabBarType {
 
   /// 选中时使用图片
   image,
+
+  /// 带图标
+  icon,
 }
 
 enum IndicatorType {
@@ -57,6 +60,7 @@ class TabBarWithView extends StatefulWidget {
         unselectedImgs = null,
         imageWidth = null,
         imageHeight = null,
+        icon = null,
         tabBarRightWidget = null;
 
   TabBarWithView.fillColor({
@@ -84,6 +88,7 @@ class TabBarWithView extends StatefulWidget {
         unselectedImgs = null,
         imageWidth = null,
         imageHeight = null,
+        icon = null,
         indicatorType = IndicatorType.line;
 
   TabBarWithView.image({
@@ -110,8 +115,37 @@ class TabBarWithView extends StatefulWidget {
     this.tabBarBottomWidget,
     this.gradientColors,
   })  : type = TabBarType.image,
+        icon = null,
         tabBarRightWidget = null,
         indicatorType = IndicatorType.line;
+
+  TabBarWithView.icon({
+    super.key,
+    required this.titles,
+    required this.views,
+    required this.icon,
+    this.tabBarPadding,
+    this.tabInterMargin = 10,
+    this.tabBarHeight,
+    this.isCenter = false,
+    this.isScrollable = true,
+    this.labelStyle,
+    this.unselectedLabelStyle,
+    this.tabController,
+    this.labelPadding = 8.0,
+    this.initialIndex = 0,
+    this.borderRadius,
+    this.isStack = false,
+    this.indexChangeCall,
+    this.gradientColors,
+    this.tabBarBottomWidget,
+    this.indicatorType = IndicatorType.line,
+  })  : type = TabBarType.icon,
+        selectedImgs = null,
+        unselectedImgs = null,
+        imageWidth = null,
+        imageHeight = null,
+        tabBarRightWidget = null;
 
   final TabBarType type;
   final int initialIndex;
@@ -121,6 +155,7 @@ class TabBarWithView extends StatefulWidget {
   final List<String>? unselectedImgs;
   final double? imageWidth;
   final double? imageHeight;
+  final Widget? icon;
   final List<Widget> views;
   final bool isCenter;
 
@@ -286,6 +321,28 @@ class _TabBarWithViewState extends State<TabBarWithView> with SingleTickerProvid
               ),
             ),
           ),
+        TabBarType.icon => Tab(
+            height: MyTheme.navbarHegiht,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                isSelected && widget.labelStyle == null
+                    ? GradientText(
+                        title,
+                        style: MyTheme.jellyCyan_17,
+                        gradient: MyTheme.gradient_90_114,
+                      )
+                    : Text(
+                        title,
+                        style: isSelected ? (widget.labelStyle ?? MyTheme.jellyCyan_17) : (widget.unselectedLabelStyle ?? MyTheme.white08_15),
+                      ),
+                if (isSelected && widget.icon != null) ...[
+                  SizedBox(width: 2.w),
+                  widget.icon!,
+                ],
+              ],
+            ),
+          ),
         _ => isSelected && widget.labelStyle == null
             ? Tab(
                 height: MyTheme.navbarHegiht,
@@ -325,6 +382,25 @@ class _TabBarWithViewState extends State<TabBarWithView> with SingleTickerProvid
         unselectedLabelStyle: widget.unselectedLabelStyle,
         gradientColors: widget.gradientColors,
       ).copyWith(indicator: const BoxDecoration(color: Colors.transparent)),
+    TabBarType.icon => MyTabBarTheme(
+      labelStyle: widget.labelStyle ?? MyTheme.jellyCyan_17,
+      labelPadding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+      unselectedLabelStyle: widget.unselectedLabelStyle ??
+          TextStyle(
+            color: const Color.fromRGBO(255, 255, 255, 0.6),
+            fontSize: 17.sp,
+            overflow: TextOverflow.visible,
+            decoration: TextDecoration.none,
+          ),
+      indicatorSize: TabBarIndicatorSize.label,
+      indicator: const BoxDecoration(color: Colors.transparent),
+      indicatorColor: Colors.transparent,
+      overlayColor: WidgetStateProperty.resolveWith<Color>(
+        (_) => Colors.transparent,
+      ),
+      tabAlignment: TabAlignment.start,
+      dividerColor: Colors.transparent,
+    ),
   };
 
   late final ValueNotifier<int> indexChangeNotifier;

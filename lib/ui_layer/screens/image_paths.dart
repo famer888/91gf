@@ -10,6 +10,7 @@ class MyImagePaths {  static const appZfConN = './assets/images/app_zf_con_n.png
   static const uploadFaceError1 = './assets/images/upload_face_error_1.png';
   static const appChatCollectN = './assets/images/app_chat_collect_n.png';
   static const appDate25 = './assets/images/app_date_25.png';
+  static const appTabIcon = './assets/images/app_tab_icon.png';
   static const appAsmrList = './assets/images/app_asmr_list.png';
   static const appTabWodeN = './assets/images/app_tab_wode_n.png';
   static const appLoginBackground = './assets/images/app_login_background.png';
