@@ -812,8 +812,11 @@ class _NovelViewState extends State<_NovelView> {
 
   @override
   Widget build(BuildContext context) {
-    return MyListView.list(
-      contentPadding: 15.w,
+    return MyListView.grid(
+      childAspectRatio: UILayerConst.pictureRatio,
+      contentPadding: 10.w,
+      crossAxisCount: 3,
+      padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
       itemBuilder: (context, item, index) => NovelItemCard(data: item).withSearchReport({
         "event": "keyword_click",
         "keyword": widget.word,

@@ -31,12 +31,13 @@ class _MoreVideoScreenState extends State<MoreVideoScreen> {
       appBar: MyAppBar(
         title: widget.name,
       ),
-      body: TabBarWithView.fillColor(
+      body: TabBarWithView.line(
+        indicatorType: IndicatorType.curve,
         tabBarPadding: EdgeInsets.symmetric(
           vertical: 6.w,
           horizontal: MyTheme.pagePadding,
         ),
-        tabBarHeight: 32.w,
+        // tabBarHeight: 32.w,
         isScrollable: true,
         titles: [
           'zxpx'.tr(context: context),
