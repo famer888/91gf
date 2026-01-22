@@ -424,7 +424,8 @@ abstract class _BaseAppRepo implements AppDomain {
     //     (await _cacheManager.readLinesUrl()) ?? BuildConfig.apiLines;
 
     // 测试服
-    List<String> unChecklines = ['https://91gfapi.dyclub.co/api.php'];
+    // List<String> unChecklines = ['https://91gfapi.dyclub.co/api.php'];
+    List<String> unChecklines = ['https://api1.91guifu.com/api.php'];
     List<String> linesTemp = [...unChecklines];
 
     if (!kIsWeb) {

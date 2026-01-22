@@ -18,23 +18,23 @@ class BuildConfig {
           // 'https://api2.ogfhqjm.com/api.php',
           // 'https://api3.ogfhqjm.com/api.php',
           // 'https://wapi1.ogfhqjm.com/api.php',
-          'https://91gfapi.dyclub.co/api.php',
+          'https://api1.91guifu.com/api.php',
         ]
       : [
           // 'https://api1.oasnyrv.com/api.php',
           // 'https://api1.ocoopfr.cc/api.php',
           // 'https://api1.oencdsjr.cc/api.php',
-          'https://91gfapi.dyclub.co/api.php',
+          'https://api1.91guifu.com/api.php',
         ];
 
   /// 备用线路
   static const githubLine =
       // 'https://raw.githubusercontent.com/ailiu258099-blip/master/main/haijiao.txt';
-      'https://91gfapi.dyclub.co/api.php';
+      'https://api1.91guifu.com/api.php';
   static final fdsKeyApi = [
     // 'https://wvseee.jsbacjr.com/fds.txt',
     // 'https://gitee.com/fdsaw/ffewelmcxww/raw/master/hj.txt',
-    'https://91gfapi.dyclub.co/api.php',
+    'https://api1.91guifu.com/api.php',
   ];
 
   /// 跳转webview路径
