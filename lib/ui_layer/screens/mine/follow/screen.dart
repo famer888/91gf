@@ -127,7 +127,7 @@ class _FollowingUserViewState extends State<FollowingUserView> {
                     height: 8.w,
                   ),
                   Text(
-                    '${data.exp ?? 0}${'jfen'.tr(context: context)}',
+                    '${data.exp ?? 0}${'fans'.tr(context: context)}',
                     style: MyTheme.whiteOpacity614w400,
                   )
                 ],

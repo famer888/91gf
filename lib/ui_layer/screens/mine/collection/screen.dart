@@ -641,8 +641,11 @@ class _ChatViewState extends State<_ChatView> {
 
   @override
   Widget build(BuildContext context) {
-    return MyListView.list(
-      contentPadding: 15.w,
+    return MyListView.grid(
+      padding: EdgeInsets.symmetric(vertical: 5.w, horizontal: MyTheme.pagePadding),
+      childAspectRatio: 169 / (224 + 48),
+      mainAxisSpacing: 10,
+      crossAxisSpacing: 7,
       itemBuilder: (context, item, index) => ChatListCard(data: item),
       onFetchingMore: (currentPage, pageSize) => _getData(
         page: currentPage,

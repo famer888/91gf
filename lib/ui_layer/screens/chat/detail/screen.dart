@@ -321,8 +321,8 @@ class _ChatDetailScreenState extends State<ChatDetailScreen>
                                               child: Row(children: [
                                                 MyImage.asset(
                                                   data.isFavorite == 1
-                                                      ? MyImagePaths.appChatCollectS
-                                                      : MyImagePaths.appChatCollectN,
+                                                    ? MyImagePaths.appGameCollectOn
+                                                    : MyImagePaths.appAlbumCollectN,
                                                   width: 15.w,
                                                   height: 15.w,
                                                 ),
