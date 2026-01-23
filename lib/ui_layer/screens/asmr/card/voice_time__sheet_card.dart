@@ -37,7 +37,7 @@ class _VoiceTimeSheetCardState extends State<VoiceTimeSheetCard> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Expanded(
-                      child: Text('${widget.minute}${'minute'.tr(context: context)}', style: MyTheme.white09_15_M)),
+                      child: Center(child: Text('${widget.minute}${'minute'.tr(context: context)}', style: MyTheme.white09_15_M))),
                   SizedBox(width: 10.w),
                   Visibility(
                     visible: (VoicePlayerManager.instance.minutes != null && VoicePlayerManager.instance.minutes == widget.minute),
