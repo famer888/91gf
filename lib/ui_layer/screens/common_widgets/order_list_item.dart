@@ -138,14 +138,19 @@ class OrderListItem extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      order.payway ?? '',
-                      style: TextStyle(
-                        color: paywayColor,
-                        fontSize: 14.sp,
-                        decoration: TextDecoration.none,
+                    Expanded(
+                      child: Text(
+                        order.payway ?? '',
+                        style: TextStyle(
+                          color: paywayColor,
+                          fontSize: 14.sp,
+                          decoration: TextDecoration.none,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
+                    SizedBox(width: 5.w),
                     Text(
                       order.createdAt ?? '',
                       style: MyTheme.gray153_12,

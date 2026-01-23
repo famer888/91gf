@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jygf/domain/model/ai/ai_magic_model.dart';
@@ -55,7 +56,7 @@ class MagicCard extends StatelessWidget {
               backgroundColor: MyTheme.imageBgColor,
               borderRadius: 5.w,
             ),
-            Container(
+            if(!kIsWeb) Container(
               decoration: BoxDecoration(
               gradient: const LinearGradient(colors: [
                               Color.fromRGBO(176, 66, 255, 0.3),
