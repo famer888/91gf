@@ -8,6 +8,7 @@ import 'package:jygf/domain/api_validator.dart';
 import 'package:jygf/domain/model/member_model.dart';
 import 'package:jygf/domain/remote_domain/domains/community.dart';
 import 'package:jygf/domain/type_def.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
 import 'package:jygf/ui_layer/notifiers/user_notifier.dart';
 import 'package:jygf/ui_layer/router/routes.dart';
 import 'package:jygf/ui_layer/screens/community/coins_dialog.dart';
@@ -20,8 +21,6 @@ import '../../../../utils/common_utils.dart';
 import '../../../image_paths.dart';
 import '../../../theme.dart';
 import '../../my_image.dart';
-import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
-
 
 class PostMediaView extends StatefulWidget {
   final List<MediaModel> medias;
@@ -35,6 +34,7 @@ class PostMediaView extends StatefulWidget {
 
 class _PostMediaViewState extends State<PostMediaView> {
   late final _domain = context.read<CommunityDomain>();
+  int _currentUnlockCoins = 0;
 
   //会员/金币购买弹窗
   void dialogPrompt(BuildContext context, int index) {
@@ -51,12 +51,12 @@ class _PostMediaViewState extends State<PostMediaView> {
           child: PopScope(
             canPop: false,
             child: CoinsDialog(
-              unlockCoins: widget.unlockCoins,
+              unlockCoins: _currentUnlockCoins,
               money: member.money,
               actionCallback: () {
                 // 取第一个元素解锁
                 final data = videoMedias.first;
-                _pay(data, index, widget.unlockCoins);
+                _pay(data, index, _currentUnlockCoins);
               },
             ),
           ),
@@ -76,6 +76,7 @@ class _PostMediaViewState extends State<PostMediaView> {
       if (mounted) {
         setState(() {
           data.mediaUrl = result.data['url'] ?? '';
+          _currentUnlockCoins = 0;
         });
         final currentMoney = context.read<UserNotifier>().member.money - unlockCoins;
         context.read<UserNotifier>().setMoney(money: currentMoney);
@@ -87,10 +88,16 @@ class _PostMediaViewState extends State<PostMediaView> {
   }
 
   @override
+  void initState() {
+    _currentUnlockCoins = widget.unlockCoins;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     /// 前往图片/影片浏览页
     void goPictureView(int index) {
-      if (widget.unlockCoins > 0) {
+      if (_currentUnlockCoins > 0) {
         dialogPrompt(context, index);
       } else {
         MediaViewerRoute({'resources': widget.medias, 'index': index}).push(context);
@@ -105,7 +112,7 @@ class _PostMediaViewState extends State<PostMediaView> {
       itemBuilder: (context, index) {
         final media = widget.medias[index];
         if (media.type == MyMediaType.video) {
-          media.unlockCoins = widget.unlockCoins;
+          media.unlockCoins = _currentUnlockCoins;
         }
         double width = 1.sw - MyTheme.pagePadding * 2;
         final thumbWidth = media.thumbWidth.toDouble();
@@ -131,10 +138,21 @@ class _PostMediaViewState extends State<PostMediaView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 10.w),
-                  widget.unlockCoins > 0 && widget.medias[index].mediaUrl.isEmpty
-                      ? Text("${widget.unlockCoins}${'jbjsgk'.tr(context: context)}:",
-                          style: TextStyle(color: MyTheme.cyanColor00edfd, fontSize: 14.sp))
-                      : Text("${'shp'.tr(context: context)}:", style: TextStyle(color: Colors.white70, fontSize: 14.sp)),
+                  _currentUnlockCoins > 0 && widget.medias[index].mediaUrl.isEmpty
+                      ? Text(
+                          "$_currentUnlockCoins${'jbjsgk'.tr(context: context)}:",
+                          style: TextStyle(
+                            color: MyTheme.cyanColor00edfd,
+                            fontSize: 14.sp,
+                          ),
+                        )
+                      : Text(
+                          "${'shp'.tr(context: context)}:",
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 14.sp,
+                          ),
+                        ),
                   SizedBox(height: 5.w),
                   ReportGestureDetector(
                     behavior: HitTestBehavior.translucent,
@@ -148,22 +166,16 @@ class _PostMediaViewState extends State<PostMediaView> {
                           children: [
                             // // 图片在最底层
                             Positioned.fill(
-                                child: MyImage.network(media.cover,
-                                    borderRadius: 5.w, fit: BoxFit.cover)),
-                            if (widget.unlockCoins > 0 &&
-                                widget.medias[index].mediaUrl.isEmpty)
+                              child: MyImage.network(media.cover, borderRadius: 5.w, fit: BoxFit.cover),
+                            ),
+                            if (_currentUnlockCoins > 0 && widget.medias[index].mediaUrl.isEmpty)
                               ClipRRect(
                                 child: BackdropFilter(
-                                  filter:
-                                      ImageFilter.blur(sigmaX: 6, sigmaY: 6),
-                                  child: Container(
-                                      color: const Color.fromRGBO(
-                                          176, 66, 255, 0.15)),
+                                  filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+                                  child: Container(color: const Color.fromRGBO(176, 66, 255, 0.15)),
                                 ),
                               ),
-                            const Center(
-                                child: MyImage.asset(MyImagePaths.appVPlayN,
-                                    width: 40, height: 40))
+                            const Center(child: MyImage.asset(MyImagePaths.appVPlayN, width: 40, height: 40))
                           ],
                         ),
                       ),
