@@ -67,8 +67,7 @@ class _BlackDetailsScreenState extends State<BlackDetailsScreen> {
         if (context.mounted) {
           final blackDetailModel = result.data;
           final curBlackDetailsModel = blackDetailModel!.cur;
-          _titleNotifier.value =
-              curBlackDetailsModel != null && curBlackDetailsModel.category.isNotEmpty ? curBlackDetailsModel.category[0].name : 'hlxq'.tr();
+          _titleNotifier.value = curBlackDetailsModel != null && curBlackDetailsModel.category.isNotEmpty ? curBlackDetailsModel.category[0].name : 'hlxq'.tr();
 
           _asyncValue = AsyncData(blackDetailModel);
         }
@@ -195,7 +194,7 @@ class _BlackDetailsScreenState extends State<BlackDetailsScreen> {
                 return Container(
                   alignment: Alignment.center,
                   padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
-                  child: Text(title, style: MyTheme.white255_18_B),
+                  child: Text('hlxq'.tr(), style: MyTheme.white255_18_B),
                 );
               }),
         ),

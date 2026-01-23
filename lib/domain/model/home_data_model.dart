@@ -682,6 +682,7 @@ class Notice {
     this.url,
     this.linkUrl,
     this.imgUrl,
+    this.resourceUrl,
     this.title,
     this.content,
     this.router,
@@ -702,6 +703,7 @@ class Notice {
   final int id;
   final String? url;
   final String? linkUrl;
+  final String? resourceUrl;
   final String? imgUrl;
   final String? title;
   final String? content;
@@ -723,6 +725,7 @@ class Notice {
         id: json['id'] is int ? json['id'] : int.tryParse('${json['id']}') ?? 0,
         url: json['url'] as String?,
         linkUrl: json['link_url'] as String?,
+        resourceUrl: json['resource_url'] ?? '',
         imgUrl: json['img_url'] as String?,
         title: json['title'] as String?,
         content: json['content'] as String?,
@@ -759,6 +762,7 @@ class Notice {
         'id': id,
         'url': url,
         'link_url': linkUrl,
+        'resource_url': resourceUrl,
         'img_url': imgUrl,
         'title': title,
         'content': content,
