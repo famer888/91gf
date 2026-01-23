@@ -489,52 +489,94 @@ class _CenterMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 124.w,
-      child: Stack(
+      child: Row(
         children: [
           Selector<UserNotifier, int>(
               selector: (_, config) => config.member.money,
               builder: (context, money, child) {
-                return Positioned(
-                  top: 0,
-                  left: 0,
-                  bottom: 0,
+                return Expanded(
+                  // width: 174.w,
+                  // height: 124.w,
+                  child: ReportGestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () => const CoinRechargeRoute().push(context),
+                    child: Stack(
+                      children: [
+                        const MyImage.asset(
+                          MyImagePaths.appMineRecharge, 
+                          width: double.infinity,
+                          height: double.infinity,
+                          fit: BoxFit.fill,
+                        ),
+                        Positioned(
+                          top: 12.w,
+                          left: 13.w,
+                          right: 0,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'jbcz'.tr(context: context),
+                                style: MyTheme.white255_18,
+                              ),
+                              const SizedBox(height: 5),
+                              RichText(
+                                  text: TextSpan(children: [
+                                TextSpan(
+                                  text: "${'yee'.tr(context: context)} : ",
+                                  style: MyTheme.white255_12.copyWith(color: const Color.fromRGBO(187, 187, 187, 1.0)),
+                                ),
+                                TextSpan(
+                                  text: "$money",
+                                  style: MyTheme.white12.yellow255.copyWith(color: const Color.fromRGBO(246, 203, 163, 1.0)),
+                                ),
+                              ])),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              }),
+          SizedBox(width: 10.w),
+          Expanded(
+            // width: 171.w,
+            child: Column(
+              children: [
+                Expanded(
                   child: SizedBox(
-                    width: 174.w,
-                    // height: 124.w,
+                    height: 54.w,
                     child: ReportGestureDetector(
                       behavior: HitTestBehavior.translucent,
-                      onTap: () => const CoinRechargeRoute().push(context),
+                      onTap: () => const MineShareToUserRoute().push(context),
                       child: Stack(
                         children: [
                           const MyImage.asset(
-                            MyImagePaths.appMineRecharge, // fit: BoxFit.fill,
+                            MyImagePaths.appMineShare,
                             width: double.infinity,
                             height: double.infinity,
+                            fit: BoxFit.fill,
                           ),
-                          Positioned(
-                            top: 12.w,
-                            left: 13.w,
-                            right: 0,
+                          Positioned.fill(
+                            left: 20.w,
+                            // top: 12.w,
+                            // right: 0,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.max,
                               children: [
                                 Text(
-                                  'jbcz'.tr(context: context),
-                                  style: MyTheme.white255_18,
+                                  'fxyq'.tr(context: context),
+                                  style: MyTheme.white255_18.s16.white25509,
                                 ),
                                 const SizedBox(height: 5),
-                                RichText(
-                                    text: TextSpan(children: [
-                                  TextSpan(
-                                    text: "${'yee'.tr(context: context)} : ",
-                                    style: MyTheme.white255_12.copyWith(color: const Color.fromRGBO(187, 187, 187, 1.0)),
-                                  ),
-                                  TextSpan(
-                                    text: "$money",
-                                    style: MyTheme.white12.yellow255.copyWith(color: const Color.fromRGBO(246, 203, 163, 1.0)),
-                                  ),
-                                ])),
+                                Text(
+                                  'yqhydvp'.tr(context: context),
+                                  style: MyTheme.white255_11.white25506.copyWith(color: const Color.fromRGBO(187, 187, 187, 1.0)),
+                                ),
                               ],
                             ),
                           )
@@ -542,90 +584,48 @@ class _CenterMenu extends StatelessWidget {
                       ),
                     ),
                   ),
-                );
-              }),
-          Positioned(
-            top: 0,
-            right: 0,
-            // bottom: 0,
-            child: SizedBox(
-              width: 171.w,
-              height: 54.w,
-              child: ReportGestureDetector(
-                behavior: HitTestBehavior.translucent,
-                onTap: () => const MineShareToUserRoute().push(context),
-                child: Stack(
-                  children: [
-                    const MyImage.asset(
-                      MyImagePaths.appMineShare, // fit: BoxFit.fill,
-                      width: double.infinity,
-                      height: double.infinity,
-                    ),
-                    Positioned.fill(
-                      left: 20.w,
-                      // top: 12.w,
-                      // right: 0,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.max,
+                ),
+                SizedBox(height: 10.w),
+                Expanded(
+                  child: SizedBox(
+                    height: 54.w,
+                    child: ReportGestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () => const MineWelfareRoute().push(context),
+                      child: Stack(
                         children: [
-                          Text(
-                            'fxyq'.tr(context: context),
-                            style: MyTheme.white255_18.s16.white25509,
+                          const MyImage.asset(
+                            MyImagePaths.appMineAgent,
+                            width: double.infinity,
+                            height: double.infinity,
+                            fit: BoxFit.fill,
                           ),
-                          const SizedBox(height: 5),
-                          Text(
-                            'yqhydvp'.tr(context: context),
-                            style: MyTheme.white255_11.white25506.copyWith(color: const Color.fromRGBO(187, 187, 187, 1.0)),
-                          ),
+                          Positioned.fill(
+                            // top: 12.w,
+                            left: 20.w,
+                            // right: 0,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'tgzxj'.tr(context: context),
+                                  style: MyTheme.white255_18.s16.white25509,
+                                ),
+                                const SizedBox(height: 5),
+                                Text(
+                                  'ye'.tr(context: context),
+                                  style: MyTheme.white255_11.white25506.copyWith(color: const Color.fromRGBO(187, 187, 187, 1.0)),
+                                ),
+                              ],
+                            ),
+                          )
                         ],
                       ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            right: 0,
-            bottom: 0,
-            child: SizedBox(
-              width: 171.w,
-              height: 54.w,
-              child: ReportGestureDetector(
-                behavior: HitTestBehavior.translucent,
-                onTap: () => const MineWelfareRoute().push(context),
-                child: Stack(
-                  children: [
-                    const MyImage.asset(
-                      MyImagePaths.appMineAgent, // fit: BoxFit.fill,
-                      width: double.infinity,
-                      height: double.infinity,
                     ),
-                    Positioned.fill(
-                      // top: 12.w,
-                      left: 20.w,
-                      // right: 0,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'tgzxj'.tr(context: context),
-                            style: MyTheme.white255_18.s16.white25509,
-                          ),
-                          const SizedBox(height: 5),
-                          Text(
-                            'ye'.tr(context: context),
-                            style: MyTheme.white255_11.white25506.copyWith(color: const Color.fromRGBO(187, 187, 187, 1.0)),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
           )
         ],

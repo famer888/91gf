@@ -83,7 +83,7 @@ class _MineCollectionScreenState extends State<MineCollectionScreen> {
           // tabBarHeight: 40.w,
           isScrollable: true,
           titles: [
-            'shp'.tr(context: context),
+            'csp'.tr(context: context),
             'dsp'.tr(context: context),
             'tiezt'.tr(context: context),
             'heil'.tr(context: context),

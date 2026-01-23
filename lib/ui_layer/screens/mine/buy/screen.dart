@@ -62,7 +62,7 @@ class _MineBuyScreenState extends State<MineBuyScreen> {
     final openLive = homeConfigNotifier.config.openLive == 1 ? true : false;
 
     final titles = <String>[
-      'shp'.tr(context: context),
+      'csp'.tr(context: context),
       'dsp'.tr(context: context),
       'tiezt'.tr(context: context),
       'heil'.tr(context: context), // 黑料
