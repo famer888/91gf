@@ -73,7 +73,6 @@ class _BlackScreenState extends State<BlackScreen> with TickerProviderStateMixin
     required int limit,
   }) async {
     final result = await _domain.getBlackList(mid: mid, page: page, limit: limit);
-    CommonUtils.log('获取黑料列表数据 $result');
     if (result.status == 1) {
       if (result.data?.banners case final data? when data.isNotEmpty) {
         _bannersNotifier.value = data;
@@ -90,7 +89,6 @@ class _BlackScreenState extends State<BlackScreen> with TickerProviderStateMixin
 
   Future<void> _getBlackNotice() async {
     final res = await _domain.getBlackNotices();
-    CommonUtils.log('获取黑料公告数据 $res');
     if (res.status == 1) {
       if (res.data case final data? when data.isNotEmpty) {
         _blackListNoticeNotifier.value = data;

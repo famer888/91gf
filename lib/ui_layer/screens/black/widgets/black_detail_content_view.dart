@@ -2,8 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jygf/domain/model/banner_model.dart';
 import 'package:jygf/domain/model/home_data_model.dart';
 import 'package:jygf/domain/remote_domain/domains/black_domain.dart';
+import 'package:jygf/report/ui_layer/report_general_banner.dart';
 import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
 import 'package:jygf/ui_layer/notifiers/home_config_notifier.dart';
 import 'package:jygf/ui_layer/notifiers/user_notifier.dart';
@@ -14,7 +16,6 @@ import 'package:jygf/ui_layer/screens/black/widgets/black_title.dart';
 import 'package:jygf/ui_layer/screens/black/widgets/html_body_widget.dart';
 import 'package:jygf/ui_layer/screens/black/widgets/icon_text_series_of_widget.dart';
 import 'package:jygf/ui_layer/screens/black/widgets/index_key.dart';
-import 'package:jygf/ui_layer/screens/common_widgets/general_apps_list_widget.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/post/content/comment_count.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/post/content/like_collect_share_area.dart';
@@ -52,8 +53,8 @@ class _BlackDetailContentViewState extends State<BlackDetailContentView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildTopAdsWidget(widget.data.topBanner),
           BlackTitleView(topicTitle: widget.data.cur!.title, viewCount: widget.data.cur!.viewNum, createdAt: widget.data.cur!.createdAt),
+          _buildTopAdsWidget(widget.data.topBanner),
           _buildHtmlContent(context),
           // PostContentView(content: widget.data.cur!.content, textStyle: MyTheme.white07_14),
           _buildTagsWidget(widget.data.cur!),
@@ -228,7 +229,28 @@ class _BlackDetailContentViewState extends State<BlackDetailContentView> {
 
   Widget _buildTopAdsWidget(List<Notice> topAds) {
     if (topAds.isEmpty) return const SizedBox.shrink();
-    return Padding(padding: EdgeInsets.only(top: MyTheme.pagePadding), child: GeneralAppsListVidget(apps: topAds));
+    final List<BannerModel> dataList = topAds
+        .map(
+          (e) => BannerModel(
+            id: e.id,
+            name: e.title,
+            title: e.title,
+            linkUrl: e.linkUrl ?? '',
+            resourceUrl: e.resourceUrl ?? '',
+            redirectType: e.redirectType ?? 0,
+            router: e.router ?? '',
+            reportId: e.reportId,
+            reportType: e.reportType,
+            urlStr: e.urlStr,
+            imgUrl: e.imgUrl,
+            adType: e.adType,
+            adSlotName: e.adSlotName,
+            advertiseCode: e.advertiseCode,
+            advertiseLocationCode: e.advertiseLocationCode,
+          ),
+        )
+        .toList();
+    return Padding(padding: EdgeInsets.only(top: 5.w, bottom: 10.w), child: ReportGeneralAppsListVidget(data: dataList));
   }
 
   Widget buildChildActionWidget({
