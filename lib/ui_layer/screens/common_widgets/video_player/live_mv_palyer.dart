@@ -305,6 +305,7 @@ class _LiveMvPlayerState extends State<LiveMvPlayer> with NVideoURLMinxin {
               Container(
                 height: 30.w,
                 margin: EdgeInsets.symmetric(horizontal: 20.w),
+                alignment: Alignment.center,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(23.w),
                   border: Border.all(
@@ -312,7 +313,9 @@ class _LiveMvPlayerState extends State<LiveMvPlayer> with NVideoURLMinxin {
                     // width: 0.5, // 设置边框宽度
                   ),
                 ),
-                child: Row(children: [
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
                   SizedBox(width: 20.w),
                   Expanded(
                     child: TextField(
