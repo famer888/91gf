@@ -73,11 +73,9 @@ class GameDetailContentView extends StatelessWidget {
           _TagsView(
             tagFullString: data.tags ?? '',
           ),
-          Center(
-            child: PostContentView(
-              content: 'xhjzc'.tr(),
-              textStyle: TextStyle(color: MyTheme.whiteColor, fontSize: 14.sp),
-            ),
+          PostContentView(
+            content: 'xhjzc'.tr(),
+            textStyle: TextStyle(color: MyTheme.whiteColor, fontSize: 14.sp),
           ),
           // Text(
           //   'xhjzc'.tr(),
@@ -586,15 +584,13 @@ class _LikeCollectShareAreaState extends State<_LikeCollectShareArea> {
       padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10.w),
       child: Center(
         child: SizedBox(
-          width: 185.w,
+          width: 200.w,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GameLikeButton(isLiked: widget.data.isLike == 1, likeNum: widget.data.likeFct ?? 0, onTap: _changeLike),
               GameCollectButton(isCollected: widget.data.isFavorite == 1, collectNum: widget.data.favoriteFct ?? 0, onTap: _changeCollect),
-              GameUnlockButton(
-                data: widget.data,
-              )
+              GameUnlockButton(data: widget.data)
             ],
           ),
         ),

@@ -87,6 +87,7 @@ class CardUserView extends StatelessWidget {
             onTap: () => context.read<UserNotifier>().changeUserFollow(aff),
           ),
         ),
+        SizedBox(width: 2.w),
       ],
     );
   }
