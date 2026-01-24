@@ -2,9 +2,14 @@ import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:jygf/domain/model/game/game_detail_model.dart';
 import 'package:jygf/domain/model/game/game_model.dart';
 import 'package:jygf/domain/remote_domain/domains/game.dart';
+import 'package:jygf/report/ui_layer/report_general_banner.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
+import 'package:jygf/ui_layer/screens/black/widgets/black_regular_dialog.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/dialog/my_dialog.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/game/detail/like_collect_unlock.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
@@ -19,10 +24,6 @@ import '../../common_widgets/post/content/comment_count.dart';
 import '../../common_widgets/post/content/content.dart';
 import '../../common_widgets/post/content/media.dart';
 import '../../theme.dart';
-import 'package:jygf/report/ui_layer/report_gesture_detector.dart';import 'package:jygf/report/ui_layer/report_general_banner.dart';
-
-
-
 
 class GameDetailContentView extends StatelessWidget {
   const GameDetailContentView({super.key, required this.fullData});
@@ -300,16 +301,139 @@ class _SourceAreaState extends State<_SourceArea> {
   late final config = context.read<HomeConfigNotifier>().config;
 
   Future<void> _buyGame() async {
-    MyToast.showLoading(text: 'dhz'.tr(context: context));
-    final result = await _domain.gameBuy(id: widget.data?.id ?? 0);
-    MyToast.closeAllLoading();
+    if (_userNotifier.member.money >= coins) {
+      // 支付确认弹窗
+      MyDialog.showDialog(
+        context: context,
+        child: BlackRegularDialog(
+          leftPadding: 0,
+          rightPadding: 0,
+          topPadding: 0,
+          bottomPadding: 0,
+          content: Container(
+            padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 20.w, bottom: 15.w),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(4.w)),
+              image: const DecorationImage(image: AssetImage(MyImagePaths.appMineRuleBg), fit: BoxFit.fill),
+            ),
+            child: Stack(
+              children: [
+                Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.center, children: [
+                  Text('wxts'.tr(context: context), style: MyTheme.white255_13_M.s18),
+                  SizedBox(height: 28.w),
+                  Text('xyzfxjb'.tr(context: context, namedArgs: {'x': '$coins'}), style: MyTheme.white255_13.s14.w400),
+                  SizedBox(height: 40.w),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ReportGestureDetector(
+                        onTap: () {
+                          context.pop();
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 28.w, vertical: 10.w),
+                          decoration: BoxDecoration(
+                            color: const Color.fromRGBO(49, 21, 47, 1),
+                            borderRadius: BorderRadius.all(Radius.circular(25.w)),
+                          ),
+                          child: Text(tr('qx'), style: MyTheme.white255_13.s14.w400),
+                        ),
+                      ),
+                      SizedBox(width: 42.w),
+                      ReportGestureDetector(
+                        onTap: () async {
+                          context.pop();
+                          MyToast.showLoading(text: 'dhz'.tr(context: context));
+                          final result = await _domain.gameBuy(id: widget.data?.id ?? 0);
+                          MyToast.closeAllLoading();
 
-    if (result.status != 0) {
-      // widget.data?.payTip = result.data['url'] ?? '';
-      linkNotifier.value = List.from(result.data['url']).map((e) => GameDetailUrlModel.fromJson(e)).toList();
-      _userNotifier.setMoney(money: _userNotifier.member.money - coins);
+                          if (result.status != 0) {
+                            // widget.data?.payTip = result.data['url'] ?? '';
+                            linkNotifier.value = List.from(result.data['url']).map((e) => GameDetailUrlModel.fromJson(e)).toList();
+                            _userNotifier.setMoney(money: _userNotifier.member.money - coins);
+                          } else {
+                            MyToast.showText(text: result.msg ?? '');
+                          }
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 28.w, vertical: 10.w),
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(colors: MyTheme.gradient_90_114_colors),
+                            borderRadius: BorderRadius.all(Radius.circular(25.w)),
+                          ),
+                          child: Text(tr('qd'), style: MyTheme.white255_13.s14.w400),
+                        ),
+                      ),
+                    ],
+                  ),
+                ]),
+              ],
+            ),
+          ),
+        ),
+      );
     } else {
-      MyToast.showText(text: result.msg ?? '');
+      // 充值、VIP弹窗
+      MyDialog.showDialog(
+        context: context,
+        child: BlackRegularDialog(
+          leftPadding: 0,
+          rightPadding: 0,
+          topPadding: 0,
+          bottomPadding: 0,
+          content: Container(
+            padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 20.w, bottom: 15.w),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(4.w)),
+              image: const DecorationImage(image: AssetImage(MyImagePaths.appMineRuleBg), fit: BoxFit.fill),
+            ),
+            child: Stack(
+              children: [
+                Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.center, children: [
+                  Text('wxts'.tr(context: context), style: MyTheme.white255_13_M.s18),
+                  SizedBox(height: 28.w),
+                  Text('yebzjssb'.tr(context: context), style: MyTheme.white255_13.s14.w400),
+                  SizedBox(height: 40.w),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ReportGestureDetector(
+                        onTap: () {
+                          context.pop();
+                          const VipCenterRoute().push(context);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 28.w, vertical: 10.w),
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(colors: MyTheme.gradient_90_118_colors_blue),
+                            borderRadius: BorderRadius.all(Radius.circular(25.w)),
+                          ),
+                          child: Text(tr('cv'), style: MyTheme.white255_13.s14.w400),
+                        ),
+                      ),
+                      SizedBox(width: 42.w),
+                      ReportGestureDetector(
+                        onTap: () async {
+                          context.pop();
+                          const CoinRechargeRoute().push(context);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 28.w, vertical: 10.w),
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(colors: MyTheme.gradient_90_114_colors),
+                            borderRadius: BorderRadius.all(Radius.circular(25.w)),
+                          ),
+                          child: Text(tr('qcz1'), style: MyTheme.white255_13.s14.w400),
+                        ),
+                      ),
+                    ],
+                  ),
+                ]),
+              ],
+            ),
+          ),
+        ),
+      );
     }
   }
 
