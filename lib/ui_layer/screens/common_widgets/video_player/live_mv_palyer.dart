@@ -335,7 +335,7 @@ class _LiveMvPlayerState extends State<LiveMvPlayer> with NVideoURLMinxin {
                         hintText: tr('srdsje'),
                         hintStyle: const TextStyle(
                             color: MyTheme.grayColor180,
-                            fontSize: 22,
+                            fontSize: 16,
                             overflow: TextOverflow.ellipsis,
                             decoration: TextDecoration.none),
                         contentPadding: EdgeInsets.zero,
