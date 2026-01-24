@@ -372,8 +372,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen>
                                     ),
                                   ),
                                   SizedBox(height: 15.w),
-                                 // '${data.contact}'.isEmpty
-                                     member.chatPrivilege != 1 ? Column(children: [
+                                     member.chatPrivilege != 1 && '${data.contact}'.isEmpty ? Column(children: [
                                           CommonUtils.dashedBorder(
                                             color: MyTheme.primaryColor,
                                             borderRadius: BorderRadius.circular(8.w),
