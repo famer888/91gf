@@ -23,7 +23,6 @@ import '../../../image_paths.dart';
 import '../../../theme.dart';
 import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
 
-
 class ChatMessageScreen extends StatefulWidget {
   const ChatMessageScreen({
     super.key,
@@ -71,13 +70,10 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
       final uploadImageRes = await _homeConfigNotifier.uploadImage(xFile);
 
       if (uploadImageRes != null && uploadImageRes['code'] == 1) {
-        final url =
-            "${_homeConfigNotifier.config.imgBase}${uploadImageRes['msg']}";
+        final url = "${_homeConfigNotifier.config.imgBase}${uploadImageRes['msg']}";
         final localImage = Image.network(url);
 
-        localImage.image
-            .resolve(const ImageConfiguration())
-            .addListener(ImageStreamListener((info, _) async {
+        localImage.image.resolve(const ImageConfiguration()).addListener(ImageStreamListener((info, _) async {
           String newUrl = '$url??${info.image.width}_${info.image.height}';
           //发送图片
           // context.read<ChatNotifier>().sendMessage(
@@ -105,21 +101,16 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
     final res = await domain.imSend(type: msgType);
     MyToast.closeAllLoading();
     if (res.isValid) {
-
       final imValue = (userNotifier.member.imValue ?? 0) - 1;
-      if (imValue >= 0) {//更新用户剩余次数
+      if (imValue >= 0) {
+        //更新用户剩余次数
         userNotifier.setIMValue(imValue: imValue);
-      } else {//免费次数不够直接扣金币，刷新用户金币余额
-        userNotifier.setMoney(
-            money: userNotifier.member.money - (_homeConfigNotifier.config.imCoins ?? 0)); //更新用户的金币数量
+      } else {
+        //免费次数不够直接扣金币，刷新用户金币余额
+        userNotifier.setMoney(money: userNotifier.member.money - (_homeConfigNotifier.config.imCoins ?? 0)); //更新用户的金币数量
       }
 
-      await chatNotifier.sendMessage(
-          ChatUser(
-              nickname: widget.nickName,
-              avatar: widget.thumb,
-              uuid: widget.toUuid),
-          content, msgType);
+      await chatNotifier.sendMessage(ChatUser(nickname: widget.nickName, avatar: widget.thumb, uuid: widget.toUuid), content, msgType);
     } else {
       if (res.msg != '您的金币不足') {
         MyToast.showText(text: res.msg ?? '');
@@ -144,7 +135,7 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
       //       'txt',
       //     );
       await imsend(text, 'txt');
-    }else {
+    } else {
       MyToast.showText(text: _homeConfigNotifier.config.imTip ?? 'runr'.tr(context: context));
     }
   }
@@ -162,8 +153,7 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
             textAlign: TextAlign.center,
             text: TextSpan(children: [
               TextSpan(
-                text:
-                '${tr('ndyebz')}\n${tr('syjb')}',
+                text: '${tr('ndyebz')}\n${tr('syjb')}',
                 style: MyTheme.white255_15,
               ),
               TextSpan(
@@ -176,7 +166,8 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
           context.pop();
           const CoinRechargeRoute().push(context);
         },
-        cancelOnTap: () {//取消
+        cancelOnTap: () {
+          //取消
           context.pop();
         },
       ),
@@ -200,8 +191,7 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                Text(Uri.decodeComponent(widget.nickName),
-                    style: MyTheme.white18mudium)
+                Text(Uri.decodeComponent(widget.nickName), style: MyTheme.white18mudium)
               ],
             ),
           ),
@@ -214,9 +204,7 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
               selector: (_, notifier) {
                 try {
                   final target = notifier.chats.firstWhere(
-                    (element) =>
-                        element.id ==
-                        '${notifier.member.uuid}_${widget.toUuid}',
+                    (element) => element.id == '${notifier.member.uuid}_${widget.toUuid}',
                   );
                   return target.list.reversed.toList();
                 } catch (_) {}
@@ -227,17 +215,12 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
                     ? const PageEmptyDataView()
                     : ListView.builder(
                         itemCount: data.length,
-                        reverse: true,
+                        reverse: false,
                         shrinkWrap: true,
                         physics: const ScrollPhysics(),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: MyTheme.pagePadding,
-                          vertical: 30.w,
-                        ),
+                        padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding, vertical: 30.w),
                         itemBuilder: (BuildContext context, int index) =>
-                            data[index].type == 0
-                                ? _UserBubble(item: data[index])
-                                : _TargetBubble(item: data[index]),
+                            data[index].type == 0 ? _UserBubble(item: data[index]) : _TargetBubble(item: data[index]),
                       );
               },
             )),
@@ -245,70 +228,66 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
               padding: EdgeInsets.only(left: MyTheme.pagePadding),
               color: const Color.fromRGBO(17, 17, 39, 1),
               child: SizedBox(
-                  height: 50.w,
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 310.w,
-                        height: 36.w,
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.03),
-                          borderRadius: BorderRadius.circular(18.w),
-                        ),
-                        padding: EdgeInsets.symmetric(horizontal: 16.w),
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 17.5.w,
-                              height: 17.w,
-                              child: ReportGestureDetector(
-                                onTap: _imagePickerAssets,
-                                child: MyImage.asset(
-                                  MyImagePaths.appCustomerServiceSelectImg,
-                                  width: 17.5.w,
-                                  height: 17.w,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 5.w),
-                                child: TextField(
-                                  focusNode: focusNode,
-                                  autofocus: true,
-                                  controller: textEditingController,
-                                  style: MyTheme.white255_14,
-                                  cursorColor: MyTheme.cyanColor00edfd,
-                                  textInputAction: TextInputAction.done,
-                                  decoration: InputDecoration(
-                                    hintText: _homeConfigNotifier.config.imTip ?? 'srhf'.tr(context: context),
-                                    hintStyle: MyTheme.gray180_15_M,
-                                    contentPadding: EdgeInsets.zero,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                height: 50.w,
+                child: Row(
+                  children: [
+                    Container(
+                      width: 310.w,
+                      height: 36.w,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.03),
+                        borderRadius: BorderRadius.circular(18.w),
                       ),
-                      SizedBox(width: 7.w),
-                      ReportGestureDetector(
-                        onTap: _sendMsg,
-                        child: SizedBox(
-                          width: 44.w,
-                          height: 44.w,
-                          child: const Center(
-                            child: Icon(
-                              Icons.send_sharp,
-                              size: 30,
-                              color: MyTheme.jellyCyanColor103224185,
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 17.5.w,
+                            height: 17.w,
+                            child: ReportGestureDetector(
+                              onTap: _imagePickerAssets,
+                              child: MyImage.asset(
+                                MyImagePaths.appCustomerServiceSelectImg,
+                                width: 17.5.w,
+                                height: 17.w,
+                              ),
                             ),
                           ),
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 5.w),
+                              child: TextField(
+                                focusNode: focusNode,
+                                autofocus: true,
+                                controller: textEditingController,
+                                style: MyTheme.white255_14,
+                                cursorColor: MyTheme.cyanColor00edfd,
+                                textInputAction: TextInputAction.done,
+                                decoration: InputDecoration(
+                                  hintText: _homeConfigNotifier.config.imTip ?? 'srhf'.tr(context: context),
+                                  hintStyle: MyTheme.gray180_15_M,
+                                  contentPadding: EdgeInsets.zero,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 7.w),
+                    ReportGestureDetector(
+                      onTap: _sendMsg,
+                      child: SizedBox(
+                        width: 34.w,
+                        height: 34.w,
+                        child: Center(
+                          child: MyImage.asset(MyImagePaths.appCommentSend, width: 34.w, height: 34.w),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
+              ),
             ),
           ],
         ),
@@ -324,8 +303,7 @@ class _UserBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DateTime targetDate =
-        DateTime.fromMillisecondsSinceEpoch(int.parse(item.time) * 1000);
+    final DateTime targetDate = DateTime.fromMillisecondsSinceEpoch(int.parse(item.time) * 1000);
     final String formattedDate = DateFormat('MM-dd HH:mm').format(targetDate);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -345,13 +323,15 @@ class _UserBubble extends StatelessWidget {
               Flexible(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: const Color.fromRGBO(21, 28, 40, 1),
-                    borderRadius: BorderRadius.circular(5),
+                    color: const Color.fromRGBO(52, 13, 74, 1),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8.w),
+                      topRight: Radius.circular(0.w),
+                      bottomLeft: Radius.circular(8.w),
+                      bottomRight: Radius.circular(8.w),
+                    ),
                   ),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 15.5.w,
-                    vertical: 14.5.w,
-                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.w),
                   child: item.content_type == 0
                       ? _RichMessage(msg: item.content, status: 0)
                       : SizedBox(
@@ -381,8 +361,7 @@ class _TargetBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DateTime targetDate =
-        DateTime.fromMillisecondsSinceEpoch(int.parse(item.time) * 1000);
+    final DateTime targetDate = DateTime.fromMillisecondsSinceEpoch(int.parse(item.time) * 1000);
     final String formattedDate = DateFormat('MM-dd HH:mm').format(targetDate);
 
     return Column(
@@ -407,11 +386,15 @@ class _TargetBubble extends StatelessWidget {
               Flexible(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: const Color.fromRGBO(21, 28, 40, 1),
-                    borderRadius: BorderRadius.circular(5),
+                    color: const Color.fromRGBO(52, 13, 74, 1),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(0.w),
+                      topRight: Radius.circular(8.w),
+                      bottomLeft: Radius.circular(8.w),
+                      bottomRight: Radius.circular(8.w),
+                    ),
                   ),
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 15.5.w, vertical: 14.5.w),
+                  padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.w),
                   child: item.content_type == 0
                       ? _RichMessage(msg: item.content, status: 0)
                       : SizedBox(
@@ -453,9 +436,7 @@ class _RichMessage extends StatelessWidget {
     for (var i = 0; i < pathList.length; i++) {
       if (regExp.hasMatch(pathList[i])) {
         final subString = regExp.stringMatch(pathList[i]);
-        var newMsg = subString == null
-            ? pathList[i]
-            : pathList[i].replaceAll(subString, '[wwsj]$subString[wwsj]');
+        var newMsg = subString == null ? pathList[i] : pathList[i].replaceAll(subString, '[wwsj]$subString[wwsj]');
         textList.addAll(newMsg.split('[wwsj]'));
       } else {
         textList.add(pathList[i]);
@@ -476,9 +457,7 @@ class _RichMessage extends StatelessWidget {
                             : status == 1
                                 ? const Color.fromRGBO(180, 180, 180, 1)
                                 : const Color(0xff1967D2),
-                        decoration: regExp.hasMatch(textList[e])
-                            ? TextDecoration.underline
-                            : null,
+                        decoration: regExp.hasMatch(textList[e]) ? TextDecoration.underline : null,
                         height: 1.7,
                       ),
                       recognizer: TapGestureRecognizer()
