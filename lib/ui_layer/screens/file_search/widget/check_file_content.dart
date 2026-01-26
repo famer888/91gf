@@ -2,10 +2,12 @@ import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:jygf/domain/model/banner_model.dart';
 import 'package:jygf/domain/model/user_model.dart';
 import 'package:jygf/ui_layer/notifiers/home_config_notifier.dart';
 import 'package:jygf/ui_layer/notifiers/user_notifier.dart';
+import 'package:jygf/ui_layer/router/router.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/follow_button.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/file_search/model/check_detail_model.dart';
@@ -134,7 +136,7 @@ class _RecommendWidgetState extends State<_RecommendWidget> {
 
     return ReportGestureDetector(
       onTap: () {
-        context.pop();
+        AppRouter.router.pop();
         CheckFileDetailRoute('${recommend.id}').push(context);
       },
       child: ClipRRect(
