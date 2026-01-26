@@ -7,13 +7,8 @@ import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
 
-
 class GameLikeButton extends StatelessWidget {
-  const GameLikeButton(
-      {super.key,
-      required this.isLiked,
-      required this.likeNum,
-      required this.onTap});
+  const GameLikeButton({super.key, required this.isLiked, required this.likeNum, required this.onTap});
 
   final bool isLiked;
   final int likeNum;
@@ -47,11 +42,7 @@ class GameLikeButton extends StatelessWidget {
 }
 
 class GameCollectButton extends StatelessWidget {
-  const GameCollectButton(
-      {super.key,
-      required this.isCollected,
-      required this.collectNum,
-      required this.onTap});
+  const GameCollectButton({super.key, required this.isCollected, required this.collectNum, required this.onTap});
 
   final bool isCollected;
   final int collectNum;
@@ -69,9 +60,7 @@ class GameCollectButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           MyImage.asset(
-            isCollected
-                ? MyImagePaths.appGameCollectOn
-                : MyImagePaths.appGameCollectOff,
+            isCollected ? MyImagePaths.appGameCollectOn : MyImagePaths.appGameCollectOff,
             width: 25.w,
             height: 25.w,
           ),
@@ -87,9 +76,10 @@ class GameCollectButton extends StatelessWidget {
 }
 
 class GameUnlockButton extends StatelessWidget {
-  const GameUnlockButton({super.key, required this.data});
+  const GameUnlockButton({super.key, required this.data, required this.payFctNotifier});
 
   final GameDetailInfoModel data;
+  final ValueNotifier<int> payFctNotifier;
 
   @override
   Widget build(BuildContext context) {
@@ -102,10 +92,11 @@ class GameUnlockButton extends StatelessWidget {
           height: 25.w,
         ),
         SizedBox(width: 2.w),
-        Text(
-          '${'js'.tr(context: context)} ${data.payFct ?? 0}',
-          style: MyTheme.gray190_12,
-        ),
+        ValueListenableBuilder(
+            valueListenable: payFctNotifier,
+            builder: (_, payFct, __) {
+              return Text('${'js'.tr(context: context)} $payFct', style: MyTheme.gray190_12);
+            }),
       ],
     );
   }

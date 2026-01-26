@@ -26,9 +26,10 @@ import '../../common_widgets/post/content/media.dart';
 import '../../theme.dart';
 
 class GameDetailContentView extends StatelessWidget {
-  const GameDetailContentView({super.key, required this.fullData});
+  const GameDetailContentView({super.key, required this.fullData, required this.payFctNotifier, });
 
   final GameDetailModel fullData;
+  final ValueNotifier<int> payFctNotifier;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +64,7 @@ class GameDetailContentView extends StatelessWidget {
 
           Padding(
             padding: EdgeInsets.symmetric(vertical: 10.w),
-            child: _SourceArea(data: data),
+            child: _SourceArea(data: data, payFctNotifier: payFctNotifier),
           ),
 
           PostContentView(
@@ -82,7 +83,7 @@ class GameDetailContentView extends StatelessWidget {
           //   'xhjzc'.tr(),
           //   style: MyTheme.white255_14,
           // ),
-          _LikeCollectShareArea(data: data),
+          _LikeCollectShareArea(data: data, payFctNotifier: payFctNotifier),
           (fullData.banner ?? []).isEmpty
               ? const SizedBox.shrink()
               : Padding(
@@ -278,9 +279,10 @@ class _PrevAndNextView extends StatelessWidget {
 }
 
 class _SourceArea extends StatefulWidget {
-  const _SourceArea({this.data});
+  const _SourceArea({this.data, this.payFctNotifier});
 
   final GameDetailInfoModel? data;
+  final ValueNotifier<int>? payFctNotifier;
 
   @override
   State<_SourceArea> createState() => _SourceAreaState();
@@ -348,6 +350,7 @@ class _SourceAreaState extends State<_SourceArea> {
                           MyToast.closeAllLoading();
 
                           if (result.status != 0) {
+                            widget.payFctNotifier?.value = (widget.payFctNotifier?.value ?? 0) + coins;
                             // widget.data?.payTip = result.data['url'] ?? '';
                             linkNotifier.value = List.from(result.data['url']).map((e) => GameDetailUrlModel.fromJson(e)).toList();
                             _userNotifier.setMoney(money: _userNotifier.member.money - coins);
@@ -627,9 +630,13 @@ class _SourceAreaState extends State<_SourceArea> {
 }
 
 class _LikeCollectShareArea extends StatefulWidget {
-  const _LikeCollectShareArea({required this.data});
+  const _LikeCollectShareArea({
+    required this.data,
+    required this.payFctNotifier,
+  });
 
   final GameDetailInfoModel data;
+  final ValueNotifier<int> payFctNotifier;
 
   @override
   State<_LikeCollectShareArea> createState() => _LikeCollectShareAreaState();
@@ -714,7 +721,7 @@ class _LikeCollectShareAreaState extends State<_LikeCollectShareArea> {
             children: [
               GameLikeButton(isLiked: widget.data.isLike == 1, likeNum: widget.data.likeFct ?? 0, onTap: _changeLike),
               GameCollectButton(isCollected: widget.data.isFavorite == 1, collectNum: widget.data.favoriteFct ?? 0, onTap: _changeCollect),
-              GameUnlockButton(data: widget.data)
+              GameUnlockButton(data: widget.data, payFctNotifier: widget.payFctNotifier)
             ],
           ),
         ),

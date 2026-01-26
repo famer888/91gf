@@ -21,7 +21,6 @@ import 'package:jygf/ui_layer/screens/common_widgets/post/replies_sheet_view.dar
 import 'package:jygf/ui_layer/screens/common_widgets/screen_background.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/status/loading.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/status/network_error.dart';
-import 'package:jygf/ui_layer/screens/community/detail/content.dart';
 import 'package:jygf/ui_layer/screens/file_search/model/check_detail_model.dart';
 import 'package:jygf/ui_layer/screens/file_search/widget/check_file_content.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
@@ -47,7 +46,7 @@ class _CheckFileDetailScreenState extends State<CheckFileDetailScreen> with Widg
   /// 文本框控制器
   final textEditingController = TextEditingController();
 
-  ValueNotifier<List<RecommendModel>> _recommendNotifier = ValueNotifier([]);
+  final ValueNotifier<List<RecommendModel>> _recommendNotifier = ValueNotifier([]);
   /// 文本框焦点
   final inputFocusNode = FocusNode();
 

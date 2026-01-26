@@ -75,6 +75,7 @@ class _BodyState extends State<_Body> with WidgetsBindingObserver {
   late final _domain = context.read<GameDomain>();
 
   AsyncValue<GameDetailModel> _asyncValue = const AsyncInit();
+  final ValueNotifier<int> _payFctNotifier = ValueNotifier(0);
 
   /// 文本框控制器
   final textEditingController = TextEditingController();
@@ -108,6 +109,7 @@ class _BodyState extends State<_Body> with WidgetsBindingObserver {
 
   @override
   void dispose() {
+    _payFctNotifier.dispose();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -133,6 +135,7 @@ class _BodyState extends State<_Body> with WidgetsBindingObserver {
     final result = await _domain.gameDetail(id: widget.id);
 
     if (result.data case final data?) {
+      _payFctNotifier.value = data.detail.payFct ?? 0;
       // result.data
       // GameDetailModel model = GameDetailModel.fromJson(result.data);
       widget.whenLoadedInfo?.call(data);
@@ -207,7 +210,7 @@ class _BodyState extends State<_Body> with WidgetsBindingObserver {
 
               Expanded(
                 child: MyListView.list(
-                  header: GameDetailContentView(fullData: data),
+                  header: GameDetailContentView(fullData: data, payFctNotifier: _payFctNotifier),
                   padding: EdgeInsets.only(left: MyTheme.pagePadding, right: MyTheme.pagePadding, bottom: 60.w),
                   itemBuilder: (context, item, index) => CommentTile(data: item),
                   onFetchingMore: (currentPage, pageSize) => _getData(currentPage: currentPage, limit: pageSize),

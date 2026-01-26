@@ -19,7 +19,6 @@ class CheckFileItem extends StatelessWidget {
     Widget current = (item.medias == null || item.medias!.isEmpty) ? const SizedBox.shrink() : Stack(
       children: [
         MyImage.network(item.medias?.first.cover ?? '', width: itemWidth, height: 120.w, borderRadius: 6.w),
-        // Positioned(top: 0, right: 0, child: _buildSubscripteWidget()),
         Positioned(top: 0, left: 0, child: _buildBlackTypeWidget()),
       ],
     );
