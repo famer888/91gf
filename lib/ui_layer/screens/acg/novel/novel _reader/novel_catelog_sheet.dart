@@ -24,7 +24,7 @@ class _NovelCatelogSheetState extends State<NovelCatelogSheet> {
   bool isDes = true; //默认正序
   List<NovelChaptersModel> chapters = [];
   late final cacheDomain = context.read<CacheDomain>();
-  int lastReadChapter = 0;
+  int lastReadChapter = -1;
 
   @override
   void initState() {
@@ -32,7 +32,15 @@ class _NovelCatelogSheetState extends State<NovelCatelogSheet> {
     super.initState();
 
     chapters = widget.data.chapters ?? [];
+    _getLastReadChapter();
 
+  }
+
+  Future<void> _getLastReadChapter() async {
+    //获取缓存阅读到的章节
+    lastReadChapter = await cacheDomain.readNovelReaderChapterIndex(
+        novelIdkey: '${widget.data.id}');
+    setState(() {});
   }
 
   @override
@@ -124,9 +132,7 @@ class _NovelCatelogSheetState extends State<NovelCatelogSheet> {
                     Navigator.pop(context);
                     widget.onTap?.call(_index);
                   },
-                  isLocation: (isLocation == false && lastReadChapter == -1 && (isDes ? index == 0 : index == chapters.length - 1))
-                      ? true
-                      : isLocation);
+                  isLocation: isLocation);
             }
           ),
         ),

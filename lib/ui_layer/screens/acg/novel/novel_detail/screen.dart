@@ -261,8 +261,8 @@ class _HeaderState extends State<_Header> {
                               ? MyImagePaths.appThumbUpOnIcon
                               : MyImagePaths.appThumbUpOffIcon,
                           iconColor: widget.data.detail?.isLike == 1 ? MyTheme.primaryColor : null,
-                          width: 21.w,
-                          height: 21.w,),
+                          width: 18.w,
+                          height: 18.w,),
                       SizedBox(width: 3.w),
                       Text(
                         '${CommonUtils.renderEnFixedNumber(widget.data.detail?.likeCt ?? 0)}',
@@ -279,8 +279,8 @@ class _HeaderState extends State<_Header> {
                               ? MyImagePaths.appGameCollectOn
                               : MyImagePaths.appCollectOff,
                           iconColor: widget.data.detail?.isFavorite == 1 ? MyTheme.primaryColor : null,
-                          width: 18.w,
-                          height: 18.w),
+                          width: 20.w,
+                          height: 20.w),
                       SizedBox(width: 3.w),
                       Text(
                         '${CommonUtils.renderEnFixedNumber(widget.data.detail?.favoriteFct ?? 0)}',
