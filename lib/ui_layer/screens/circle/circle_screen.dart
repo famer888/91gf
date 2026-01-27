@@ -127,7 +127,7 @@ class _CircleCommunityScreenState extends State<CircleCommunityScreen> {
       child:  Scaffold(
         appBar:  MyAppBar(
           title: 'yuep'.tr(),
-           rightWidget:context.read<UserNotifier>().member.vipLevel.isVip() ? ReportGestureDetector(
+           rightWidget:context.read<UserNotifier>().member.circlePrivilege == 1 || context.read<UserNotifier>().member.agent == 1 ? ReportGestureDetector(
           onTap: () {
             _showIssueSheet(context);
           },
