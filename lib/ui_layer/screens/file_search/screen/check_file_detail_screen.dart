@@ -5,10 +5,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jygf/domain/api_validator.dart';
 import 'package:jygf/domain/async_value.dart';
-import 'package:jygf/domain/enum.dart';
 import 'package:jygf/domain/model/review_data_model.dart';
 import 'package:jygf/domain/model/topic_detail_model.dart';
 import 'package:jygf/domain/remote_domain/domains/community.dart';
+import 'package:jygf/domain/remote_domain/domains/user.dart';
 import 'package:jygf/domain/type_def.dart';
 import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_app_bar.dart';
@@ -40,6 +40,7 @@ class CheckFileDetailScreen extends StatefulWidget {
 
 class _CheckFileDetailScreenState extends State<CheckFileDetailScreen> with WidgetsBindingObserver {
   late final _domain = context.read<CommunityDomain>();
+  late final _userDomain = context.read<UserDomain>();
 
   AsyncValue<TopicDetail> _asyncValue = const AsyncInit();
 
@@ -145,8 +146,8 @@ class _CheckFileDetailScreenState extends State<CheckFileDetailScreen> with Widg
     }
   }
 
-  Future<bool> _changeCommentLike(String id) async {
-    final res = await _domain.communityTopicLike(type: MyLikeType.comment, id: id);
+  Future<bool> _changeCommentLike(int id) async {
+    final res = await _userDomain.userCommentLike(type: 5, id: id);
     return res.isValid;
   }
 
@@ -227,7 +228,7 @@ class _CheckFileDetailScreenState extends State<CheckFileDetailScreen> with Widg
                             inputFocusNode.requestFocus();
                           },
                           onMoreCommentTap: () => _showMoreReview(item),
-                          changeLike: () => _changeCommentLike('${item.id}'),
+                          changeLike: () => _changeCommentLike(item.id ?? 0),
                         );
                       },
                       onFetchingMore: (currentPage, pageSize) => getReviewData(currentPage: currentPage, pageSize: pageSize),

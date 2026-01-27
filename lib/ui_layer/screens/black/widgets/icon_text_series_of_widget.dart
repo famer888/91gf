@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jygf/domain/domain.dart';
+import 'package:jygf/domain/type_def.dart';
 import 'package:jygf/ui_layer/router/routes.dart';
 import 'package:jygf/ui_layer/screens/black/widgets/index_key.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
@@ -272,6 +274,7 @@ class LikeIconTextWidget extends StatefulWidget {
 }
 
 class _LikeIconTextWidgetState extends State<LikeIconTextWidget> {
+  late final _domain = context.read<DynamicDomain>();
   late final _blockDomain = context.read<BlackDomain>();
   bool isLiked = false;
   int likeCount = 0;
@@ -292,6 +295,10 @@ class _LikeIconTextWidgetState extends State<LikeIconTextWidget> {
 
   void onTap() async {
     final id = widget.params['id'] ?? 0;
+    // final likeModel = await _domain.getConstructByApiLink(apiLink: widget.urlPath, params: {
+    //   'type': 8,
+    //   'id': id,
+    // });
     final likeModel = await _blockDomain.getBlackLike(id: id);
     if (likeModel.status == 1) {
       isLiked = !isLiked;
@@ -408,6 +415,7 @@ class CletIconTextWidget extends StatefulWidget {
 
 class _CletIconTextWidgetState extends State<CletIconTextWidget> {
   late final _blockDomain = context.read<BlackDomain>();
+  late final _domain = context.read<DynamicDomain>();
   bool isCollected = false;
   int collectCount = 0;
 
@@ -427,6 +435,10 @@ class _CletIconTextWidgetState extends State<CletIconTextWidget> {
 
   void onTap() async {
     final postId = widget.params['id'];
+    // final result = await _domain.getConstructByApiLink(apiLink: widget.urlPath, params: {
+    //   'type': 24,
+    //   'id': postId,
+    // });
     final result = await _blockDomain.getBlackCollect(id: postId);
     if (result.status == 1) {
       isCollected = !isCollected;

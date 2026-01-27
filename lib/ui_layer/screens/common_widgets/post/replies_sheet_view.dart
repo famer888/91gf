@@ -16,7 +16,7 @@ import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
 
 
 typedef CommentsAsyncGetter = AsyncResult<List<ReviewData>> Function(int, int);
-typedef LikeAsyncSetter = Future<bool> Function(String id);
+typedef LikeAsyncSetter = Future<bool> Function(int id);
 
 class RepliesSheetView extends StatefulWidget {
   const RepliesSheetView({
@@ -111,7 +111,7 @@ class _RepliesSheetViewState extends State<RepliesSheetView> {
                   child: MyListView.list(
                     itemBuilder: (context, item, index) => SheetReplyView(
                       commentData: item,
-                      changeLike: () => widget.onLikeChange('${item.id}'),
+                      changeLike: () => widget.onLikeChange(item.id ?? 0),
                     ),
                     onFetchingMore: (currentPage, pageSize) => getComments(
                         currentPage: currentPage, pageSize: pageSize),

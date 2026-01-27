@@ -10,7 +10,6 @@ import 'package:provider/provider.dart';
 import '../../../../domain/api_validator.dart';
 import '../../../../domain/async_value.dart';
 import '../../../../domain/domain.dart';
-import '../../../../domain/enum.dart';
 import '../../../../domain/model/review_data_model.dart';
 import '../../../../domain/model/topic_detail_model.dart';
 import '../../../../domain/model/user_model.dart';
@@ -41,6 +40,7 @@ class CommunityPostDetailScreen extends StatefulWidget {
 
 class _CommunityPostDetailScreenState extends State<CommunityPostDetailScreen> with WidgetsBindingObserver {
   late final _domain = context.read<CommunityDomain>();
+  late final _userDomain = context.read<UserDomain>();
 
   AsyncValue<TopicDetail> _asyncValue = const AsyncInit();
 
@@ -154,8 +154,8 @@ class _CommunityPostDetailScreenState extends State<CommunityPostDetailScreen> w
     }
   }
 
-  Future<bool> _changeCommentLike(String id) async {
-    final res = await _domain.communityTopicLike(type: MyLikeType.comment, id: id);
+  Future<bool> _changeCommentLike(int id) async {
+    final res = await _userDomain.userCommentLike(type: 5, id: id);
     return res.isValid;
   }
 
@@ -236,7 +236,7 @@ class _CommunityPostDetailScreenState extends State<CommunityPostDetailScreen> w
                             inputFocusNode.requestFocus();
                           },
                           onMoreCommentTap: () => _showMoreReview(item),
-                          changeLike: () => _changeCommentLike('${item.id}'),
+                          changeLike: () => _changeCommentLike(item.id ?? 0),
                         );
                       },
                       onFetchingMore: (currentPage, pageSize) => getReviewData(currentPage: currentPage, pageSize: pageSize),

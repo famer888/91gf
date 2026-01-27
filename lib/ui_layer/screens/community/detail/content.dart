@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jygf/domain/model/banner_model.dart';
 import 'package:jygf/domain/model/user_model.dart';
+import 'package:jygf/report/ui_layer/report_general_banner.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
 import 'package:jygf/ui_layer/notifiers/home_config_notifier.dart';
 import 'package:jygf/ui_layer/notifiers/user_notifier.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/follow_button.dart';
@@ -12,7 +14,6 @@ import 'package:provider/provider.dart';
 
 import '../../../../domain/api_validator.dart';
 import '../../../../domain/domain.dart';
-import '../../../../domain/enum.dart';
 import '../../../../domain/model/topic_detail_model.dart';
 import '../../../../domain/type_def.dart';
 import '../../../router/routes.dart';
@@ -24,7 +25,6 @@ import '../../common_widgets/post/content/like_collect_share_area.dart';
 import '../../common_widgets/post/content/media.dart';
 import '../../common_widgets/post/content/title.dart';
 import '../../theme.dart';
-import 'package:jygf/report/ui_layer/report_gesture_detector.dart';import 'package:jygf/report/ui_layer/report_general_banner.dart';
 
 
 
@@ -197,6 +197,7 @@ class _LikeCollectShareArea extends StatefulWidget {
 
 class _LikeCollectShareAreaState extends State<_LikeCollectShareArea> {
   late final _domain = context.read<CommunityDomain>();
+  late final _userDomain = context.read<UserDomain>();
   bool _isChangeLikeLoading = false;
   bool _isChangeCollectLoading = false;
 
@@ -205,7 +206,7 @@ class _LikeCollectShareAreaState extends State<_LikeCollectShareArea> {
     _isChangeLikeLoading = true;
 
     try {
-      final result = await _domain.communityTopicLike(id: '${widget.data.id}', type: MyLikeType.post);
+      final result = await _userDomain.userLike(type: 3, id: widget.data.id ?? 0);
       if (result.status == 1) {
         final oldValue = widget.data.isLike ?? 0;
         final newValue = oldValue == 0 ? 1 : 0;
