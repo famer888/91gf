@@ -350,7 +350,7 @@ class _SourceAreaState extends State<_SourceArea> {
                           MyToast.closeAllLoading();
 
                           if (result.status != 0) {
-                            widget.payFctNotifier?.value = (widget.payFctNotifier?.value ?? 0) + coins;
+                            widget.payFctNotifier?.value = (widget.payFctNotifier?.value ?? 0) + 1;
                             // widget.data?.payTip = result.data['url'] ?? '';
                             linkNotifier.value = List.from(result.data['url']).map((e) => GameDetailUrlModel.fromJson(e)).toList();
                             _userNotifier.setMoney(money: _userNotifier.member.money - coins);
