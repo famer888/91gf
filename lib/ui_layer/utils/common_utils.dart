@@ -194,11 +194,17 @@ class CommonUtils {
   }
 
   static launchUrl(String url) async {
-    late final userNotifier = AppGlobal.context!.read<UserNotifier>();
-    late Member member = userNotifier.member;
-    String webUrl = url
-        .replaceAll('{enc_aff}', member.encToken['{enc_aff}'] ?? '')
-        .replaceAll('%7Benc_aff%7D', member.encToken['%7Benc_aff%7D'] ?? '');
+    String webUrl = url;
+
+    try {
+      Member member = AppGlobal.context!.read<UserNotifier>().member;
+      webUrl = url
+          .replaceAll('{enc_aff}', member.encToken['{enc_aff}'] ?? '')
+          .replaceAll('%7Benc_aff%7D', member.encToken['%7Benc_aff%7D'] ?? '');
+    } catch (e) {
+      CommonUtils.log('$e');
+    }
+
     if (Uri.tryParse(webUrl) case final uri?) {
       try {
         await url_launcher.launchUrl(
