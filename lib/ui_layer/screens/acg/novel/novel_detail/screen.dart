@@ -60,8 +60,8 @@ class _NovelDetalScreenState extends State<NovelDetalScreen> {
 
     final res = await _domain.novelDetail(id: int.parse(widget.id));
     if (res.data case final data?) {
-      if ((data.detail?.likeCt == 0 && data.detail?.isLike == 1)) {
-        data.detail?.likeCt = 1;
+      if ((data.detail?.likeFct == 0 && data.detail?.isLike == 1)) {
+        data.detail?.likeFct = 1;
       }
       _asyncValue = AsyncData(data);
     } else {
@@ -265,7 +265,7 @@ class _HeaderState extends State<_Header> {
                           height: 18.w,),
                       SizedBox(width: 3.w),
                       Text(
-                        '${CommonUtils.renderEnFixedNumber(widget.data.detail?.likeCt ?? 0)}',
+                        '${CommonUtils.renderEnFixedNumber(widget.data.detail?.likeFct ?? 0)}',
                         style: MyTheme.white04_12,
                         maxLines: 1,
                       )
@@ -313,9 +313,9 @@ class _HeaderState extends State<_Header> {
       final newValue = oldValue == 0 ? 1 : 0;
       widget.data.detail?.isLike = newValue;
       if (newValue == 1) {
-        widget.data.detail?.likeCt = (widget.data.detail?.likeCt ?? 0) + 1;
+        widget.data.detail?.likeFct = (widget.data.detail?.likeFct ?? 0) + 1;
       } else {
-        widget.data.detail?.likeCt = (widget.data.detail?.likeCt ?? 0) - 1;
+        widget.data.detail?.likeFct = (widget.data.detail?.likeFct ?? 0) - 1;
       }
       if (mounted) {
         setState(() {});
