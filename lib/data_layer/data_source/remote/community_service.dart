@@ -19,12 +19,18 @@ class CommunityService extends BaseService {
   });
 
   /// 获取关注用户列表
-  AsyncJson getFollowUserList() =>
-      post('/loadFollowMember');
+  AsyncJson getFollowUserList({required int page, required int limit}) =>
+      post('/loadFollowMember', data: {
+        'page': page,
+        'limit': limit,
+      });
 
   /// 获取话题关注列表
-  AsyncJson getFollowTopicList() =>
-      post('/loadFollowTopics');
+  AsyncJson getFollowTopicList({required int page, required int limit}) =>
+      post('/loadFollowTopics', data: {
+        'page': page,
+        'limit': limit,
+      });
 
   /// 获取Tab分类列表
   AsyncJson getCategoryTabList() => post('/category', data: {});

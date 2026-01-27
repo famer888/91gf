@@ -10,17 +10,17 @@ mixin _Community on _BaseAppRepo implements CommunityDomain {
         .guard;
 
   @override
-  AsyncResult<FollowMemberModel> getFollowUserList() {
+  AsyncResult<FollowMemberModel> getFollowUserList({required int page, required int limit}) {
     return _communityService
-        .getFollowUserList()
+        .getFollowUserList(page: page, limit: limit)
         .deserializeJsonBy(FollowMemberModel.fromJson)
         .guard;
   }
 
   @override
-  AsyncResult<FollowTopicModel> getFollowTopicList() {
+  AsyncResult<FollowTopicModel> getFollowTopicList({required int page, required int limit}) {
     return _communityService
-        .getFollowTopicList()
+        .getFollowTopicList(page: page, limit: limit)
         .deserializeJsonBy(FollowTopicModel.fromJson)
         .guard;
   }

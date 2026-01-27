@@ -10,7 +10,6 @@ import '../../../theme.dart';
 import '../../my_image.dart';
 import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
 
-
 class CardCountView extends StatelessWidget {
   const CardCountView({
     super.key,
@@ -19,6 +18,7 @@ class CardCountView extends StatelessWidget {
     required this.likeCount,
     required this.type,
     this.topic,
+    this.isDeepColor = 0,
   });
 
   final int viewCount;
@@ -26,14 +26,16 @@ class CardCountView extends StatelessWidget {
   final int likeCount;
   final CommunityType type;
 
+  final int isDeepColor;
   final TopicModel? topic;
 
-  Widget _item(String path, int count) => Row(
+  Widget _item(String path, int count, {Color? iconColor}) => Row(
         children: [
           MyImage.asset(
             path,
             width: 20.w,
             height: 20.w,
+            iconColor: iconColor,
           ),
           SizedBox(width: 4.w),
           Text(
@@ -49,7 +51,13 @@ class CardCountView extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _item(MyImagePaths.appViewIcon, viewCount),
-        _item(type == CommunityType.community ? MyImagePaths.appThumbsIcon : MyImagePaths.appBitCollection, likeCount),
+        _item(
+          type == CommunityType.community
+              ? (isDeepColor > 0 ? MyImagePaths.appThumbUpOffIcon : MyImagePaths.appThumbsIcon)
+              : (isDeepColor > 0 ? MyImagePaths.appCollectOn : MyImagePaths.appCollectOff),
+          likeCount,
+          iconColor: isDeepColor > 0 ? MyTheme.primaryColor : null,
+        ),
         _item(MyImagePaths.appCommentIcon, commentCount),
         if (topic != null)
           ReportGestureDetector(

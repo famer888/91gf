@@ -28,6 +28,8 @@ class PostModel {
 
   String? aff;
   int topicId;
+  int isfavorite;
+  int islike;
 
   PostModel({
     required this.id,
@@ -53,6 +55,8 @@ class PostModel {
     this.refuseReason,
     this.aff,
     this.topicId = 0,
+    this.isfavorite = 0,
+    this.islike = 0,
   });
 
   factory PostModel.fromJson(Map<String, dynamic> json) => PostModel(
@@ -79,5 +83,7 @@ class PostModel {
         refuseReason: json['refuse_reason'],
         aff: json['aff'] ?? '',
         topicId: json['topic_id'] ?? 0,
+        isfavorite: json['is_favorite'] ?? 0,
+        islike: json['is_like'] ?? 0,
       );
 }

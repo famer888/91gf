@@ -25,10 +25,10 @@ abstract class CommunityDomain {
   AsyncResult<List<TipModel>> getNoticeList();
 
   /// 获取用户关注列表
-  AsyncResult<FollowMemberModel> getFollowUserList();
+  AsyncResult<FollowMemberModel> getFollowUserList({required int page, required int limit});
 
   /// 获取话题关注列表
-  AsyncResult<FollowTopicModel> getFollowTopicList();
+  AsyncResult<FollowTopicModel> getFollowTopicList({required int page, required int limit});
 
   /// 分类Tab
   AsyncResult<List<CommunityCategoryTabModel>> getCategoryTabList();

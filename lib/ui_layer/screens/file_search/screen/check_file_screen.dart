@@ -48,7 +48,6 @@ class _CheckFileScreenState extends State<CheckFileScreen> with TickerProviderSt
 
   Future<List<PostModel>?> _getData({int page = 1, int limit = 16, String sort = ''}) async {
     final result = await _domain.getCheckFileList(page: page, limit: limit, sort: sort);
-    CommonUtils.log('结果 res:${result.status}');
     if (result.status == 1) {
       if (result.data?.banners case final data? when data.isNotEmpty) {
         _bannersNotifier.value = data;

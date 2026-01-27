@@ -72,6 +72,7 @@ class PostCard extends StatelessWidget {
                     commentCount: _type == CommunityType.community ? data.commentNum : data.commentCt ?? 0,
                     likeCount: _type == CommunityType.community ? data.likeNum : data.favoriteCt ?? 0,
                     topic: _type == CommunityType.community ? data.topic : null,
+                    isDeepColor: _type == CommunityType.community ? data.islike : data.isfavorite,
                     type: _type,
                   ),
                 ],

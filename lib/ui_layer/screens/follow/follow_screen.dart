@@ -55,8 +55,8 @@ class _FollowScreenState extends State<FollowScreen> with TickerProviderStateMix
     }
   }
 
-  Future<List<TopicModel>> _getTopics() async {
-    final followTopicResult = await _appDomain.getFollowTopicList();
+  Future<List<TopicModel>> _getTopics({int page = 1, int pageSize = 15}) async {
+    final followTopicResult = await _appDomain.getFollowTopicList(page: page, limit: pageSize);
     if (followTopicResult.status == 1) {
       _getNoticeList();
       if (followTopicResult.data?.banner case final data? when data.isNotEmpty) {
@@ -79,8 +79,8 @@ class _FollowScreenState extends State<FollowScreen> with TickerProviderStateMix
     return [];
   }
 
-  Future<List<PostModel>> _getUsers() async {
-    final followUserResult = await _appDomain.getFollowUserList();
+  Future<List<PostModel>> _getUsers({int page = 1, int pageSize = 15}) async {
+    final followUserResult = await _appDomain.getFollowUserList(page: page, limit: pageSize);
     if (followUserResult.status == 1) {
       _getNoticeList();
       if (followUserResult.data?.banner case final data? when data.isNotEmpty) {
@@ -111,7 +111,6 @@ class _FollowScreenState extends State<FollowScreen> with TickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
-    // return Text('什么玩意');
     return !_isInit
         ? const LoadingView()
         : NestedScrollView(
@@ -136,8 +135,8 @@ class _FollowScreenState extends State<FollowScreen> with TickerProviderStateMix
               titles: _titles,
               tabBarBottomWidget: Divider(color: MyTheme.primaryColor_01, height: 0.6.w),
               views: [
-                _TopicListView(fetchMoreCallback: (currentPage, pageSize) => _getTopics()),
-                _UserListView(fetchMoreCallback: (currentPage, pageSize) => _getUsers()),
+                _TopicListView(fetchMoreCallback: (currentPage, pageSize) => _getTopics(page: currentPage, pageSize: pageSize)),
+                _UserListView(fetchMoreCallback: (currentPage, pageSize) => _getUsers(page: currentPage, pageSize: pageSize)),
               ],
             ),
           );
