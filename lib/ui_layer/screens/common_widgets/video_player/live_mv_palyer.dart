@@ -255,27 +255,30 @@ class _LiveMvPlayerState extends State<LiveMvPlayer> with NVideoURLMinxin {
           bottom: 0,
           right: 10.w,
           child:
-        ReportGestureDetector(
-            behavior: HitTestBehavior.translucent,
-            onTap: () {
-              if (widget.info.hls?.isEmpty ?? false) {
-                // MyToast.showText(text: tr('yhyxx'));
-                return;
-              }
-              //切换路线
-              isShowChangeLine = !isShowChangeLine;
-              if (mounted) setState(() {});
-            },
-            child: SizedBox(
-              height: 40.w,
-              child: Row(
-                children: [
-                  const MyImage.asset(MyImagePaths.appChangeLine,
-                      width: 25, height: 25, fit: BoxFit.contain),
-                  Text(tr('qhxl'), style: MyTheme.white08_12)
-                ],
-              ),
-            )),
+        Visibility(
+          visible: widget.info?.hls?.isNotEmpty ?? false,
+          child: ReportGestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: () {
+                if (widget.info.hls?.isEmpty ?? false) {
+                  // MyToast.showText(text: tr('yhyxx'));
+                  return;
+                }
+                //切换路线
+                isShowChangeLine = !isShowChangeLine;
+                if (mounted) setState(() {});
+              },
+              child: SizedBox(
+                height: 40.w,
+                child: Row(
+                  children: [
+                    const MyImage.asset(MyImagePaths.appChangeLine,
+                        width: 25, height: 25, fit: BoxFit.contain),
+                    Text(tr('qhxl'), style: MyTheme.white08_12)
+                  ],
+                ),
+              )),
+        ),
         ),
       ],
     );
@@ -468,32 +471,32 @@ class _LiveMvPlayerState extends State<LiveMvPlayer> with NVideoURLMinxin {
                     ),
                   ),
                   // 弹幕开关按钮
-                  ReportGestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    onTap: () async {
-                      if (widget.info.hls?.isEmpty ?? false) {
-                        return;
-                      }
-                      await _sinkPortraitLandWidgetGlobalKey.currentState?.optionalDanMu();
-                      await initializeData();
-                      _hideKeyboard(context);
-                    },
-                    child: Container(
-                      width: 25.w,
-                      height: 25.w,
-                      padding: EdgeInsets.all(4.w),
-                      decoration: BoxDecoration(
-                        color: MyTheme.white02Color,
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(14.w),
-                          bottomRight: Radius.circular(14.w),
+                   Visibility(
+                    visible: widget.info.hls?.isNotEmpty ?? false,
+                    child: ReportGestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      onTap: () async {
+                        await _sinkPortraitLandWidgetGlobalKey.currentState?.optionalDanMu();
+                        await initializeData();
+                        _hideKeyboard(context);
+                      },
+                      child: Container(
+                        width: 25.w,
+                        height: 25.w,
+                        padding: EdgeInsets.all(4.w),
+                        decoration: BoxDecoration(
+                          color: MyTheme.white02Color,
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(14.w),
+                            bottomRight: Radius.circular(14.w),
+                          ),
                         ),
+                        child: isbarrage
+                            ? MyImage.asset(MyImagePaths.appOndm,
+                                width: 20.w, height: 20.w, fit: BoxFit.contain)
+                            : MyImage.asset(MyImagePaths.appOffdm,
+                                width: 20.w, height: 20.w, fit: BoxFit.contain),
                       ),
-                      child: isbarrage
-                          ? MyImage.asset(MyImagePaths.appOndm,
-                              width: 20.w, height: 20.w, fit: BoxFit.contain)
-                          : MyImage.asset(MyImagePaths.appOffdm,
-                              width: 20.w, height: 20.w, fit: BoxFit.contain),
                     ),
                   ),
                 ],
@@ -1418,16 +1421,19 @@ class _SinkPortraitLandWidgetState extends State<_SinkPortraitLandWidget> {
         ),
       ),
       const SizedBox(width: 13),
-      ReportGestureDetector(
-        behavior: HitTestBehavior.translucent,
-        child: isbarrage
-            ? const MyImage.asset(MyImagePaths.appOndm,
-            width: 25, height: 25, fit: BoxFit.contain)
-            : const MyImage.asset(MyImagePaths.appOffdm,
-            width: 25, height: 25, fit: BoxFit.contain),
-        onTap: () {
-          optionalDanMu();
-        },
+      Visibility(
+        visible: widget.info?.hls?.isNotEmpty ?? false,
+        child: ReportGestureDetector(
+          behavior: HitTestBehavior.translucent,
+          child: isbarrage
+              ? const MyImage.asset(MyImagePaths.appOndm,
+              width: 25, height: 25, fit: BoxFit.contain)
+              : const MyImage.asset(MyImagePaths.appOffdm,
+              width: 25, height: 25, fit: BoxFit.contain),
+          onTap: () {
+            optionalDanMu();
+          },
+        ),
       ),
       const SizedBox(width: 13),
       ReportGestureDetector(//打赏
@@ -1445,21 +1451,24 @@ class _SinkPortraitLandWidgetState extends State<_SinkPortraitLandWidget> {
         },
       ),
       const SizedBox(width: 13),
-      ReportGestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: () {
-            _getWidgetInfo();
-            //切换路线
-            isShowChangeLine = !isShowChangeLine;
-            if (mounted) setState(() {});
-          },
-          child: Row(
-            children: [
-              const MyImage.asset(MyImagePaths.appChangeLine,
-                  width: 25, height: 25, fit: BoxFit.contain),
-              Text(key: _globalKey, tr('qhxl'), style: MyTheme.white08_12)
-            ],
-          )),
+      Visibility(
+        visible: widget.info?.hls?.isNotEmpty ?? false,
+        child: ReportGestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () {
+              _getWidgetInfo();
+              //切换路线
+              isShowChangeLine = !isShowChangeLine;
+              if (mounted) setState(() {});
+            },
+            child: Row(
+              children: [
+                const MyImage.asset(MyImagePaths.appChangeLine,
+                    width: 25, height: 25, fit: BoxFit.contain),
+                Text(key: _globalKey, tr('qhxl'), style: MyTheme.white08_12)
+              ],
+            )),
+      ),
     ]);
   }
 
