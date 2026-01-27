@@ -14,6 +14,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jygf/app_config.dart';
+import 'package:jygf/app_global.dart';
 import 'package:jygf/crypto.dart';
 import 'package:jygf/domain/model/live_model.dart';
 import 'package:jygf/domain/model/member_model.dart';
@@ -193,7 +194,18 @@ class CommonUtils {
   }
 
   static launchUrl(String url) async {
-    if (Uri.tryParse(url) case final uri?) {
+    String webUrl = url;
+
+    try {
+      Member member = AppGlobal.context!.read<UserNotifier>().member;
+      webUrl = url
+          .replaceAll('{enc_aff}', member.encToken['{enc_aff}'] ?? '')
+          .replaceAll('%7Benc_aff%7D', member.encToken['%7Benc_aff%7D'] ?? '');
+    } catch (e) {
+      CommonUtils.log('$e');
+    }
+
+    if (Uri.tryParse(webUrl) case final uri?) {
       try {
         await url_launcher.launchUrl(
           uri,

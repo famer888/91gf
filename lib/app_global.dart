@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
 import 'package:jygf/domain/model/home_data_model.dart';
-import 'package:jygf/ui_layer/screens/theme.dart';
 
 class AppGlobal {
   static String m3u8Encrypt = '0';
@@ -15,4 +14,7 @@ class AppGlobal {
   static ReportConfig? reportConfig;
   static String reportAppId = '';
   static String reportTraceId = '';
+  static String affXCode = '';
+
+  static String officeSite = '';
 }

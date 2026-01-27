@@ -114,6 +114,7 @@ class Member {
     this.vipSeedPrivilege,
     this.chatPrivilege,
     this.awPrivilege,
+    this.encToken,
   });
 
   final int? isFollow;
@@ -222,6 +223,7 @@ class Member {
   final int? vipSeedPrivilege;
   final int? chatPrivilege;
   final int? awPrivilege;
+  final dynamic encToken;
 
   factory Member.fromJson(Map<String, dynamic> json) => Member(
         postCount: json['post_count'] ?? 0,
@@ -333,6 +335,7 @@ class Member {
         vipSeedPrivilege: json['vip_seed_privilege'] ?? 0,
         chatPrivilege: json['chat_privilege'] ?? 0,
         awPrivilege: json['aw_privilege'] ?? 0,
+        encToken: json['enc_token'] ?? {},
       );
 
   Map<String, dynamic> toJson() => {
@@ -441,6 +444,7 @@ class Member {
         'vip_seed_privilege': vipSeedPrivilege,
         'chat_privilege': chatPrivilege,
         'aw_privilege': awPrivilege,
+        'enc_token': encToken,
       };
 
   Member copyWith({
@@ -547,6 +551,7 @@ class Member {
     int? vipHlPrivilege,
     int? chatPrivilege,
     int? awPrivilege,
+    dynamic encToken,
   }) =>
       Member(
         isFollow: isFollow ?? this.isFollow,
@@ -652,6 +657,7 @@ class Member {
         vipHlPrivilege: vipHlPrivilege ?? this.vipHlPrivilege,
         chatPrivilege: chatPrivilege ?? this.chatPrivilege,
         awPrivilege: awPrivilege ?? this.awPrivilege,
+        encToken: encToken ?? this.encToken,
       );
 }
 

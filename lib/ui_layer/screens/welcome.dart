@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper_null_safety_flutter3/flutter_swiper_null_safety_flutter3.dart';
+import 'package:jygf/app_config.dart';
 import 'package:jygf/data_layer/repo/repo.dart';
 import 'package:jygf/report/ui_layer/report_ad_view.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/screen_background.dart';
@@ -109,6 +110,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           final params = Uri.splitQueryString(text);
           String traceID = params['trace_id'] ?? '';
           if (traceID.isNotEmpty)context.read<AppRepo>().setReportTraceId(traceID);
+
+          String aff = params[BuildConfig.affCodeKey] ?? '';
+          if (aff.isNotEmpty) context.read<AppRepo>().setAffXCode(aff);
         } catch (e) {
           return;
         }

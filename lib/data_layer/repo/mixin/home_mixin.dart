@@ -22,6 +22,7 @@ mixin _Home on _BaseAppRepo implements HomeDomain {
           }
           if (config.officeSite case final url? when url.isNotEmpty) {
             await _cacheManager.upsertOfficeWeb(url);
+            AppGlobal.officeSite = url;
           }
           if (config.buryPoint case final buryPoint) {
             AppGlobal.reportConfig = buryPoint;

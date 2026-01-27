@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jygf/domain/model/ai/ai_magic_model.dart';
+import 'package:jygf/domain/model/member_model.dart';
+import 'package:jygf/ui_layer/notifiers/user_notifier.dart';
+import 'package:provider/provider.dart';
 import 'package:jygf/domain/model/album_model.dart';
 import 'package:jygf/domain/model/comic_model.dart';
 import 'package:jygf/domain/model/novel_model.dart';
@@ -572,7 +575,12 @@ class WebViewRoute extends GoRouteData {
   final String url;
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return WebViewScreen(url: url);
+    late final userNotifier = context.read<UserNotifier>();
+    late Member member = userNotifier.member;
+    String webUrl = url
+        .replaceAll('{enc_aff}', member.encToken['{enc_aff}'] ?? '')
+        .replaceAll('%7Benc_aff%7D', member.encToken['%7Benc_aff%7D'] ?? '');
+    return WebViewScreen(url: webUrl);
   }
 }
 

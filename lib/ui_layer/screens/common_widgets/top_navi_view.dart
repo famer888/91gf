@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jygf/domain/model/home_data_model.dart';
+import 'package:jygf/domain/model/member_model.dart';
 import 'package:jygf/ui_layer/notifiers/home_config_notifier.dart';
+import 'package:jygf/ui_layer/notifiers/user_notifier.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/keep_alive_wrapper.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
 import 'package:jygf/ui_layer/screens/image_paths.dart';
@@ -111,9 +113,14 @@ class _TopNaviViewState extends State<TopNaviView>
   }
 
   Widget configNavPrependPage(LinkModel data) {
+    late final userNotifier = context.read<UserNotifier>();
+    late Member member = userNotifier.member;
+    String webUrl = data.linkUrl
+        .replaceAll('{enc_aff}', member.encToken['{enc_aff}'] ?? '')
+        .replaceAll('%7Benc_aff%7D', member.encToken['%7Benc_aff%7D'] ?? '');
     return KeepAliveWrapper(
       child: data.redirectType == 1
-          ? WebViewScreen(url: data.linkUrl, needNav: false)
+          ? WebViewScreen(url: webUrl, needNav: false)
           : Container(),
     );
   }

@@ -4,6 +4,8 @@ class BuildConfig {
   static const key = '2acf7e91e9864673';
   static const iv = '1c29882d3ddfcfd6';
   static const appKey = '5589d41f92a597d016b037ac37db243d';
+  static const ver = kIsWeb ? 'v3' : 'v2';
+
   static const mediaKey = 'f5d965df75336270';
   static const mediaIv = '97b60394abc2fbe1';
   static const secretKey = '0cd8091ddd83a5a8';
