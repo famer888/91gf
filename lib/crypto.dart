@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:crypto/crypto.dart';
 import 'package:encrypt/encrypt.dart';
+import 'package:flutter/foundation.dart' as fd;
 import 'package:webcrypto/webcrypto.dart';
 
 import 'app_config.dart';
@@ -15,6 +16,7 @@ final mediaIv = IV.fromUtf8(BuildConfig.mediaIv);
 
 String getSign(Map obj) {
   final keyValues = [];
+  keyValues.add("_ver=${obj['_ver']}");
   keyValues.add("client=${obj['client']}");
   keyValues.add("data=${obj['data']}");
   keyValues.add("timestamp=${obj['timestamp']}");
@@ -43,9 +45,13 @@ class PlatformAwareCrypto {
     final encrypted = encrypter.encryptBytes(utf8.encode(word), iv: iv);
     final data = utf8.decode(encrypted.base64.codeUnits);
     final timestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-    final sign =
-        getSign({'client': 'pwa', 'data': data, 'timestamp': timestamp});
-    return 'client=pwa&timestamp=$timestamp&data=$data&sign=$sign';
+    final sign = getSign({
+      '_ver': BuildConfig.ver,
+      'client': fd.kIsWeb ? 'pwa' : 'android',
+      'data': data,
+      'timestamp': timestamp,
+    });
+    return '_ver=${BuildConfig.ver}&client=${fd.kIsWeb ? 'pwa' : 'android'}&timestamp=$timestamp&data=$data&sign=$sign';
   }
 
   static dynamic decryptResData(dynamic data) async {
@@ -189,5 +195,30 @@ class PlatformAwareCrypto {
     final encrypted = Encrypted.fromBase64(dataStr);
     final decrypted = encrypter.decrypt(encrypted, iv: IV.fromUtf8(iv));
     return decrypted;
+  }
+
+  //验证签名
+  static String makeSign(Map<dynamic, dynamic>? params, String signKey) {
+    if (params == null || params.isEmpty) {
+      return '';
+    }
+    // 1. ksort（按 key 排序）
+    final sortedKeys = params.keys.toList()..sort();
+    // 2. 拼接 key=value
+    final List<String> arrTemp = [];
+    for (final key in sortedKeys) {
+      var value = params[key]?.toString() ?? '';
+      if (key == 'data') {
+        value = value.replaceAll(' ', '+');
+      }
+      arrTemp.add('$key=$value');
+    }
+    // 3. 用 & 连接
+    final string = arrTemp.join('&') + signKey;
+    // 4. 先 sha256，再 md5
+    final sha256Str = sha256.convert(utf8.encode(string)).toString();
+    final md5Str = md5.convert(utf8.encode(sha256Str)).toString();
+
+    return md5Str;
   }
 }

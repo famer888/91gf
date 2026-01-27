@@ -270,6 +270,8 @@ abstract class _BaseAppRepo implements AppDomain {
     ),
   );
 
+  Dio get apiDio => _apiDio;
+
   /// 未加密网路服务/上传资源
   late final _dio = Dio(
     BaseOptions(
@@ -415,6 +417,12 @@ abstract class _BaseAppRepo implements AppDomain {
   }
 
   @override
+  void setAffXCode(String code) async {
+    _cacheManager.upsertAffXCode(code);
+    AppGlobal.affXCode = code;
+  }
+
+  @override
   void initLine({
     Function? success,
     Function? failed,
@@ -443,6 +451,12 @@ abstract class _BaseAppRepo implements AppDomain {
     final String? localReportTraceId = await _cacheManager.readReportTraceId();
     if (localReportTraceId case final String reportTraceId) {
       AppGlobal.reportTraceId = reportTraceId;
+    }
+
+    // 读取本地aff_x_code
+    final String? localAffXCode = await _cacheManager.readAffXCode();
+    if (localAffXCode case final String affXCode) {
+      AppGlobal.affXCode = affXCode;
     }
 
     // 检查网络
@@ -546,7 +560,9 @@ abstract class _BaseAppRepo implements AppDomain {
   /// 上报线路
   void _reportLine(List<Map<String, Object>> lines) {
     if (lines.isEmpty) return;
-    _apiDio.post('/api/home/domainCheckReport2', data: {'list': lines});
+    Future.delayed(const Duration(seconds: 5)).then((_) {
+      _apiDio.post('/api/home/domainCheckReport2', data: {'list': lines});
+    });
   }
 
   @override
