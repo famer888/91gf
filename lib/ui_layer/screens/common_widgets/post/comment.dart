@@ -48,6 +48,7 @@ class PostCommentView extends StatelessWidget {
           commentData: commentData,
           changeLike: changeLike,
         ),
+
         SizedBox(height: 13.w),
         ReportGestureDetector(
           onTap: onReply,
@@ -177,8 +178,7 @@ class _Header extends StatelessWidget {
                         }
                         final uuid = user.uuid!;
                         final nick = user.nickname!;
-                        final url =
-                            user.thumb?.isNotEmpty == true ? user.thumb! : ' ';
+                        final url = user.thumb?.isNotEmpty == true ? user.thumb! : ' ';
                         ChatMessageRoute(
                           nickName: Uri.encodeComponent(nick),
                           thumb: Uri.encodeComponent(url),

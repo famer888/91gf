@@ -52,6 +52,7 @@ class _Body extends StatefulWidget {
 
 class _BodyState extends State<_Body> with WidgetsBindingObserver {
   late final _domain = context.read<SeedDomain>();
+  late final _userDomain = context.read<UserDomain>();
 
   AsyncValue<BitDetail> _asyncValue = const AsyncInit();
 
@@ -164,8 +165,8 @@ class _BodyState extends State<_Body> with WidgetsBindingObserver {
     }
   }
 
-  Future<bool> _changeCommentLike(String id) async {
-    final res = await _domain.bitCommentLike(id: id);
+  Future<bool> _changeCommentLike(int id) async {
+    final res = await _userDomain.userCommentLike(type: 4, id: id);
     return res.isValid;
   }
 
@@ -198,7 +199,7 @@ class _BodyState extends State<_Body> with WidgetsBindingObserver {
                         //     '${'hf'.tr()}@${item.user?.nickname ?? ""}';
                         // inputFocusNode.requestFocus();
                       },
-                      changeLike: () => _changeCommentLike('${item.id}'),
+                      changeLike: () => _changeCommentLike(item.id ?? 0),
                     );
                   },
                   onFetchingMore: (currentPage, pageSize) => getReviewData(

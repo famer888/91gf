@@ -335,7 +335,7 @@ class CommentTile extends StatelessWidget {
               onTap: () async {
                 if (data.id case final id?) {
                   final domain = context.read<UserDomain>();
-                  final res = await domain.userCommentLike(type: 9, id: id);
+                  final res = await domain.userCommentLike(type: 7, id: id);
                   if (res.isValid) {
                     data.isLike = isLike ? 0 : 1;
                     int likeCount = data.likeFct ?? 0;

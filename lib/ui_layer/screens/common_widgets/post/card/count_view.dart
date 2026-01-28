@@ -18,7 +18,6 @@ class CardCountView extends StatelessWidget {
     required this.likeCount,
     required this.type,
     this.topic,
-    this.isDeepColor = 0,
   });
 
   final int viewCount;
@@ -26,7 +25,6 @@ class CardCountView extends StatelessWidget {
   final int likeCount;
   final CommunityType type;
 
-  final int isDeepColor;
   final TopicModel? topic;
 
   Widget _item(String path, int count, {Color? iconColor}) => Row(
@@ -51,13 +49,7 @@ class CardCountView extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _item(MyImagePaths.appViewIcon, viewCount),
-        _item(
-          type == CommunityType.community
-              ? (isDeepColor > 0 ? MyImagePaths.appThumbUpOffIcon : MyImagePaths.appThumbsIcon)
-              : (isDeepColor > 0 ? MyImagePaths.appCollectOn : MyImagePaths.appCollectOff),
-          likeCount,
-          iconColor: isDeepColor > 0 ? MyTheme.primaryColor : null,
-        ),
+        _item(type == CommunityType.community ? MyImagePaths.appThumbsIcon : MyImagePaths.appBitCollection, likeCount),
         _item(MyImagePaths.appCommentIcon, commentCount),
         if (topic != null)
           ReportGestureDetector(
