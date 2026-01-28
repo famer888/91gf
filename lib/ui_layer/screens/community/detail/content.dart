@@ -2,6 +2,7 @@ import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jygf/domain/enum.dart';
 import 'package:jygf/domain/model/banner_model.dart';
 import 'package:jygf/domain/model/user_model.dart';
 import 'package:jygf/report/ui_layer/report_general_banner.dart';
@@ -206,7 +207,7 @@ class _LikeCollectShareAreaState extends State<_LikeCollectShareArea> {
     _isChangeLikeLoading = true;
 
     try {
-      final result = await _userDomain.userLike(type: 3, id: widget.data.id ?? 0);
+      final result = await _domain.communityTopicLike(type: MyLikeType.post, id: '${widget.data.id}');
       if (result.status == 1) {
         final oldValue = widget.data.isLike ?? 0;
         final newValue = oldValue == 0 ? 1 : 0;
