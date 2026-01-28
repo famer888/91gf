@@ -204,7 +204,7 @@ class _SnapShotView extends StatelessWidget {
                                 width: 185.w,
                                 height: 45.w,
                                 decoration: const BoxDecoration(
-                                  gradient: MyTheme.shareButtonGradient,
+                                  gradient: MyTheme.gradient_90_114,
                                 ),
                                 child: Center(
                                   child: RichText(
