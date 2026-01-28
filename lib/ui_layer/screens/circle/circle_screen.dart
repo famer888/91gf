@@ -239,10 +239,10 @@ class _BlurView extends StatelessWidget {
             const VipCenterRoute().push(context);
           },
           child: ColoredBox(
-            color: Colors.black.withOpacity(0.5),
+            color: Colors.black.withOpacity(0.3),
             child: Center(
               child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 9.w, sigmaY: 9.w),
+                filter: ImageFilter.blur(sigmaX: 12.w, sigmaY: 12.w),
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12.w),
                   child: Column(
