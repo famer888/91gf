@@ -4,13 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jygf/domain/model/banner_model.dart';
+import 'package:jygf/domain/model/member_model.dart';
 import 'package:jygf/domain/model/user_model.dart';
+import 'package:jygf/report/ui_layer/report_general_banner.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
 import 'package:jygf/ui_layer/notifiers/home_config_notifier.dart';
 import 'package:jygf/ui_layer/notifiers/user_notifier.dart';
 import 'package:jygf/ui_layer/router/router.dart';
+import 'package:jygf/ui_layer/screens/black/widgets/black_regular_dialog.dart';
+import 'package:jygf/ui_layer/screens/common_widgets/dialog/my_dialog.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/follow_button.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/my_image.dart';
+import 'package:jygf/ui_layer/screens/community/coins_dialog.dart';
 import 'package:jygf/ui_layer/screens/file_search/model/check_detail_model.dart';
+import 'package:jygf/ui_layer/screens/image_paths.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../domain/api_validator.dart';
@@ -27,8 +34,6 @@ import '../../common_widgets/post/content/like_collect_share_area.dart';
 import '../../common_widgets/post/content/media.dart';
 import '../../common_widgets/post/content/title.dart';
 import '../../theme.dart';
-import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
-import 'package:jygf/report/ui_layer/report_general_banner.dart';
 
 class CheckFileDetailContentView extends StatefulWidget {
   const CheckFileDetailContentView({super.key, required this.data, required this.recommendNotifier});
@@ -158,7 +163,159 @@ class _ContactView extends StatefulWidget {
 }
 
 class _ContactViewState extends State<_ContactView> {
+  late final _userNotifier = context.read<UserNotifier>();
   late final _domain = context.read<CommunityDomain>();
+
+  //会员/金币购买弹窗
+  void dialogPrompt(BuildContext context) {
+      Member member = context.read<UserNotifier>().member;
+      showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (ctx) => Material(
+          type: MaterialType.transparency,
+          child: PopScope(
+            canPop: false,
+            child: CoinsDialog(
+              unlockCoins: widget.data.unlockCoins ?? 0,
+              money: member.money,
+              actionCallback: () {
+                // 取第一个元素解锁
+                // _pay(data, index, _currentUnlockCoins);
+              },
+            ),
+          ),
+        ),
+      );
+
+  }
+
+  Future<void> _showBuyPostDialog(BuildContext context) async {
+    if (_userNotifier.member.money >= (widget.data.unlockCoins ?? 0)) {
+      // 支付确认弹窗
+      MyDialog.showDialog(
+        context: context,
+        child: BlackRegularDialog(
+          leftPadding: 0,
+          rightPadding: 0,
+          topPadding: 0,
+          bottomPadding: 0,
+          content: Container(
+            padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 20.w, bottom: 15.w),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(4.w)),
+              image: const DecorationImage(image: AssetImage(MyImagePaths.appMineRuleBg), fit: BoxFit.fill),
+            ),
+            child: Stack(
+              children: [
+                Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.center, children: [
+                  Text('wxts'.tr(context: context), style: MyTheme.white255_13_M.s18),
+                  SizedBox(height: 28.w),
+                  Text('xyzfxjb'.tr(context: context, namedArgs: {'x': '${widget.data.unlockCoins}'}), style: MyTheme.white255_13.s14.w400),
+                  SizedBox(height: 40.w),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ReportGestureDetector(
+                        onTap: () {
+                          context.pop();
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 28.w, vertical: 10.w),
+                          decoration: BoxDecoration(
+                            color: const Color.fromRGBO(49, 21, 47, 1),
+                            borderRadius: BorderRadius.all(Radius.circular(25.w)),
+                          ),
+                          child: Text(tr('qx'), style: MyTheme.white255_13.s14.w400),
+                        ),
+                      ),
+                      SizedBox(width: 42.w),
+                      ReportGestureDetector(
+                        onTap: () async {
+                          context.pop();
+                          _pay();
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 28.w, vertical: 10.w),
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(colors: MyTheme.gradient_90_114_colors),
+                            borderRadius: BorderRadius.all(Radius.circular(25.w)),
+                          ),
+                          child: Text(tr('qd'), style: MyTheme.white255_13.s14.w400),
+                        ),
+                      ),
+                    ],
+                  ),
+                ]),
+              ],
+            ),
+          ),
+        ),
+      );
+    } else {
+      // 充值、VIP弹窗
+      MyDialog.showDialog(
+        context: context,
+        child: BlackRegularDialog(
+          leftPadding: 0,
+          rightPadding: 0,
+          topPadding: 0,
+          bottomPadding: 0,
+          content: Container(
+            padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 20.w, bottom: 15.w),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(4.w)),
+              image: const DecorationImage(image: AssetImage(MyImagePaths.appMineRuleBg), fit: BoxFit.fill),
+            ),
+            child: Stack(
+              children: [
+                Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.center, children: [
+                  Text('wxts'.tr(context: context), style: MyTheme.white255_13_M.s18),
+                  SizedBox(height: 28.w),
+                  Text('yebzjssb'.tr(context: context), style: MyTheme.white255_13.s14.w400),
+                  SizedBox(height: 40.w),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ReportGestureDetector(
+                        onTap: () {
+                          context.pop();
+                          const VipCenterRoute().push(context);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 28.w, vertical: 10.w),
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(colors: MyTheme.gradient_90_118_colors_blue),
+                            borderRadius: BorderRadius.all(Radius.circular(25.w)),
+                          ),
+                          child: Text(tr('cv'), style: MyTheme.white255_13.s14.w400),
+                        ),
+                      ),
+                      SizedBox(width: 42.w),
+                      ReportGestureDetector(
+                        onTap: () async {
+                          context.pop();
+                          const CoinRechargeRoute().push(context);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 28.w, vertical: 10.w),
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(colors: MyTheme.gradient_90_114_colors),
+                            borderRadius: BorderRadius.all(Radius.circular(25.w)),
+                          ),
+                          child: Text(tr('qcz1'), style: MyTheme.white255_13.s14.w400),
+                        ),
+                      ),
+                    ],
+                  ),
+                ]),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+  }
 
   Future<void> _pay() async {
     MyToast.showLoading();
@@ -199,7 +356,9 @@ class _ContactViewState extends State<_ContactView> {
                   SizedBox(height: 10.w),
                   ReportGestureDetector(
                     behavior: HitTestBehavior.translucent,
-                    onTap: _pay,
+                    onTap: () {
+                      _showBuyPostDialog(context);
+                    },
                     child: Container(
                       height: 40.w,
                       alignment: Alignment.center,

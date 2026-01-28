@@ -632,7 +632,7 @@ class CommonUtils {
           } else if (path == 'gamesortpage' || path == 'gameNav') {
             // paramsStr += '/${Uri.decodeComponent('${data['title']}')}';
             path = 'gameNav';
-            // paramsStr += '/${data['title']}';
+            paramsStr += '/${data['title']}';
           }
 
           final realPath = '/$path$paramsStr';
