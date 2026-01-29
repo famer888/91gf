@@ -1,10 +1,12 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jygf/domain/async_value.dart';
 import 'package:jygf/domain/model/banner_model.dart';
 import 'package:jygf/domain/remote_domain/domains/black_domain.dart';
+import 'package:jygf/domain/remote_domain/domains/user.dart';
 import 'package:jygf/ui_layer/router/routes.dart';
 import 'package:jygf/ui_layer/screens/black/model/black_model.dart';
 import 'package:jygf/ui_layer/screens/black/vip_pay_dialog.dart';
@@ -41,6 +43,7 @@ class BlackDetailsScreen extends StatefulWidget {
 
 class _BlackDetailsScreenState extends State<BlackDetailsScreen> {
   late final _blackDomain = context.read<BlackDomain>();
+  late final _userDomain = context.read<UserDomain>();
   AsyncValue<BlackDetailModel> _asyncValue = const AsyncInit();
   final ValueNotifier<String> _titleNotifier = ValueNotifier('');
   final hintNotifier = ValueNotifier('wyddxf'.tr());
@@ -125,8 +128,9 @@ class _BlackDetailsScreenState extends State<BlackDetailsScreen> {
   }
 
   Future<bool> _changeCommentLike(int id) async {
+    final likeResult = await _userDomain.userCommentLike(type: 8, id: id);
     final res = await _blackDomain.getBlackLike(id: id);
-    return res.status == 1;
+    return likeResult.status == 1;
   }
 
   _showMoreReview(CommentModel comment) async {
@@ -558,10 +562,10 @@ class _BlackDetailsScreenState extends State<BlackDetailsScreen> {
       // ),
       Expanded(
         child: Container(
-          height: 40.w,
+          height: 36.w,
           alignment: Alignment.centerLeft,
           margin: EdgeInsets.symmetric(horizontal: 13.w),
-          padding: EdgeInsets.only(top: 6.w, left: 4.w, right: 4.w, bottom: 5.w),
+          padding: EdgeInsets.only(top: 5.w, left: 4.w, right: 4.w, bottom: 5.w),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20.w),
             color: MyTheme.white25501Color,
@@ -578,7 +582,7 @@ class _BlackDetailsScreenState extends State<BlackDetailsScreen> {
               hintText: replyItemModel != null ? '@${replyItemModel?.user.nickname}' : '善语结善缘，恶言伤人心',
               hintStyle: MyTheme.white255_13_M.white25506.w500.s15,
               border: InputBorder.none,
-              isDense: true,
+              contentPadding: EdgeInsets.only(left: 8.w, top: 6.5.w, right: 8.w, bottom: kIsWeb ? 6.5.w : 0.w),
             ),
           ),
         ),
