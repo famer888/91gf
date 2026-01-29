@@ -238,22 +238,25 @@ class _BlurView extends StatelessWidget {
           onTap: () {
             const VipCenterRoute().push(context);
           },
-          child: ColoredBox(
-            color: Colors.black.withOpacity(0.3),
-            child: Center(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 12.w, sigmaY: 12.w),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.w),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 100.w),
-                      const MyImage.asset(MyImagePaths.appCircleBg1, fit: BoxFit.fill),
-                      SizedBox(height: 20.w),
-                      const MyImage.asset(MyImagePaths.appCircleBg2, fit: BoxFit.fill),
-                      SizedBox(height: 20.w),
-                      const MyImage.asset(MyImagePaths.appCircleBg3, fit: BoxFit.fill),
+          child: SizedBox.expand(
+            child: ColoredBox(
+              color: Colors.black.withOpacity(0.3),
+              child: Center(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 12.w, sigmaY: 12.w),
+                  child: SizedBox.expand(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12.w),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          SizedBox(height: 100.w),
+                          const MyImage.asset(MyImagePaths.appCircleBg1, fit: BoxFit.fill),
+                          SizedBox(height: 20.w),
+                          const MyImage.asset(MyImagePaths.appCircleBg2, fit: BoxFit.fill),
+                          SizedBox(height: 20.w),
+                          const MyImage.asset(MyImagePaths.appCircleBg3, fit: BoxFit.fill),
                       // SizedBox(
                       //   height: 241.5.w,
                       //   width: 165.w,
@@ -280,7 +283,9 @@ class _BlurView extends StatelessWidget {
                       //           ),
                       //           maxLines: 1,
                       //         )
-                    ],
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
