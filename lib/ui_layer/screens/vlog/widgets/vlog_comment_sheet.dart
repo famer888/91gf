@@ -72,7 +72,6 @@ class VlogCommentSheetState extends State<VlogCommentSheet> {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-        // padding: MediaQuery.of(context).viewInsets,
         duration: const Duration(milliseconds: 100),
         width: double.infinity,
         child: Container(
@@ -95,6 +94,7 @@ class VlogCommentSheetState extends State<VlogCommentSheet> {
   }
 
   Widget configContentView() {
+    final bottomInsets = MediaQuery.of(context).viewInsets.bottom;
     return ReportGestureDetector(
       onTap: () {
         inputFocusNode.unfocus();
@@ -115,13 +115,18 @@ class VlogCommentSheetState extends State<VlogCommentSheet> {
                   _getData(currentPage: currentPage, limit: pageSize),
             ),
           ),
-          CommentInput(
-            controller: textEditingController,
-            focusNode: inputFocusNode,
-            hintNotifier: hintNotifier,
-            onSubmitted: () async {
-              await _sendComment(text: textEditingController.text);
-            },
+          AnimatedPadding(
+            padding: EdgeInsets.only(bottom: bottomInsets),
+            duration: const Duration(milliseconds: 100),
+            curve: Curves.easeOut,
+            child: CommentInput(
+              controller: textEditingController,
+              focusNode: inputFocusNode,
+              hintNotifier: hintNotifier,
+              onSubmitted: () async {
+                await _sendComment(text: textEditingController.text);
+              },
+            ),
           ),
         ],
       ),
