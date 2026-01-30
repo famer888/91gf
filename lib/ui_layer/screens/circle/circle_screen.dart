@@ -238,61 +238,36 @@ class _BlurView extends StatelessWidget {
           onTap: () {
             const VipCenterRoute().push(context);
           },
-          child: SizedBox.expand(
-            child: ColoredBox(
-              color: Colors.black.withOpacity(0.3),
-              child: Center(
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              ClipRect(
                 child: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 12.w, sigmaY: 12.w),
-                  child: SizedBox.expand(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12.w),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          SizedBox(height: 100.w),
-                          const MyImage.asset(MyImagePaths.appCircleBg1, fit: BoxFit.fill),
-                          SizedBox(height: 20.w),
-                          const MyImage.asset(MyImagePaths.appCircleBg2, fit: BoxFit.fill),
-                          SizedBox(height: 20.w),
-                          const MyImage.asset(MyImagePaths.appCircleBg3, fit: BoxFit.fill),
-                      // SizedBox(
-                      //   height: 241.5.w,
-                      //   width: 165.w,
-                      //   child: MyImage.network(
-                      //     config.imgBase + config.vipNameCircleStrImg,
-                      //   ),
-                      // ),
-                      // SizedBox(height: 15.w),
-                      // for (final name in config.vipNameAwqStr.split('\n'))
-                      //   name.contains('卡') || name.contains('、')
-                      //       ? Text(
-                      //           name, 
-                      //           style: TextStyle(
-                      //             color: const Color.fromRGBO(255, 204, 0, 1),
-                      //             fontSize: 13.sp,
-                      //           ),
-                      //         )
-                      //       : Text(
-                      //           name, 
-                      //           style: TextStyle(
-                      //             color: MyTheme.white08Color,
-                      //             fontSize: 18.sp,
-                      //             fontWeight: FontWeight.w500
-                      //           ),
-                      //           maxLines: 1,
-                      //         )
-                        ],
-                      ),
-                    ),
+                  child: Container(
+                    color: Colors.black.withOpacity(0.3),
                   ),
                 ),
               ),
-            ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12.w),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    SizedBox(height: 100.w),
+                    const MyImage.asset(MyImagePaths.appCircleBg1, fit: BoxFit.fill),
+                    SizedBox(height: 20.w),
+                    const MyImage.asset(MyImagePaths.appCircleBg2, fit: BoxFit.fill),
+                    SizedBox(height: 20.w),
+                    const MyImage.asset(MyImagePaths.appCircleBg3, fit: BoxFit.fill),
+                  ],
+                ),
+              ),
+            ],
           ),
         );
-      },
+      }
     );
   }
 }
