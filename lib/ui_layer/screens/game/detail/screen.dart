@@ -192,7 +192,7 @@ class _BodyState extends State<_Body> with WidgetsBindingObserver {
 
   Future<bool> _changeCommentLike(String id) async {
     late final domain = context.read<UserDomain>();
-    final res = await domain.userCommentLike(type: 5, id: int.parse(id));
+    final res = await domain.userCommentLike(type: 7, id: int.parse(id));
     return res.isValid;
   }
 

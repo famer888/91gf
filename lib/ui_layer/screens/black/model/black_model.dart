@@ -554,6 +554,7 @@ class CommentModel {
   final int photoNum;
   final String createdAt;
   final String updatedAt;
+  int isLike;
   final int isTop;
   final List<CommentModel> comments;
   final CommentUser user;
@@ -573,6 +574,7 @@ class CommentModel {
     required this.isTop,
     required this.comments,
     required this.user,
+    this.isLike = 0,
   });
 
   factory CommentModel.fromJson(Map<String, dynamic> json) {
@@ -589,6 +591,7 @@ class CommentModel {
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
       isTop: json['is_top'],
+      isLike: json['is_like'] ?? 0,
       comments: List<CommentModel>.from(json['comments']?.map((app) => CommentModel.fromJson(app))),
       user: CommentUser.fromJson(json['user']),
     );

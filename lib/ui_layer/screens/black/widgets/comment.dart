@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jygf/domain/type_def.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
 import 'package:jygf/ui_layer/const.dart';
 import 'package:jygf/ui_layer/notifiers/user_notifier.dart';
 import 'package:jygf/ui_layer/router/routes.dart';
@@ -18,7 +19,6 @@ import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
-import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
 
 class BlackCommentView extends StatelessWidget {
   const BlackCommentView({
@@ -219,7 +219,7 @@ class _Header extends StatelessWidget {
                 SizedBox(height: 4.w),
                 Row(
                   children: [
-                    if (user.vipLevel.isVip()) Padding(padding: EdgeInsets.only(right: 8.w), child: MemberVipWidget(vipImage:  member.vipImg)),
+                    if (user.vipLevel.isVip()) Padding(padding: EdgeInsets.only(right: 8.w), child: MemberVipWidget(vipImage: member.vipImg)),
                     Text(
                       RelativeDateFormat.format(date: DateTime.parse(commentData.createdAt)),
                       // "${commentData.cityname ?? "csxq".tr(context: context)}·${RelativeDateFormat.format(date: DateTime.parse(commentData.createdAt ?? ""))}",
@@ -230,7 +230,7 @@ class _Header extends StatelessWidget {
               ],
             ),
           ),
-          // _LikeButton(commentData: commentData, changeLike: changeLike),
+          _LikeButton(commentData: commentData, changeLike: changeLike),
         ],
       );
     }
@@ -253,17 +253,17 @@ class _LikeButtonState extends State<_LikeButton> {
   Future<void> _changeLike() async {
     if (_loading) return;
     _loading = true;
-    // try {
-    //   final isSuccessful = await widget.changeLike();
-    //   if (isSuccessful) {
-    //     final oldLike = widget.commentData.isLike ?? 0;
-    //     final newLike = oldLike == 0 ? 1 : 0;
-    //     widget.commentData.isLike = newLike;
-    //     if (mounted) {
-    //       setState(() {});
-    //     }
-    //   }
-    // } catch (_) {}
+    try {
+      final isSuccessful = await widget.changeLike();
+      if (isSuccessful) {
+        final oldLike = widget.commentData.isLike;
+        final newLike = oldLike == 0 ? 1 : 0;
+        widget.commentData.isLike = newLike;
+        if (mounted) {
+          setState(() {});
+        }
+      }
+    } catch (_) {}
     _loading = false;
   }
 
@@ -276,13 +276,15 @@ class _LikeButtonState extends State<_LikeButton> {
         child: Column(
           children: [
             MyImage.asset(
-              /*widget.commentData.isLike == 1 ? MyImagePaths.appCommReviewH : */
-              MyImagePaths.appCommReviewN,
+              (widget.commentData.isLike > 0) ? MyImagePaths.appCommReviewH : MyImagePaths.appCommReviewN,
               width: 20.w,
               height: 20.w,
             ),
             SizedBox(height: 1.w),
-            Text(CommonUtils.renderFixedNumber(widget.commentData.likeNum), style: MyTheme.gray203_12)
+            Text(
+              CommonUtils.renderFixedNumber((widget.commentData.likeNum) + (widget.commentData.isLike)),
+              style: MyTheme.gray203_12,
+            )
           ],
         ),
       ),

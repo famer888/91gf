@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jygf/domain/api_validator.dart';
 import 'package:jygf/domain/async_value.dart';
 import 'package:jygf/domain/model/banner_model.dart';
 import 'package:jygf/domain/remote_domain/domains/black_domain.dart';
@@ -129,8 +130,7 @@ class _BlackDetailsScreenState extends State<BlackDetailsScreen> {
 
   Future<bool> _changeCommentLike(int id) async {
     final likeResult = await _userDomain.userCommentLike(type: 8, id: id);
-    final res = await _blackDomain.getBlackLike(id: id);
-    return likeResult.status == 1;
+    return likeResult.isValid;
   }
 
   _showMoreReview(CommentModel comment) async {
@@ -562,10 +562,10 @@ class _BlackDetailsScreenState extends State<BlackDetailsScreen> {
       // ),
       Expanded(
         child: Container(
-          height: 36.w,
+          // height: kIsWeb ? 36.w : 40.w,
           alignment: Alignment.centerLeft,
-          margin: EdgeInsets.symmetric(horizontal: 13.w),
-          padding: EdgeInsets.only(top: 5.w, left: 4.w, right: 4.w, bottom: 5.w),
+          margin: EdgeInsets.symmetric(horizontal: 10.w),
+          padding: EdgeInsets.only(top: 5.w, left: 8.w, right: 8.w, bottom: 5.w),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20.w),
             color: MyTheme.white25501Color,
@@ -574,8 +574,9 @@ class _BlackDetailsScreenState extends State<BlackDetailsScreen> {
             focusNode: _inputFocusNode,
             controller: inputController,
             style: MyTheme.white255_13_M.white25508.w500.s15.h1_5,
-            maxLines: 10,
-            cursorHeight: 23,
+            maxLines: 2,
+            minLines: 1,
+            cursorHeight: 22.w,
             textAlign: TextAlign.start,
             cursorColor: MyTheme.blueColor63,
             decoration: InputDecoration(
