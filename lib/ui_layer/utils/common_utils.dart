@@ -1017,7 +1017,7 @@ class CommonUtils {
   static Future<void> clearPreloadBox() async {
     if (!kIsWeb) {
       PreloadUtils.removeCurrentTask();
-      Box box = await Hive.openBox('hjsq_preload_box');
+      Box box = await Hive.openBox('91gf_preload_box');
       box.put("preload_video_tasks", []);
     }
   }

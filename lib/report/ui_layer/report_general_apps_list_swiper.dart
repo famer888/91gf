@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper_null_safety_flutter3/flutter_swiper_null_safety_flutter3.dart';
 import 'package:provider/provider.dart';
-// import 'package:hjsq/ui_layer/screens/common_widgets/auto_carousel_slider.dart';
-// import 'package:hjsq/ui_layer/screens/theme.dart';
 
 import 'package:visibility_detector/visibility_detector.dart';
 

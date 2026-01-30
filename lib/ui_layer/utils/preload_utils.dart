@@ -76,7 +76,7 @@ class PreloadUtils {
     }
 
     try {
-      Box box = await Hive.openBox('hjsq_preload_box');
+      Box box = await Hive.openBox('91gf_preload_box');
       List tasks = box.get('preload_video_tasks') ?? [];
       int existTaskIndex = tasks.indexWhere((e) => e["id"] == taskInfo["id"]);
 
@@ -208,7 +208,7 @@ class PreloadUtils {
   // 开始下个任务
   static startNext() async {
     if (preloadTasks.isNotEmpty) {
-      Box box = await Hive.openBox('hjsq_preload_box');
+      Box box = await Hive.openBox('91gf_preload_box');
       List tasks = box.get('preload_video_tasks') ?? [];
       preloadTasks[0]["taskInfo"]["downloading"] = true;
       int taskNum =

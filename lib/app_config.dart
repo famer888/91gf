@@ -40,10 +40,10 @@ class BuildConfig {
   static const webBundleId = 'com.pwa.jygf';
 
   static const cacheKeys = (
-    appBox: 'hjsqbox',
-    chats: 'hjsqbox_Chats',
-    videoBox: 'hjsq_video_box',
-    imageBox: 'hjsqbox_ImageCache',
+    appBox: '91gfbox',
+    chats: '91gfbox_Chats',
+    videoBox: '91gf_video_box',
+    imageBox: '91gfbox_ImageCache',
     imageCacheSalt: 'aQhW1oUSlY',
   );
 }
