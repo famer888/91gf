@@ -16,27 +16,20 @@ class BuildConfig {
   /// 备用接口线路
   static final apiLines = kIsWeb
       ? [
-          // 'https://api1.ogfhqjm.com/api.php',
-          // 'https://api2.ogfhqjm.com/api.php',
-          // 'https://api3.ogfhqjm.com/api.php',
-          // 'https://wapi1.ogfhqjm.com/api.php',
-          'https://api1.91guifu.com/api.php',
+          'https://wapi.91guifu.com/api.php',
         ]
       : [
-          // 'https://api1.oasnyrv.com/api.php',
-          // 'https://api1.ocoopfr.cc/api.php',
-          // 'https://api1.oencdsjr.cc/api.php',
           'https://api1.91guifu.com/api.php',
+          'https://api2.91guifu.com/api.php',
+          'https://api3.91guifu.com/api.php',
         ];
 
   /// 备用线路
   static const githubLine =
-      // 'https://raw.githubusercontent.com/ailiu258099-blip/master/main/haijiao.txt';
-      'https://api1.91guifu.com/api.php';
+      'https://raw.githubusercontent.com/ailiu258099-blip/master/main/91guifu.txt';
   static final fdsKeyApi = [
-    // 'https://wvseee.jsbacjr.com/fds.txt',
-    // 'https://gitee.com/fdsaw/ffewelmcxww/raw/master/hj.txt',
-    'https://api1.91guifu.com/api.php',
+    'https://wvseee.jsbacjr.com/fds.txt',
+    'https://gitee.com/fdsaw/ffewelmcxww/raw/master/hj.txt',
   ];
 
   /// 跳转webview路径
