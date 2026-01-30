@@ -35,7 +35,7 @@ class BuildConfig {
   /// 跳转webview路径
   static const webViewPathName = 'ktloadwebview';
 
-  static const affCodeKey = 'hjsq_aff';
+  static const affCodeKey = '91gf_aff';
 
   static const webBundleId = 'com.pwa.jygf';
 
