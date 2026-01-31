@@ -106,7 +106,7 @@ class AutoEncryptAndDecryptInterceptor extends Interceptor {
       if (AppGlobal.context != null) {
         final apiDio = AppGlobal.context!.read<AppRepo>().apiDio;
         Map<String, dynamic> map = {
-          'url': response.requestOptions.path,
+          'url': response.requestOptions.baseUrl + response.requestOptions.path,
           'req_header': Map.from(response.requestOptions.headers),
           'res_header': Map.from(response.headers.map),
           'data': response.data,

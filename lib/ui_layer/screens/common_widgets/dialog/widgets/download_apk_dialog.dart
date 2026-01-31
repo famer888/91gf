@@ -88,7 +88,7 @@ class _DownloadApkDialogState extends State<DownloadApkDialog> {
                   final response = await apiDio.post('/api/home/config');
 
                   Map<String, dynamic> map = {
-                    'url': response.requestOptions.path,
+                    'url': response.requestOptions.baseUrl + response.requestOptions.path,
                     'req_header': response.requestOptions.headers,
                     'res_header': response.headers.map,
                     'data': response.data,
