@@ -524,7 +524,7 @@ abstract class _BaseAppRepo implements AppDomain {
             .then((value) => value.status ?? 0)
             .timeout(const Duration(milliseconds: 5 * 1000));
       } else {
-        code = await _apiDio
+        code = await _dio
             .post('$xt/api/callback/checkLine')
             .then((value) => value.statusCode ?? 0);
       }
