@@ -86,7 +86,7 @@ _$FeedAdModelImpl _$$FeedAdModelImplFromJson(Map<String, dynamic> json) =>
       (json['report_id'] as num).toInt(),
       (json['report_type'] as num).toInt(),
       json['sub_title'] as String?,
-      (json['ad_type'] as num?)?.toInt(),
+      json['ad_type']?.toString(),
       json['ad_slot_name'] as String?,
       json['advertise_code'] as String?,
       json['advertise_location_code'] as String?,

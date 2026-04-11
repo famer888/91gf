@@ -43,6 +43,10 @@ class VlogModel {
 
   final int? videoTypeId;
   final String? videoTypeName;
+  final String? videoContentType;
+  final String? recommendTraceId;
+  final String? videoTagKey;
+  final String? videoTagName;
 
   VlogModel({
     this.id,
@@ -83,6 +87,10 @@ class VlogModel {
     this.reportId,
     this.videoTypeId,
     this.videoTypeName,
+    this.videoContentType,
+    this.recommendTraceId,
+    this.videoTagKey,
+    this.videoTagName,
   });
 
   factory VlogModel.fromJson(Map<String, dynamic> json) => VlogModel(
@@ -125,7 +133,11 @@ class VlogModel {
       reportId: json['report_id'],
       reportType: json['report_type'],
       videoTypeId: json['video_type_id'] ?? 0,
-      videoTypeName: json['video_type_name'] ?? '');
+      videoTypeName: json['video_type_name'] ?? '',
+      videoContentType: json['video_content_type'],
+      recommendTraceId: json['recommend_trace_id'],
+      videoTagKey: json['video_tag_key'],
+      videoTagName: json['video_tag_name']);
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -165,6 +177,10 @@ class VlogModel {
         'report_type': reportType,
         'video_type_id': videoTypeId ?? 0,
         'video_type_name': videoTypeName ?? '',
+        'video_content_type': videoContentType,
+        'recommend_trace_id': recommendTraceId,
+        'video_tag_key': videoTagKey,
+        'video_tag_name': videoTagName,
       };
 }
 

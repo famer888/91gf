@@ -96,7 +96,7 @@ class AdModel {
   final String? createdAt;
   final String? subTitle;
 
-  final int? adType;
+  final String? adType;
   final String? adSlotName;
   final String? advertiseCode;
   final String? advertiseLocationCode;
@@ -117,9 +117,7 @@ class AdModel {
         channel: json['channel'],
         createdAt: json['created_at'].toString(),
         subTitle: json['sub_title'],
-        adType: json['ad_type'] is int
-            ? json['ad_type']
-            : int.tryParse('${json['ad_type']}'),
+        adType: json['ad_type']?.toString(),
         adSlotName: json['ad_slot_name'] as String?,
         advertiseCode: json['advertise_code'] as String?,
         advertiseLocationCode: json['advertise_location_code'] as String?,
@@ -724,7 +722,7 @@ class Notice {
   final int reportId;
   final int? reportType;
   final int? redirectType;
-  final int? adType;
+  final String? adType;
   final String? adSlotName;
   final String? advertiseCode;
   final String? advertiseLocationCode;
@@ -758,9 +756,7 @@ class Notice {
         redirectType: json['redirect_type'] is int
             ? json['redirect_type']
             : int.tryParse('${json['redirect_type']}'),
-        adType: json['ad_type'] is int
-            ? json['ad_type']
-            : int.tryParse('${json['ad_type']}'),
+        adType: json['ad_type']?.toString(),
         adSlotName: json['ad_slot_name'] as String?,
         advertiseCode: json['advertise_code'] as String?,
         advertiseLocationCode: json['advertise_location_code'] as String?,

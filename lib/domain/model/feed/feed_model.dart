@@ -66,7 +66,7 @@ class FeedModel with _$FeedModel {
     int reportId,
     int reportType,
     String? subTitle,
-    int? adType,
+    String? adType,
     String? adSlotName,
     String? advertiseCode,
     String? advertiseLocationCode,

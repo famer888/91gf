@@ -14,6 +14,7 @@ import 'package:video_player/video_player.dart';
 import '../../../../domain/api_validator.dart';
 import '../../../../domain/domain.dart';
 import '../../../../domain/model/live_model.dart';
+import '../../../../report/event_tracking.dart';
 import '../../../../domain/model/member_model.dart';
 import '../../../../domain/remote_domain/domains/live.dart';
 import '../../../notifiers/home_config_notifier.dart';
@@ -156,6 +157,36 @@ class _LiveMvPlayerState extends State<LiveMvPlayer> with NVideoURLMinxin {
         }
       });
     }
+  }
+
+  void reportVideo({
+    String video_behavior_key = "video_play",
+    String video_behavior_name = "",
+  }) {
+    int play_duration =
+        flickManager?.flickVideoManager?.videoPlayerValue?.position.inSeconds ??
+            0;
+    int video_duration =
+        flickManager?.flickVideoManager?.videoPlayerValue?.duration.inSeconds ??
+            0;
+    int progress = (play_duration / video_duration * 100).round().clamp(0, 100);
+
+    EventTracking().reportSingle({
+      "event": "video_event",
+      "video_id": widget.info.id ?? 0,
+      "video_title": widget.info.username ?? '',
+      "video_type_id": widget.info.videoTypeId ?? 0,
+      "video_type_name": widget.info.videoTypeName ?? '',
+      "video_tag_key": widget.info.videoTagKey ?? '',
+      "video_tag_name": widget.info.videoTagName ?? '',
+      "video_content_type": widget.info.videoContentType ?? '',
+      "recommend_trace_id": widget.info.recommendTraceId ?? '',
+      "video_duration": video_duration,
+      "play_duration": play_duration,
+      "play_progress": progress,
+      "video_behavior_key": video_behavior_key,
+      "video_behavior_name": video_behavior_name,
+    });
   }
 
   @override
