@@ -458,7 +458,7 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
 
     EventTracking().reportSingle({
       "event": "navigation",
-      "navigation_key": currentLocation, //RouteStore.currentPageKey,
+      "navigation_key": currentLocation.startsWith('/') ? currentLocation.substring(1) : currentLocation,
       "navigation_name": RouteStore.currentPageName,
     });
   }

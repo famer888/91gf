@@ -98,6 +98,10 @@ class VideoData {
     this.secondTitle,
     this.videoTypeId,
     this.videoTypeName,
+    this.videoContentType,
+    this.recommendTraceId,
+    this.videoTagKey,
+    this.videoTagName,
   });
 
   int? id;
@@ -173,6 +177,10 @@ class VideoData {
 
   final int? videoTypeId;
   final String? videoTypeName;
+  final String? videoContentType;
+  final String? recommendTraceId;
+  final String? videoTagKey;
+  final String? videoTagName;
 
   factory VideoData.fromJson(Map json) => VideoData(
       secondTitle: json['second_title'] ?? '',
@@ -246,7 +254,11 @@ class VideoData {
       favorites: json['favorites'] ?? 0,
       seriesId: json['series_id'] ?? 0,
       videoTypeId: json['video_type_id'] ?? 0,
-      videoTypeName: json['video_type_name'] ?? '');
+      videoTypeName: json['video_type_name'] ?? '',
+      videoContentType: json['video_content_type'],
+      recommendTraceId: json['recommend_trace_id'],
+      videoTagKey: json['video_tag_key'],
+      videoTagName: json['video_tag_name']);
 
   Map<String, dynamic> toJson() => {
         'second_title': secondTitle ?? '',
@@ -318,5 +330,9 @@ class VideoData {
         'series_id': seriesId ?? 0,
         'video_type_id': videoTypeId ?? 0,
         'video_type_name': videoTypeName ?? '',
+        'video_content_type': videoContentType,
+        'recommend_trace_id': recommendTraceId,
+        'video_tag_key': videoTagKey,
+        'video_tag_name': videoTagName,
       };
 }

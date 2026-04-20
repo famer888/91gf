@@ -13,7 +13,7 @@ class BannerModel {
   final int? reportType;
   final String? imgUrl;
   final String? urlStr;
-  final int? adType;
+  final String? adType;
   final String? adSlotName;
   final String? advertiseCode;
   final String? advertiseLocationCode;
@@ -54,9 +54,7 @@ class BannerModel {
         reportType: json['report_type'] ?? 0,
         urlStr: json['url_str'] ?? '',
         imgUrl: json['img_url'] ?? '',
-        adType: json['ad_type'] is int
-            ? json['ad_type']
-            : int.tryParse('${json['ad_type']}'),
+        adType: json['ad_type']?.toString(),
         adSlotName: json['ad_slot_name'] as String?,
         advertiseCode: json['advertise_code'] as String?,
         advertiseLocationCode: json['advertise_location_code'] as String?,

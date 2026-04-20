@@ -36,6 +36,12 @@ class LiveModel {
   final String? payTip;
   final String? intro;
   final String? thumb;
+  final String? videoContentType;
+  final String? recommendTraceId;
+  final int? videoTypeId;
+  final String? videoTypeName;
+  final String? videoTagKey;
+  final String? videoTagName;
 
   LiveModel({
     this.id,
@@ -51,7 +57,13 @@ class LiveModel {
     this.isFavorite,
     this.payTip,
     this.intro,
-    this.thumb
+    this.thumb,
+    this.videoContentType,
+    this.recommendTraceId,
+    this.videoTypeId,
+    this.videoTypeName,
+    this.videoTagKey,
+    this.videoTagName,
   });
 
   factory LiveModel.fromJson(Map<String, dynamic> json) => LiveModel(
@@ -71,6 +83,12 @@ class LiveModel {
         payTip: json['pay_tip'],
         intro: json['intro'],
         thumb: json['thumb'],
+        videoContentType: json['video_content_type'],
+        recommendTraceId: json['recommend_trace_id'],
+        videoTypeId: json['video_type_id'] ?? 0,
+        videoTypeName: json['video_type_name'] ?? '',
+        videoTagKey: json['video_tag_key'],
+        videoTagName: json['video_tag_name'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -88,6 +106,12 @@ class LiveModel {
         'pay_tip': payTip,
         'intro': intro,
         'thumb': thumb,
+        'video_content_type': videoContentType,
+        'recommend_trace_id': recommendTraceId,
+        'video_type_id': videoTypeId,
+        'video_type_name': videoTypeName,
+        'video_tag_key': videoTagKey,
+        'video_tag_name': videoTagName,
   };
 }
 

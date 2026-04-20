@@ -295,7 +295,7 @@ class _$FeedAdModelImpl implements FeedAdModel {
   @override
   final String? subTitle;
   @override
-  final int? adType;
+  final String? adType;
   @override
   final String? adSlotName;
   @override
@@ -357,7 +357,7 @@ abstract class FeedAdModel implements FeedModel {
       final int reportId,
       final int reportType,
       final String? subTitle,
-      final int? adType,
+      final String? adType,
       final String? adSlotName,
       final String? advertiseCode,
       final String? advertiseLocationCode) = _$FeedAdModelImpl;
@@ -395,7 +395,7 @@ abstract class FeedAdModel implements FeedModel {
   int get reportId;
   int get reportType;
   String? get subTitle;
-  int? get adType;
+  String? get adType;
   String? get adSlotName;
   String? get advertiseCode;
   String? get advertiseLocationCode;
