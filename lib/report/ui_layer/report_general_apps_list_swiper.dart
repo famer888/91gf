@@ -1,4 +1,8 @@
 import 'dart:math';
+import 'package:analytics_sdk/analytics_sdk.dart';
+import 'package:analytics_sdk/entity/ad_click_event.dart';
+import 'package:analytics_sdk/entity/ad_impression_event.dart';
+import 'package:analytics_sdk/entity/advertising_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper_null_safety_flutter3/flutter_swiper_null_safety_flutter3.dart';
@@ -13,8 +17,9 @@ import '../../ui_layer/utils/common_utils.dart';
 
 import 'report_gesture_detector.dart';
 
-import 'report_general_banner.dart';
+import '../analytics/analytics_page_sync.dart';
 import '../event_tracking.dart';
+import 'report_general_banner.dart';
 import 'report_timing_observer.dart';
 
 class ReportGeneralAppListSwiper extends StatefulWidget {
@@ -86,6 +91,19 @@ class _ReportGeneralAppListSwiperState
     // final pageName = context.parentTitle;
     // final widgetType = context.parentWidgetType.toString();
     BannerModel tp = widget.data.first;
+    final pageInfo = syncAnalyticsPageFromContext(context);
+    AnalyticsSdk.instance.track(
+      AdImpressionEvent(
+        pageKey: pageInfo.pageKey,
+        pageName: pageInfo.pageName,
+        adSlotKey: tp.advertiseLocationCode ?? '',
+        adSlotName: tp.adSlotName ?? '',
+        adId: adIds.join(","),
+        creativeId: "",
+        adType: tp.adType ?? '',
+      ),
+    );
+
     EventTracking().reportSingle({
       "event": "ad_impression",
       "page_key": RouteStore.currentPageKey,
@@ -103,8 +121,14 @@ class _ReportGeneralAppListSwiperState
 
   //上传广告行为
   void postActionReport(BannerModel tp, String action) {
-    // final pageName = context.parentTitle;
-    // final widgetType = context.parentWidgetType.toString();
+    AnalyticsSdk.instance.track(
+      AdvertisingEvent(
+        eventType: action,
+        advertisingKey: tp.advertiseLocationCode ?? '',
+        advertisingName: tp.adSlotName ?? '',
+        advertisingId: tp.advertiseCode ?? '',
+      ),
+    );
 
     EventTracking().reportSingle({
       "event": "advertising",
@@ -117,10 +141,20 @@ class _ReportGeneralAppListSwiperState
 
   //点击广告上报
   void postClickReport(BannerModel tp) {
+    final pageInfo = syncAnalyticsPageFromContext(context);
+    AnalyticsSdk.instance.track(
+      AdClickEvent(
+        pageKey: pageInfo.pageKey,
+        pageName: pageInfo.pageName,
+        adSlotKey: tp.advertiseLocationCode ?? '',
+        adSlotName: tp.adSlotName ?? '',
+        adId: tp.advertiseCode ?? '',
+        creativeId: '',
+        adType: tp.adType ?? '',
+      ),
+    );
     postActionReport(tp, "click");
 
-    // final pageName = context.parentTitle;
-    // final widgetType = context.parentWidgetType.toString();
     EventTracking().reportSingle({
       "event": "ad_click",
       "page_key": RouteStore.currentPageKey,

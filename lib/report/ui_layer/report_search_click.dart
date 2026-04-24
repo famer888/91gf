@@ -1,4 +1,8 @@
+import 'package:analytics_sdk/analytics_sdk.dart';
+import 'package:analytics_sdk/entity/keyword_click_event.dart';
+import 'package:analytics_sdk/enum/click_item_type_enum.dart';
 import 'package:flutter/material.dart';
+
 import '../event_tracking.dart';
 
 class ReportSearchClick extends StatefulWidget {
@@ -36,6 +40,24 @@ class _ReportSearchClickState extends State<ReportSearchClick> {
 
         if (distance > moveThreshold || dt > timeThreshold) {
           return; // 当成滑动/长按，不上报 click
+        }
+
+        final d = widget.data;
+        if (d['event'] == 'keyword_click') {
+          final key = d['click_item_type_key']?.toString() ?? '';
+          final name = d['click_item_type_name']?.toString() ?? '';
+          final pos = (d['click_position'] is int)
+              ? (d['click_position'] as int) + 1
+              : 1;
+          AnalyticsSdk.instance.track(
+            KeywordClickEvent(
+              keyword: d['keyword']?.toString() ?? '',
+              clickItemId: d['click_item_id']?.toString() ?? '',
+              clickItemType: ClickItemTypeEnum(key, name),
+              clickPosition: pos,
+              searchTraceId: d['search_trace_id']?.toString() ?? '',
+            ),
+          );
         }
 
         EventTracking().reportSingle(widget.data);

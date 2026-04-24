@@ -1,3 +1,7 @@
+import 'package:analytics_sdk/analytics_sdk.dart';
+import 'package:analytics_sdk/entity/ad_click_event.dart';
+import 'package:analytics_sdk/entity/ad_impression_event.dart';
+import 'package:analytics_sdk/entity/advertising_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
@@ -6,7 +10,8 @@ import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../../../../domain/model/home_data_model.dart';
 
-import '../../../../../report/ui_layer/report_gesture_detector.dart';
+import 'package:jygf/report/analytics/analytics_page_sync.dart';
+import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
 
 import '../../domain/domain.dart';
 import '../../ui_layer/notifiers/home_config_notifier.dart';
@@ -39,6 +44,18 @@ class _ReportAppDownCenterDialogState extends State<ReportAppDownCenterDialog> {
     final apps = homeConfigNotifier.homeData.noticeApps;
 
     Notice tp = apps!.first;
+    final pageInfo = syncAnalyticsPageFromContext(context);
+    AnalyticsSdk.instance.track(
+      AdImpressionEvent(
+        pageKey: pageInfo.pageKey,
+        pageName: pageInfo.pageName,
+        adSlotKey: tp.advertiseLocationCode ?? '',
+        adSlotName: tp.adSlotName ?? '',
+        adId: adIds.join(","),
+        creativeId: "",
+        adType: tp.adType ?? '',
+      ),
+    );
 
     EventTracking().reportSingle({
       "event": "ad_impression",
@@ -149,8 +166,14 @@ class _ReportAppDownCenterCardState extends State<ReportAppDownCenterCard> {
 
   //上传广告行为
   void postActionReport(Notice tp, String action) {
-    // final pageName = context.parentTitle;
-    // final widgetType = context.parentWidgetType.toString();
+    AnalyticsSdk.instance.track(
+      AdvertisingEvent(
+        eventType: action,
+        advertisingKey: tp.advertiseLocationCode ?? '',
+        advertisingName: tp.adSlotName ?? '',
+        advertisingId: tp.advertiseCode ?? '',
+      ),
+    );
 
     EventTracking().reportSingle({
       "event": "advertising",
@@ -163,10 +186,21 @@ class _ReportAppDownCenterCardState extends State<ReportAppDownCenterCard> {
 
   //点击广告上报
   void postClickReport(Notice tp) {
+    final pageInfo = syncAnalyticsPageFromContext(context);
+    AnalyticsSdk.instance.track(
+      AdClickEvent(
+        pageKey: pageInfo.pageKey,
+        pageName: pageInfo.pageName,
+        adSlotKey: tp.advertiseLocationCode ?? '',
+        adSlotName: tp.adSlotName ?? '',
+        adId: tp.advertiseCode ?? '',
+        creativeId: '',
+        adType: tp.adType ?? '',
+      ),
+    );
+
     postActionReport(tp, "click");
 
-    // final pageName = context.parentTitle;
-    // final widgetType = context.parentWidgetType.toString();
     EventTracking().reportSingle({
       "event": "ad_click",
       "page_key": RouteStore.currentPageKey,

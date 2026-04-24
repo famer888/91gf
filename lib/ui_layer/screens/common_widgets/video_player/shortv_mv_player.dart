@@ -1,3 +1,5 @@
+import 'package:analytics_sdk/enum/video_content_type_enum.dart';
+import 'package:analytics_sdk/enum/video_event_enum.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/foundation.dart';
@@ -5,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jygf/domain/remote_domain/domains/cartoon.dart';
+import 'package:jygf/report/analytics/analytics_report.dart';
 import 'package:jygf/report/event_tracking.dart';
 import 'package:jygf/ui_layer/screens/asmr/voice_player/voice_player_manager.dart';
 import 'package:provider/provider.dart';
@@ -232,6 +235,13 @@ class _ShortvMvPlayerState extends State<ShortvMvPlayer> with NVideoURLMinxin {
       "video_behavior_key": video_behavior_key,
       "video_behavior_name": video_behavior_name,
     });
+
+    analyticsVideo(
+      flickManager: flickManager,
+      data: widget.info,
+      videoEvent: videoBehaviorFromHttpKey(video_behavior_key),
+      videoContentType: VideoContentTypeEnum.video,
+    );
   }
 
   @override

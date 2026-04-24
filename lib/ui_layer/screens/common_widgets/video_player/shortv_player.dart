@@ -1,11 +1,14 @@
 // ignore_for_file: non_constant_identifier_names
 import 'dart:math';
+import 'package:analytics_sdk/enum/video_content_type_enum.dart';
+import 'package:analytics_sdk/enum/video_event_enum.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jygf/report/analytics/analytics_report.dart';
 import 'package:jygf/report/event_tracking.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
@@ -241,6 +244,15 @@ class _ShortVPlayerState extends State<ShortVPlayer> with NVideoURLMinxin {
       "video_behavior_key": video_behavior_key,
       "video_behavior_name": video_behavior_name,
     });
+
+    if (widget.info != null) {
+      analyticsVideo(
+        flickManager: flickManager,
+        data: widget.info,
+        videoEvent: videoBehaviorFromHttpKey(video_behavior_key),
+        videoContentType: VideoContentTypeEnum.shortVideo,
+      );
+    }
   }
 
   @override

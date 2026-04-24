@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jygf/app_global.dart';
+import 'package:jygf/report/analytics/analytics_report.dart';
 import '../../domain/api_validator.dart';
 import '../../domain/model/system_notice_model.dart';
 import '../../domain/remote_domain/domain.dart';
@@ -67,6 +68,11 @@ class UserNotifier extends ChangeNotifier {
     AppGlobal.aff = result.data?.aff ?? 0;
 
     initSystemNotice();
+
+    analyticsSetUid(result.data?.aff?.toString() ?? '');
+    analyticsSetChannel(
+        (result.data?.channel == 'self' ? '' : result.data?.channel) ?? '');
+    analyticsUserLogin(result.data?.vipLevel ?? 0);
 
     if (result.data case final data?) {
       _member = data;
@@ -185,6 +191,7 @@ class UserNotifier extends ChangeNotifier {
   Future logout() async {
     _userFollowingStatus.clear();
     await _remoteDomain.logout();
+    analyticsLogout();
     await init();
   }
 }

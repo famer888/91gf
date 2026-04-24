@@ -1,8 +1,12 @@
+import 'package:analytics_sdk/widget/global_click_wrapper.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:isolated_worker/worker_delegator.dart';
+import 'package:jygf/report/analytics/analytic_page_mapper.dart';
+import 'package:jygf/report/analytics/analytics_report.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:jygf/domain/remote_domain/domains/aiaudio.dart';
 import 'package:jygf/domain/remote_domain/domains/aidraw.dart';
 import 'package:jygf/domain/remote_domain/domains/aikiss.dart';
@@ -54,6 +58,14 @@ void main() async {
   final appRepo = AppRepo();
   await appRepo.init();
   disableUrlStrategy();
+
+  final packageInfo = await PackageInfo.fromPlatform();
+  await initAnalyticsSdk(
+    null,
+    oauthId: appRepo.getOAuthId(),
+    appVersion: packageInfo.version,
+  );
+  initPage();
 
   /// 初始化多语系
   await EasyLocalization.ensureInitialized();
@@ -228,7 +240,7 @@ class _MyAppState extends State<MyApp> {
           data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),
           child: widget,
         );
-        return widget;
+        return GlobalClickWrapper(child: ExcludeSemantics(child: widget));
       },
       scrollBehavior: ScrollConfiguration.of(context).copyWith(
         physics: const BouncingScrollPhysics(),

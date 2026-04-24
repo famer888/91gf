@@ -39,6 +39,8 @@ dependencies:
   html_unescape: ^2.0.0
   freezed_annotation: any
   json_annotation: ^4.9.0
+  analytics_sdk:
+    path: plugins/analytics_sdk
   video_player:
     path: plugins/video_player
   flick_video_player:

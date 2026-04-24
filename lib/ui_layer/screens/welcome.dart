@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:amplitude_flutter/amplitude.dart';
+import 'package:analytics_sdk/analytics_sdk.dart';
 import 'package:amplitude_flutter/configuration.dart';
 import 'package:amplitude_flutter/events/base_event.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper_null_safety_flutter3/flutter_swiper_null_safety_flutter3.dart';
 import 'package:jygf/app_config.dart';
 import 'package:jygf/data_layer/repo/repo.dart';
+import 'package:jygf/report/analytics/analytics_report.dart';
 import 'package:jygf/report/ui_layer/report_ad_view.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/screen_background.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
@@ -57,6 +59,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     _initAmp();
     _loadDataFromCache();
     _checkLineAndFetchBeforeEnterHome();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AnalyticsSdk.instance.updateCurrentPage(
+        pageKey: 'launch',
+        pageName: '启动页',
+      );
+    });
     super.initState();
   }
 
@@ -88,6 +96,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             deviceId: appDomain.info["oauth_id"].toString()));
       },
       success: () async {
+        await fetchAndApplyConfig();
         _enterAdOrHome();
         await amplitude.track(BaseEvent("enter app",
             deviceId: appDomain.info["oauth_id"].toString()));
@@ -105,7 +114,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       if (traceID.isNotEmpty) context.read<AppRepo>().setReportTraceId(traceID);
       
       String aff = uri.queryParameters[BuildConfig.affCodeKey] ?? '';
-      if (aff.isNotEmpty) context.read<AppRepo>().setAffXCode(aff); 
+      if (aff.isNotEmpty) context.read<AppRepo>().setAffXCode(aff);
+
+      analyticsReportInstall(context, traceID);
     } else {
       final result = await Clipboard.getData(Clipboard.kTextPlain);
       if (result?.text case final String text when text.isNotEmpty) { 
@@ -116,6 +127,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
           String aff = params[BuildConfig.affCodeKey] ?? '';
           if (aff.isNotEmpty) context.read<AppRepo>().setAffXCode(aff);
+
+          analyticsReportInstall(context, traceID);
         } catch (e) {
           return;
         }
