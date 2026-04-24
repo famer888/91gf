@@ -422,6 +422,11 @@ abstract class _BaseAppRepo implements AppDomain {
     AppGlobal.affXCode = code;
   }
 
+  void setInstallFlag(String flag) {
+    _cacheManager.upsertInstallFlag(flag);
+    AppGlobal.installFlag = flag;
+  }
+
   @override
   void initLine({
     Function? success,

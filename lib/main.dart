@@ -63,7 +63,6 @@ void main() async {
   await initAnalyticsSdk(
     null,
     oauthId: appRepo.getOAuthId(),
-    appVersion: packageInfo.version,
   );
   initPage();
 

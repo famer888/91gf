@@ -21,6 +21,8 @@ AnalyticsPageInfo syncAnalyticsPageFromContext(BuildContext context) {
     final uriPath = router.routerDelegate.currentConfiguration.uri.path;
     String path = '';
 
+    // 优先拿最深层 GoRoute 的 path pattern（如 videoDetail / xxx/:id），
+    // 避免在 StatefulShellRoute 场景下只拿到一级页面路径。
     for (final match in matches.reversed) {
       final route = match.route;
       if (route is GoRoute && route.path.isNotEmpty) {
@@ -29,6 +31,7 @@ AnalyticsPageInfo syncAnalyticsPageFromContext(BuildContext context) {
       }
     }
 
+    // 兜底用当前 uri.path
     path = path.isEmpty ? uriPath : path;
     final normalizedPath = PageNameMapper.normalizeKey(path);
     final pageInfo = PageNameMapper.resolvePageInfo(normalizedPath);

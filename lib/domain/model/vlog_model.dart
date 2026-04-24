@@ -47,51 +47,52 @@ class VlogModel {
   final String? recommendTraceId;
   final String? videoTagKey;
   final String? videoTagName;
+  final String mediaId;
 
-  VlogModel({
-    this.id,
-    this.title,
-    this.aff,
-    this.coverVertical,
-    this.coverHorizontal,
-    this.tags,
-    this.isFree,
-    this.coins,
-    this.playCt,
-    this.countComment,
-    this.countLike,
-    this.isLike,
-    this.favorites,
-    this.isFavorite,
-    this.duration,
-    this.source_240,
-    this.mvType,
-    this.sourceOriginStr,
-    this.tagList,
-    this.isPay,
-    this.discount,
-    this.discountCoins,
-    this.isPackage,
-    this.previewUrl,
-    this.member,
-    this.description,
-    this.imgUrl,
-    this.type,
-    this.router,
-    this.urlStr,
-    this.linkUrl,
-    this.url,
-    this.resourceUrl,
-    this.redirectType,
-    this.reportType,
-    this.reportId,
-    this.videoTypeId,
-    this.videoTypeName,
-    this.videoContentType,
-    this.recommendTraceId,
-    this.videoTagKey,
-    this.videoTagName,
-  });
+  VlogModel(
+      {this.id,
+      this.title,
+      this.aff,
+      this.coverVertical,
+      this.coverHorizontal,
+      this.tags,
+      this.isFree,
+      this.coins,
+      this.playCt,
+      this.countComment,
+      this.countLike,
+      this.isLike,
+      this.favorites,
+      this.isFavorite,
+      this.duration,
+      this.source_240,
+      this.mvType,
+      this.sourceOriginStr,
+      this.tagList,
+      this.isPay,
+      this.discount,
+      this.discountCoins,
+      this.isPackage,
+      this.previewUrl,
+      this.member,
+      this.description,
+      this.imgUrl,
+      this.type,
+      this.router,
+      this.urlStr,
+      this.linkUrl,
+      this.url,
+      this.resourceUrl,
+      this.redirectType,
+      this.reportType,
+      this.reportId,
+      this.videoTypeId,
+      this.videoTypeName,
+      this.videoContentType,
+      this.recommendTraceId,
+      this.videoTagKey,
+      this.videoTagName,
+      this.mediaId = ""});
 
   factory VlogModel.fromJson(Map<String, dynamic> json) => VlogModel(
       id: json['id'],
@@ -118,9 +119,7 @@ class VlogModel {
       discountCoins: json['discount_coins'],
       isPackage: json['is_package'],
       previewUrl: json['preview_url'],
-      member: json['member'] != null
-          ? UserModel.fromJson(json['member'] as Map<String, dynamic>)
-          : null,
+      member: json['member'] != null ? UserModel.fromJson(json['member'] as Map<String, dynamic>) : null,
       description: json['description'],
       imgUrl: json['img_url'],
       type: json['type'],
@@ -137,7 +136,8 @@ class VlogModel {
       videoContentType: json['video_content_type'],
       recommendTraceId: json['recommend_trace_id'],
       videoTagKey: json['video_tag_key'],
-      videoTagName: json['video_tag_name']);
+      videoTagName: json['video_tag_name'],
+      mediaId: json['media_id'] ?? '');
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -181,6 +181,7 @@ class VlogModel {
         'recommend_trace_id': recommendTraceId,
         'video_tag_key': videoTagKey,
         'video_tag_name': videoTagName,
+        'mediaId': mediaId,
       };
 }
 
@@ -190,30 +191,21 @@ class HotFollowUseRecommendModel {
   final List<RecommendBloggerModel>? recommendBlogger;
   final List<VlogModel>? bloggerVlogs;
 
-  HotFollowUseRecommendModel(
-      {this.hotBlogger,
-      this.myFollow,
-      this.recommendBlogger,
-      this.bloggerVlogs});
+  HotFollowUseRecommendModel({this.hotBlogger, this.myFollow, this.recommendBlogger, this.bloggerVlogs});
 
-  factory HotFollowUseRecommendModel.fromJson(Map<String, dynamic> json) =>
-      HotFollowUseRecommendModel(
+  factory HotFollowUseRecommendModel.fromJson(Map<String, dynamic> json) => HotFollowUseRecommendModel(
         hotBlogger: json['hot_blogger'] == null
             ? null
-            : List<UserModel>.from(
-                json['hot_blogger'].map((e) => UserModel.fromJson(e))),
+            : List<UserModel>.from(json['hot_blogger'].map((e) => UserModel.fromJson(e))),
         myFollow: json['my_follow'] == null
             ? null
-            : List<FollowingUserData>.from(
-                json['my_follow'].map((e) => FollowingUserData.fromJson(e))),
+            : List<FollowingUserData>.from(json['my_follow'].map((e) => FollowingUserData.fromJson(e))),
         recommendBlogger: json['recommend_blogger'] == null
             ? null
-            : List<RecommendBloggerModel>.from(json['recommend_blogger']
-                .map((e) => RecommendBloggerModel.fromJson(e))),
+            : List<RecommendBloggerModel>.from(json['recommend_blogger'].map((e) => RecommendBloggerModel.fromJson(e))),
         bloggerVlogs: json['blogger_mvs'] == null
             ? null
-            : List<VlogModel>.from(
-                json['blogger_mvs'].map((e) => VlogModel.fromJson(e))),
+            : List<VlogModel>.from(json['blogger_mvs'].map((e) => VlogModel.fromJson(e))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -249,16 +241,12 @@ class RecommendBloggerModel {
     this.likeCt,
   });
 
-  factory RecommendBloggerModel.fromJson(Map<String, dynamic> json) =>
-      RecommendBloggerModel(
+  factory RecommendBloggerModel.fromJson(Map<String, dynamic> json) => RecommendBloggerModel(
         aff: json['aff'],
         nickname: json['nickname'],
         thumb: json['thumb'],
         releasedAt: json['released_at'],
-        mvs: json['mvs'] == null
-            ? null
-            : List<VlogModel>.from(
-                json['mvs'].map((e) => VlogModel.fromJson(e))),
+        mvs: json['mvs'] == null ? null : List<VlogModel>.from(json['mvs'].map((e) => VlogModel.fromJson(e))),
         isFollow: json['is_follow'],
         vipStr: json['vip_str'],
         fansCt: json['fans_ct'].toString(),

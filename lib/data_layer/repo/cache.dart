@@ -20,6 +20,7 @@ class _CacheManager implements CacheDomain {
   final _officeWebKey = 'office_web';
   final _adsKey = 'ads';
   final _startScreenAdsKey = 'startScreenAdsKey';
+  final _installKey = 'install';
 
   final _searchHistoryKey = 'search_history';
   final _downloadVideoTasksKey = 'download_video_tasks';
@@ -36,6 +37,12 @@ class _CacheManager implements CacheDomain {
     chatBox = HiveBoxCache(await Hive.openLazyBox(cacheKeys.chats));
     videoBox = HiveBoxCache(await Hive.openLazyBox(cacheKeys.videoBox));
   }
+
+
+  Future<String?> readInstallFlag() async =>
+      (await appBox.read(_installKey))?.toString();
+  Future<void> upsertInstallFlag(String installFlag) =>
+      appBox.upsert(_installKey, installFlag);
 
   Future<String?> readAuthToken() async =>
       (await appBox.read(_authTokenKey))?.toString();

@@ -14,68 +14,57 @@ import 'package:analytics_sdk/observer/page_lifecycle_observer.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:jygf/app_global.dart';
-import 'package:jygf/domain/model/feed/feed_model.dart';
-import 'package:jygf/domain/model/home_data_model.dart';
-import 'package:jygf/domain/model/live_model.dart';
-import 'package:jygf/domain/model/video_detail_model.dart';
-import 'package:jygf/domain/model/vlog_model.dart';
-import 'package:jygf/report/analytics/analytics_page_sync.dart';
 import 'package:jygf/report/analytics/report_search_event.dart';
-import 'package:jygf/ui_layer/utils/common_utils.dart';
+import 'package:provider/provider.dart';
 
-/// 将服务端埋点用的 behavior key 映射为 SDK 枚举
-VideoEventEnum videoBehaviorFromHttpKey(String key) {
-  switch (key) {
-    case 'video_play':
-      return VideoEventEnum.VIDEO_PLAY;
-    case 'video_pause':
-      return VideoEventEnum.VIDEO_PAUSE;
-    case 'video_complete':
-      return VideoEventEnum.VIDEO_COMPLETE;
-    case 'video_forward':
-      return VideoEventEnum.VIDEO_FORWARD;
-    case 'video_rewind':
-      return VideoEventEnum.VIDEO_REWIND;
-    default:
-      return VideoEventEnum.VIDEO_PLAY;
-  }
-}
+import '../../app_global.dart';
+import '../../data_layer/data_source/remote/report.dart';
+import '../../data_layer/repo/repo.dart';
+import '../../domain/model/feed/feed_model.dart';
+import '../../domain/model/home_data_model.dart';
+import '../../domain/model/video_detail_model.dart';
+import '../../domain/model/vlog_model.dart';
+import '../../ui_layer/utils/common_utils.dart';
+import 'analytics_page_sync.dart';
 
-/// 拉取加密配置并下发给 SDK（接入 ReportDomain 后可在此实现）
 Future<void> fetchAndApplyConfig() async {
   try {
-    // jygf 暂无 ReportDomain#getEncryptedConfig，与 a_hjsq 对齐预留入口
-    CommonUtils.log('fetchAndApplyConfig: 未配置 ReportDomain，跳过');
+    final reportDomain = AppGlobal.context?.read<ReportDomain>();
+    final res = await reportDomain?.getEncryptedConfig();
+    // 根据实际的API响应格式提取config
+    if (res != null && res.status == 1) {
+      if (res.data case final encryptedConfig) {
+        CommonUtils.log('encryptedConfig:$encryptedConfig');
+        await AnalyticsSdk.instance.refreshDomainConfig(
+          encryptedConfig: encryptedConfig,
+        );
+      }
+    }
   } catch (e) {
-    CommonUtils.log('获取加密 config 失败: $e');
+    CommonUtils.log('获取加密config失败: $e');
   }
 }
 
-Future<void> initAnalyticsSdk(
-  BuildContext? context, {
-  String oauthId = '',
-  String appVersion = '',
-}) async {
-  final appId =
-      AppGlobal.reportAppId.isNotEmpty ? AppGlobal.reportAppId : 'DX-002';
+Future<void> initAnalyticsSdk(BuildContext? context, {String oauthId = ''}) async {
+  final appId = AppGlobal.reportAppId.isNotEmpty ? AppGlobal.reportAppId : 'DX-106';
   await AnalyticsSdk.instance.init(
     appId: appId,
     encryptedConfig: null,
     deviceId: oauthId,
     enableDebugBanner: kDebugMode,
-    appVersion: appVersion.isNotEmpty ? appVersion : '1.0.0',
+    appVersion: '26.0425.0132',
   );
 }
 
-bool _appInstallEventSent = false;
-
+// 安装事件
 void analyticsReportInstall(BuildContext context, String traceID) {
-  if (_appInstallEventSent) return;
-  _appInstallEventSent = true;
-  AnalyticsSdk.instance.track(AppInstallEvent(traceId: traceID));
+  if (AppGlobal.installFlag.isEmpty) {
+    AnalyticsSdk.instance.track(AppInstallEvent(traceId: traceID));
+    context.read<AppRepo>().setInstallFlag('1');
+  }
 }
 
+// 用户登陆
 void analyticsUserLogin(int vipLevel) {
   AnalyticsSdk.setUserIdAndType(
     userId: (AppGlobal.aff > 0) ? AppGlobal.aff.toString() : '',
@@ -83,20 +72,24 @@ void analyticsUserLogin(int vipLevel) {
   );
 }
 
+// 设置UID
 void analyticsSetUid(String uid) {
   AnalyticsSdk.setUid(uid);
 }
 
+// 设置Channel
 void analyticsSetChannel(String channel) {
   AnalyticsSdk.setChannel(
     channel == 'self' ? '' : channel,
   );
 }
 
+// 登出
 void analyticsLogout() {
   AnalyticsSdk.logoutUser();
 }
 
+// 页面导航切换
 void analyticsNavigationChange() {
   final key = PageLifecycleObserver.currentPageKey;
   final pageName = PageNameMapper.getPageName(key);
@@ -107,6 +100,7 @@ void analyticsNavigationChange() {
   );
 }
 
+// 视频行为上报
 void analyticsVideo({
   FlickManager? flickManager,
   dynamic data,
@@ -143,7 +137,7 @@ void analyticsVideo({
     videoTagKey = data.videoTagKey ?? 'video_detail';
     videoTagName = data.videoTagName ?? (data.tags ?? '');
     recommendTraceId = data.recommendTraceId ?? '';
-    mediaId = '';
+    mediaId = data.mediaId;
   }
 
   if (data is VlogModel) {
@@ -154,7 +148,7 @@ void analyticsVideo({
     videoTagKey = data.videoTagKey ?? 'video_detail';
     videoTagName = data.videoTagName ?? (data.tags ?? '');
     recommendTraceId = data.recommendTraceId ?? '';
-    mediaId = '';
+    mediaId = data.mediaId;
   }
 
   int progress = (percent * 100).clamp(0, 100).round();
@@ -171,46 +165,14 @@ void analyticsVideo({
       playProgress: progress,
       videoBehavior: videoEvent,
       videoContentType: videoContentType,
+      // 未接推荐引擎传 ''
       recommendTraceId: recommendTraceId,
       mediaId: mediaId,
     ),
   );
 }
 
-/// 直播流（LiveModel）视频行为，字段对齐 [VideoEvent]
-void analyticsLiveVideo({
-  FlickManager? flickManager,
-  required LiveModel data,
-  required VideoEventEnum videoEvent,
-}) {
-  final value = flickManager?.flickVideoManager?.videoPlayerValue;
-  if (value == null || !value.isInitialized) return;
-
-  int playDuration = value.position.inSeconds;
-  int videoDuration = value.duration.inSeconds;
-  double percent = videoDuration > 0 ? playDuration / videoDuration : 0;
-  if (percent.isNaN || percent.isInfinite) percent = 0;
-  int progress = (percent * 100).clamp(0, 100).round();
-
-  AnalyticsSdk.instance.track(
-    VideoEvent(
-      videoId: data.id?.toString() ?? '',
-      videoTitle: data.username ?? '',
-      videoTypeId: data.videoTypeId?.toString() ?? '',
-      videoTypeName: data.videoTypeName ?? '',
-      videoTagKey: data.videoTagKey ?? 'live',
-      videoTagName: data.videoTagName ?? '',
-      videoDuration: videoDuration,
-      playDuration: playDuration,
-      playProgress: progress,
-      videoBehavior: videoEvent,
-      videoContentType: VideoContentTypeEnum('live'),
-      recommendTraceId: data.recommendTraceId ?? '',
-      mediaId: '',
-    ),
-  );
-}
-
+// 点击广告上报
 void analyticsAdClick(BuildContext context, dynamic data) {
   if (data is! FeedAdModel && data is! AdModel) return;
 
@@ -222,14 +184,14 @@ void analyticsAdClick(BuildContext context, dynamic data) {
     adSlotKey = data.advertiseLocationCode ?? '';
     adSlotName = data.adSlotName ?? '';
     adId = data.advertiseCode ?? '';
-    adType = data.adType ?? '';
+    adType = "${data.adType}" ?? '';
   }
 
   if (data is AdModel) {
     adSlotKey = data.advertiseLocationCode ?? '';
     adSlotName = data.adSlotName ?? '';
     adId = data.advertiseCode ?? '';
-    adType = data.adType ?? '';
+    adType = "${data.adType}" ?? '';
   }
 
   final pageInfo = syncAnalyticsPageFromContext(context);
@@ -248,6 +210,7 @@ void analyticsAdClick(BuildContext context, dynamic data) {
   );
 }
 
+// 广告行为上报
 void analyticsAdvertising({required dynamic data, required String action}) {
   if (data is! FeedAdModel && data is! AdModel) return;
 
@@ -276,6 +239,7 @@ void analyticsAdvertising({required dynamic data, required String action}) {
   );
 }
 
+// 搜索关键词上报
 void analyticsKeywordClick({
   required String keyword,
   required String clickItemId,
@@ -299,6 +263,7 @@ void analyticsKeywordClick({
   );
 }
 
+// 关键词搜索
 void analyticsKeywordSearch({
   required String keyword,
   required int searchResultCount,

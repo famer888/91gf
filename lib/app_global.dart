@@ -14,6 +14,9 @@ class AppGlobal {
   static ReportConfig? reportConfig;
   static String reportAppId = '';
   static String reportTraceId = '';
+
+  /// 安装埋点是否已上报（与本地 install 缓存键同步）
+  static String installFlag = '';
   static String affXCode = '';
 
   static String officeSite = '';

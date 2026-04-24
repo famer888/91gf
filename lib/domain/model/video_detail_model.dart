@@ -5,19 +5,16 @@ import 'home_data_model.dart';
 
 class VideoDetailData {
   VideoDetailData({required this.detail, this.banner, this.adPops});
+
   final VideoData detail;
   final List<BannerModel>? banner;
   final Notice? adPops;
 
-  factory VideoDetailData.fromJson(Map<String, dynamic> json) =>
-      VideoDetailData(
+  factory VideoDetailData.fromJson(Map<String, dynamic> json) => VideoDetailData(
         detail: VideoData.fromJson(json['detail']),
-        banner: json['banner'] == null
-            ? null
-            : List<BannerModel>.from(
-                json['banner'].map((e) => BannerModel.fromJson(e))),
-        adPops:
-            json['ad_pops'] == null ? null : Notice.fromJson(json['ad_pops']),
+        banner:
+            json['banner'] == null ? null : List<BannerModel>.from(json['banner'].map((e) => BannerModel.fromJson(e))),
+        adPops: json['ad_pops'] == null ? null : Notice.fromJson(json['ad_pops']),
       );
 
   Map<String, dynamic> toJson() => {
@@ -28,81 +25,81 @@ class VideoDetailData {
 }
 
 class VideoData {
-  VideoData({
-    this.id,
-    this.memberUuid,
-    this.title,
-    this.mvType,
-    this.isActivity,
-    this.isRecommend,
-    this.source240,
-    this.source480,
-    this.source720,
-    this.source1080,
-    this.vExt,
-    this.duration,
-    this.thumbCover,
-    this.thumbWidth,
-    this.thumbHeight,
-    this.directors,
-    this.publisher,
-    this.actors,
-    // this.category,
-    this.tags,
-    this.selfTag,
-    this.tagsId,
-    this.via,
-    this.onshelfTm,
-    this.rating,
-    this.countPlay,
-    this.countFavorites,
-    this.countLike,
-    this.countComment,
-    this.countReward,
-    this.countPay,
-    this.incomeCoins,
-    this.createdAt,
-    this.refreshAt,
-    this.updatedAt,
-    this.callbackAt,
-    this.isfree,
-    this.status,
-    this.thumbStartTime,
-    this.thumbDuration,
-    this.isHide,
-    this.coins,
-    this.musicId,
-    this.enableBackground,
-    this.enableSoundtrack,
-    this.isDelete,
-    this.rejectReason,
-    this.rejectAt,
-    this.isTop,
-    this.clubId,
-    this.isTester,
-    this.desc,
-    this.isPopular,
-    this.isTiptop,
-    this.userFavorites = 0,
-    this.userLike,
-    this.coverThumbHorizontal,
-    this.coverThumbVerticle,
-    this.discountCoins,
-    this.discount,
-    this.favorites = 0,
-    this.previewUrl,
-    this.member,
-    this.topic,
-    this.userAction,
-    this.seriesId,
-    this.secondTitle,
-    this.videoTypeId,
-    this.videoTypeName,
-    this.videoContentType,
-    this.recommendTraceId,
-    this.videoTagKey,
-    this.videoTagName,
-  });
+  VideoData(
+      {this.id,
+      this.memberUuid,
+      this.title,
+      this.mvType,
+      this.isActivity,
+      this.isRecommend,
+      this.source240,
+      this.source480,
+      this.source720,
+      this.source1080,
+      this.vExt,
+      this.duration,
+      this.thumbCover,
+      this.thumbWidth,
+      this.thumbHeight,
+      this.directors,
+      this.publisher,
+      this.actors,
+      // this.category,
+      this.tags,
+      this.selfTag,
+      this.tagsId,
+      this.via,
+      this.onshelfTm,
+      this.rating,
+      this.countPlay,
+      this.countFavorites,
+      this.countLike,
+      this.countComment,
+      this.countReward,
+      this.countPay,
+      this.incomeCoins,
+      this.createdAt,
+      this.refreshAt,
+      this.updatedAt,
+      this.callbackAt,
+      this.isfree,
+      this.status,
+      this.thumbStartTime,
+      this.thumbDuration,
+      this.isHide,
+      this.coins,
+      this.musicId,
+      this.enableBackground,
+      this.enableSoundtrack,
+      this.isDelete,
+      this.rejectReason,
+      this.rejectAt,
+      this.isTop,
+      this.clubId,
+      this.isTester,
+      this.desc,
+      this.isPopular,
+      this.isTiptop,
+      this.userFavorites = 0,
+      this.userLike,
+      this.coverThumbHorizontal,
+      this.coverThumbVerticle,
+      this.discountCoins,
+      this.discount,
+      this.favorites = 0,
+      this.previewUrl,
+      this.member,
+      this.topic,
+      this.userAction,
+      this.seriesId,
+      this.secondTitle,
+      this.videoTypeId,
+      this.videoTypeName,
+      this.videoContentType,
+      this.recommendTraceId,
+      this.videoTagKey,
+      this.videoTagName,
+      this.mediaId = ""});
 
   int? id;
   final dynamic topic;
@@ -127,6 +124,7 @@ class VideoData {
   final String? directors;
   final String? publisher;
   final String? actors;
+
   // final String? category;
   final String? tags;
   final String? selfTag;
@@ -174,21 +172,20 @@ class VideoData {
 
   int? isSpeed;
 
-
   final int? videoTypeId;
   final String? videoTypeName;
   final String? videoContentType;
   final String? recommendTraceId;
   final String? videoTagKey;
   final String? videoTagName;
+  final String mediaId;
 
   factory VideoData.fromJson(Map json) => VideoData(
       secondTitle: json['second_title'] ?? '',
       id: json['id'],
       topic: json['topic'],
       userAction: json['userAction'],
-      member:
-          json['member'] == null ? null : UserModel.fromJson(json['member']),
+      member: json['member'] == null ? null : UserModel.fromJson(json['member']),
       memberUuid: json['member_uuid'],
       title: json['title'],
       mvType: json['mv_type'],
@@ -248,9 +245,7 @@ class VideoData {
       coverThumbHorizontal: json['cover_horizontal'],
       coverThumbVerticle: json['cover_vertical'],
       discountCoins: json['discount_coins'] ?? 0,
-      discount: json['discount'] == null
-          ? 0
-          : double.parse(json['discount'].toString()),
+      discount: json['discount'] == null ? 0 : double.parse(json['discount'].toString()),
       favorites: json['favorites'] ?? 0,
       seriesId: json['series_id'] ?? 0,
       videoTypeId: json['video_type_id'] ?? 0,
@@ -258,7 +253,8 @@ class VideoData {
       videoContentType: json['video_content_type'],
       recommendTraceId: json['recommend_trace_id'],
       videoTagKey: json['video_tag_key'],
-      videoTagName: json['video_tag_name']);
+      videoTagName: json['video_tag_name'],
+      mediaId: json['media_id'] ?? '');
 
   Map<String, dynamic> toJson() => {
         'second_title': secondTitle ?? '',
@@ -334,5 +330,6 @@ class VideoData {
         'recommend_trace_id': recommendTraceId,
         'video_tag_key': videoTagKey,
         'video_tag_name': videoTagName,
+        'mediaId': mediaId,
       };
 }
