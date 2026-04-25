@@ -18,8 +18,8 @@ import 'package:jygf/report/analytics/report_search_event.dart';
 import 'package:provider/provider.dart';
 
 import '../../app_global.dart';
-import '../../data_layer/data_source/remote/report.dart';
 import '../../data_layer/repo/repo.dart';
+import '../../domain/remote_domain/domains/report.dart';
 import '../../domain/model/feed/feed_model.dart';
 import '../../domain/model/home_data_model.dart';
 import '../../domain/model/video_detail_model.dart';
@@ -52,7 +52,7 @@ Future<void> initAnalyticsSdk(BuildContext? context, {String oauthId = ''}) asyn
     encryptedConfig: null,
     deviceId: oauthId,
     enableDebugBanner: kDebugMode,
-    appVersion: '26.0425.0132',
+    appVersion: '26.0425.1111',
   );
 }
 

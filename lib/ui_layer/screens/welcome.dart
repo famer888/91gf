@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper_null_safety_flutter3/flutter_swiper_null_safety_flutter3.dart';
 import 'package:jygf/app_config.dart';
+import 'package:jygf/app_global.dart';
 import 'package:jygf/data_layer/repo/repo.dart';
 import 'package:jygf/report/analytics/analytics_report.dart';
 import 'package:jygf/report/ui_layer/report_ad_view.dart';
@@ -96,7 +97,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             deviceId: appDomain.info["oauth_id"].toString()));
       },
       success: () async {
-        await fetchAndApplyConfig();
+        fetchAndApplyConfig();
         _enterAdOrHome();
         await amplitude.track(BaseEvent("enter app",
             deviceId: appDomain.info["oauth_id"].toString()));
@@ -235,6 +236,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    AppGlobal.context = context;
     return PopScopeWrapper(
       child: ScreenBackground(
         child: Scaffold(

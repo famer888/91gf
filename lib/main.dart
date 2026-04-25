@@ -22,6 +22,7 @@ import 'package:jygf/domain/remote_domain/domains/game.dart';
 import 'package:jygf/domain/remote_domain/domains/live.dart';
 import 'package:jygf/domain/remote_domain/domains/novel.dart';
 import 'package:jygf/domain/remote_domain/domains/rank.dart';
+import 'package:jygf/domain/remote_domain/domains/report.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:bot_toast/bot_toast.dart';
@@ -123,6 +124,7 @@ void main() async {
         Provider<AIAudioDomain>(lazy: false, create: (_) => appRepo),
         Provider<ASMRDomain>(lazy: false, create: (_) => appRepo),
         Provider<RankDomain>(lazy: false, create: (_) => appRepo),
+        Provider<ReportDomain>(lazy: false, create: (_) => appRepo),
         Provider<ComicDomain>(lazy: false, create: (_) => appRepo),
         Provider<NovelDomain>(lazy: false, create: (_) => appRepo),
         Provider<AlbumDomain>(lazy: false, create: (_) => appRepo),

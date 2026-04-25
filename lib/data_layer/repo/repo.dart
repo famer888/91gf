@@ -28,6 +28,7 @@ import 'package:jygf/data_layer/data_source/remote/game_service.dart';
 import 'package:jygf/data_layer/data_source/remote/live_service.dart';
 import 'package:jygf/data_layer/data_source/remote/novel_service.dart';
 import 'package:jygf/data_layer/data_source/remote/rank_service.dart';
+import 'package:jygf/data_layer/data_source/remote/report_service.dart';
 import 'package:jygf/data_layer/repo/r2_uploader.dart';
 import 'package:jygf/domain/model/ai/ai_draw_model.dart';
 import 'package:jygf/domain/model/ai/ai_draw_record_model.dart';
@@ -59,6 +60,7 @@ import 'package:jygf/domain/remote_domain/domains/game.dart';
 import 'package:jygf/domain/remote_domain/domains/live.dart';
 import 'package:jygf/domain/remote_domain/domains/novel.dart';
 import 'package:jygf/domain/remote_domain/domains/rank.dart';
+import 'package:jygf/domain/remote_domain/domains/report.dart';
 import 'package:jygf/domain/remote_domain/domains/black_domain.dart';
 import 'package:jygf/report/event_tracking.dart';
 import 'package:jygf/report/ui_layer/report_timing_interceptor.dart';
@@ -176,6 +178,7 @@ part 'mixin/original_mixim.dart';
 part 'mixin/privilege_mixin.dart';
 part 'mixin/proxy_mixin.dart';
 part 'mixin/rank_mixin.dart';
+part 'mixin/report_mixin.dart';
 part 'mixin/search_mixin.dart';
 part 'mixin/seed_mixin.dart';
 part 'mixin/sign_mixin.dart';
@@ -213,6 +216,7 @@ class AppRepo extends _BaseAppRepo
         _AIKiss,
         _Asmr,
         _Rank,
+        _Report,
         _Comic,
         _Novel,
         _Album,
@@ -246,6 +250,7 @@ abstract class _BaseAppRepo implements AppDomain {
   late final _aiaudioService = AIAudioService(_apiDio);
   late final _asmrService = ASMRService(_apiDio);
   late final _rankService = RankService(_apiDio);
+  late final _reportService = ReportService(_apiDio);
   late final _aidrawService = AIDrawService(_apiDio);
   late final _aikissService = AIKissService(_apiDio);
   late final _comicService = ComicService(_apiDio);
