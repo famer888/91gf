@@ -13,17 +13,17 @@ class BuildConfig {
   static const defaultFdsKey =
       'P/D/+MulHay6Jzah0AnECON76PVOS4idWjlv/W9FmBnsXsGE+wXTI/uP4UpmvvPD';
 
-  static const  linesUrlKey = 'lines_url_v1'; // 每次换线路都要v+1 ！！！
+  static const  linesUrlKey = 'lines_url_v2'; // 每次换线路都要v+1 ！！！
 
   /// 备用接口线路
   static final apiLines = kIsWeb
       ? [
-          'https://wapi.goznfjtln.com/api.php',
+          'https://wapi.zjjjfbyo.cc/api.php',
         ]
       : [
-          'https://api1.goznfjtln.com/api.php',
-          'https://api2.goznfjtln.com/api.php',
-          'https://api3.goznfjtln.com/api.php',
+          'https://api1.zjjjfbyo.cc/api.php',
+          'https://api2.zjjjfbyo.cc/api.php',
+          'https://api3.zjjjfbyo.cc/api.php',
         ];
 
   /// 备用线路
