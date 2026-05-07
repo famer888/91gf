@@ -10,7 +10,6 @@ import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
 
-
 final Uint8List kTransparentImage = Uint8List.fromList(<int>[
   0x89,
   0x50,
@@ -163,7 +162,8 @@ class NetworkImageWidget extends StatefulWidget {
   State createState() => _NetworkImageWidgetState();
 }
 
-class _NetworkImageWidgetState extends State<NetworkImageWidget> with SingleTickerProviderStateMixin {
+class _NetworkImageWidgetState extends State<NetworkImageWidget>
+    with SingleTickerProviderStateMixin {
   /// 动画
   late Animation<double> _animation;
   late AnimationController controller;
@@ -229,9 +229,11 @@ class _NetworkImageWidgetState extends State<NetworkImageWidget> with SingleTick
       success: (data) {
         isload = false;
         mounted ? controller.forward(from: 0.0) : null;
-        mounted ? setState(() {
-          bytes = data;
-        }) : null;
+        mounted
+            ? setState(() {
+                bytes = data;
+              })
+            : null;
       },
       failure: () {
         CommonUtils.log('图片加载解析失败11');
@@ -260,13 +262,19 @@ class _NetworkImageWidgetState extends State<NetworkImageWidget> with SingleTick
                 controller.forward(from: 0.0);
                 return FadeTransition(opacity: _animation, child: child);
               }
-              return widget.placeholderImage ?? const Center(child: CircularProgressIndicator());
+              return widget.placeholderImage ??
+                  const Center(child: CircularProgressIndicator());
             },
             errorBuilder: (context, error, stack) {
               // 打印 error 到控制台，便于调试 CORS / 403 等
               CommonUtils.log('Image load error: $error, url: $url');
               return widget.placeholderImage ??
-                  Container(color: widget.placeholderColor ?? Colors.grey[500], child: Image.asset(MyImagePaths.appPlaceholder));
+                  Container(
+                      color: widget.placeholderColor ?? Colors.grey[500],
+                      child: Image.asset(
+                        MyImagePaths.appFigureNNew,
+                        width: 55.w,
+                      ));
             },
           ),
         );
@@ -328,14 +336,18 @@ class _NetworkImageWidgetState extends State<NetworkImageWidget> with SingleTick
       // LogUtil.dPrint('---> image placeholder $constraints');
       BoxConstraints bPlaceholder;
       if (constraints.maxHeight == 0 || constraints.maxWidth == 0) {
-        bPlaceholder = BoxConstraints(maxHeight: min(constraints.maxHeight * 0.6, 105.w), maxWidth: min(constraints.maxWidth * 0.6, 107.w));
+        bPlaceholder = BoxConstraints(
+            maxHeight: min(constraints.maxHeight * 0.6, 105.w),
+            maxWidth: min(constraints.maxWidth * 0.6, 107.w));
       } else {
-        bPlaceholder = BoxConstraints(maxHeight: 107.w * 0.6, maxWidth: 105.w * 0.6);
+        bPlaceholder =
+            BoxConstraints(maxHeight: 107.w * 0.6, maxWidth: 105.w * 0.6);
       }
       return Container(
         constraints: bPlaceholder,
         child: Image.asset(
-          widget.placeholder ?? MyImagePaths.appPlaceholder,
+          widget.placeholder ?? MyImagePaths.appFigureNNew,
+          width: 55.w,
         ),
       );
     });

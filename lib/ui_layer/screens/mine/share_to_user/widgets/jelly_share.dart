@@ -27,7 +27,7 @@ class JellyShareCard extends StatelessWidget {
           alignment: Alignment.topCenter,
           children: [
             MyImage.asset(
-              MyImagePaths.appMineJellyShareQrBg,
+              MyImagePaths.appMineJellyShareQrBgNew,
               fit: BoxFit.fill,
               width: width,
               height: height,

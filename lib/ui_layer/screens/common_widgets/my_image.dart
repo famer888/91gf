@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../utils/common_utils.dart';
 import '../image_paths.dart';
@@ -98,7 +99,7 @@ class MyImage extends StatelessWidget {
     this.borderRadius,
     this.backgroundColor,
     this.iconColor,
-    this.placeHolder = MyImagePaths.appFigureN,
+    this.placeHolder = MyImagePaths.appFigureNNew,
   }) : _type = _ImageType.network;
 
   final String src;
@@ -145,15 +146,15 @@ class MyImage extends StatelessWidget {
           if (!hasBoundedWidth) {
             final phSize = width ?? height ?? 40.0;
             final double w = phSize;
-            final double h = placeHolder == MyImagePaths.appFigureN ? w / 117 * 40 : (height ?? phSize);
+            final double h = placeHolder == MyImagePaths.appFigureNNew ? w / 117 * 40 : (height ?? phSize);
             return Stack(
               alignment: Alignment.center,
               children: [
-                placeHolder == MyImagePaths.appFigureN
+                placeHolder == MyImagePaths.appFigureNNew
                     ? Image.asset(
                         placeHolder!,
-                        width: w,
-                        height: h,
+                        width: 55.w,
+                        height: 55.w,
                       )
                     : Image.asset(
                         placeHolder!,
@@ -169,12 +170,12 @@ class MyImage extends StatelessWidget {
           return Stack(
             fit: StackFit.expand,
             children: [
-              placeHolder == MyImagePaths.appFigureN
+              placeHolder == MyImagePaths.appFigureNNew
                   ? Center(
                       child: Image.asset(
                         placeHolder!,
-                        width: w,
-                        height: h,
+                        width: 55.w,
+                        height: 55.w,
                       ),
                     )
                   : Image.asset(

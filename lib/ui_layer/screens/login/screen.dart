@@ -19,7 +19,6 @@ import '../image_paths.dart';
 import '../theme.dart';
 import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
 
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -156,14 +155,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     child: Column(
                       children: [
-                        
                         MyImage.asset(
-                          MyImagePaths.appLogoIcon,
-                          width: 109.w,
+                          MyImagePaths.appLogoIconNew,
+                          width: 76.w,
                         ),
-                        SizedBox(height: 10.w),
+                        SizedBox(height: 23.w),
                         Text(
-                          'yhldcm'.tr(context: context),
+                          'hysyxhp'.tr(context: context),
                           style: TextStyle(
                             color: const Color.fromRGBO(255, 255, 255, 1),
                             fontSize: 13.sp,

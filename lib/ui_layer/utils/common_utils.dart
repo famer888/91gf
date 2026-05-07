@@ -46,7 +46,6 @@ import 'package:universal_html/js_util.dart' as js_util;
 import 'package:utils/utils.dart';
 import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
 
-
 class CommonUtils {
   static setStatusBar({bool isLight = false}) {
     if (kIsWeb) {
@@ -229,7 +228,7 @@ class CommonUtils {
     VoicePlayerManager.instance.removeFloatPayer();
   }
 
-   static Future<void> removeFloatPayer() async {
+  static Future<void> removeFloatPayer() async {
     VoicePlayerManager.instance.audioController?.pause();
     VoicePlayerManager.instance.isPlay.value = false;
     VoicePlayerManager.instance.removeFloatPayer();
@@ -240,7 +239,6 @@ class CommonUtils {
     NovelVoicePlayerManager.instance.removeFloatPayer();
     NovelVoicePlayerManager.instance.disposes();
   }
-
 
   static String getThumb(Map data) {
     final keys = [
@@ -779,34 +777,36 @@ class CommonUtils {
           bottom: 3.w),
       child: Stack(
         children: [
-         const Positioned.fill(child: MyImage.asset(MyImagePaths.appLivesNoticeBg)), 
-           Row(
-          children: [
-            MyImage.asset(MyImagePaths.appLivesNoticeIcon,
-                width: 18.w, height: 14.w),
-            Expanded(
-              child: Stack(
-                children: [
-                  SwiperTips(tips: tips),
-                  Container(
-                    width: 30.w,
-                    height: 20.w,
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Color.fromARGB(255, 0, 0, 0),
-                          Color.fromARGB(0, 0, 0, 0)
-                        ],
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
+          const Positioned.fill(
+              child: MyImage.asset(MyImagePaths.appLivesNoticeBg)),
+          Row(
+            children: [
+              MyImage.asset(MyImagePaths.appLivesNoticeIcon,
+                  width: 18.w, height: 14.w),
+              Expanded(
+                child: Stack(
+                  children: [
+                    SwiperTips(tips: tips),
+                    Container(
+                      width: 30.w,
+                      height: 20.w,
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Color.fromARGB(255, 0, 0, 0),
+                            Color.fromARGB(0, 0, 0, 0)
+                          ],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        ),
                       ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
-        )],
+            ],
+          )
+        ],
       ),
     );
   }
@@ -1155,7 +1155,8 @@ class CommonUtils {
                                   VlogTagRoute(tag: tag).push(context);
                                 },
                                 child: Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 3.w),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 3.w),
                                   decoration: BoxDecoration(
                                     color: Color.fromRGBO(0, 0, 0, 0.3),
                                     borderRadius: BorderRadius.circular(3.w),
@@ -1213,7 +1214,7 @@ class CommonUtils {
                               height: 30.w,
                               child: Center(
                                 child: MyImage.asset(
-                                  MyImagePaths.appFigureN,
+                                  MyImagePaths.appFigureNNew,
                                   width: 30.w,
                                   height: 30.w,
                                   borderRadius: 15.w,
@@ -1236,7 +1237,7 @@ class CommonUtils {
                                 data.member?.thumb ?? "",
                                 borderRadius: 15.w,
                                 backgroundColor: MyTheme.white008Color,
-                                placeHolder: MyImagePaths.appFigureN,
+                                placeHolder: MyImagePaths.appFigureNNew,
                               ),
                             ),
                     ),
@@ -1530,7 +1531,7 @@ class CommonUtils {
     );
   }
 
- static final Dio _novelDio = Dio(BaseOptions(
+  static final Dio _novelDio = Dio(BaseOptions(
     connectTimeout: const Duration(seconds: 60),
     receiveTimeout: const Duration(seconds: 30),
     responseType: ResponseType.bytes,
@@ -1538,7 +1539,7 @@ class CommonUtils {
       return (status ?? 0) < 500;
     },
   ));
-    // 小说获取
+  // 小说获取
   static Future getNovel(url) async {
     return kIsWeb
         ? html.HttpRequest.request(url, responseType: 'arraybuffer')
@@ -1575,10 +1576,11 @@ class CommonUtils {
       counterStyle: counterStyle,
       hoverColor: Colors.white,
       hintText: hit ?? 'qtxxbt'.tr(),
-      hintStyle: style ?? TextStyle(
-        color: const Color.fromRGBO(0, 0, 0, 0.35),
-        fontSize: 14.sp,
-      ),
+      hintStyle: style ??
+          TextStyle(
+            color: const Color.fromRGBO(0, 0, 0, 0.35),
+            fontSize: 14.sp,
+          ),
       contentPadding:
           EdgeInsets.symmetric(horizontal: horizontal.w, vertical: vertical.w),
       disabledBorder: outline(),
@@ -1627,7 +1629,8 @@ class _DashedBorderPainter extends CustomPainter {
     canvas.drawPath(dashedPath, paint);
   }
 
-  Path _dashPath(Path source, {required double width, required List<int> dash}) {
+  Path _dashPath(Path source,
+      {required double width, required List<int> dash}) {
     final Path dest = Path();
     final List<double> dashArray = dash.map((e) => e.toDouble()).toList();
 
