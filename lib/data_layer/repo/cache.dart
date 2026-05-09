@@ -10,7 +10,6 @@ class _CacheManager implements CacheDomain {
   final _oauthIdKey = 'oauth_id';
   final _authTokenKey = 'wwsj_token';
   final _fdsKey = 'fds_key';
-  final _linesUrlKey = 'lines_url';
   final _githubKey = 'github_url';
   final _reportKey = 'report_url';
   final _reportAppIdKey = 'report_app_id';
@@ -80,14 +79,14 @@ class _CacheManager implements CacheDomain {
   Future<void> upsertAffXCode(String code) => appBox.upsert(_affXCodeKey, code);
 
   Future<List<String>?> readLinesUrl() async {
-    if (await appBox.read(_linesUrlKey) case final data? when data.isNotEmpty) {
+    if (await appBox.read(BuildConfig.linesUrlKey) case final data? when data.isNotEmpty) {
       return List<String>.from(data);
     }
     return null;
   }
 
   Future<void> upsertLinesUrl(List<String> lines) =>
-      appBox.upsert(_linesUrlKey, lines);
+      appBox.upsert(BuildConfig.linesUrlKey, lines);
 
   Future<String?> readFdsKey() async =>
       (await appBox.read(_fdsKey))?.toString();
