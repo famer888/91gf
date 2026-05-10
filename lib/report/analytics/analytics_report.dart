@@ -57,7 +57,7 @@ Future<void> initAnalyticsSdk(BuildContext? context, {String oauthId = ''}) asyn
     encryptedConfig: null,
     deviceId: oauthId,
     enableDebugBanner: kDebugMode,
-    appVersion: '26.0425.1111',
+    appVersion: '26.0510.2340',
   );
 }
 
