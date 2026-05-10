@@ -34,6 +34,8 @@ enum SearchTypeEvent {
   bit(name: '种子', key: 'bit'),
 
   cartoon(name: '动漫', key: 'cartoon'),
+
+  asmr(name: 'ASMR', key: 'asmr'),
   ;
 
   final String key;

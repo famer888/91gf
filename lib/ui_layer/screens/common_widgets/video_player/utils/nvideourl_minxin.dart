@@ -12,6 +12,19 @@ import '../../../../utils/common_utils.dart';
 import 'shelf_proxy.dart';
 
 mixin NVideoURLMinxin<T extends StatefulWidget> on State<T> {
+  /// 追踪创建的 Blob URL，用于释放内存
+  String? currentBlobUrl;
+
+  /// 释放上一次创建的 Blob URL
+  void revokePreviousBlobUrl() {
+    if (currentBlobUrl != null) {
+      try {
+        html.Url.revokeObjectUrl(currentBlobUrl!);
+      } catch (_) {}
+      currentBlobUrl = null;
+    }
+  }
+
   //获取播放控制器
   Future<VideoPlayerController>? initController({
     String source240 = '',

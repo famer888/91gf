@@ -1,3 +1,4 @@
+import 'package:analytics_sdk/enum/click_item_type_enum.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -52,6 +53,8 @@ import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../domain/remote_domain/domains/chat.dart';
+import '../../../../report/analytics/analytics_report.dart';
+import '../../../../report/analytics/report_search_event.dart';
 
 class SearchResultScreen extends StatefulWidget {
   const SearchResultScreen({super.key, required this.title});
@@ -172,7 +175,13 @@ class _VideoViewState extends State<_VideoView> {
     required int pageSize,
   }) async {
     final result = await mvDomain.videoSearch(page: page, limit: pageSize, word: widget.word);
-
+    analyticsKeywordSearch(
+      keyword: widget.word,
+      searchResultCount: result.data?.length ?? 0,
+      searchId: '',
+      searchTraceId: '',
+      searchContentType: SearchTypeEvent.video.key,
+    );
     return result.data!;
   }
 
@@ -220,7 +229,13 @@ class _TieztViewState extends State<_TieztView> {
       word: widget.word,
       type: '1',
     );
-
+    analyticsKeywordSearch(
+      keyword: widget.word,
+      searchResultCount: result.data?.length ?? 0,
+      searchId: '',
+      searchTraceId: '',
+      searchContentType: SearchTypeEvent.post.key,
+    );
     return result.data!;
   }
 
@@ -265,7 +280,13 @@ class _ZhozViewState extends State<_ZhozView> {
       limit: pageSize,
       word: widget.word,
     );
-
+    analyticsKeywordSearch(
+      keyword: widget.word,
+      searchResultCount: result.data?.length ?? 0,
+      searchId: '',
+      searchTraceId: '',
+      searchContentType: "zhoz",
+    );
     return result.data!;
   }
 
@@ -306,6 +327,13 @@ class _LiveVideoViewState extends State<_LiveVideoView> {
     required int pageSize,
   }) async {
     final result = await _domain.getLiveSearch(page: page, limit: pageSize, word: widget.word);
+    analyticsKeywordSearch(
+      keyword: widget.word,
+      searchResultCount: result.data?.length ?? 0,
+      searchId: '',
+      searchTraceId: '',
+      searchContentType: SearchTypeEvent.live.key,
+    );
     return result.data;
   }
 
@@ -352,6 +380,12 @@ class _ASMRViewState extends State<_ASMRView> {
       page: page,
       limit: pageSize,
     );
+    analyticsKeywordSearch(
+        keyword: widget.word,
+        searchResultCount: result.data?.length ?? 0,
+        searchId: '',
+        searchTraceId: '',
+        searchContentType: SearchTypeEvent.asmr.key);
     return result.data!;
   }
 
@@ -395,6 +429,13 @@ class _TorrentViewState extends State<_TorrentView> {
       page: page,
       limit: pageSize,
       word: widget.word,
+    );
+    analyticsKeywordSearch(
+      keyword: widget.word,
+      searchResultCount: result.data?.length ?? 0,
+      searchId: '',
+      searchTraceId: '',
+      searchContentType: "torrent",
     );
 
     return result.data!;
@@ -444,6 +485,12 @@ class _VlogVideoViewState extends State<_VlogVideoView> {
     _limit = pageSize;
 
     final result = await _domain.vlogSearchList(word: widget.word, page: page, limit: pageSize);
+    analyticsKeywordSearch(
+        keyword: widget.word,
+        searchResultCount: result.data?.length ?? 0,
+        searchId: '',
+        searchTraceId: '',
+        searchContentType: SearchTypeEvent.vlog.key);
     if (result.isValid) {
       List<VlogModel> tp = List.from(result.data ?? []);
       if (page == 1) {
@@ -516,6 +563,12 @@ class _CartoonViewState extends State<_CartoonView> {
     required int pageSize,
   }) async {
     final result = await _domain.cartoonSearchList(word: widget.word, page: page, limit: pageSize);
+    analyticsKeywordSearch(
+        keyword: widget.word,
+        searchResultCount: result.data?.length ?? 0,
+        searchId: '',
+        searchTraceId: '',
+        searchContentType: SearchTypeEvent.cartoon.key);
     if (result.isValid) {
       List<CartoonModel> tp = List.from(result.data ?? []);
       return tp;
@@ -563,6 +616,12 @@ class _GameViewState extends State<_GameView> {
     required int pageSize,
   }) async {
     final result = await _domain.gameSearchList(word: widget.word, page: page, limit: pageSize);
+    analyticsKeywordSearch(
+        keyword: widget.word,
+        searchResultCount: result.data?.length ?? 0,
+        searchId: '',
+        searchTraceId: '',
+        searchContentType: SearchTypeEvent.game.key);
     if (result.isValid) {
       List<GameModel> tp = List.from(result.data ?? []);
       return tp;
@@ -616,6 +675,13 @@ class _DateViewState extends State<_DateView> {
       word: widget.word,
       type: '1',
     );
+    analyticsKeywordSearch(
+      keyword: widget.word,
+      searchResultCount: result.data?.length ?? 0,
+      searchId: '',
+      searchTraceId: '',
+      searchContentType: "date",
+    );
 
     return result.data!;
   }
@@ -663,6 +729,14 @@ class _ChaDangViewState extends State<_ChaDangView> {
       word: widget.word,
       type: '3',
     );
+    analyticsKeywordSearch(
+      keyword: widget.word,
+      searchResultCount: result.data?.length ?? 0,
+      searchId: '',
+      searchTraceId: '',
+      searchContentType: "check_file",
+      // searchContentType:SearchTypeEvent.game.key
+    );
 
     return result.data!;
   }
@@ -671,7 +745,8 @@ class _ChaDangViewState extends State<_ChaDangView> {
   Widget build(BuildContext context) {
     return MyListView.list(
       contentPadding: 15.w,
-      itemBuilder: (context, item, index) => CheckFileItem(item: item, itemWidth: (ScreenUtil().screenWidth - MyTheme.pagePadding * 2)).withSearchReport({
+      itemBuilder: (context, item, index) =>
+          CheckFileItem(item: item, itemWidth: (ScreenUtil().screenWidth - MyTheme.pagePadding * 2)).withSearchReport({
         "event": "keyword_click",
         "keyword": widget.word,
         "click_item_id": item.id,
@@ -708,6 +783,14 @@ class _YellowPictureViewState extends State<_YellowPictureView> {
       page: page,
       limit: pageSize,
       word: widget.word,
+    );
+    analyticsKeywordSearch(
+      keyword: widget.word,
+      searchResultCount: result.data?.length ?? 0,
+      searchId: '',
+      searchTraceId: '',
+      searchContentType: "yellow_picture",
+      // searchContentType:SearchTypeEvent.game.key
     );
 
     return result.data!;
@@ -758,6 +841,13 @@ class _ComicViewState extends State<_ComicView> {
       limit: pageSize,
       word: widget.word,
     );
+    analyticsKeywordSearch(
+        keyword: widget.word,
+        searchResultCount: result.data?.length ?? 0,
+        searchId: '',
+        searchTraceId: '',
+        // searchContentType: "yellow_picture",
+        searchContentType: SearchTypeEvent.comic.key);
 
     return result.data!;
   }
@@ -806,7 +896,13 @@ class _NovelViewState extends State<_NovelView> {
       limit: pageSize,
       word: widget.word,
     );
-
+    analyticsKeywordSearch(
+        keyword: widget.word,
+        searchResultCount: result.data?.length ?? 0,
+        searchId: '',
+        searchTraceId: '',
+        // searchContentType: "yellow_picture",
+        searchContentType: SearchTypeEvent.novel.key);
     return result.data!;
   }
 
@@ -855,6 +951,14 @@ class _ChatViewState extends State<_ChatView> {
       limit: pageSize,
       word: widget.word,
     );
+    analyticsKeywordSearch(
+      keyword: widget.word,
+      searchResultCount: result.data?.length ?? 0,
+      searchId: '',
+      searchTraceId: '',
+      searchContentType: "chat",
+      // searchContentType:SearchTypeEvent.comic.key
+    );
 
     return result.data!;
   }
@@ -897,6 +1001,14 @@ class _BlackViewState extends State<_BlackView> {
 
   Future<List<BlackListItemModel>?> _searchData({int page = 1, int limit = 15}) async {
     final result = await _blackDomain.getBlackSearch(word: widget.word, page: page, limit: limit);
+    analyticsKeywordSearch(
+      keyword: widget.word,
+      searchResultCount: result.data?.list.length ?? 0,
+      searchId: '',
+      searchTraceId: '',
+      searchContentType: "black",
+      // searchContentType:SearchTypeEvent.comic.key
+    );
     if (result.status == 1) {
       if (result.data?.list case final data? when data.isNotEmpty) {
         return data;
@@ -912,14 +1024,16 @@ class _BlackViewState extends State<_BlackView> {
       child: MyListView.list(
         contentPadding: 15.w,
         padding: EdgeInsets.only(top: 5.w, bottom: MyTheme.pagePadding),
-        itemBuilder: (context, item, index) => BlackItemWidget(item: item, itemWidth: (_screenUtils.screenWidth - MyTheme.pagePadding * 2)).withSearchReport({
-        "event": "keyword_click",
-        "keyword": widget.word,
-        "click_item_id": item.id,
-        "click_item_type_key": "black",
-        "click_item_type_name": "黑料",
-        "click_position": index,
-      }),
+        itemBuilder: (context, item, index) =>
+            BlackItemWidget(item: item, itemWidth: (_screenUtils.screenWidth - MyTheme.pagePadding * 2))
+                .withSearchReport({
+          "event": "keyword_click",
+          "keyword": widget.word,
+          "click_item_id": item.id,
+          "click_item_type_key": "black",
+          "click_item_type_name": "黑料",
+          "click_position": index,
+        }),
         onFetchingMore: (currentPage, pageSize) => _searchData(page: currentPage, limit: pageSize),
       ),
     );
@@ -928,9 +1042,6 @@ class _BlackViewState extends State<_BlackView> {
 
 extension EventClick on Widget {
   Widget withSearchReport(Map data) {
-    return ReportSearchClick(
-      child: this,
-      data: data
-    );
+    return ReportSearchClick(child: this, data: data);
   }
 }

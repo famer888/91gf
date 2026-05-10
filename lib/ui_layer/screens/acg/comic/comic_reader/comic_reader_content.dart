@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:analytics_sdk/enum/read_behavior_enum.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jygf/report/analytics/analytics_report.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/rainbow_loader.dart';
 import 'package:jygf/ui_layer/screens/common_widgets/screen_background.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +29,6 @@ import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
 
-
 ///漫画阅读界面
 class ComicReaderContent extends StatefulWidget {
   const ComicReaderContent(
@@ -40,7 +41,8 @@ class ComicReaderContent extends StatefulWidget {
   State<ComicReaderContent> createState() => _ComicReaderContentState();
 }
 
-class _ComicReaderContentState extends State<ComicReaderContent> with RouteAware{
+class _ComicReaderContentState extends State<ComicReaderContent>
+    with RouteAware {
   late final _domain = context.read<ComicDomain>();
   bool _isLoading = false;
 
@@ -52,9 +54,10 @@ class _ComicReaderContentState extends State<ComicReaderContent> with RouteAware
 
   bool _isShowSetting = false;
   bool _isAutoScroll = false;
+  bool _hasReachedBottom = false;
   int _autoScrollSpeed = 5;
   int speedMin = 3;
-  int speedMax = 10; 
+  int speedMax = 10;
   final ScrollController _scrollController = ScrollController();
   Timer? _autoScrollTimer;
 
@@ -103,6 +106,13 @@ class _ComicReaderContentState extends State<ComicReaderContent> with RouteAware
     saveReaderChapterIndex();
 
     getCurrentChapterData();
+
+    analyticsComicEvent(
+      ReadBehaviorEnum.VIEW,
+      currentChapter,
+      model: widget.data, readProgress: 0,
+      pageNo: chapterIndex, //下标从0开始
+    );
   }
 
   //获取当前章节详情数据
@@ -140,72 +150,90 @@ class _ComicReaderContentState extends State<ComicReaderContent> with RouteAware
             children: [
               Column(
                 children: [
-              Expanded(
-                child: Listener(
-                  onPointerDown: (_) {
-                    if (_isShowSetting) {
-                      setState(() {
-                        _isShowSetting = false;
-                      });
-                      return;
-                    }
-                    if (_isAutoScroll) {
-                      setState(() {
-                        _isAutoScroll = false;
-                      });
-                      stopAutoScroll();
-                    }
-                  },
-                  child: ListView.builder(
-                      controller: _scrollController,
-                      padding: EdgeInsets.zero,
-                      itemCount: chapterPics.length,
-                    itemBuilder: (context, index) {
-                      ChaptersModel e = chapterPics[index];
-                      double w = ScreenUtil().screenWidth;
-                      double h = w;
-                      num heightInt = w.toInt();
-                      try {
-                        h = w * (e.thumbH ?? 0) / (e.thumbW ?? 0);
-                        heightInt = numberWith(
-                            number: h,
-                            intNumber: screenNeededMultipleNumber);
-                        CommonUtils.log('h = $h \nheightInt = $heightInt');
-                      } catch (e) {
-                        CommonUtils.log(e);
-                      }
-                      return SizedBox(
-                        width: w,
-                        height: heightInt.toDouble(),
-                        child: Builder(builder: (context) {
-                          Widget ww = ReportGestureDetector(
-                            child: MyImage.network(e.thumb ?? ''),
-                          );
-                          return ww;
-                        }),
-                      );
-                    }),
-                ),
+                  Expanded(
+                    child: Listener(
+                      onPointerDown: (_) {
+                        if (_isShowSetting) {
+                          setState(() {
+                            _isShowSetting = false;
+                          });
+                          return;
+                        }
+                        if (_isAutoScroll) {
+                          setState(() {
+                            _isAutoScroll = false;
+                          });
+                          stopAutoScroll();
+                        }
+                      },
+                      child: NotificationListener<ScrollNotification>(
+                        onNotification: (notification) {
+                          if (notification.metrics.pixels >=
+                              notification.metrics.maxScrollExtent) {
+                            onReadCompleted();
+                          }
+                          return false;
+                        },
+                        child: ListView.builder(
+                            controller: _scrollController,
+                            padding: EdgeInsets.zero,
+                            itemCount: chapterPics.length,
+                            itemBuilder: (context, index) {
+                              ChaptersModel e = chapterPics[index];
+                              double w = ScreenUtil().screenWidth;
+                              double h = w;
+                              num heightInt = w.toInt();
+                              try {
+                                h = w * (e.thumbH ?? 0) / (e.thumbW ?? 0);
+                                heightInt = numberWith(
+                                    number: h,
+                                    intNumber: screenNeededMultipleNumber);
+                                CommonUtils.log(
+                                    'h = $h \nheightInt = $heightInt');
+                              } catch (e) {
+                                CommonUtils.log(e);
+                              }
+                              return SizedBox(
+                                width: w,
+                                height: heightInt.toDouble(),
+                                child: Builder(builder: (context) {
+                                  Widget ww = ReportGestureDetector(
+                                    child: MyImage.network(e.thumb ?? ''),
+                                  );
+                                  return ww;
+                                }),
+                              );
+                            }),
+                      ),
+                    ),
+                  ),
+                ],
               ),
+              if (!_isLoading)
+                Align(alignment: Alignment.bottomCenter, child: bottomView()),
+              if (_isShowSetting && !_isLoading)
+                Positioned(
+                    bottom: 60.w, left: 0, right: 0, child: settingView()),
+              if (_isLoading)
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '稍等片刻，正在努力加载漫画中',
+                      style: MyTheme.white14,
+                    ),
+                    SizedBox(height: 10.w),
+                    AdvancedRainbowLoader(
+                        width: 1.sw - MyTheme.pagePadding * 2, height: 6.w),
+                    SizedBox(height: 10.w),
+                    Text(
+                      '正在读取中...',
+                      style: MyTheme.white06_12,
+                    ),
+                  ],
+                ),
             ],
-          ),
-          if (!_isLoading)
-            Align(alignment: Alignment.bottomCenter, child: bottomView()),
-          if (_isShowSetting && !_isLoading)
-            Positioned(
-                bottom: 60.w, left: 0, right: 0, child: settingView()),
-          if (_isLoading) Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('稍等片刻，正在努力加载漫画中',style: MyTheme.white14,),
-              SizedBox(height: 10.w),
-              AdvancedRainbowLoader(width: 1.sw-MyTheme.pagePadding*2, height: 6.w),
-              SizedBox(height: 10.w),
-              Text('正在读取中...',style: MyTheme.white06_12,),
-            ],
-          ),
-        ],
-      )),
+          )),
     );
   }
 
@@ -213,6 +241,50 @@ class _ComicReaderContentState extends State<ComicReaderContent> with RouteAware
     dynamic dad = (number ~/ intNumber);
     dynamic dd = dad.roundToDouble() * intNumber;
     return dd;
+  }
+
+  /// 当前漫画阅读进度，返回 0 ~ 100 的百分比。
+  int getReadProgress() {
+    if (!_scrollController.hasClients) {
+      return 0;
+    }
+
+    final position = _scrollController.position;
+    final maxScrollExtent = position.maxScrollExtent;
+
+    if (maxScrollExtent <= 0) {
+      return 100;
+    }
+
+    final progress = (_scrollController.offset / maxScrollExtent) * 100;
+    return progress.clamp(0, 100).round();
+  }
+
+  /// 是否已经滚动到最底部。
+  bool get isReachedBottom {
+    if (!_scrollController.hasClients) {
+      return false;
+    }
+
+    final position = _scrollController.position;
+    return position.pixels >= position.maxScrollExtent;
+  }
+
+  /// 观看完成时触发的回调，适合做埋点上传。
+  void onReadCompleted() {
+    if (_hasReachedBottom) {
+      return;
+    }
+
+    _hasReachedBottom = true;
+
+    analyticsComicEvent(
+      ReadBehaviorEnum.COMPLETE,
+      currentChapter,
+      model: widget.data,
+      readProgress: 100,
+      pageNo: chapterIndex,
+    );
   }
 
   int screenNeededMultipleNumber = 1;
@@ -251,19 +323,20 @@ class _ComicReaderContentState extends State<ComicReaderContent> with RouteAware
                 func: () {
                   //目录
                   showComicCatelogSheet();
-                }),iconButton(
+                }),
+            iconButton(
                 imageName: MyImagePaths.appComicPrevious,
                 title: 'syyh'.tr(context: context),
                 func: () {
                   //上一话
-                  jumpToChater(chapterIndex - 1);
+                  jumpToChater(chapterIndex - 1, false);
                 }),
             iconButton(
                 imageName: MyImagePaths.appComicNext,
                 title: 'xyyh'.tr(context: context),
                 func: () {
                   //下一话
-                  jumpToChater(chapterIndex + 1);
+                  jumpToChater(chapterIndex + 1, true);
                 }),
             iconButton(
                 imageName: MyImagePaths.appComicSet,
@@ -279,7 +352,7 @@ class _ComicReaderContentState extends State<ComicReaderContent> with RouteAware
     );
   }
 
-  void showComicCatelogSheet(){
+  void showComicCatelogSheet() {
     showModalBottomSheet(
         backgroundColor: MyTheme.bgColor,
         isScrollControlled: true,
@@ -287,14 +360,17 @@ class _ComicReaderContentState extends State<ComicReaderContent> with RouteAware
         context: context,
         builder: (BuildContext context) {
           return StatefulBuilder(builder: (ctx, setBottomSheetState) {
-            return ComicCatelogSheet(data: widget.data, onTap: (index) {//点击目录章节跳转章节详情
-              jumpToChater(index);
-            });
+            return ComicCatelogSheet(
+                data: widget.data,
+                onTap: (index) {
+                  //点击目录章节跳转章节详情
+                  jumpToChater(index, false);
+                });
           });
         });
   }
 
-  jumpToChater(int index) {
+  jumpToChater(int index, bool next) {
     if (index < 0) {
       MyToast.showText(text: 'yjdyh'.tr(context: context));
       return;
@@ -303,7 +379,17 @@ class _ComicReaderContentState extends State<ComicReaderContent> with RouteAware
       MyToast.showText(text: 'yjzhh'.tr(context: context));
       return;
     }
-    ComicReaderRoute(chapterIndex: index, $extra: widget.data).pushReplacement(context);
+
+    analyticsComicEvent(
+      !next ? ReadBehaviorEnum.PAGE_PREV : ReadBehaviorEnum.PAGE_NEXT,
+      currentChapter,
+      model: widget.data,
+      readProgress: getReadProgress(),
+      pageNo: chapterIndex, //下标从0开始
+    );
+
+    ComicReaderRoute(chapterIndex: index, $extra: widget.data)
+        .pushReplacement(context);
   }
 
   Widget iconButton(
@@ -386,8 +472,7 @@ class _ComicReaderContentState extends State<ComicReaderContent> with RouteAware
           title: 'wxts'.tr(context: context),
           cancelText: 'fxlvip'.tr(context: context),
           buttonText: 'czvip'.tr(context: context),
-          content: Text(
-              'gmvkwz'.tr(context: context),
+          content: Text('gmvkwz'.tr(context: context),
               style: MyTheme.white15,
               maxLines: 10,
               textAlign: TextAlign.center),
@@ -416,9 +501,10 @@ class _ComicReaderContentState extends State<ComicReaderContent> with RouteAware
       userNotifier.setMoney(money: money);
       currentChapter?.isPay = 1; //更改章节权限
       widget.data.chapters?[chapterIndex] = currentChapter!;
-      //发通知去刷新数据源中的章节权限数据  
-      eventBus.fire(MyEvent('ComicIsPaySuccess', param: {'chapterIndex' : chapterIndex}));
-      getCurrentChapterData();//请求章节详情数据
+      //发通知去刷新数据源中的章节权限数据
+      eventBus.fire(
+          MyEvent('ComicIsPaySuccess', param: {'chapterIndex': chapterIndex}));
+      getCurrentChapterData(); //请求章节详情数据
     } else {
       MyToast.showText(text: res.msg ?? '');
     }
@@ -429,8 +515,8 @@ class _ComicReaderContentState extends State<ComicReaderContent> with RouteAware
       width: 1.sw,
       color: const Color.fromRGBO(0, 0, 0, 0.9),
       padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.w),
-      child: Stack(
-        children: [Column(
+      child: Stack(children: [
+        Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -453,14 +539,15 @@ class _ComicReaderContentState extends State<ComicReaderContent> with RouteAware
                       height: 24.w,
                       decoration: const BoxDecoration(
                           color: Colors.white, shape: BoxShape.circle),
-                      child: Icon(Icons.remove, size: 16.w, color: Colors.black),
+                      child:
+                          Icon(Icons.remove, size: 16.w, color: Colors.black),
                     )),
                 Expanded(
                     child: SliderTheme(
                         data: SliderTheme.of(context).copyWith(
                           trackHeight: 2,
-                          thumbShape:
-                              const RoundSliderThumbShape(enabledThumbRadius: 6),
+                          thumbShape: const RoundSliderThumbShape(
+                              enabledThumbRadius: 6),
                           overlayShape:
                               const RoundSliderOverlayShape(overlayRadius: 10),
                           activeTrackColor: MyTheme.primaryColor,
@@ -499,53 +586,55 @@ class _ComicReaderContentState extends State<ComicReaderContent> with RouteAware
             )
           ],
         ),
-         Positioned(top: 3.w, right: 0, 
-           child: ReportGestureDetector(
-                      onTap: toggleAutoScroll,
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 200),
-                        width: 74.w,
-                        height: 22.w,
-                        padding: EdgeInsets.all(2.w),
+        Positioned(
+          top: 3.w,
+          right: 0,
+          child: ReportGestureDetector(
+              onTap: toggleAutoScroll,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                width: 74.w,
+                height: 22.w,
+                padding: EdgeInsets.all(2.w),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(14.w),
+                    border: Border.all(
+                        color: _isAutoScroll
+                            ? const Color(0xFFE94079)
+                            : const Color(0xFF657EF6),
+                        width: 1),
+                    color: Colors.transparent),
+                child: Stack(
+                  children: [
+                    AnimatedAlign(
+                      duration: const Duration(milliseconds: 200),
+                      alignment: _isAutoScroll
+                          ? Alignment.centerRight
+                          : Alignment.centerLeft,
+                      child: Container(
+                        width: 34.w,
+                        height: double.infinity,
+                        alignment: Alignment.center,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(14.w),
-                            border: Border.all(
-                                color: _isAutoScroll
-                                    ? const Color(0xFFE94079)
-                                    : const Color(0xFF657EF6),
-                                width: 1),
-                            color: Colors.transparent),
-                        child: Stack(
-                          children: [
-                            AnimatedAlign(
-                              duration: const Duration(milliseconds: 200),
-                              alignment: _isAutoScroll
-                                  ? Alignment.centerRight
-                                  : Alignment.centerLeft,
-                              child: Container(
-                                width: 34.w,
-                                height: double.infinity,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12.w),
-                                    gradient: LinearGradient(
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
-                                        colors: _isAutoScroll
-                                            ? MyTheme.gradient_90_114_colors
-                                            : MyTheme.gradient_90_118_colors_blue)),
-                                child: Text(
-                                  _isAutoScroll ? '自动' : '手动',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 11.sp),
-                                ),
-                              ),
-                            )
-                          ],
+                            borderRadius: BorderRadius.circular(12.w),
+                            gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: _isAutoScroll
+                                    ? MyTheme.gradient_90_114_colors
+                                    : MyTheme.gradient_90_118_colors_blue)),
+                        child: Text(
+                          _isAutoScroll ? '自动' : '手动',
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 11.sp),
                         ),
-                      )),
-         )]
-      ),
+                      ),
+                    )
+                  ],
+                ),
+              )),
+        )
+      ]),
     );
   }
 
@@ -586,4 +675,3 @@ class _ComicReaderContentState extends State<ComicReaderContent> with RouteAware
     _autoScrollTimer = null;
   }
 }
-

@@ -60,7 +60,7 @@ void main() async {
   await appRepo.init();
   disableUrlStrategy();
 
-  final packageInfo = await PackageInfo.fromPlatform();
+  await PackageInfo.fromPlatform();
   await initAnalyticsSdk(
     null,
     oauthId: appRepo.getOAuthId(),
@@ -195,6 +195,7 @@ class _MyAppState extends State<MyApp> {
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       onGenerateTitle: (context) => 'yybt'.tr(context: context),
+
       theme: ThemeData(
         progressIndicatorTheme: const ProgressIndicatorThemeData(color: MyTheme.jellyCyanColor103224185),
         splashColor: Colors.transparent,
@@ -241,7 +242,11 @@ class _MyAppState extends State<MyApp> {
           data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),
           child: widget,
         );
-        return GlobalClickWrapper(child: ExcludeSemantics(child: widget));
+        return GlobalClickWrapper(
+          child: ExcludeSemantics(
+            child: widget,
+          ),
+        );
       },
       scrollBehavior: ScrollConfiguration.of(context).copyWith(
         physics: const BouncingScrollPhysics(),

@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'package:analytics_sdk/enum/read_behavior_enum.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jygf/report/analytics/analytics_report.dart';
 import 'package:provider/provider.dart';
 import 'package:jygf/crypto.dart';
 import 'package:jygf/domain/api_validator.dart';
@@ -25,7 +27,6 @@ import 'package:jygf/ui_layer/screens/theme.dart';
 import 'package:jygf/ui_layer/utils/common_utils.dart';
 import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
-
 
 ///小说阅读界面
 class NovelReaderContent extends StatefulWidget {
@@ -50,13 +51,16 @@ class _NovelReaderContentState extends State<NovelReaderContent>
   late final cacheDomain = context.read<CacheDomain>();
   bool showControl = true; //控制器的隐藏显示
   bool _isShowSetting = false;
+  bool _hasReachedBottom = false;
   final bottomHeght = 60.w + MyTheme.bottom;
   Color _bgColor = MyTheme.bgColor;
   double _fontSize = 15;
   int _bgColorIndex = 1;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void dispose() {
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -96,6 +100,57 @@ class _NovelReaderContentState extends State<NovelReaderContent>
     saveReaderChapterIndex();
 
     getCurrentChapterData();
+
+    analyticsNovelEvent(
+      ReadBehaviorEnum.VIEW,
+      currentChapter,
+      model: widget.data, readProgress: 0,
+      pageNo: chapterIndex, //下标从0开始
+    );
+  }
+
+  /// 当前小说阅读进度，返回 0 ~ 100 的百分比。
+  int getReadProgress() {
+    if (!_scrollController.hasClients) {
+      return 0;
+    }
+
+    final position = _scrollController.position;
+    final maxScrollExtent = position.maxScrollExtent;
+
+    if (maxScrollExtent <= 0) {
+      return 100;
+    }
+
+    final progress = (_scrollController.offset / maxScrollExtent) * 100;
+    return progress.clamp(0, 100).round();
+  }
+
+  /// 是否已经滚动到最底部。
+  bool get isReachedBottom {
+    if (!_scrollController.hasClients) {
+      return false;
+    }
+
+    final position = _scrollController.position;
+    return position.pixels >= position.maxScrollExtent;
+  }
+
+  /// 阅读完成时触发的回调，适合做埋点上传。
+  void onReadCompleted() {
+    if (_hasReachedBottom) {
+      return;
+    }
+
+    _hasReachedBottom = true;
+
+    analyticsNovelEvent(
+      ReadBehaviorEnum.COMPLETE,
+      currentChapter,
+      model: widget.data,
+      readProgress: 100,
+      pageNo: chapterIndex,
+    );
   }
 
   //获取当前章节详情数据
@@ -122,7 +177,8 @@ class _NovelReaderContentState extends State<NovelReaderContent>
 
   //记录阅读章节, 获取字体/背景颜色设置缓存
   Future<void> saveReaderChapterIndex() async {
-    if (currentChapter?.txt?.isEmpty ?? false) {//没有查看权限弹窗
+    if (currentChapter?.txt?.isEmpty ?? false) {
+      //没有查看权限弹窗
       return;
     }
     await cacheDomain.upsertNovelReaderChapterIndex(
@@ -166,25 +222,38 @@ class _NovelReaderContentState extends State<NovelReaderContent>
                 }
                 setState(() => showControl = !showControl);
               },
-              child: ListView.builder(
-                shrinkWrap: true,
-                padding: EdgeInsets.only(
-                    left: 10.w, right: 10.w, bottom: bottomHeght),
-                itemCount: paragraphs.length, // 根据文本长度设置 itemCount
-                itemBuilder: (context, index) {
-                  final str = paragraphs[index];
-                  return str.isEmpty ? Container(height: 5.w) :  RichText(
-                    text: TextSpan(
-                      text: str,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: _fontSize,
-                        height: 1.6,
-                        decoration: TextDecoration.none,
-                      ),
-                    ),
-                  );
+              child: NotificationListener<ScrollNotification>(
+                onNotification: (notification) {
+                  if (notification.metrics.pixels >=
+                      notification.metrics.maxScrollExtent) {
+                    onReadCompleted();
+                  }
+                  return false;
                 },
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  controller: _scrollController,
+                  padding: EdgeInsets.only(
+                      left: 10.w, right: 10.w, bottom: bottomHeght),
+                  itemCount: paragraphs.length,
+                  // 根据文本长度设置 itemCount
+                  itemBuilder: (context, index) {
+                    final str = paragraphs[index];
+                    return str.isEmpty
+                        ? Container(height: 5.w)
+                        : RichText(
+                            text: TextSpan(
+                              text: str,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: _fontSize,
+                                height: 1.6,
+                                decoration: TextDecoration.none,
+                              ),
+                            ),
+                          );
+                  },
+                ),
               ),
             ),
           ),
@@ -241,14 +310,14 @@ class _NovelReaderContentState extends State<NovelReaderContent>
                 title: 'syyh'.tr(context: context),
                 func: () {
                   //上一章
-                  jumpToChater(chapterIndex - 1);
+                  jumpToChater(chapterIndex - 1, false);
                 }),
             iconButton(
                 imageName: MyImagePaths.appComicNext,
                 title: 'xyyh'.tr(context: context),
                 func: () {
                   //下一章
-                  jumpToChater(chapterIndex + 1);
+                  jumpToChater(chapterIndex + 1, false);
                 }),
             iconButton(
                 imageName: MyImagePaths.appNovelSet,
@@ -277,7 +346,7 @@ class _NovelReaderContentState extends State<NovelReaderContent>
                 data: widget.data,
                 onTap: (index) {
                   //点击目录章节跳转章节详情
-                  jumpToChater(index);
+                  jumpToChater(index, false);
                 });
           });
         });
@@ -298,9 +367,7 @@ class _NovelReaderContentState extends State<NovelReaderContent>
     }
   }
 
-
-
-  jumpToChater(int index) {
+  jumpToChater(int index, bool next) {
     if (index < 0) {
       MyToast.showText(text: 'yjdyz'.tr(context: context));
       return;
@@ -309,6 +376,14 @@ class _NovelReaderContentState extends State<NovelReaderContent>
       MyToast.showText(text: 'yjzhyz'.tr(context: context));
       return;
     }
+
+    analyticsNovelEvent(
+      next ? ReadBehaviorEnum.PAGE_NEXT : ReadBehaviorEnum.PAGE_PREV,
+      currentChapter,
+      model: widget.data, readProgress: getReadProgress(),
+      pageNo: chapterIndex, //下标从0开始
+    );
+
     NovelReaderRoute(chapterIndex: index, $extra: widget.data)
         .pushReplacement(context);
   }
@@ -354,9 +429,7 @@ class _NovelReaderContentState extends State<NovelReaderContent>
           content: Column(
             children: [
               Text(
-                  'dqxshfjb'
-                      .tr(context: context)
-                      .replaceAll('a', '$needmoney'),
+                  'dqxshfjb'.tr(context: context).replaceAll('a', '$needmoney'),
                   style: MyTheme.white15,
                   maxLines: 10,
                   textAlign: TextAlign.center),
@@ -379,7 +452,7 @@ class _NovelReaderContentState extends State<NovelReaderContent>
             }
           },
           cancelOnTap: () {
-          context.pop();
+            context.pop();
           },
         ),
         onBarrierDismiss: () {
@@ -390,7 +463,6 @@ class _NovelReaderContentState extends State<NovelReaderContent>
       CommonUtils.showDialog(
         context: context,
         builder: (context) => RegularDialog(
-
           title: 'wxts'.tr(context: context),
           cancelText: 'fxlvip'.tr(context: context),
           buttonText: 'czvip'.tr(context: context),

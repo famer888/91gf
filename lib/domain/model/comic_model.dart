@@ -1,5 +1,6 @@
 import 'package:jygf/domain/model/live_model.dart';
 import 'package:jygf/domain/model/part_nav_model.dart';
+import 'package:jygf/domain/model/track_report_info.dart';
 
 import 'banner_model.dart';
 
@@ -110,7 +111,7 @@ class RecComicWithBannersModel {
 class RecComicModel {
   final String? title;
   final String? value;
-        List<ComicItemsModel>? items;
+  List<ComicItemsModel>? items;
 
   //广告数据
   final int? id;
@@ -199,7 +200,9 @@ class ComicDetailWithBannersModel {
             json['recommend'].map((e) => ComicItemsModel.fromJson(e))),
         banner: List<BannerModel>.from(
             json['banner'].map((e) => BannerModel.fromJson(e))),
-        detail: json['detail'] == null ? null : ComicDetailModel.fromJson(json['detail']),
+        detail: json['detail'] == null
+            ? null
+            : ComicDetailModel.fromJson(json['detail']),
       );
 
   Map<String, dynamic> toJson() =>
@@ -215,37 +218,45 @@ class ComicDetailModel {
   final String? createdAt;
   final int? viewFct;
   final int? viewCt;
-        int? favoriteFct;
+  int? favoriteFct;
   final String? renewedAt;
   final int? commentCt;
   final String? tag;
   final int? isEnd;
   final String? intro;
-        int? isFavorite;
-        int? isLike;
-        int? likeFct;
+  int? isFavorite;
+  int? isLike;
+  int? likeFct;
   final List<ChaptersModel>? chapters;
+  String? lsjId; // 老司机媒体资源ID
+  String? comicTagKey;
+  String? comicTagName;
 
-  ComicDetailModel({
-    this.id,
-    this.title,
-    this.cover,
-    this.chapterCt,
-    this.themeIds,
-    this.createdAt,
-    this.viewFct,
-    this.viewCt,
-    this.favoriteFct,
-    this.renewedAt,
-    this.commentCt,
-    this.tag,
-    this.isEnd,
-    this.intro,
-    this.isFavorite,
-    this.isLike,
-    this.likeFct,
-    this.chapters,
-  });
+  TrackReportInfo? reportInfo;
+
+  ComicDetailModel(
+      {this.id,
+      this.title,
+      this.cover,
+      this.chapterCt,
+      this.themeIds,
+      this.createdAt,
+      this.viewFct,
+      this.viewCt,
+      this.favoriteFct,
+      this.renewedAt,
+      this.commentCt,
+      this.tag,
+      this.isEnd,
+      this.intro,
+      this.isFavorite,
+      this.isLike,
+      this.likeFct,
+      this.chapters,
+      this.lsjId,
+      this.comicTagKey,
+      this.comicTagName,
+      this.reportInfo});
 
   factory ComicDetailModel.fromJson(Map<String, dynamic> json) =>
       ComicDetailModel(
@@ -263,33 +274,41 @@ class ComicDetailModel {
         tag: json['tag'],
         isEnd: json['is_end'],
         intro: json['intro'],
+        lsjId: json['lsjId'],
+        reportInfo: TrackReportInfo.fromMap(json['reportInfo']),
         isFavorite: json['is_favorite'],
         isLike: json['is_like'],
         likeFct: json['like_fct'],
+        comicTagName: json['comic_tag_name'],
+        comicTagKey: json['comic_tag_key'],
         chapters: List<ChaptersModel>.from(
             json['chapters'].map((e) => ChaptersModel.fromJson(e))),
       );
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'title': title,
-    'cover': cover,
-    'chapter_ct': chapterCt,
-    'theme_ids': themeIds,
-    'created_at': createdAt,
-    'view_fct': viewFct,
-    'view_ct': viewCt,
-    'favorite_fct': favoriteFct,
-    'renewed_at': renewedAt,
-    'comment_ct': commentCt,
-    'tag': tag,
-    'is_end': isEnd,
-    'intro': intro,
-    'is_favorite': isFavorite,
-    'is_like': isLike,
-    'like_fct': likeFct,
-    'chapters': chapters,
-  };
+        'comic_tag_name': comicTagName,
+        'comic_tag_key': comicTagKey,
+        'id': id,
+        'title': title,
+        'cover': cover,
+        'chapter_ct': chapterCt,
+        'theme_ids': themeIds,
+        'created_at': createdAt,
+        'view_fct': viewFct,
+        'view_ct': viewCt,
+        'favorite_fct': favoriteFct,
+        'renewed_at': renewedAt,
+        'comment_ct': commentCt,
+        'tag': tag,
+        'is_end': isEnd,
+        'intro': intro,
+        'is_favorite': isFavorite,
+        'is_like': isLike,
+        'like_fct': likeFct,
+        'chapters': chapters,
+        'lsjId': lsjId,
+        "reportInfo": reportInfo?.toJson()
+      };
 }
 
 class ChaptersModel {
@@ -298,7 +317,7 @@ class ChaptersModel {
   final int? type;
   final int? coins;
   final String? title;
-        int? isPay;
+  int? isPay;
   final String? payTip;
   final String? cover; //章节封面
 
@@ -306,7 +325,6 @@ class ChaptersModel {
   final String? thumb;
   final int? thumbW;
   final int? thumbH;
-
 
   ChaptersModel({
     this.pId,
@@ -322,8 +340,7 @@ class ChaptersModel {
     this.thumbH,
   });
 
-  factory ChaptersModel.fromJson(Map<String, dynamic> json) =>
-      ChaptersModel(
+  factory ChaptersModel.fromJson(Map<String, dynamic> json) => ChaptersModel(
         pId: json['p_id'],
         id: json['id'],
         type: json['type'],
@@ -338,20 +355,19 @@ class ChaptersModel {
       );
 
   Map<String, dynamic> toJson() => {
-    'p_id': pId,
-    'id': id,
-    'type': type,
-    'coins': coins,
-    'title': title,
-    'is_pay': isPay,
-    'pay_tip': payTip,
-    'cover': cover,
-    'thumb': thumb,
-    'thumb_w': thumbW,
-    'thumb_h': thumbH,
-  };
+        'p_id': pId,
+        'id': id,
+        'type': type,
+        'coins': coins,
+        'title': title,
+        'is_pay': isPay,
+        'pay_tip': payTip,
+        'cover': cover,
+        'thumb': thumb,
+        'thumb_w': thumbW,
+        'thumb_h': thumbH,
+      };
 }
-
 
 class ChaptersDetaiModel {
   List<ChaptersModel>? pics;
@@ -367,6 +383,6 @@ class ChaptersDetaiModel {
       );
 
   Map<String, dynamic> toJson() => {
-    'pics': pics?.map((e) => e.toJson()),
-  };
+        'pics': pics?.map((e) => e.toJson()),
+      };
 }

@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:analytics_sdk/enum/read_behavior_enum.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -16,6 +17,8 @@ import 'package:jygf/ui_layer/utils/my_toast.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 import 'dart:async';
+
+import '../../../../../report/analytics/analytics_report.dart';
 
 ///小说音频播放管理类：创建单例持有播放器，方便全局监听播放器及对播放器操作，初始化方法：NovelVoicePlayerManager.instance
 
@@ -42,7 +45,7 @@ class NovelVoicePlayerManager {
 
   //进度
   ValueNotifier<Duration> progress =
-  ValueNotifier<Duration>(const Duration(seconds: 0));
+      ValueNotifier<Duration>(const Duration(seconds: 0));
 
   //进度条缓冲区
   Duration buffered = const Duration(seconds: 0);
@@ -60,7 +63,7 @@ class NovelVoicePlayerManager {
 
   // 唯一实例
   static final NovelVoicePlayerManager _instance =
-  NovelVoicePlayerManager._privateConstructor();
+      NovelVoicePlayerManager._privateConstructor();
 
   // 获取唯一实例的公共静态方法
   static NovelVoicePlayerManager get instance => _instance;
@@ -101,7 +104,8 @@ class NovelVoicePlayerManager {
   }
 
   OverlayEntry _createOverlayEntry() {
-    return OverlayEntry(builder: (context) => const NovelVoicePlayerDraggableView());
+    return OverlayEntry(
+        builder: (context) => const NovelVoicePlayerDraggableView());
   }
 
   Future<void> initVideoPlayer(
@@ -303,7 +307,8 @@ class NovelVoicePlayerManager {
       } else {
         NovelVoicePlayerManager.instance.data = voices.first;
         initVideoPlayer(voices.first, context!);
-        eventBus.fire(MyEvent('RefreshNovelVoicePayerUI')); //发通知去播放界面/播放列表界面刷新数据
+        eventBus
+            .fire(MyEvent('RefreshNovelVoicePayerUI')); //发通知去播放界面/播放列表界面刷新数据
         return;
       }
     }
@@ -324,13 +329,15 @@ class NovelVoicePlayerManager {
 
         NovelVoicePlayerManager.instance.data = currentData;
         initVideoPlayer(currentData, context!);
-        eventBus.fire(MyEvent('RefreshNovelVoicePayerUI')); //发通知去播放界面/播放列表界面刷新数据
+        eventBus
+            .fire(MyEvent('RefreshNovelVoicePayerUI')); //发通知去播放界面/播放列表界面刷新数据
       } else {
         if (voices.isNotEmpty) {
           //如果当前数据正好被删除了，找不到位置但是列表中还有数据则播放第一个
           NovelVoicePlayerManager.instance.data = voices.first;
           initVideoPlayer(voices.first, context!);
-          eventBus.fire(MyEvent('RefreshNovelVoicePayerUI')); //发通知去播放界面/播放列表界面刷新数据
+          eventBus
+              .fire(MyEvent('RefreshNovelVoicePayerUI')); //发通知去播放界面/播放列表界面刷新数据
           return;
         }
         MyToast.showText(
@@ -380,7 +387,8 @@ class NovelVoicePlayerManager {
       } else {
         NovelVoicePlayerManager.instance.data = voices.first;
         initVideoPlayer(voices.first, context!);
-        eventBus.fire(MyEvent('RefreshNovelVoicePayerUI')); //发通知去播放界面/播放列表界面刷新数据
+        eventBus
+            .fire(MyEvent('RefreshNovelVoicePayerUI')); //发通知去播放界面/播放列表界面刷新数据
         return;
       }
     }
@@ -400,13 +408,15 @@ class NovelVoicePlayerManager {
 
         NovelVoicePlayerManager.instance.data = currentData;
         initVideoPlayer(currentData, context!);
-        eventBus.fire(MyEvent('RefreshNovelVoicePayerUI')); //发通知去播放界面/播放列表界面刷新数据
+        eventBus
+            .fire(MyEvent('RefreshNovelVoicePayerUI')); //发通知去播放界面/播放列表界面刷新数据
       } else {
         if (voices.isNotEmpty) {
           //如果当前数据正好被删除了，找不到位置但是列表中还有数据则播放第一个
           NovelVoicePlayerManager.instance.data = voices.first;
           initVideoPlayer(voices.first, context!);
-          eventBus.fire(MyEvent('RefreshNovelVoicePayerUI')); //发通知去播放界面/播放列表界面刷新数据
+          eventBus
+              .fire(MyEvent('RefreshNovelVoicePayerUI')); //发通知去播放界面/播放列表界面刷新数据
           return;
         }
         MyToast.showText(

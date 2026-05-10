@@ -2,10 +2,13 @@ import 'package:analytics_sdk/analytics_sdk.dart';
 import 'package:analytics_sdk/entity/ad_click_event.dart';
 import 'package:analytics_sdk/entity/advertising_event.dart';
 import 'package:analytics_sdk/entity/app_install_event.dart';
+import 'package:analytics_sdk/entity/comic_event.dart';
 import 'package:analytics_sdk/entity/keyword_click_event.dart';
 import 'package:analytics_sdk/entity/keyword_search_event.dart';
+import 'package:analytics_sdk/entity/novel_event.dart';
 import 'package:analytics_sdk/entity/video_event.dart';
 import 'package:analytics_sdk/enum/click_item_type_enum.dart';
+import 'package:analytics_sdk/enum/read_behavior_enum.dart';
 import 'package:analytics_sdk/enum/user_type_enum.dart';
 import 'package:analytics_sdk/enum/video_content_type_enum.dart';
 import 'package:analytics_sdk/enum/video_event_enum.dart';
@@ -19,6 +22,8 @@ import 'package:provider/provider.dart';
 
 import '../../app_global.dart';
 import '../../data_layer/repo/repo.dart';
+import '../../domain/model/comic_model.dart';
+import '../../domain/model/novel_model.dart';
 import '../../domain/remote_domain/domains/report.dart';
 import '../../domain/model/feed/feed_model.dart';
 import '../../domain/model/home_data_model.dart';
@@ -170,6 +175,56 @@ void analyticsVideo({
       mediaId: mediaId,
     ),
   );
+}
+
+//漫画行为 展示, 下一页, 上一页,读完
+void analyticsComicEvent(
+  ReadBehaviorEnum eventType, //行为
+  ChaptersModel? chapterInfo, {
+  ComicDetailModel? model,
+  int? readProgress = 0, //章节百分比
+  int? pageNo = 1,
+}) async {
+  AnalyticsSdk.instance.track(ComicEvent(
+    comicId: model?.id.toString() ?? '',
+    comicTitle: model?.title ?? '',
+    comicTypeId: model?.reportInfo?.typeId ?? '',
+    comicTypeName: model?.reportInfo?.typeName ?? '',
+    comicTagKey: model?.comicTagKey ?? "default",
+    comicTagName: model?.comicTagName ?? "默认标签",
+    readProgress: readProgress ?? 0,
+    pageNo: pageNo ?? 1,
+    comicBehavior: eventType,
+    mediaId: model?.lsjId ?? '',
+    recommendTraceId: '',
+    chapterId: chapterInfo?.id.toString() ?? '1',
+    chapterName: chapterInfo?.title ?? '第一章',
+  ));
+}
+
+//小说行为 展示, 下一页, 上一页,读完
+void analyticsNovelEvent(
+  ReadBehaviorEnum eventType, //行为
+  NovelChaptersModel? chapterInfo, {
+  NovelDetailModel? model, //小说模型
+  int? readProgress = 0, //章节百分比
+  int? pageNo = 1, //
+}) async {
+  AnalyticsSdk.instance.track(NovelEvent(
+    novelId: model?.id.toString() ?? "",
+    novelTitle: model?.title ?? "",
+    novelTypeId: model?.reportInfo?.typeId ?? '',
+    novelTypeName: model?.reportInfo?.typeName ?? '',
+    novelTagKey: model?.novelTagKey ?? "default",
+    novelTagName: model?.novelTagName ?? "默认标签",
+    readProgress: readProgress ?? 0,
+    pageNo: pageNo ?? 1,
+    novelBehavior: eventType,
+    mediaId: model?.lsjId ?? '',
+    recommendTraceId: '',
+    chapterId: chapterInfo?.id.toString()?.isNotEmpty == true ? chapterInfo!.id!.toString() : '1',
+    chapterName: chapterInfo?.title?.isNotEmpty == true ? chapterInfo!.title! : '第一章',
+  ));
 }
 
 // 点击广告上报
