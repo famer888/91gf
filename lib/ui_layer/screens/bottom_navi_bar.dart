@@ -425,7 +425,7 @@ class _BottomNaviBarState extends State<BottomNaviBar> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  MyImage.asset(MyImagePaths.appLogoIcon,
+                                  MyImage.asset(MyImagePaths.appLogoIconNew,
                                       width: 18.w, height: 18.w),
                                   SizedBox(width: 5.w),
                                   Text('mrdxdk'.tr(context: context),
