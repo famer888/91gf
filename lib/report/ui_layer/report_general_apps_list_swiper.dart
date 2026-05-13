@@ -3,7 +3,10 @@ import 'package:analytics_sdk/analytics_sdk.dart';
 import 'package:analytics_sdk/entity/ad_click_event.dart';
 import 'package:analytics_sdk/entity/ad_impression_event.dart';
 import 'package:analytics_sdk/entity/advertising_event.dart';
+import 'package:analytics_sdk/manager/page_name_manager.dart';
+import 'package:analytics_sdk/observer/page_lifecycle_observer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper_null_safety_flutter3/flutter_swiper_null_safety_flutter3.dart';
 import 'package:provider/provider.dart';
@@ -29,7 +32,7 @@ class ReportGeneralAppListSwiper extends StatefulWidget {
     this.radius = 5,
     this.aspectRatio = 7 / 3,
     this.maxWidth = 375,
-    this.columnNumber = 5,
+    this.columnNumber = 6,
     this.useMargin = false,
   });
 
@@ -42,15 +45,13 @@ class ReportGeneralAppListSwiper extends StatefulWidget {
   bool useMargin = false;
 
   @override
-  State<ReportGeneralAppListSwiper> createState() =>
-      _ReportGeneralAppListSwiperState();
+  State<ReportGeneralAppListSwiper> createState() => _ReportGeneralAppListSwiperState();
 }
 
-class _ReportGeneralAppListSwiperState
-    extends State<ReportGeneralAppListSwiper> {
-  final double _childAspectRatio = 57 / 76;
-  int threshold = 10;
-  int _ColumNumber = 5;
+class _ReportGeneralAppListSwiperState extends State<ReportGeneralAppListSwiper> {
+  final double _childAspectRatio = 57 / 82;
+  int threshold = 24;
+  int _ColumNumber = 6;
 
   Map<String, bool> adIdMap = {}; // 已经显示true 未显示null
   List<String> get adIds => List<String>.from(adIdMap.keys);
@@ -60,7 +61,7 @@ class _ReportGeneralAppListSwiperState
   void initState() {
     super.initState();
     _ColumNumber = widget.columnNumber;
-    threshold = _ColumNumber * 2;
+    threshold = _ColumNumber * 3;
   }
 
   void _showBanner(BannerModel banner) {
@@ -91,11 +92,10 @@ class _ReportGeneralAppListSwiperState
     // final pageName = context.parentTitle;
     // final widgetType = context.parentWidgetType.toString();
     BannerModel tp = widget.data.first;
-    final pageInfo = syncAnalyticsPageFromContext(context);
     AnalyticsSdk.instance.track(
       AdImpressionEvent(
-        pageKey: pageInfo.pageKey,
-        pageName: pageInfo.pageName,
+        pageKey: PageLifecycleObserver.currentPageKey,
+        pageName: PageNameMapper.getPageName(PageLifecycleObserver.currentPageKey),
         adSlotKey: tp.advertiseLocationCode ?? '',
         adSlotName: tp.adSlotName ?? '',
         adId: adIds.join(","),
@@ -121,6 +121,8 @@ class _ReportGeneralAppListSwiperState
 
   //上传广告行为
   void postActionReport(BannerModel tp, String action) {
+    // final pageName = context.parentTitle;
+    // final widgetType = context.parentWidgetType.toString();
     AnalyticsSdk.instance.track(
       AdvertisingEvent(
         eventType: action,
@@ -141,11 +143,10 @@ class _ReportGeneralAppListSwiperState
 
   //点击广告上报
   void postClickReport(BannerModel tp) {
-    final pageInfo = syncAnalyticsPageFromContext(context);
     AnalyticsSdk.instance.track(
       AdClickEvent(
-        pageKey: pageInfo.pageKey,
-        pageName: pageInfo.pageName,
+        pageKey: PageLifecycleObserver.currentPageKey,
+        pageName: PageNameMapper.getPageName(PageLifecycleObserver.currentPageKey),
         adSlotKey: tp.advertiseLocationCode ?? '',
         adSlotName: tp.adSlotName ?? '',
         adId: tp.advertiseCode ?? '',
@@ -153,8 +154,11 @@ class _ReportGeneralAppListSwiperState
         adType: tp.adType ?? '',
       ),
     );
+
     postActionReport(tp, "click");
 
+    // final pageName = context.parentTitle;
+    // final widgetType = context.parentWidgetType.toString();
     EventTracking().reportSingle({
       "event": "ad_click",
       "page_key": RouteStore.currentPageKey,
@@ -164,266 +168,336 @@ class _ReportGeneralAppListSwiperState
       "ad_id": tp.advertiseCode,
       "creative_id": "",
       "ad_type": tp.adType,
-    }).then((value) {
-      // CommonUtils.log(value);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     if (widget.data.length > threshold) {
-      // 取前 _ColumNumber 个（不足 _ColumNumber 个则全取）
-      final firstPart =
-          widget.data.sublist(0, min(_ColumNumber, widget.data.length));
-      // 取第 _ColumNumber+1 个之后的部分（如果不够 _ColumNumber 个就为空）
-      final secondPart = widget.data.length > _ColumNumber
-          ? widget.data.sublist(_ColumNumber)
-          : [];
-      final itemWidth = (ScreenUtil().screenWidth -
-              (_ColumNumber + 1) * 6.w -
-              MyTheme.pagePadding * 2) /
-          _ColumNumber;
+      final firstPart = widget.data.sublist(0, min(threshold, widget.data.length));
+      final secondPart = widget.data.length > threshold ? widget.data.sublist(threshold) : [];
+      final itemWidth = (ScreenUtil().screenWidth - (_ColumNumber + 1) * 6.w - MyTheme.pagePadding * 2) / _ColumNumber;
 
-      return Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 2),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      return Builder(builder: (context) {
+        return Column(
+          children: [
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 2),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children: List.generate(firstPart.length, (index) {
+            //       final item = firstPart[index];
+            //
+            //       _showBanner(item);
+            //       return ReportGestureDetector(
+            //         onTap: () {
+            //           postClickReport(widget.data[index]);
+            //           CommonUtils.openRoute(context, item.toJson());
+            //         },
+            //         child: SizedBox(
+            //             width: itemWidth,
+            //             child: Column(
+            //               mainAxisAlignment: MainAxisAlignment.center,
+            //               mainAxisSize: MainAxisSize.min,
+            //               children: [
+            //                 SizedBox(
+            //                   width: itemWidth,
+            //                   height: itemWidth,
+            //                   child: AspectRatio(
+            //                     aspectRatio: 1,
+            //                     child: MyImage.network(CommonUtils.getThumb(item.toJson()), fit: BoxFit.cover, borderRadius: 8.w),
+            //                   ),
+            //                 ),
+            //                 SizedBox(height: 8.w),
+            //                 Text(
+            //                   item.name ?? item.title ?? "",
+            //                   style: TextStyle(
+            //                       color: Colors.white,
+            //                       overflow: TextOverflow.ellipsis,
+            //                       decoration: TextDecoration.none,
+            //                       height: 1,
+            //                       fontWeight: FontWeight.w600,
+            //                       fontSize: 11.sp),
+            //                 ),
+            //               ],
+            //             )),
+            //       );
+            //     }),
+            //   ),
+            // ),
+            GridView.count(
+              shrinkWrap: true,
+              mainAxisSpacing: 6.w,
+              crossAxisSpacing: 6.w,
+              padding: EdgeInsets.only(bottom: 0.w),
+              crossAxisCount: _ColumNumber,
+              childAspectRatio: _childAspectRatio,
+              physics: const NeverScrollableScrollPhysics(),
               children: List.generate(firstPart.length, (index) {
                 final item = firstPart[index];
 
                 _showBanner(item);
                 return ReportGestureDetector(
                   onTap: () {
-                    postClickReport(widget.data[index]);
+                    postClickReport(firstPart[index]);
                     CommonUtils.openRoute(context, item.toJson());
                   },
                   child: SizedBox(
-                      width: itemWidth,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SizedBox(
-                            width: itemWidth,
-                            height: itemWidth,
-                            child: AspectRatio(
-                              aspectRatio: 1,
-                              child: MyImage.network(
-                                  CommonUtils.getThumb(item.toJson()),
-                                  fit: BoxFit.cover,
-                                  borderRadius: 8.w),
+                    width: itemWidth,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          width: itemWidth,
+                          height: itemWidth,
+                          child: AspectRatio(
+                            aspectRatio: 1,
+                            child: MyImage.network(
+                              fit: BoxFit.cover,
+                              borderRadius: 8.w,
+                              CommonUtils.getThumb(item.toJson()),
                             ),
                           ),
-                          SizedBox(height: 8.w),
-                          Text(
-                            item.name ?? item.title ?? "",
-                            style: TextStyle(
-                                color: Colors.white,
-                                overflow: TextOverflow.ellipsis,
-                                decoration: TextDecoration.none,
-                                height: 1,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 11.sp),
+                        ),
+                        SizedBox(height: 8.w),
+                        Text(
+                          item.name ?? item.title ?? "",
+                          style: TextStyle(
+                            color: Colors.white,
+                            overflow: TextOverflow.ellipsis,
+                            decoration: TextDecoration.none,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 11.sp,
                           ),
-                        ],
-                      )),
+                        ),
+                      ],
+                    ),
+                  ),
                 );
               }),
             ),
-          ),
-          if (secondPart.isNotEmpty && secondPart is List<BannerModel>)
-            SizedBox(height: 10.w),
-          if (secondPart.isNotEmpty && secondPart is List<BannerModel>)
-            ReportInfiniteBannerList(
-              banners: secondPart,
-              columNumber: _ColumNumber,
-              showFunc: (item) {
-                _showBanner(item);
-              },
-              tapFunc: (item) {
-                postClickReport(item);
+            if (secondPart.isNotEmpty && secondPart is List<BannerModel>) SizedBox(height: 8.w),
+            if (secondPart.isNotEmpty && secondPart is List<BannerModel>)
+              ReportInfiniteBannerList(
+                banners: secondPart,
+                columNumber: _ColumNumber,
+                showFunc: (item) {
+                  _showBanner(item);
+                },
+                tapFunc: (item) {
+                  postClickReport(item);
+                  CommonUtils.openRoute(context, item.toJson());
+                },
+              ),
+          ],
+        );
+      });
+    } else {
+      final itemWidth = (ScreenUtil().screenWidth - (_ColumNumber + 1) * 6.w - MyTheme.pagePadding * 2) / _ColumNumber;
+      return Builder(builder: (context) {
+        return GridView.count(
+          shrinkWrap: true,
+          mainAxisSpacing: 8.w,
+          crossAxisSpacing: 8.w,
+          padding: EdgeInsets.only(bottom: 8.w),
+          crossAxisCount: _ColumNumber,
+          childAspectRatio: _childAspectRatio,
+          physics: const NeverScrollableScrollPhysics(),
+          children: List.generate(widget.data.length, (index) {
+            final item = widget.data[index];
+
+            _showBanner(item);
+            return ReportGestureDetector(
+              onTap: () {
+                postClickReport(widget.data[index]);
                 CommonUtils.openRoute(context, item.toJson());
               },
-            ),
-        ],
-      );
-    } else {
-      List<List<BannerModel>> pages = [];
-      List<BannerModel> page = [];
-      for (var element in widget.data) {
-        if (page.length >= _ColumNumber * 2) {
-          pages.add(page);
-          page = [];
-        }
-        page.add(element);
-      }
+              child: SizedBox(
+                width: itemWidth,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      width: itemWidth,
+                      height: itemWidth,
+                      child: AspectRatio(
+                        aspectRatio: 1,
+                        child: MyImage.network(CommonUtils.getThumb(item.toJson()), fit: BoxFit.cover, borderRadius: 8.w),
+                      ),
+                    ),
+                    SizedBox(height: 8.w),
+                    Text(
+                      item.name ?? item.title ?? "",
+                      style: TextStyle(
+                        color: Colors.white,
+                        overflow: TextOverflow.ellipsis,
+                        decoration: TextDecoration.none,
+                        height: 1,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 11.sp,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }),
+        );
+      });
 
-      if (page.isNotEmpty) {
-        pages.add(page);
-      }
-
-      return Container(
-        child: widget.data.isEmpty
-            ? Container()
-            : LayoutBuilder(builder: (context, constrains) {
-                double width = constrains.maxWidth;
-                double itemWidth =
-                    (width - (_ColumNumber - 1) * 10.w) / _ColumNumber;
-                double itemHeight = itemWidth / _childAspectRatio;
-                // double bannerHeight = widget.data.length >= 10 ? itemHeight + (pages.first.length > _ColumeNumber ? 10.w : 7.w) :
-                // (itemHeight * (pages.first.length <= _ColumeNumber ? 1 : 2)) + (pages.first.length > _ColumeNumber ? 15.w : 0);
-                double bannerHeight = (itemHeight *
-                        (pages.first.length <= _ColumNumber ? 1 : 2)) +
-                    (pages.first.length > _ColumNumber ? 15.w : 0);
-
-                return SizedBox(
-                  width: width,
-                  height: bannerHeight,
-                  child: widget.data.isEmpty
-                      ? Container()
-                      : Swiper(
-                          autoplay: pages.length > 1,
-                          loop: pages.length > 1,
-                          itemBuilder: (BuildContext context, int index) {
-                            double w = itemWidth;
-                            return VisibilityDetector(
-                              key: Key("swiper_item_$index"),
-                              onVisibilityChanged: (info) {
-                                if (didReport) {
-                                  return;
-                                }
-                                if (info.visibleFraction > 0.8 &&
-                                    adIds.length < widget.data.length) {
-                                  for (var bannerModel in pages[index]) {
-                                    _showBanner(bannerModel);
-                                    // adIds.add(bannerModel.reportId);
-                                  }
-                                }
-                              },
-                              child: SizedBox(
-                                width: width,
-                                child: Builder(builder: (context) {
-                                  return GridView.count(
-                                      padding: EdgeInsets.only(bottom: 10.w),
-                                      crossAxisCount: _ColumNumber,
-                                      mainAxisSpacing: 10.w,
-                                      crossAxisSpacing: 10.w,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      childAspectRatio: _childAspectRatio,
-                                      shrinkWrap: true,
-                                      children: pages[index].map((e) {
-                                        // return Container();
-
-                                        return ReportGestureDetector(
-                                            behavior:
-                                                HitTestBehavior.translucent,
-                                            onTap: () {
-                                              FocusManager.instance.primaryFocus
-                                                  ?.unfocus();
-                                              postClickReport(
-                                                  widget.data[index]);
-                                              CommonUtils.openRoute(
-                                                  context, e.toJson());
-                                            },
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                SizedBox(
-                                                  width: w,
-                                                  height: w,
-                                                  child: AspectRatio(
-                                                    aspectRatio: 1,
-                                                    child: MyImage.network(
-                                                      CommonUtils.getThumb(
-                                                          e.toJson()),
-                                                      fit: BoxFit.cover,
-                                                      borderRadius: 8.w,
-                                                    ),
-                                                  ),
-                                                ),
-                                                // SizedBox(height: 8.w),
-                                                Expanded(
-                                                  child: Container(
-                                                    alignment: Alignment.center,
-                                                    // color: Colors.blue,
-                                                    child: Text(
-                                                      e.name ?? e.title ?? "",
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          decoration:
-                                                              TextDecoration
-                                                                  .none,
-                                                          height: 1,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          fontSize: 11.sp),
-                                                    ),
-                                                  ),
-                                                )
-                                              ],
-                                            ));
-                                      }).toList()
-
-                                      // pages[index].map((e) {
-                                      //   return Container();
-                                      // }).toList(),
-                                      );
-                                }),
-                              ),
-                            );
-                          },
-                          itemCount: pages.length,
-                          pagination: pages.length > 1 || true
-                              ? SwiperPagination(
-                                  margin: EdgeInsets.zero,
-                                  builder: SwiperCustomPagination(
-                                      builder: (context, config) {
-                                    int count = pages.length;
-                                    return Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: List.generate(count, (index) {
-                                        return config.activeIndex == index
-                                            ? Container(
-                                                width: 10.w,
-                                                height: 4.w,
-                                                margin:
-                                                    EdgeInsets.only(right: 4.w),
-                                                decoration: BoxDecoration(
-                                                  // color: StyleTheme.white255Color,
-                                                  gradient:
-                                                      MyTheme.gradient_90_114,
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(2.w)),
-                                                ),
-                                              )
-                                            : Container(
-                                                width: 4.w,
-                                                height: 4.w,
-                                                margin:
-                                                    EdgeInsets.only(right: 4.w),
-                                                decoration: BoxDecoration(
-                                                  color: MyTheme.white08Color,
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(2.w)),
-                                                ),
-                                              );
-                                      }),
-                                    );
-                                  }))
-                              : null,
-                        ),
-                );
-              }),
-      );
+      // List<List<BannerModel>> pages = [];
+      // List<BannerModel> page = [];
+      // for (var element in widget.data) {
+      //   if (page.length >= _ColumNumber * 2) {
+      //     pages.add(page);
+      //     page = [];
+      //   }
+      //   page.add(element);
+      // }
+      //
+      // if (page.isNotEmpty) {
+      //   pages.add(page);
+      // }
+      //
+      // return Container(
+      //   child: widget.data.isEmpty
+      //       ? Container()
+      //       : LayoutBuilder(builder: (context, constrains) {
+      //           double width = constrains.maxWidth;
+      //           double itemWidth = (width - (_ColumNumber - 1) * 10.w) / _ColumNumber;
+      //           double itemHeight = itemWidth / _childAspectRatio;
+      //           // double bannerHeight = widget.data.length >= 10 ? itemHeight + (pages.first.length > _ColumeNumber ? 10.w : 7.w) :
+      //           // (itemHeight * (pages.first.length <= _ColumeNumber ? 1 : 2)) + (pages.first.length > _ColumeNumber ? 15.w : 0);
+      //           double bannerHeight =
+      //               (itemHeight * (pages.first.length <= _ColumNumber ? 1 : 2)) + (pages.first.length > _ColumNumber ? 15.w : 0);
+      //
+      //           return SizedBox(
+      //             width: width,
+      //             height: bannerHeight,
+      //             child: widget.data.isEmpty
+      //                 ? Container()
+      //                 : Swiper(
+      //                     autoplay: pages.length > 1,
+      //                     loop: pages.length > 1,
+      //                     itemBuilder: (BuildContext context, int index) {
+      //                       double w = itemWidth;
+      //                       return VisibilityDetector(
+      //                         key: Key("swiper_item_$index"),
+      //                         onVisibilityChanged: (info) {
+      //                           if (didReport) {
+      //                             return;
+      //                           }
+      //                           if (info.visibleFraction > 0.8 && adIds.length < widget.data.length) {
+      //                             for (var bannerModel in pages[index]) {
+      //                               _showBanner(bannerModel);
+      //                               // adIds.add(bannerModel.reportId);
+      //                             }
+      //                           }
+      //                         },
+      //                         child: SizedBox(
+      //                           width: width,
+      //                           child: Builder(builder: (context) {
+      //                             return GridView.count(
+      //                                 padding: EdgeInsets.only(bottom: 10.w),
+      //                                 crossAxisCount: _ColumNumber,
+      //                                 mainAxisSpacing: 10.w,
+      //                                 crossAxisSpacing: 10.w,
+      //                                 physics: const NeverScrollableScrollPhysics(),
+      //                                 childAspectRatio: _childAspectRatio,
+      //                                 shrinkWrap: true,
+      //                                 children: pages[index].map((e) {
+      //                                   // return Container();
+      //
+      //                                   return ReportGestureDetector(
+      //                                       behavior: HitTestBehavior.translucent,
+      //                                       onTap: () {
+      //                                         FocusManager.instance.primaryFocus?.unfocus();
+      //                                         postClickReport(widget.data[index]);
+      //                                         CommonUtils.openRoute(context, e.toJson());
+      //                                       },
+      //                                       child: Column(
+      //                                         mainAxisAlignment: MainAxisAlignment.center,
+      //                                         children: [
+      //                                           SizedBox(
+      //                                             width: w,
+      //                                             height: w,
+      //                                             child: AspectRatio(
+      //                                               aspectRatio: 1,
+      //                                               child: MyImage.network(
+      //                                                 CommonUtils.getThumb(e.toJson()),
+      //                                                 fit: BoxFit.cover,
+      //                                                 borderRadius: 8.w,
+      //                                               ),
+      //                                             ),
+      //                                           ),
+      //                                           // SizedBox(height: 8.w),
+      //                                           Expanded(
+      //                                             child: Container(
+      //                                               alignment: Alignment.center,
+      //                                               // color: Colors.blue,
+      //                                               child: Text(
+      //                                                 e.name ?? e.title ?? "",
+      //                                                 style: TextStyle(
+      //                                                     color: Colors.white,
+      //                                                     overflow: TextOverflow.ellipsis,
+      //                                                     decoration: TextDecoration.none,
+      //                                                     height: 1,
+      //                                                     fontWeight: FontWeight.w600,
+      //                                                     fontSize: 11.sp),
+      //                                               ),
+      //                                             ),
+      //                                           )
+      //                                         ],
+      //                                       ));
+      //                                 }).toList()
+      //
+      //                                 // pages[index].map((e) {
+      //                                 //   return Container();
+      //                                 // }).toList(),
+      //                                 );
+      //                           }),
+      //                         ),
+      //                       );
+      //                     },
+      //                     itemCount: pages.length,
+      //                     pagination: pages.length > 1 || true
+      //                         ? SwiperPagination(
+      //                             margin: EdgeInsets.zero,
+      //                             builder: SwiperCustomPagination(builder: (context, config) {
+      //                               int count = pages.length;
+      //                               return Row(
+      //                                 mainAxisAlignment: MainAxisAlignment.center,
+      //                                 children: List.generate(count, (index) {
+      //                                   return config.activeIndex == index
+      //                                       ? Container(
+      //                                           width: 10.w,
+      //                                           height: 4.w,
+      //                                           margin: EdgeInsets.only(right: 4.w),
+      //                                           decoration: BoxDecoration(
+      //                                             // color: StyleTheme.white255Color,
+      //                                             gradient: MyTheme.gradient_90_114,
+      //                                             borderRadius: BorderRadius.all(Radius.circular(2.w)),
+      //                                           ),
+      //                                         )
+      //                                       : Container(
+      //                                           width: 4.w,
+      //                                           height: 4.w,
+      //                                           margin: EdgeInsets.only(right: 4.w),
+      //                                           decoration: BoxDecoration(
+      //                                             color: MyTheme.white08Color,
+      //                                             borderRadius: BorderRadius.all(Radius.circular(2.w)),
+      //                                           ),
+      //                                         );
+      //                                 }),
+      //                               );
+      //                             }))
+      //                         : null,
+      //                   ),
+      //           );
+      //         }),
+      // );
     }
   }
 }
@@ -443,8 +517,7 @@ class ReportInfiniteBannerList extends StatefulWidget {
   });
 
   @override
-  State<ReportInfiniteBannerList> createState() =>
-      _ReportInfiniteBannerListState();
+  State<ReportInfiniteBannerList> createState() => _ReportInfiniteBannerListState();
 }
 
 class _ReportInfiniteBannerListState extends State<ReportInfiniteBannerList> {
@@ -452,14 +525,21 @@ class _ReportInfiniteBannerListState extends State<ReportInfiniteBannerList> {
   bool _isUserTouching = false;
   bool _autoScrollRunning = false;
   bool _isVisible = true; // 当前是否在屏幕可见范围内
+  bool _hasInitPosition = false;
+  double _itemExtent = 0;
 
   @override
   void initState() {
     super.initState();
+    _controller.addListener(_handleLoopPosition);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _startAutoScroll();
+      if (_shouldLoop) {
+        _startAutoScroll();
+      }
     });
   }
+
+  bool get _shouldLoop => widget.banners.length > widget.columNumber;
 
   void _startAutoScroll() {
     if (_autoScrollRunning) return;
@@ -476,35 +556,50 @@ class _ReportInfiniteBannerListState extends State<ReportInfiniteBannerList> {
       if (!_isVisible || _isUserTouching) return true;
 
       if (_controller.hasClients) {
-        final max = _controller.position.maxScrollExtent;
         final pos = _controller.position.pixels;
-
-        if (pos >= max - 1) {
-          final middle = max / 2;
-          _controller.jumpTo(middle);
-        } else {
-          _controller.jumpTo(pos + scrollSpeed);
-        }
+        _controller.jumpTo(pos + scrollSpeed);
       }
       return true;
     });
+  }
+
+  void _handleLoopPosition() {
+    if (!_shouldLoop || !_controller.hasClients || _itemExtent <= 0) return;
+    final max = _controller.position.maxScrollExtent;
+    final pos = _controller.position.pixels;
+    final threshold = _itemExtent * widget.banners.length;
+
+    if (pos <= threshold) {
+      _controller.jumpTo(pos + threshold);
+    } else if (pos >= max - threshold) {
+      _controller.jumpTo(pos - threshold);
+    }
   }
 
   @override
   void dispose() {
     _controller.dispose();
     _autoScrollRunning = false;
-    VisibilityDetectorController.instance
-        .forget(ValueKey('ReportInfiniteBannerList_${widget.hashCode}'));
+    VisibilityDetectorController.instance.forget(ValueKey('ReportInfiniteBannerList_${widget.hashCode}'));
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final itemWidth = (ScreenUtil().screenWidth -
-            (widget.columNumber + 1) * 7 -
-            MyTheme.pagePadding * 2) /
-        widget.columNumber;
+    final itemWidth = (ScreenUtil().screenWidth - (widget.columNumber + 1) * 7 - MyTheme.pagePadding * 2) / widget.columNumber;
+    final shouldLoop = _shouldLoop;
+    final itemCount = shouldLoop ? widget.banners.length * 1000 : widget.banners.length;
+    final itemExtent = itemWidth + 8;
+    _itemExtent = itemExtent;
+
+    if (shouldLoop && !_hasInitPosition) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted || !_controller.hasClients) return;
+        final middleIndex = itemCount ~/ 2;
+        _controller.jumpTo(middleIndex * itemExtent);
+        _hasInitPosition = true;
+      });
+    }
 
     return VisibilityDetector(
       key: ValueKey('ReportInfiniteBannerList_${widget.hashCode}'),
@@ -523,54 +618,59 @@ class _ReportInfiniteBannerListState extends State<ReportInfiniteBannerList> {
         child: SizedBox(
           height: itemWidth + 28,
           child: ScrollConfiguration(
-            behavior:
-                ScrollConfiguration.of(context).copyWith(scrollbars: false),
-            child: ListView.builder(
-              controller: _controller,
-              scrollDirection: Axis.horizontal,
-              physics: const BouncingScrollPhysics(),
-              itemCount: widget.banners.length * 2,
-              itemBuilder: (context, index) {
-                final banner = widget.banners[index % widget.banners.length];
-                widget.showFunc?.call(banner);
-                return ReportGestureDetector(
-                  onTap: () {
-                    FocusManager.instance.primaryFocus?.unfocus();
-                    widget.tapFunc?.call(banner);
-                    // CommonUtils.openRoute(context, banner.toJson());
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox.square(
-                          dimension: itemWidth,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: MyImage.network(
-                              CommonUtils.getThumb(banner.toJson()),
-                              fit: BoxFit.cover,
+            behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
+            child: NotificationListener<UserScrollNotification>(
+              onNotification: (notification) {
+                _isUserTouching = notification.direction != ScrollDirection.idle;
+                return false;
+              },
+              child: ListView.builder(
+                controller: _controller,
+                scrollDirection: Axis.horizontal,
+                physics: const BouncingScrollPhysics(),
+                itemExtent: itemExtent,
+                itemCount: itemCount,
+                itemBuilder: (context, index) {
+                  final banner = widget.banners[index % widget.banners.length];
+                  widget.showFunc?.call(banner);
+                  return ReportGestureDetector(
+                    onTap: () {
+                      FocusManager.instance.primaryFocus?.unfocus();
+                      widget.tapFunc?.call(banner);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox.square(
+                            dimension: itemWidth,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: MyImage.network(
+                                CommonUtils.getThumb(banner.toJson()),
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          banner.name ?? banner.title ?? "",
-                          style: const TextStyle(
-                            color: Colors.white,
-                            overflow: TextOverflow.ellipsis,
-                            decoration: TextDecoration.none,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 11,
+                          const SizedBox(height: 8),
+                          Text(
+                            banner.name ?? banner.title ?? "",
+                            style: const TextStyle(
+                              color: Colors.white,
+                              overflow: TextOverflow.ellipsis,
+                              decoration: TextDecoration.none,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 11,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ),
         ),
