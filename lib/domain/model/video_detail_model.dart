@@ -172,7 +172,7 @@ class VideoData {
 
   int? isSpeed;
 
-  final int? videoTypeId;
+  final String? videoTypeId;
   final String? videoTypeName;
   final String? videoContentType;
   final String? recommendTraceId;
@@ -247,8 +247,8 @@ class VideoData {
       discountCoins: json['discount_coins'] ?? 0,
       discount: json['discount'] == null ? 0 : double.parse(json['discount'].toString()),
       favorites: json['favorites'] ?? 0,
-      seriesId: json['series_id'] ?? 0,
-      videoTypeId: json['video_type_id'] ?? 0,
+      seriesId: int.parse(json['series_id'] ?? '0'),
+      videoTypeId: json['video_type_id'],
       videoTypeName: json['video_type_name'] ?? '',
       videoContentType: json['video_content_type'],
       recommendTraceId: json['recommend_trace_id'],

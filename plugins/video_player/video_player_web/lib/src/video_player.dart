@@ -12,6 +12,7 @@ import 'package:video_player_platform_interface/video_player_platform_interface.
 
 import '../hls.dart';
 import 'duration_utils.dart';
+import 'dart:js_util' as js_util;
 
 // An error code value to error name Map.
 // See: https://developer.mozilla.org/en-US/docs/Web/API/MediaError/code
@@ -326,35 +327,78 @@ class VideoPlayer {
 }
 
 class _HlsHelper {
+  /// Web 端对 HLS 一律优先走 hls.js（含 Safari），仅在脚本不可用时回退原生。
   static Future<bool> shouldUseHlsLibrary(String src) async {
-    if (_completer == null) {
-      _canPlayHlsNatively();
-    }
+    final String s = src.toString();
+    final bool looksLikeHls =
+        s.contains('m3u8') || s.contains('M3U8') || s.startsWith('blob:');
+    if (!looksLikeHls) return false;
 
-    return !(await _completer!.future) &&
-        isSupported() &&
-        src.toString().contains('m3u8');
+    if (_hlsGlobalReady()) return _safeIsSupported();
+
+    final bool ok = await _ensureHlsJsLoaded();
+    if (!ok) return false;
+    return _safeIsSupported();
   }
 
-  static Completer<bool>? _completer;
-
-  static _canPlayHlsNatively() async {
-    _completer = Completer<bool>();
-    bool canPlayHls = false;
+  static bool _hlsGlobalReady() {
     try {
-      final String canPlayType =
-          html.VideoElement().canPlayType('application/vnd.apple.mpegurl');
-      canPlayHls = canPlayType != '';
-    } catch (e) {}
-
-    if (!canPlayHls) {
-      final head = html.querySelector('head');
-      final script = html.ScriptElement()
-        ..type = "application/javascript"
-        ..src = 'assets/packages/video_player_web/assets/hls.js';
-      head?.children.add(script);
-      await script.onLoad.first;
+      return js_util.hasProperty(html.window, 'Hls');
+    } catch (_) {
+      return false;
     }
-    _completer!.complete(canPlayHls);
+  }
+
+  static bool _safeIsSupported() {
+    try {
+      return isSupported();
+    } catch (_) {
+      return false;
+    }
+  }
+
+  static Future<bool>? _hlsJsLoadFuture;
+
+  static Future<bool> _ensureHlsJsLoaded() {
+    return _hlsJsLoadFuture ??= _injectHlsJs();
+  }
+
+  static Future<bool> _injectHlsJs() {
+    const String hlsSrc = 'assets/packages/video_player_web/assets/hls.js';
+    final existing = html.document.querySelector('script[src="$hlsSrc"]')
+    as html.ScriptElement?;
+    if (existing != null) return _awaitScriptReady(existing);
+
+    final head = html.document.head ?? html.querySelector('head');
+    if (head == null) return Future.value(false);
+
+    final script = html.ScriptElement()
+      ..type = 'application/javascript'
+      ..async = true
+      ..src = hlsSrc;
+    head.append(script);
+    return _awaitScriptReady(script);
+  }
+
+  static Future<bool> _awaitScriptReady(html.ScriptElement script) {
+    final completer = Completer<bool>();
+    void done(bool ok) {
+      if (!completer.isCompleted) completer.complete(ok);
+    }
+
+    script.onLoad.first.then((_) => done(_hlsGlobalReady()));
+    script.onError.first.then((_) => done(false));
+    // 兜底：脚本可能在监听挂上前已 load；轮询 + 10s 超时。
+    Future<void>(() async {
+      for (int i = 0; i < 200 && !completer.isCompleted; i++) {
+        if (_hlsGlobalReady()) {
+          done(true);
+          return;
+        }
+        await Future<void>.delayed(const Duration(milliseconds: 50));
+      }
+      done(_hlsGlobalReady());
+    });
+    return completer.future;
   }
 }
