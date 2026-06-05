@@ -28,9 +28,6 @@ import '../../../../domain/enum.dart';
 import 'package:jygf/report/ui_layer/report_gesture_detector.dart';
 import 'package:jygf/report/ui_layer/report_general_banner.dart';
 
-
-
-
 class AiVideoFaceSwap extends StatefulWidget {
   const AiVideoFaceSwap({
     super.key,
@@ -46,6 +43,7 @@ class _AiVideoFaceSwapState extends State<AiVideoFaceSwap> {
   late final userNotifier = context.read<UserNotifier>();
   late List<FaceNavigatorModel> faceNav = [];
   late List<VideoFaceSortModel> titles = [];
+
   // late int faceCoinsValue = _homeConfig.config.faceCoins;
   final ValueNotifier<List<BannerModel>> bannersNotifier = ValueNotifier([]);
   late List<FaceNavigatorModel> topics = [];
@@ -111,8 +109,7 @@ class _AiVideoFaceSwapState extends State<AiVideoFaceSwap> {
     tabIndex = index;
   }
 
-  Future<List<VideoFaceMaterials>?> _getData(
-      {required int page, required int pageSize, required String value}) async {
+  Future<List<VideoFaceMaterials>?> _getData({required int page, required int pageSize, required String value}) async {
     final result = await aiDomain.videoFaceMaterialList(
       id: navs.id,
       page: page,
@@ -123,9 +120,7 @@ class _AiVideoFaceSwapState extends State<AiVideoFaceSwap> {
 
     if (result.status == 1) {
       final data = result.data;
-      if (data != null &&
-          data.banners.isNotEmpty &&
-          bannersNotifier.value.isEmpty) {
+      if (data != null && data.banners.isNotEmpty && bannersNotifier.value.isEmpty) {
         bannersNotifier.value = data.banners;
       }
       return data?.materials;
@@ -170,8 +165,7 @@ class _AiVideoFaceSwapState extends State<AiVideoFaceSwap> {
         maxHeight: MediaQuery.of(context).size.height * 0.9,
       ),
       context: context,
-      builder: (context) => StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
+      builder: (context) => StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
         return DecoratedBox(
           decoration: BoxDecoration(
             // color: const Color(0xff0b0a21),
@@ -179,7 +173,7 @@ class _AiVideoFaceSwapState extends State<AiVideoFaceSwap> {
               topLeft: Radius.circular(30.w),
               topRight: Radius.circular(30.w),
             ),
-            border:const Border(top: BorderSide(color: Color.fromRGBO(154, 48, 133, 1), width: 1)),
+            border: const Border(top: BorderSide(color: Color.fromRGBO(154, 48, 133, 1), width: 1)),
           ),
           child: SafeArea(
             child: Padding(
@@ -195,8 +189,7 @@ class _AiVideoFaceSwapState extends State<AiVideoFaceSwap> {
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('${'mob'.tr()}-${item.title}',
-                            style: MyTheme.white13),
+                        Text('${'mob'.tr()}-${item.title}', style: MyTheme.white13),
                         const SizedBox.shrink(),
                         InkWell(
                           onTap: () => context.pop(),
@@ -252,8 +245,7 @@ class _AiVideoFaceSwapState extends State<AiVideoFaceSwap> {
                   SizedBox(height: 10.w),
                   Row(
                     children: [
-                      Text('sclbxx'.tr(context: context),
-                          style: MyTheme.white13),
+                      Text('sclbxx'.tr(context: context), style: MyTheme.white13),
                       const SizedBox.shrink(),
                     ],
                   ),
@@ -280,18 +272,14 @@ class _AiVideoFaceSwapState extends State<AiVideoFaceSwap> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
-                                  MyImage.asset(MyImagePaths.appAiUpload,
-                                  width: 45.w,
-                                  height: 45.w,
+                                  MyImage.asset(
+                                    MyImagePaths.appAiUpload,
+                                    width: 45.w,
+                                    height: 45.w,
                                   ),
-                                  Text('djscrwxx'.tr(context: context),
-                                      style: MyTheme.white13),
-                                  Text(
-                                      'tpdxbcg'.tr(context: context) +
-                                          uploadMaxSize,
-                                      style: TextStyle(
-                                          fontSize: 10.sp,
-                                          color: const Color(0xff9f9f9f))),
+                                  Text('djscrwxx'.tr(context: context), style: MyTheme.white13),
+                                  Text('tpdxbcg'.tr(context: context) + uploadMaxSize,
+                                      style: TextStyle(fontSize: 10.sp, color: const Color(0xff9f9f9f))),
                                 ],
                               )
                             : Stack(
@@ -313,8 +301,7 @@ class _AiVideoFaceSwapState extends State<AiVideoFaceSwap> {
                                         },
                                         child: Container(
                                           padding: EdgeInsets.all(5.w),
-                                          decoration: const BoxDecoration(
-                                              color: Color(0xFF3094FF)),
+                                          decoration: const BoxDecoration(color: Color(0xFF3094FF)),
                                           child: Center(
                                               child: Icon(
                                             Icons.delete_forever,
@@ -340,15 +327,9 @@ class _AiVideoFaceSwapState extends State<AiVideoFaceSwap> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      UploadFaceTip(
-                          thumb: MyImagePaths.uploadFaceRight,
-                          title: 'zqwzl'.tr(context: context)),
-                      UploadFaceTip(
-                          thumb: MyImagePaths.uploadFaceError1,
-                          title: 'zdlb'.tr(context: context)),
-                      UploadFaceTip(
-                          thumb: MyImagePaths.uploadFaceError2,
-                          title: 'zdyj'.tr(context: context))
+                      UploadFaceTip(thumb: MyImagePaths.uploadFaceRight, title: 'zqwzl'.tr(context: context)),
+                      UploadFaceTip(thumb: MyImagePaths.uploadFaceError1, title: 'zdlb'.tr(context: context)),
+                      UploadFaceTip(thumb: MyImagePaths.uploadFaceError2, title: 'zdyj'.tr(context: context))
                     ],
                   ),
                   SizedBox(height: 10.w),
@@ -357,19 +338,14 @@ class _AiVideoFaceSwapState extends State<AiVideoFaceSwap> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        Text('${'xhjb'.tr(context: context)}：',
-                            style: MyTheme.white13),
-                        Text(item.coins.toString(),
-                            style: MyTheme.nav_active_14),
+                        Text('${'xhjb'.tr(context: context)}：', style: MyTheme.white13),
+                        Text(item.coins.toString(), style: MyTheme.nav_active_14),
                         SizedBox(width: 10.w),
-                        Text('${'mfcs'.tr(context: context)}：',
-                            style: MyTheme.white13),
+                        Text('${'mfcs'.tr(context: context)}：', style: MyTheme.white13),
                         Selector<UserNotifier, int>(
-                            selector: (_, config) =>
-                                config.member.aiVideoFaceValue,
+                            selector: (_, config) => config.member.aiVideoFaceValue,
                             builder: (context, number, child) {
-                              return Text('$number',
-                                  style: MyTheme.nav_active_14);
+                              return Text('$number', style: MyTheme.nav_active_14);
                             }),
                         const Expanded(child: SizedBox()),
                         ReportGestureDetector(
@@ -379,8 +355,7 @@ class _AiVideoFaceSwapState extends State<AiVideoFaceSwap> {
                                   context: context,
                                   builder: (context) => RegularDialog(
                                         title: 'wxts'.tr(),
-                                        content: Text('qsctp'.tr(),
-                                            style: MyTheme.white255_15),
+                                        content: Text('qsctp'.tr(), style: MyTheme.white255_15),
                                         buttonText: 'qd'.tr(),
                                         confirmOnTap: () {
                                           context.pop();
@@ -397,23 +372,18 @@ class _AiVideoFaceSwapState extends State<AiVideoFaceSwap> {
                                 materialId: item.id.toString(),
                                 thumb: uploadObject['media_url'],
                                 thumbW: uploadObject['thumb_width'].toString(),
-                                thumbH:
-                                    uploadObject['thumb_height'].toString());
+                                thumbH: uploadObject['thumb_height'].toString());
                             BotToast.closeAllLoading();
                             if (result.status == 1) {
                               setState(() {
                                 uploadObject = {};
                               });
 
-                              final aiVideoFaceValue =
-                                  userNotifier.member.aiVideoFaceValue - 1;
+                              final aiVideoFaceValue = userNotifier.member.aiVideoFaceValue - 1;
                               if (aiVideoFaceValue >= 0) {
-                                userNotifier.setAiVideoFaceValue(
-                                    num: aiVideoFaceValue);
+                                userNotifier.setAiVideoFaceValue(num: aiVideoFaceValue);
                               } else {
-                                userNotifier.setMoney(
-                                    money:
-                                        userNotifier.member.money - item.coins);
+                                userNotifier.setMoney(money: userNotifier.member.money - item.coins);
                               }
                               CommonUtils.showDialog(
                                 context: context,
@@ -421,8 +391,7 @@ class _AiVideoFaceSwapState extends State<AiVideoFaceSwap> {
                                   buttonText: 'gb'.tr(),
                                   title: 'wxts'.tr(),
                                   content: Text('提交成功，稍后前往\n【AI记录】中查看',
-                                      style: MyTheme.white255_15,
-                                      textAlign: TextAlign.center),
+                                      style: MyTheme.white255_15, textAlign: TextAlign.center),
                                   confirmOnTap: () {
                                     context.pop();
                                     context.pop();
@@ -445,8 +414,7 @@ class _AiVideoFaceSwapState extends State<AiVideoFaceSwap> {
                                       textAlign: TextAlign.center,
                                       text: TextSpan(children: [
                                         TextSpan(
-                                          text:
-                                              '${tr('ndyebz')}\n${tr('syjb')}',
+                                          text: '${tr('ndyebz')}\n${tr('syjb')}',
                                           style: MyTheme.white255_15,
                                         ),
                                         TextSpan(
@@ -472,12 +440,10 @@ class _AiVideoFaceSwapState extends State<AiVideoFaceSwap> {
                             height: 40.w,
                             padding: EdgeInsets.symmetric(vertical: 10.w),
                             decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20.w)),
+                                borderRadius: BorderRadius.all(Radius.circular(20.w)),
                                 gradient: MyTheme.gradient_90_114),
                             child: Center(
-                              child: Text('ljzz'.tr(context: context),
-                                  style: MyTheme.white15bold),
+                              child: Text('ljzz'.tr(context: context), style: MyTheme.white15bold),
                             ),
                           ),
                         )
@@ -528,8 +494,7 @@ class _AiVideoFaceSwapState extends State<AiVideoFaceSwap> {
             fillCorlor: Colors.transparent,
             isScrollable: true,
             // key: ValueKey(navs),
-            tabBarPadding: EdgeInsets.symmetric(
-                vertical: 10.w, horizontal: MyTheme.pagePadding),
+            tabBarPadding: EdgeInsets.symmetric(vertical: 10.w, horizontal: MyTheme.pagePadding),
             tabBarHeight: 32.w,
             labelStyle: MyTheme.white12,
             unselectedLabelStyle: MyTheme.whiteOpacity612w400,
@@ -540,8 +505,7 @@ class _AiVideoFaceSwapState extends State<AiVideoFaceSwap> {
               for (final VideoFaceSortModel nav in titles)
                 MyListView.grid(
                     key: UniqueKey(),
-                    padding:
-                        EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
+                    padding: EdgeInsets.symmetric(horizontal: MyTheme.pagePadding),
                     childAspectRatio: 170 / 250,
                     itemBuilder: (context, item, index) {
                       return VideoMaterialCard(
@@ -618,16 +582,12 @@ class _Header extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6.w),
                       ),
-                      gradient: topic.id == currentNav.id
-                          ? MyTheme.gradient_90_114
-                          : MyTheme.gradient_90_114_15,
+                      gradient: topic.id == currentNav.id ? MyTheme.gradient_90_114 : MyTheme.gradient_90_114_15,
                     ),
                     child: Center(
                       child: Text(
                         topic.name,
-                        style: topic.id == currentNav.id
-                            ? MyTheme.white255_13_B
-                            : MyTheme.white13,
+                        style: topic.id == currentNav.id ? MyTheme.white255_13_B : MyTheme.white13,
                       ),
                     ),
                   ),
@@ -640,11 +600,7 @@ class _Header extends StatelessWidget {
 }
 
 class VideoMaterialCard extends StatelessWidget {
-  const VideoMaterialCard(
-      {super.key,
-      required this.data,
-      required this.onTap,
-      required this.index});
+  const VideoMaterialCard({super.key, required this.data, required this.onTap, required this.index});
 
   final VideoFaceMaterials data;
   final Function(VideoFaceMaterials) onTap;
@@ -660,7 +616,7 @@ class VideoMaterialCard extends StatelessWidget {
         children: [
           Expanded(
             child: Stack(
-             fit: StackFit.expand,
+              fit: StackFit.expand,
               children: [
                 MyImage.network(
                   data.thumb,
@@ -686,8 +642,7 @@ class VideoMaterialCard extends StatelessWidget {
                         gradient: MyTheme.gradient_90_114,
                         borderRadius: BorderRadius.all(Radius.circular(19.w)),
                       ),
-                      child:
-                          Text('${data.coins}金币', style: MyTheme.white12medium),
+                      child: Text('${data.coins}金币', style: MyTheme.white12medium),
                     ))
               ],
             ),

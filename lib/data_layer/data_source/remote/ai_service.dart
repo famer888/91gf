@@ -15,13 +15,7 @@ class AIService extends BaseService {
     required String sort,
     required String type,
   }) =>
-      post('/list_face_material', data: {
-        'id': id,
-        'page': page,
-        'limit': limit,
-        'sort': sort,
-        'type': type
-      });
+      post('/list_face_material', data: {'id': id, 'page': page, 'limit': limit, 'sort': sort, 'type': type});
 
   /// 素材换脸
   AsyncJson changeFace({
@@ -30,12 +24,7 @@ class AIService extends BaseService {
     required int thumbW,
     required int thumbH,
   }) =>
-      post('/change_face', data: {
-        'id': id,
-        'thumb': thumb,
-        'thumb_w': thumbW,
-        'thumb_h': thumbH
-      });
+      post('/change_face', data: {'id': id, 'thumb': thumb, 'thumb_w': thumbW, 'thumb_h': thumbH});
 
   /// 自定义换脸
   AsyncJson customizeFace({
@@ -61,8 +50,7 @@ class AIService extends BaseService {
     required int thumbW,
     required int thumbH,
   }) =>
-      post('/strip',
-          data: {'thumb': thumb, 'thumb_w': thumbW, 'thumb_h': thumbH});
+      post('/strip', data: {'thumb': thumb, 'thumb_w': thumbW, 'thumb_h': thumbH});
 
   AsyncJson aIMyFace({
     required int status, // 0-待处理 1-处理中 2-已成功 3-已失败
@@ -79,12 +67,10 @@ class AIService extends BaseService {
       post('/my_strip', data: {'status': status, 'page': page, 'limit': limit});
 
   /// 删除我的脱衣记录
-  AsyncJson delStrip({required String ids}) =>
-      post('/del_strip', data: {'ids': ids});
+  AsyncJson delStrip({required String ids}) => post('/del_strip', data: {'ids': ids});
 
   /// 删除我的换脸记录
-  AsyncJson delFace({required String ids}) =>
-      post('/del_face', data: {'ids': ids});
+  AsyncJson delFace({required String ids}) => post('/del_face', data: {'ids': ids});
 
   AsyncJson videoFaceMaterialList({
     required int id,
@@ -93,13 +79,8 @@ class AIService extends BaseService {
     required String sort,
     required String type,
   }) =>
-      post('/list_video_face_material', data: {
-        'cate_id': 1,
-        'page': page,
-        'limit': limit,
-        'sort': sort,
-        'type': 'used'
-      });
+      post('/list_video_face_material',
+          data: {'cate_id': id, 'page': page, 'limit': limit, 'sort': sort, 'type': type});
 
   /// 视频换脸
   AsyncJson changeVideoFace({
@@ -108,12 +89,8 @@ class AIService extends BaseService {
     required String thumbW,
     required String thumbH,
   }) =>
-      post('/change_video_face', data: {
-        'material_id': materialId,
-        'thumb': thumb,
-        'thumb_w': thumbW,
-        'thumb_h': thumbH
-      });
+      post('/change_video_face',
+          data: {'material_id': materialId, 'thumb': thumb, 'thumb_w': thumbW, 'thumb_h': thumbH});
 
   /// 我的视频换脸记录
   AsyncJson myVideoFace({
@@ -128,6 +105,5 @@ class AIService extends BaseService {
   }
 
   /// 删除我的视频换脸记录
-  AsyncJson delVideoFace({required String ids}) =>
-      post('/del_video_face', data: {'ids': ids});
+  AsyncJson delVideoFace({required String ids}) => post('/del_video_face', data: {'ids': ids});
 }
