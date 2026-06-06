@@ -56,7 +56,7 @@ class _AiVideoFaceSwapState extends State<AiVideoFaceSwap> {
   void initState() {
     super.initState();
 
-    faceNav = _homeConfig.config.faceTopNav ?? [];
+    faceNav = _homeConfig.config.videoFaceTopNav ?? [];
     titles = _homeConfig.config.videoFaceSortNav ?? [];
 
     for (VideoFaceSortModel item in titles) {
